@@ -154,7 +154,12 @@ final class Test_Readme extends TestCase {
 		}
 		$output    = array();
 		$exit_code = 0;
-		exec( 'cd ' . escapeshellarg( $root ) . ' && make release-check 2>&1', $output, $exit_code );
+		// An empty locale list keeps the translation gate out of the way, so
+		// this exercises the placeholder gate on its own.
+		$locales = BABILIM_TEST_TMP_ROOT . '/no-locales-' . uniqid( '', true );
+		file_put_contents( $locales, "# none\n" );
+		exec( 'cd ' . escapeshellarg( $root ) . ' && make release-check L10N_LOCALES=' . escapeshellarg( $locales ) . ' 2>&1', $output, $exit_code );
+		unlink( $locales );
 		$text = implode( "\n", $output );
 		$this->assertNotSame( 0, $exit_code, "make release-check must fail while placeholders remain:\n{$text}" );
 		$this->assertStringContainsString( 'TODO-OWNER', $text );

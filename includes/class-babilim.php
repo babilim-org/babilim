@@ -182,6 +182,7 @@ class Babilim {
 	 * Runs on `plugins_loaded`.
 	 */
 	public function init() {
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 		$this->register_default_index_triggers();
 		$this->register_maintenance_cron();
 		$this->register_sync_cron();
@@ -193,6 +194,19 @@ class Babilim {
 		if ( function_exists( 'is_admin' ) && is_admin() ) {
 			$this->admin()->init();
 		}
+	}
+
+	/**
+	 * `init` callback: loads this plugin's own bundled translations from
+	 * the plugin's `languages/` directory.
+	 *
+	 * WordPress looks in `WP_LANG_DIR/plugins/` first, so a language pack
+	 * installed on the site always takes priority over the bundled file.
+	 * There is deliberately no locale check and no `is_admin()` guard:
+	 * the standard loader already does nothing when no file matches.
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain( 'babilim', false, dirname( plugin_basename( BABILIM_FILE ) ) . '/languages' );
 	}
 
 	/**

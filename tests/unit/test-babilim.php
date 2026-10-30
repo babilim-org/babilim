@@ -65,6 +65,31 @@ final class Test_Babilim extends TestCase {
 		return $GLOBALS['babilim_test_filters'][ $tag ] ?? array();
 	}
 
+	public function test_init_registers_the_bundled_textdomain_loader_on_init(): void {
+		Babilim::instance()->init();
+		$callbacks = array_map(
+			static function ( $r ) {
+				return $r['callback'];
+			},
+			$this->registered_actions( 'init' )
+		);
+		$this->assertContains( array( Babilim::instance(), 'load_textdomain' ), $callbacks );
+	}
+
+	public function test_load_textdomain_uses_the_standard_plugin_languages_path(): void {
+		Babilim::instance()->load_textdomain();
+		$this->assertSame(
+			array(
+				array(
+					'domain'     => 'babilim',
+					'deprecated' => false,
+					'path'       => basename( dirname( BABILIM_FILE ) ) . '/languages',
+				),
+			),
+			$GLOBALS['babilim_test_load_plugin_textdomain_calls']
+		);
+	}
+
 	public function test_init_registers_every_default_index_rebuild_trigger(): void {
 		Babilim::instance()->init();
 

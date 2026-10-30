@@ -824,3 +824,41 @@ mechanism inside Playground was not investigated. The neutral runner is
 the reference for the settings flow, and a settings result from
 Playground's default worker count should not be read as a plugin failure
 on its own.
+
+## Bundled translation (`b12-bundled-l10n`, ux-flow `l10n`)
+
+Check `b12-bundled-l10n` (`tests/playground/checks/b12-bundled-l10n.php`,
+three result lines) on WordPress 6.6, PHP 8.1:
+
+1. Switching to `zh_TW` loads the plugin's bundled file: a string with a
+   shipped translation comes back translated.
+2. A site's own `WP_LANG_DIR/plugins/babilim-zh_TW.l10n.php` wins over the
+   bundled file (core loads that location first and returns).
+3. No PHP error involving the plugin is raised and nothing about it is
+   written to `debug.log` while doing either.
+
+The stub language list of `run-checks.sh` now includes `zh_TW`, so
+`switch_to_locale()` accepts it.
+
+Browser scenario `l10n` (`run-neutral-ux-flow.sh <out-dir> 1 l10n`, with and
+without the admin script): a fresh site whose language is `zh_TW`
+(`WPLANG` plus an empty stand-in `zh_TW.mo`, so no core language pack is
+downloaded and only this plugin's strings are translated). It checks that
+the enable button reads the bundled file's own text for "Enable Babilim"
+(passed in `BABILIM_UX_EXPECT_ENABLE`), that the settings heading is the translated one, that the
+list and both settings tabs show no PHP warning, and that at 1280px the
+list buttons share one right edge and no layout problem is reported.
+Result: 26 PASS lines, no FAIL (24 browser checks plus, per invocation, one shell check that the site's `debug.log` holds no PHP warning, notice or deprecation involving the plugin -- the pages hide PHP messages, so the log is where they show), every process stopped by PID. Run on WordPress 6.6.4, 6.8.3 and 7.1.4 (neutral site): 26 PASS / 0 FAIL on each.
+
+Check `b12-bundled-l10n` item 2 (a site language pack wins over the bundled
+file) starts from a fresh `WP_Textdomain_Registry` and a cleared
+`translation_files` cache before the site file is written. WordPress 6.8 and
+later load translations just in time and remember where a domain was already
+found, so without that reset the check failed on those versions although a
+new request behaves correctly. `run-checks.sh 6.6 / 6.8 / latest 3.1.54`: all
+three `b12-bundled-l10n` lines PASS on each version (27 PASS, 1 FAIL each; the
+one FAIL is the known `b11` item above).
+
+Known, not caused by this change: `b11-identity-and-warning` reports
+`site id or key missing after registration` on WordPress 6.6 with the
+current master as well; it is unrelated to the translation files.

@@ -60,6 +60,7 @@ $babilim_pg_checks_main = array(
 	'b7-rtl-plural',
 	'b8-thai',
 	'b9-integrity',
+	'b12-bundled-l10n',
 	// Last: its uninstall.php run also purges the served language files.
 	'b11-identity-and-warning',
 );

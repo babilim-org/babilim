@@ -186,6 +186,9 @@ make test                  # PHPUnit -- no WordPress install required, see CLAUD
 make stan                  # PHPStan over the plugin, then separately over tests/
 make pot                   # regenerates the committed languages/babilim.pot
 make pot-check             # fails if languages/babilim.pot is stale
+make l10n L10N_SRC=<dir>   # rebuilds languages/babilim-<locale>.{po,mo,l10n.php} for each locale in languages/LOCALES
+                           # (after `make pot` only moved line references, l10n-check says STALE (+0/-0) for every
+                           # locale: run `make l10n L10N_SRC=languages` to rebuild from the committed .po files)
 make zip                   # builds build/babilim-<version>.zip
 ```
 

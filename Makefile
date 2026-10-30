@@ -120,6 +120,27 @@ pot-check:
 	fi; \
 	rm -f "$$tmp" "$$tmp.have" "$$tmp.want"; exit $$rc
 
+# Rebuilds the bundled translation files (languages/babilim-<locale>.po,
+# .mo, .l10n.php) from a translation run directory holding
+# babilim-<locale>.po files. L10N_SRC is required. To rebuild from the
+# committed files (the pot only changed line references, so l10n-check says
+# STALE (+0/-0)): make l10n L10N_SRC=languages
+L10N_LOCALES ?= languages/LOCALES
+# Allowed empty entries per locale (under 4% of the pot); read by l10n-check.
+L10N_MAX_UNTRANSLATED ?= 15
+export L10N_MAX_UNTRANSLATED
+
+.PHONY: l10n
+l10n:
+	@test -n "$(L10N_SRC)" || { echo "usage: make l10n L10N_SRC=<translation run directory>" >&2; exit 2; }
+	@bash scripts/l10n.sh "$(L10N_SRC)" "$(L10N_LOCALES)"
+
+# Fails when a bundled translation is missing, stale against the pot,
+# has a placeholder mismatch, or does not match its .mo/.l10n.php.
+.PHONY: l10n-check
+l10n-check:
+	@bash scripts/l10n-check.sh "$(L10N_LOCALES)"
+
 .PHONY: zip
 zip:
 	@php scripts/build-zip.php
@@ -144,7 +165,10 @@ public-history-check:
 # plugin actually ships. Also runs public-check, since both are
 # pre-release gates.
 .PHONY: release-check
-release-check: public-check
+release-check: public-check l10n-check zip
+	@version=$$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' readme.txt | head -n 1); \
+	size=$$(stat -c %s "build/babilim-$$version.zip"); \
+	[ $$size -le 10000000 ] || { echo "FAIL: zip is $$size bytes (> 10 MB)"; exit 1; }
 	@if grep -q 'TODO-OWNER' readme.txt; then \
 		echo "FAIL: readme.txt still has TODO-OWNER placeholders that must be filled in before release:" >&2; \
 		grep -n 'TODO-OWNER' readme.txt >&2; \

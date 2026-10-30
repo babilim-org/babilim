@@ -288,5 +288,14 @@ final class Test_Plugin_Check extends TestCase {
 		foreach ( array( 'babilim/babilim.php', 'babilim/uninstall.php', 'babilim/readme.txt', 'babilim/LICENSE', 'babilim/languages/babilim.pot' ) as $must_ship ) {
 			$this->assertContains( $must_ship, $entries, "{$must_ship} must be in the release zip" );
 		}
+		// The first bundled locale ships as .mo and .l10n.php, never as .po.
+		$locales = (string) file_get_contents( $root . '/languages/LOCALES' );
+		$locales = preg_replace( '/#[^\n]*/', '', $locales );
+		$first   = preg_split( '/\s+/', trim( (string) $locales ) )[0];
+		if ( '' !== $first && is_file( $root . "/languages/babilim-{$first}.po" ) ) {
+			$this->assertContains( "babilim/languages/babilim-{$first}.mo", $entries );
+			$this->assertContains( "babilim/languages/babilim-{$first}.l10n.php", $entries );
+			$this->assertNotContains( "babilim/languages/babilim-{$first}.po", $entries );
+		}
 	}
 }

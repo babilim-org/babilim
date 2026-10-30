@@ -56,7 +56,7 @@ mkdir -p "${WORK}/plugin-src" "${WORK}/mnt-results" "${WORK}/mnt-results-ms" "${
 # get_available_languages() only globs filenames, but the CONTENT still
 # matters (see the loop's own comment below): never a real WordPress core
 # translation, just a real, valid, empty one.
-for locale in ar da_DK de_DE en_GB es_ES fr_FR it_IT ja ko_KR nl_NL pt_PT sv_SE th zz_ZZ; do
+for locale in ar da_DK de_DE en_GB es_ES fr_FR it_IT ja ko_KR nl_NL pt_PT sv_SE th zh_TW zz_ZZ; do
 	# A real, minimal, valid empty MO (Babilim_Mo_Writer's own header-only
 	# output) -- NOT a bare empty file. A 0-byte file parses inconsistently
 	# across WordPress core versions (observed directly: WP 6.5 treats it

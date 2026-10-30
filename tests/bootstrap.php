@@ -1528,6 +1528,15 @@ function load_textdomain( $domain, $mofile, $locale = null ) {
 	return file_exists( $mofile );
 }
 
+function load_plugin_textdomain( $domain, $deprecated = false, $plugin_rel_path = false ) {
+	$GLOBALS['babilim_test_load_plugin_textdomain_calls'][] = array(
+		'domain'     => $domain,
+		'deprecated' => $deprecated,
+		'path'       => $plugin_rel_path,
+	);
+	return false;
+}
+
 function determine_locale() {
 	++$GLOBALS['babilim_test_determine_locale_calls'];
 	return $GLOBALS['babilim_test_current_locale'];
@@ -1564,6 +1573,7 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_action_dispatch_counts'] = $GLOBALS['babilim_test_loaded_action_dispatch_counts'];
 	$GLOBALS['babilim_test_options']                = array();
 	$GLOBALS['babilim_test_load_textdomain_calls']     = array();
+	$GLOBALS['babilim_test_load_plugin_textdomain_calls'] = array();
 	$GLOBALS['babilim_test_determine_locale_calls']    = 0;
 	$GLOBALS['babilim_test_switch_to_locale_calls']    = array();
 	$GLOBALS['babilim_test_current_locale']            = 'en_US';

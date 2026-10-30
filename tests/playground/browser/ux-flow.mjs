@@ -19,6 +19,10 @@
 //                 component whose download fails with a 500
 //                 (needs the mock service reset with {"profile":"bulk"}, a
 //                 download_delay and fail_builds; fixtures bulk-a ... bulk-l)
+//               "l10n": a zh_TW site (needs BABILIM_UX_EXPECT_ENABLE and
+//                 BABILIM_UX_EXPECT_SETTINGS_TITLE, the bundled file's own
+//                 strings, and the mock reset with {"profile":"list"}):
+//                 translated labels, no PHP warning, list buttons aligned
 //               "rowactions": enable first, download one line, then Remove
 //                 from its row: confirm cancelled and accepted with the
 //                 script, the confirmation page without it
@@ -609,6 +613,57 @@ async function lineLayoutScenario( page ) {
 	await page.setViewportSize( { width: 1280, height: 900 } );
 }
 
+// The bundled zh_TW translation on a site whose language is zh_TW (run-neutral-ux-flow.sh sets WPLANG; core strings stay English, only this
+// plugin's are translated). The expected strings come from the bundled file itself via the environment, never from this script.
+async function l10nScenario( page ) {
+	const expectEnable = process.env.BABILIM_UX_EXPECT_ENABLE;
+	const expectTitle = process.env.BABILIM_UX_EXPECT_SETTINGS_TITLE;
+	const phpWarning = /Warning:|Notice:|Deprecated:|Fatal error/;
+	if ( ! expectEnable || ! expectTitle ) {
+		report( false, 'BABILIM_UX_EXPECT_ENABLE and BABILIM_UX_EXPECT_SETTINGS_TITLE are required' );
+		return;
+	}
+
+	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim`, { waitUntil: 'domcontentloaded' } );
+	const enable = page.locator( 'button.button-primary' );
+	report( ( await enable.count() ) === 1 && ( await enable.innerText() ).trim() === expectEnable, `the enable button reads "${ expectEnable }"` );
+	// The bundled file may keep this one string in English; the page then legitimately contains it.
+	if ( expectEnable !== 'Enable Babilim' ) {
+		report( ! ( await bodyText( page ) ).includes( 'Enable Babilim' ), 'the page does not contain the English "Enable Babilim"' );
+	}
+	await submitAndSettle( page, enable );
+	const listed = await openList( page );
+	report( listed, 'the translations list shows after enabling' );
+	if ( ! listed ) {
+		return;
+	}
+	report( ! phpWarning.test( await bodyText( page ) ), 'the list shows no PHP warning' );
+
+	for ( const tab of [ 'general', 'advanced' ] ) {
+		await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=${ tab }`, { waitUntil: 'load' } );
+		report( ! phpWarning.test( await bodyText( page ) ), `the ${ tab } tab shows no PHP warning` );
+		report( ( await page.locator( '.nav-tab-active' ).count() ) >= 1, `the ${ tab } tab has an active tab` );
+		if ( 'general' === tab ) {
+			report( ( await page.locator( '#wpbody-content h1' ).first().innerText() ).trim() === expectTitle, `the settings heading reads "${ expectTitle }" (got "${ await page.locator( "#wpbody-content h1" ).first().innerText() }")` );
+		}
+	}
+	const shots = process.env.BABILIM_UX_SHOTS;
+	await page.setViewportSize( { width: 1280, height: 900 } );
+	if ( shots ) {
+		await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=general`, { waitUntil: 'load' } );
+		await page.screenshot( { path: `${ shots }/settings-1280-zh_TW.png` } );
+	}
+
+	await openList( page );
+	const align = await buttonAlignment( page );
+	report( align.count >= 3 && align.spread <= 2 && align.gap <= 4, `at 1280px the list buttons share one right edge (${ align.count } buttons, spread ${ align.spread.toFixed( 1 ) }, gap ${ align.gap.toFixed( 1 ) })` );
+	const problems = await widthProblems( page );
+	report( problems.length === 0, `at 1280px the translated list has no layout problem${ problems.length ? ': ' + problems.slice( 0, 3 ).join( '; ' ) : '' }` );
+	if ( shots ) {
+		await page.screenshot( { path: `${ shots }/list-1280-zh_TW.png` } );
+	}
+}
+
 async function listScenario( page, state ) {
 	// Enable (a plain post of the welcome form).
 	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim`, { waitUntil: 'domcontentloaded' } );
@@ -1050,6 +1105,8 @@ try {
 		await settingsScenario( page, state );
 	} else if ( 'list' === scenario ) {
 		await listScenario( page, state );
+	} else if ( 'l10n' === scenario ) {
+		await l10nScenario( page );
 	} else if ( 'bulk' === scenario ) {
 		await bulkScenario( page, state );
 	} else if ( 'seam' === scenario ) {

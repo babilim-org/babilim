@@ -256,7 +256,11 @@ Nothing tracked in this repo may reference:
   a WordPress locale's own native-language name, written in that
   language (e.g. Japanese's own name for itself, not its English name
   "Japanese") — real WordPress.org locale-registry data, not leaked
-  internal text. No other file gets this exception.
+  internal text. The plugin's own bundled translation files,
+  `languages/babilim-<locale>.po` and `.l10n.php`, get the same exception
+  (they are translations of the plugin's English strings); the compiled
+  `.mo` files are binary and skipped, with their `.po` still scanned. No
+  other file gets this exception.
 - Internal-only vocabulary about how a translation is graded or reviewed
   — see "How language packs become available" above; nothing about that
   process belongs in this repo at all, in any language.
@@ -440,7 +444,13 @@ task report must cite the specific checklist items you followed, with
 ```
 make contract-check   # tests/contract/v1/ matches PINNED + its own SHA256SUMS
 make public-check     # public-repo discipline guard — must pass before every commit
+make l10n-check       # bundled translations match the pot and their .mo/.l10n.php
 ```
+
+Bundled translations: when `make pot` only moved line references,
+`make l10n-check` reports every locale STALE (+0/-0). Run
+`make l10n L10N_SRC=languages` to rebuild from the committed `.po`
+files; no new translation run is needed.
 
 `make test` (PHPUnit) and `make tools` (fetch/build the local dev
 toolchain into the gitignored `tools/`) land with the first

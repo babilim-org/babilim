@@ -41,9 +41,12 @@
 #     published GPL-2.0 text (sha256 below). Its boilerplate uses an
 #     ordinary English computing term that collides with one of the
 #     banned words. An edited LICENSE is scanned like anything else.
-#   - The one test fixture that carries native locale names as real data
-#     is exempt from the CJK check only (every other check still runs on
-#     it).
+#   - Two kinds of file that carry non-English text as real data are
+#     exempt from the CJK check only (every other check still runs on
+#     them): the one test fixture with native locale names, and the
+#     bundled translation files languages/babilim-<locale>.po and
+#     .l10n.php. Compiled languages/babilim-<locale>.mo files are binary
+#     and not scanned at all; the .po they are built from is.
 #   - In THIS script only, a line whose last characters are `#selfdata`
 #     is excused from the banned word/phrase/path/section-mark checks --
 #     the ban list has to live somewhere as literal data, and this is the
@@ -64,7 +67,7 @@ shopt -s inherit_errexit
 self_script="scripts/public-rules.sh"
 selfdata_marker="#selfdata"
 license_gpl2_sha256="8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
-cjk_exempt_file="tests/contract/v1/examples/meta.locales.ok.json"
+cjk_exempt_pattern='^(tests/contract/v1/examples/meta\.locales\.ok\.json|languages/babilim-[A-Za-z0-9_]+\.(po|l10n\.php))$'
 cjk_class='[\x{3040}-\x{30ff}\x{3400}-\x{4dbf}\x{4e00}-\x{9fff}\x{ac00}-\x{d7a3}\x{3000}-\x{303f}\x{ff00}-\x{ffef}]'
 
 die() {
@@ -634,11 +637,11 @@ scan_paths() {
     fail=1
   fi
 
-  cjk_files="$(grep_text "$files" -v -F -x "$cjk_exempt_file")"
+  cjk_files="$(grep_text "$files" -v -E "$cjk_exempt_pattern")"
   if [ -n "$cjk_files" ]; then
     hits="$(run_grep "$cjk_files" -nP "$cjk_class")"
     if [ -n "$hits" ]; then
-      echo "FAIL: Chinese/Japanese/Korean characters found outside $cjk_exempt_file:" >&2
+      echo "FAIL: Chinese/Japanese/Korean characters found outside the exempt data files:" >&2
       echo "$hits" >&2
       fail=1
     fi
@@ -672,6 +675,11 @@ scan_files() {
   # An empty list is a caller bug; a list holding only the exempt LICENSE
   # is simply clean.
   [ -n "$raw_files" ] || die "nothing to scan (empty file list)"
+  [ -n "$files" ] || return 0
+
+  # Compiled .mo files are binary; their text lives in the .po next to
+  # them, which is still scanned.
+  files="$(grep_text "$files" -v -E '^languages/babilim-[A-Za-z0-9_]+\.mo$')"
   [ -n "$files" ] || return 0
 
   scan_paths "$files"

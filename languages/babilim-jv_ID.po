@@ -1,0 +1,1875 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: babilim-0.1.0-jv_ID-babilim-0.1.0-jv_ID-20261030T025553\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: jv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-30T06:25:31+00:00\n"
+"PO-Revision-Date: 2026-10-30T06:25:31+00:00\n"
+"Language: jv_ID\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Babilim-Build: babilim-0.1.0-jv_ID-babilim-0.1.0-jv_ID-20261030T025553\n"
+"X-Generator: Babilim\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: babilim.php
+#: admin/class-babilim-admin.php:296
+#: admin/class-babilim-admin.php:297
+#: admin/class-babilim-admin.php:2453
+#: admin/class-babilim-admin.php:2507
+msgid "Babilim"
+msgstr "Babilim"
+
+#. Description of the plugin
+#: babilim.php
+msgid "Fills in missing translations for the plugins and themes already installed on your site."
+msgstr "Nglengkapi terjemahan sing durung ana kanggo plugin lan tema sing wis dipasang ing situsmu."
+
+#: admin/class-babilim-admin.php:320
+#: admin/class-babilim-admin.php:321
+#: admin/class-babilim-translations-table.php:400
+msgid "Translations"
+msgstr "Terjemahan"
+
+#: admin/class-babilim-admin.php:328
+msgid "Babilim Settings"
+msgstr "Pangaturan Babilim"
+
+#: admin/class-babilim-admin.php:329
+#: admin/class-babilim-admin.php:2510
+#: admin/class-babilim-admin.php:2734
+msgid "Settings"
+msgstr "Pangaturan"
+
+#: admin/class-babilim-admin.php:356
+#: admin/class-babilim-admin.php:763
+msgid "You are not allowed to do this."
+msgstr "Sampeyan ora diidini nindakake iki."
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:385
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "Pilih komponen sing luwih sithik: paling akeh %1$d operasi saben proses (sampeyan milih %2$d)."
+
+#: admin/class-babilim-admin.php:398
+#: admin/class-babilim-admin.php:1116
+#: admin/class-babilim-admin.php:1287
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "Komponen kasebut ora dipasang ing situs iki, mula terjemahane ora bisa dijaluk."
+
+#: admin/class-babilim-admin.php:917
+msgid "Already installed."
+msgstr "Wis dipasang."
+
+#: admin/class-babilim-admin.php:917
+msgid "Downloaded and installed."
+msgstr "Wis diundhuh lan dipasang."
+
+#: admin/class-babilim-admin.php:940
+#: admin/class-babilim-admin.php:1281
+#: admin/class-babilim-admin.php:1357
+#: admin/class-babilim-admin.php:1922
+#: admin/class-babilim-admin.php:2070
+#: includes/class-babilim-api-client.php:519
+#: includes/class-babilim-site.php:311
+#: includes/class-babilim-site.php:362
+#: includes/class-babilim-site.php:705
+#: includes/class-babilim-site.php:838
+msgid "Babilim has not been enabled for this site yet."
+msgstr "Babilim durung diaktifake kanggo situs iki."
+
+#: admin/class-babilim-admin.php:959
+msgid "No build is available to download for this locale."
+msgstr "Ora ana build sing bisa diundhuh kanggo lokal iki."
+
+#: admin/class-babilim-admin.php:1014
+msgid "Rolled back to the previous build."
+msgstr "Dibalekake menyang build sakdurunge."
+
+#: admin/class-babilim-admin.php:1073
+msgid "Rolled back and reported."
+msgstr "Dibalekake lan dilaporake."
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1079
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "Dibalekake, nanging laporane ora bisa dikirim: %s"
+
+#: admin/class-babilim-admin.php:1103
+msgid "Removed."
+msgstr "Wis dibusak."
+
+#: admin/class-babilim-admin.php:1139
+msgid "Translation requested."
+msgstr "Terjemahan wis dijaluk."
+
+#: admin/class-babilim-admin.php:1161
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "Komponen iki wis diunggah. Babilim lagi mriksa saiki."
+
+#: admin/class-babilim-admin.php:1201
+msgid "Upload cancelled."
+msgstr "Unggahan dibatalake."
+
+#: admin/class-babilim-admin.php:1212
+msgid "Upload complete — translation requested."
+msgstr "Unggahan rampung — terjemahan wis dijaluk."
+
+#: admin/class-babilim-admin.php:1290
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "Komponen iki ora nyebutake nomer versi, mula terjemahane ora bisa dijaluk."
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1297
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "Nomer versi komponen iki luwih saka %d karakter, sing ora bisa ditangani Babilim, mula terjemahane ora bisa dijaluk."
+
+#: admin/class-babilim-admin.php:1303
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "Terjemahan kanggo lokal kasebut ora bisa dijaluk ing situs iki saiki."
+
+#: admin/class-babilim-admin.php:1329
+msgid "Thank you. Your report was sent."
+msgstr "Matur nuwun. Laporanmu wis dikirim."
+
+#: admin/class-babilim-admin.php:1362
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "Laporan iki ora nyebutake Jeneng plugin utawa tema lan lokal sing sah."
+
+#: admin/class-babilim-admin.php:1366
+msgid "Please choose a category for this report."
+msgstr "Mangga pilih kategori kanggo laporan iki."
+
+#: admin/class-babilim-admin.php:1370
+msgid "This report is missing a valid build to report against."
+msgstr "Laporan iki ora duwe build sing sah kanggo dilaporake."
+
+#: admin/class-babilim-admin.php:1373
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "Build iki dudu build sing saiki dikenal situs iki kanggo komponen/lokal iki."
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1425
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "Kolom \"%1$s\" dawa banget: isine %2$d karakter lan watese %3$d. Ora ana sing dikirim; mangga cekakake lan coba maneh."
+
+#: admin/class-babilim-admin.php:1450
+msgid "Original string"
+msgstr "String asli"
+
+#: admin/class-babilim-admin.php:1454
+msgid "String context"
+msgstr "Konteks string"
+
+#: admin/class-babilim-admin.php:1458
+#: admin/class-babilim-admin.php:3945
+msgid "Current translation"
+msgstr "Terjemahan saiki"
+
+#: admin/class-babilim-admin.php:1462
+#: admin/class-babilim-admin.php:3947
+msgid "Suggested translation"
+msgstr "Terjemahan sing disaranake"
+
+#: admin/class-babilim-admin.php:1466
+#: admin/class-babilim-admin.php:3949
+msgid "Note (optional)"
+msgstr "Cathetan (opsional)"
+
+#: admin/class-babilim-admin.php:1470
+#: admin/class-babilim-admin.php:3951
+msgid "Where you saw this (optional)"
+msgstr "Ing ngendi sampeyan ndeleng iki (opsional)"
+
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1517
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "Sinkronisasi Babilim ditundha sauntara dening layanan (diwatesi lajune); bakal dicoba maneh sawise %s."
+
+#. translators: %d: the most characters a locale code may have.
+#: admin/class-babilim-admin.php:1552
+#, php-format
+msgid "The locale you added is not valid: use a WordPress locale code such as ll_CC (letters, digits, underscore, hyphen or @, at most %d characters). Nothing was saved."
+msgstr "Lokal sing sampeyan tambahake ora sah: gunakake kode lokal WordPress kayata ll_CC (aksara, angka, garis ngisor, tanda hubung utawa @, paling akeh %d karakter). Ora ana sing disimpen."
+
+#: admin/class-babilim-admin.php:1587
+msgid "Settings saved."
+msgstr "Pangaturan wis disimpen."
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1649
+#, php-format
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "Yen iki diaktifake, nyopot instalasi uga bakal mbusak identitas situs iki. Lisensi mbayar sing ana ing situs iki ora bisa dibalekake kanthi otomatis sawise iku; sampeyan kudu ngubungi Dhukungan Babilim ing %s kanggo njaluk maneh."
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1665
+#, php-format
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Babilim disetel kanggo mbusak identitas situs iki nalika plugin dibusak. Lisensi mbayar sing ana ing situs iki banjur ora bisa dibalekake kanthi otomatis; sampeyan kudu ngubungi Dhukungan Babilim ing %s. Kanggo njaga identitas, pencet Batal, copot centhang \"Busak kabeh data Babilim nalika dicopot\" ing pangaturan Babilim, banjur nonaktifake maneh. Tetep nonaktifake?"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1709
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Jaringan iki duwe situs sing kakehan kanggo dipriksa siji-siji, lan sawetara bisa wae disetel kanggo mbusak identitas Babilim nalika plugin dibusak. Lisensi mbayar sing ana ing situs kuwi banjur ora bisa dipulihake kanthi otomatis; sampeyan kudu ngubungi Dhukungan Babilim ing %s. Kanggo njaga identitas kasebut, pencet Batal, copot centhang \"Busak kabeh data Babilim nalika dicopot\" ing pangaturan Babilim saben situs, lan nonaktifake maneh. Tetep nonaktifake?"
+
+#: admin/class-babilim-admin.php:1798
+msgid "Open Babilim settings"
+msgstr "Bukak pangaturan Babilim"
+
+#: admin/class-babilim-admin.php:1803
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim ora bisa verifikasi situs iki, mula ora ana sing diundhuh utawa dipasang."
+
+#: admin/class-babilim-admin.php:1815
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "Layanan ora bisa nyambung menyang situs sampeyan. Firewall, plugin keamanan utawa aturan host kayane ngeblokir panyuwunan; mangga ijinake panyuwunan menyang /wp-json/babilim/v1/challenge."
+
+#: admin/class-babilim-admin.php:1817
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "Situs sampeyan suwe banget anggone mangsuli. Coba maneh mengko, lan priksa manawa host sampeyan ora alon banget utawa kebebanan."
+
+#: admin/class-babilim-admin.php:1819
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "Situs sampeyan mangsuli, nanging ora kaya sing dikarepake. REST API bisa wae ditulis ulang dening plugin liyane, utawa endpoint kuwi di-cache; mangga kecualiake /wp-json/babilim/v1/challenge saka caching lan penulisan ulang."
+
+#: admin/class-babilim-admin.php:1821
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "Priksa manawa situs sampeyan bisa diakses saka internet, banjur coba maneh."
+
+#: admin/class-babilim-admin.php:1844
+msgid "Re-verify"
+msgstr "Verifikasi maneh"
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:1865
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "Situs iki ngluwihi ukuran sing ditampa layanan ing sakali sinkronisasi, mula sawetara item ora kalebu: %1$d komponen lan %2$d lokal."
+
+#: admin/class-babilim-admin.php:1894
+msgid "This site is verified."
+msgstr "Situs iki wis diverifikasi."
+
+#: admin/class-babilim-admin.php:1907
+msgid "Registration restarted."
+msgstr "Registrasi diwiwiti maneh."
+
+#: admin/class-babilim-admin.php:1928
+#: admin/class-babilim-admin.php:1994
+msgid "Sync complete."
+msgstr "Sinkronisasi rampung."
+
+#: admin/class-babilim-admin.php:1955
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim lagi ngaktifake lan mriksa situs iki… Muat ulang kaca iki utawa enteni pamriksan terjadwal rampung."
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:1960
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim ora bisa rampung ngaktifake (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:1965
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "Host sing mung nglayani siji panyuwunan PHP ing sawijining wektu ora bisa ngrampungake langkah iki."
+
+#: admin/class-babilim-admin.php:2062
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim dinonaktifake. Ora ana maneh sing dikirim; terjemahan sing wis dipasang tetep bisa digunakake."
+
+#: admin/class-babilim-admin.php:2084
+msgid "Supplementary translation index rebuilt."
+msgstr "Indeks terjemahan tambahan wis dibangun maneh."
+
+#: admin/class-babilim-admin.php:2136
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "Instalasi otomatis saiki mati; aktifake maneh ing pangaturan yen sampeyan gelem."
+
+#: admin/class-babilim-admin.php:2455
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim nemokake plugin lan tema ing situs iki sing durung duwe terjemahan kanggo basa sampeyan lan masang siji kanggo saben-saben."
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:2463
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "Basa sing ditemokake ing situs iki: %s."
+
+#: admin/class-babilim-admin.php:2468
+msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
+msgstr "Terjemahan sing kasedhiya bisa dipasang kanthi siji klik, lan sing durung ana bisa dijaluk. Sawise iku, terjemahan anyar lan nganyari dipasang kanthi otomatis (ing paket gratis, mung kanggo plugin lan tema sing wis nggunakake slot gratis)."
+
+#: admin/class-babilim-admin.php:2469
+msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
+msgstr "Paket gratis nyakup plugin lan tema kanthi jumlah winates; kuota sampeyan sing pas ditampilake ing Pangaturan sawise sampeyan ngaktifake Babilim."
+
+#: admin/class-babilim-admin.php:2470
+msgid "What is sent when you enable Babilim"
+msgstr "Apa sing dikirim nalika sampeyan ngaktifake Babilim"
+
+#: admin/class-babilim-admin.php:2474
+msgid "Enabling…"
+msgstr "Ngaktifake…"
+
+#: admin/class-babilim-admin.php:2474
+msgid "Enable Babilim"
+msgstr "Aktifake Babilim"
+
+#: admin/class-babilim-admin.php:2475
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "Kanthi ngeklik Aktifake, sampeyan setuju ngirim informasi sing kadhaptar ing ndhuwur menyang Babilim."
+
+#: admin/class-babilim-admin.php:2509
+#: admin/class-babilim-admin.php:2551
+#: admin/class-babilim-admin.php:3831
+msgid "Check again now"
+msgstr "Priksa maneh saiki"
+
+#. translators: %s: when the last attempt happened.
+#: admin/class-babilim-admin.php:2544
+#, php-format
+msgid "Babilim is enabling and checking this site… (last attempt: %s)"
+msgstr "Babilim lagi ngaktifake lan mriksa situs iki… (upaya pungkasan: %s)"
+
+#: admin/class-babilim-admin.php:2548
+msgid "Check again"
+msgstr "Priksa maneh"
+
+#: admin/class-babilim-admin.php:2561
+msgid "No components synced yet."
+msgstr "Durung ana komponen sing disinkronake."
+
+#. translators: %s: the bulk action (download, update or request).
+#: admin/class-babilim-admin.php:2597
+#, php-format
+msgid "Bulk %s:"
+msgstr "Massal %s:"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:2600
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s ora ana sing perlu ditindakake."
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:2603
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:2638
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#: admin/class-babilim-admin.php:2673
+msgid "Continuing…"
+msgstr "Nerusake…"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:2676
+#, php-format
+msgid "Continue next batch (%d left)"
+msgstr "Lanjutake batch sabanjuré (isih %d)"
+
+#: admin/class-babilim-admin.php:2726
+msgid "Search components"
+msgstr "Golèk komponèn"
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:2733
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "Iki basa-basa sing digunakake situs iki. Panjenengan bisa ngowahi ing %s."
+
+#: admin/class-babilim-admin.php:2752
+msgid "Upload this component?"
+msgstr "Unggah komponèn iki?"
+
+#: admin/class-babilim-admin.php:2754
+#: includes/class-babilim-upload.php:91
+msgid "There is no upload waiting for confirmation."
+msgstr "Ora ana unggahan sing nunggu konfirmasi."
+
+#: admin/class-babilim-admin.php:2754
+#: admin/class-babilim-admin.php:2781
+msgid "Back"
+msgstr "Bali"
+
+#: admin/class-babilim-admin.php:2758
+msgid "To translate this component, Babilim needs its source."
+msgstr "Kanggo nerjemahake komponèn iki, Babilim butuh sumberé."
+
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:2760
+#, php-format
+msgid "The entire plugin or theme directory of %1$s (version %2$s) will be uploaded to Babilim."
+msgstr "Kabèh direktori plugin utawa tema %1$s (versi %2$s) bakal diunggah menyang Babilim."
+
+#: admin/class-babilim-admin.php:2761
+msgid "If that directory contains keys, logs or customer data, they will be uploaded too. The service removes common sensitive files (configuration, environment, database dumps, logs, keys) but cannot guarantee it finds everything."
+msgstr "Yèn direktori kuwi ngandhut kunci, log, utawa data pelanggan, kuwi uga bakal diunggah. Layanan iki mbusak berkas sensitif umum (konfigurasi, lingkungan, dump database, log, kunci), nanging ora bisa njamin nemokaké kabèh."
+
+#: admin/class-babilim-admin.php:2762
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "Unggahan disimpen nganti Panjenengan njaluk Babilim mbusaké."
+
+#: admin/class-babilim-admin.php:2763
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "Iki disimpen déning panyedhia hosting layanan lan diproses model AI kanggo ngasilaké terjemahan."
+
+#: admin/class-babilim-admin.php:2764
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "Teks asli lan terjemahan sing digawé saka kuwi bakal diwènèhaké menyang situs liya sing masang versi sing padha."
+
+#: admin/class-babilim-admin.php:2765
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "Kanthi nerusaké, Panjenengan mastèkaké nèk Panjenengan nduwé hak kanggo ngunggah komponèn iki."
+
+#: admin/class-babilim-admin.php:2766
+msgid "Upload and request"
+msgstr "Unggah lan njaluk"
+
+#: admin/class-babilim-admin.php:2766
+msgid "Uploading…"
+msgstr "Lagi ngunggah…"
+
+#: admin/class-babilim-admin.php:2767
+#: admin/class-babilim-admin.php:2786
+#: admin/class-babilim-admin.php:2823
+#: admin/class-babilim-admin.php:2880
+msgid "Cancel"
+msgstr "Batal"
+
+#: admin/class-babilim-admin.php:2779
+msgid "Uploading"
+msgstr "Lagi ngunggah"
+
+#: admin/class-babilim-admin.php:2781
+#: includes/class-babilim-upload.php:133
+msgid "There is no upload in progress."
+msgstr "Ora ana unggahan sing lagi mlaku."
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:2784
+#, php-format
+msgid "Uploading part %1$d of %2$d…"
+msgstr "Lagi ngunggah bagéan %1$d saka %2$d…"
+
+#: admin/class-babilim-admin.php:2785
+msgid "Continue"
+msgstr "Terusaké"
+
+#: admin/class-babilim-admin.php:2825
+msgid "Confirm"
+msgstr "Konfirmasi"
+
+#: admin/class-babilim-admin.php:2828
+#: admin/class-babilim-admin.php:2892
+#: admin/class-babilim-translations-table.php:691
+msgid "Remove"
+msgstr "Busak"
+
+#: admin/class-babilim-admin.php:2832
+#: admin/class-babilim-admin.php:2891
+#: admin/class-babilim-translations-table.php:690
+msgid "Roll back"
+msgstr "Kembalikan"
+
+#: admin/class-babilim-admin.php:2835
+msgid "Nothing to confirm."
+msgstr "Ora ana sing dikonfirmasi."
+
+#: admin/class-babilim-admin.php:2881
+msgid "Choose a language"
+msgstr "Pilih basa"
+
+#: admin/class-babilim-admin.php:2893
+#: admin/class-babilim-translations-table.php:692
+msgid "Roll back and report"
+msgstr "Kembalikan lan laporaké"
+
+#: admin/class-babilim-admin.php:2894
+#: admin/class-babilim-admin.php:3906
+#: admin/class-babilim-translations-table.php:693
+msgid "Report a problem"
+msgstr "Laporaké masalah"
+
+#: admin/class-babilim-admin.php:2898
+msgid "Nothing to choose."
+msgstr "Ora ana sing bisa dipilih."
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:2904
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s. Pilih basané."
+
+#: admin/class-babilim-admin.php:3050
+msgid "Supplementary translations"
+msgstr "Terjemahan tambahan"
+
+#: admin/class-babilim-admin.php:3051
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "Kontribusi saben komponèn kanggo suplemen domain default bareng saben locale."
+
+#: admin/class-babilim-admin.php:3053
+#: admin/class-babilim-translations-table.php:399
+msgid "Component"
+msgstr "Komponèn"
+
+#: admin/class-babilim-admin.php:3054
+#: admin/class-babilim-admin.php:3737
+msgid "Language"
+msgstr "Basa"
+
+#: admin/class-babilim-admin.php:3055
+msgid "Included in index"
+msgstr "Kalebu ing indeks"
+
+#: admin/class-babilim-admin.php:3056
+msgid "Entries"
+msgstr "Entri"
+
+#: admin/class-babilim-admin.php:3057
+#: admin/class-babilim-admin.php:3741
+msgid "Conflicting keys"
+msgstr "Kunci sing bentrok"
+
+#: admin/class-babilim-admin.php:3060
+msgid "Yes"
+msgstr "Ya"
+
+#: admin/class-babilim-admin.php:3077
+msgid "No — component inactive"
+msgstr "Ora — komponen ora aktif"
+
+#: admin/class-babilim-admin.php:3079
+msgid "No — installed version differs from the active one"
+msgstr "Ora — versi sing diinstal beda karo sing aktif"
+
+#: admin/class-babilim-admin.php:3081
+msgid "No — component removed"
+msgstr "Ora — komponen wis dicopot"
+
+#: admin/class-babilim-admin.php:3083
+msgid "No"
+msgstr "Ora"
+
+#: admin/class-babilim-admin.php:3105
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "Namung administrator jaringan sing bisa nindakake iki, amarga iki ngowahi berkas terjemahan sing dienggo bareng kabeh situs ing jaringan iki."
+
+#: admin/class-babilim-admin.php:3121
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim ora bisa ngrampungake verifikasi situs iki (layanan ora bisa nyambung bali menyang situs). Registrasi dijeda."
+
+#: admin/class-babilim-admin.php:3122
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "Situs iki wis nduweni registrasi aktif sing ora bisa dipulihake kanthi otomatis maneh."
+
+#: admin/class-babilim-admin.php:3129
+msgid "Restart registration"
+msgstr "Miwiti maneh registrasi"
+
+#: admin/class-babilim-admin.php:3156
+msgid "Babilim settings"
+msgstr "Pangaturan Babilim"
+
+#: admin/class-babilim-admin.php:3163
+msgid "General"
+msgstr "Umum"
+
+#: admin/class-babilim-admin.php:3164
+msgid "Advanced"
+msgstr "Lanjutan"
+
+#: admin/class-babilim-admin.php:3189
+msgid "Languages"
+msgstr "Basa-basa"
+
+#: admin/class-babilim-admin.php:3191
+msgid "Automatic installs"
+msgstr "Instalasi otomatis"
+
+#: admin/class-babilim-admin.php:3193
+msgid "Install available translations automatically"
+msgstr "Instal terjemahan sing kasedhiya kanthi otomatis"
+
+#: admin/class-babilim-admin.php:3194
+msgid "On the free plan, only components that already use one of your free slots are installed automatically, so no new slot is taken."
+msgstr "Ing paket gratis, namung komponen sing wis nggunakake salah siji slot gratis sampeyan sing diinstal kanthi otomatis, dadi ora ana slot anyar sing dienggo."
+
+#: admin/class-babilim-admin.php:3195
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "Situs iki dadi bagéan saka jaringan multisitus, sing ora nginstal terjemahan anyar kanthi otomatis. Terjemahan sing wis diinstal isih dianyari."
+
+#: admin/class-babilim-admin.php:3198
+msgid "Custom overrides"
+msgstr "Penggantian khusus"
+
+#: admin/class-babilim-admin.php:3200
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "Simpen penggantian terjemahan dhewe nalika mbusak kabeh utawa nyopot plugin iki."
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "Berkas terjemahan sing sampeyan selehake ing %s tansah luwih utama tinimbang sing saka Babilim. Berkas kasebut disimpen kajaba sampeyan mbusak centhange."
+
+#: admin/class-babilim-admin.php:3207
+msgid "Uninstall"
+msgstr "Nyopot"
+
+#: admin/class-babilim-admin.php:3209
+msgid "Delete all Babilim data on uninstall"
+msgstr "Busak kabeh data Babilim nalika dicopot"
+
+#: admin/class-babilim-admin.php:3210
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "Mati kanthi baku: mbusak plugin tetep nyimpen identitas situs iki, supaya instal ulang bisa nggunakake maneh."
+
+#: admin/class-babilim-admin.php:3213
+msgid "Account"
+msgstr "Akun"
+
+#: admin/class-babilim-admin.php:3216
+msgid "Save changes"
+msgstr "Simpen owahan"
+
+#: admin/class-babilim-admin.php:3219
+#: admin/class-babilim-admin.php:3224
+msgid "Disable Babilim"
+msgstr "Pateni Babilim"
+
+#: admin/class-babilim-admin.php:3220
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "Terjemahan sing wis diinstal tetep disimpen, nanging ora ana pamriksan utawa unduhan maneh sing bakal dijalanake."
+
+#: admin/class-babilim-admin.php:3224
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Pateni Babilim? Terjemahan sing wis diinstal tetep disimpen, nanging ora ana pamriksan utawa unduhan maneh sing bakal dijalanake."
+
+#: admin/class-babilim-admin.php:3280
+#: admin/class-babilim-admin.php:3514
+#: admin/class-babilim-admin.php:3554
+#: includes/class-babilim-site.php:848
+#: includes/class-babilim-sync-installer.php:320
+msgid "This site is not registered with Babilim yet."
+msgstr "Situs iki durung didaftarake ing Babilim."
+
+#: admin/class-babilim-admin.php:3288
+msgid "This site is already licensed. Reload the page."
+msgstr "Situs iki wis nduweni lisensi. Muat ulang kaca."
+
+#: admin/class-babilim-admin.php:3290
+#: admin/class-babilim-admin.php:3301
+msgid "Checkout is not available for this site right now."
+msgstr "Checkout ora kasedhiya kanggo situs iki saiki."
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3293
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "Ora bisa miwiti checkout: %s"
+
+#: admin/class-babilim-admin.php:3376
+msgid "Babilim is not enabled."
+msgstr "Babilim ora diaktifake."
+
+#: admin/class-babilim-admin.php:3379
+msgid "Not registered yet"
+msgstr "Durung didaftarake"
+
+#: admin/class-babilim-admin.php:3381
+msgid "Not verified"
+msgstr "Durung diverifikasi"
+
+#: admin/class-babilim-admin.php:3383
+msgid "Verified"
+msgstr "Wis diverifikasi"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Status"
+msgstr "Status"
+
+#: admin/class-babilim-admin.php:3396
+msgid "Licensed"
+msgstr "Duwe lisensi"
+
+#: admin/class-babilim-admin.php:3398
+msgid "Partner"
+msgstr "Mitra"
+
+#: admin/class-babilim-admin.php:3400
+msgid "Free"
+msgstr "Gratis"
+
+#: admin/class-babilim-admin.php:3404
+msgid "License"
+msgstr "Lisensi"
+
+#: admin/class-babilim-admin.php:3407
+#: admin/class-babilim-translations-table.php:865
+msgid "Upgrade this site"
+msgstr "Tingkatake situs iki"
+
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:3411
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "Pembelian sepisan kanggo situs iki: %1$s %2$s. Kalebu kabeh nganyari terjemahan ing tembe. Pembayaran ditangani dening Paddle ing tab anyar."
+
+#: admin/class-babilim-admin.php:3468
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "Iki bakal nerbitake kode pemulihan anyar lan kode sing sadurunge ora bisa digunakake maneh. Terusake?"
+
+#: admin/class-babilim-admin.php:3468
+msgid "Show a new restore code"
+msgstr "Tampilake kode pemulihan anyar"
+
+#: admin/class-babilim-admin.php:3470
+msgid "rc_…"
+msgstr "rc_…"
+
+#: admin/class-babilim-admin.php:3470
+msgid "Restore code"
+msgstr "Kode pemulihan"
+
+#: admin/class-babilim-admin.php:3471
+msgid "Restore purchase"
+msgstr "Pulihake pembelian"
+
+#: admin/class-babilim-admin.php:3472
+msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
+msgstr "Wis tau tuku lisensi kanggo domain iki? Lebokna kode pemulihan sing sampeyan tampa nalika checkout."
+
+#: admin/class-babilim-admin.php:3508
+msgid "That does not look like a restore code."
+msgstr "Iki ora katon kaya kode pemulihan."
+
+#: admin/class-babilim-admin.php:3522
+msgid "This restore code was not recognised for this site."
+msgstr "Kode pemulihan iki ora dikenali kanggo situs iki."
+
+#: admin/class-babilim-admin.php:3524
+msgid "Too many attempts. Try again tomorrow."
+msgstr "Kakehan upaya. Cobanen maneh sesuk."
+
+#: admin/class-babilim-admin.php:3526
+msgid "This site must be verified first."
+msgstr "Situs iki kudu diverifikasi dhisik."
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3529
+#, php-format
+msgid "Could not restore the purchase: %s"
+msgstr "Ora bisa mulihake pembelian: %s"
+
+#: admin/class-babilim-admin.php:3539
+msgid "Purchase restored. This site is now licensed."
+msgstr "Pembelian wis dipulihake. Situs iki saiki wis duwe lisensi."
+
+#: admin/class-babilim-admin.php:3562
+msgid "This site has no purchase to show a code for."
+msgstr "Situs iki ora duwe pembelian sing bisa dituduhake kodene."
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3565
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "Ora bisa nampilake kode pemulihan anyar: %s"
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:3576
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "Kode pemulihan anyar sampeyan: %s. Simpenen ing panggonan sing aman — kode sadurunge ora bisa digunakake maneh."
+
+#: admin/class-babilim-admin.php:3591
+msgid "What is sent when Babilim checks this site"
+msgstr "Apa sing dikirim nalika Babilim mriksa situs iki"
+
+#: admin/class-babilim-admin.php:3620
+msgid "(detected)"
+msgstr "(kadeteksi)"
+
+#: admin/class-babilim-admin.php:3623
+msgid "No language is managed yet."
+msgstr "Durung ana basa sing dikelola."
+
+#: admin/class-babilim-admin.php:3625
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim nambahake terjemahan kanggo saben basa sing dicentang ing kene."
+
+#: admin/class-babilim-admin.php:3630
+msgid "Add another language"
+msgstr "Tambah basa liyane"
+
+#: admin/class-babilim-admin.php:3631
+msgid "Choose a language…"
+msgstr "Pilih basa…"
+
+#: admin/class-babilim-admin.php:3637
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "Ora bisa ngemot dhaptar lengkap locale WordPress.org saka layanan, mula ora ana basa liyane sing bisa ditambahake saiki."
+
+#: admin/class-babilim-admin.php:3689
+msgid "Theme"
+msgstr "Tema"
+
+#: admin/class-babilim-admin.php:3689
+msgid "Plugin"
+msgstr "Plugin"
+
+#: admin/class-babilim-admin.php:3696
+msgid "Free quota"
+msgstr "Kuota gratis"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "daily".
+#: admin/class-babilim-admin.php:3703
+#, php-format
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "Undhuhan: %1$d/%2$d (%3$s)"
+
+#: admin/class-babilim-admin.php:3735
+msgid "Supplementary translation index"
+msgstr "Indeks terjemahan tambahan"
+
+#: admin/class-babilim-admin.php:3738
+msgid "Built"
+msgstr "Wis dibangun"
+
+#: admin/class-babilim-admin.php:3739
+msgid "Included"
+msgstr "Kalebu"
+
+#: admin/class-babilim-admin.php:3740
+msgid "Excluded"
+msgstr "Dikecualekake"
+
+#: admin/class-babilim-admin.php:3742
+msgid "Already in WordPress core"
+msgstr "Wis ana ing inti WordPress"
+
+#: admin/class-babilim-admin.php:3761
+msgid "Supplementary translation maintenance"
+msgstr "Pangopènan terjemahan tambahan"
+
+#: admin/class-babilim-admin.php:3764
+msgid "Maintenance status is not available right now."
+msgstr "Status pangopènan ora kasedhiya saiki."
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:3772
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "Pembersihan dijeda ing %1$s: %2$s. Ora ana sing dibusak."
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:3782
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "Pembersihan pungkasan ing %1$s: %2$d anyar ditandhani, %3$d berkas dibusak, %4$d cathetan dicopot."
+
+#: admin/class-babilim-admin.php:3789
+msgid "No cleanup has run yet."
+msgstr "Durung ana pembersihan sing mlaku."
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:3800
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "Panulisan indeks terjemahan bentrok karo panyuwunan liyane ing %1$s (%2$s) lan ora ditrapake; versi paling anyar disimpen."
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:3813
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "Panulisan indeks terjemahan ing %1$s (%2$s) ora bisa rampung lan ora ditrapake (%3$s)."
+
+#: admin/class-babilim-admin.php:3829
+msgid "Maintenance"
+msgstr "Pangopènan"
+
+#: admin/class-babilim-admin.php:3840
+msgid "Rebuild index now"
+msgstr "Bangun maneh indeks saiki"
+
+#: admin/class-babilim-admin.php:3846
+msgid "Sweep now"
+msgstr "Resiki saiki"
+
+#: admin/class-babilim-admin.php:3862
+msgid "Danger zone"
+msgstr "Zona bebaya"
+
+#: admin/class-babilim-admin.php:3870
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "Mbusak saben berkas basa sing wis diinstal Babilim kanggo saben plugin lan tema ing situs iki."
+
+#: admin/class-babilim-admin.php:3871
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Busak kabeh sing wis diinstal Babilim? Iki bakal mbusak saben berkas basa sing wis diinstal Babilim kanggo saben plugin lan tema ing situs iki."
+
+#: admin/class-babilim-admin.php:3871
+msgid "Remove everything Babilim installed"
+msgstr "Busak kabeh sing wis diinstal Babilim"
+
+#: admin/class-babilim-admin.php:3910
+msgid "This string is too long to be sent as a report, so no report form is offered for it."
+msgstr "String iki dawa banget kanggo dikirim minangka laporan, mula formulir laporan ora disedhiyakake."
+
+#: admin/class-babilim-admin.php:3937
+msgid "Category"
+msgstr "Kategori"
+
+#: admin/class-babilim-admin.php:3939
+msgid "Choose a category…"
+msgstr "Pilih kategori…"
+
+#: admin/class-babilim-admin.php:3954
+msgid "Roll back and send report"
+msgstr "Kembalikan lan kirim laporan"
+
+#: admin/class-babilim-admin.php:3954
+msgid "Send report"
+msgstr "Kirim laporan"
+
+#: admin/class-babilim-cell.php:61
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "Sawetara teks komponen iki ditulis permanen dening pangripta lan ora bisa diterjemahake nganggo paket basa."
+
+#: admin/class-babilim-cell.php:101
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-cell.php:104
+msgid "Bundled with the theme"
+msgstr "Kasedhiya bareng tema"
+
+#: admin/class-babilim-cell.php:105
+msgid "Bundled with the plugin"
+msgstr "Kasedhiya bareng plugin"
+
+#: admin/class-babilim-cell.php:112
+msgid "Upload was not accepted"
+msgstr "Unggahan ora ditampa"
+
+#: admin/class-babilim-cell.php:115
+msgid "Upload expired before it finished"
+msgstr "Unggahan kadaluwarsa sadurunge rampung"
+
+#: admin/class-babilim-cell.php:117
+msgid "No translation"
+msgstr "Ora ana terjemahan"
+
+#: admin/class-babilim-cell.php:123
+#: admin/class-babilim-cell.php:125
+#: admin/class-babilim-cell.php:254
+#: admin/class-babilim-cell.php:256
+msgid "Upload in progress — continue or cancel"
+msgstr "Unggahan lagi mlaku — terusake utawa batalake"
+
+#: admin/class-babilim-cell.php:127
+msgid "Scheduled, waiting to be processed"
+msgstr "Wis dijadwalake, ngenteni diproses"
+
+#: admin/class-babilim-cell.php:129
+msgid "Translating…"
+msgstr "Lagi nerjemahake…"
+
+#: admin/class-babilim-cell.php:131
+msgid "Translation failed"
+msgstr "Terjemahan gagal"
+
+#: admin/class-babilim-cell.php:133
+msgid "Free quota used"
+msgstr "Kuota gratis wis dienggo"
+
+#: admin/class-babilim-cell.php:135
+msgid "Needs a paid license"
+msgstr "Butuh lisensi mbayar"
+
+#: admin/class-babilim-cell.php:137
+msgid "Not supported"
+msgstr "Ora didukung"
+
+#: admin/class-babilim-cell.php:139
+msgid "Status unknown"
+msgstr "Status ora dingerteni"
+
+#: admin/class-babilim-cell.php:159
+#: admin/class-babilim-cell.php:186
+#: admin/class-babilim-cell.php:304
+msgctxt "translation status"
+msgid "Installed"
+msgstr "Wis diinstal"
+
+#: admin/class-babilim-cell.php:172
+#: admin/class-babilim-cell.php:174
+msgid "Update available"
+msgstr "Ana versi anyar sing kasedhiya"
+
+#: admin/class-babilim-cell.php:199
+msgid "Removed after a failed integrity check"
+msgstr "Dibusak sawise pemeriksaan integritas gagal"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:259
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "Wis diinstal · digawe kanggo %s, versi anyar wis dijadwalake"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:259
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "Wis diinstal · digawe kanggo versi beda, versi anyar wis dijadwalake"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:263
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "Wis diinstal · digawe kanggo %s, lagi nerjemahake versi anyar…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:263
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "Wis diinstal · digawe kanggo versi beda, lagi nerjemahake versi anyar…"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:268
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "Wis diinstal · digawe kanggo %1$s, situs iki nganggo %2$s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:272
+#: admin/class-babilim-cell.php:288
+#, php-format
+msgid "Installed · built for %s"
+msgstr "Wis diinstal · digawe kanggo %s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:272
+#: admin/class-babilim-cell.php:288
+msgid "Installed · built for a different version"
+msgstr "Wis diinstal · digawe kanggo versi beda"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:276
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "Wis dipasang · dibangun kanggo %s, versi anyar gagal"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:276
+msgid "Installed · built for a different version, new version failed"
+msgstr "Wis dipasang · dibangun kanggo versi sing beda, versi anyar gagal"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:280
+#, php-format
+msgid "Installed · built for %s, new version needs a paid license"
+msgstr "Wis dipasang · dibangun kanggo %s, versi anyar mbutuhake lisensi mbayar"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:280
+msgid "Installed · built for a different version, new version needs a paid license"
+msgstr "Wis dipasang · dibangun kanggo versi sing beda, versi anyar mbutuhake lisensi mbayar"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:284
+#, php-format
+msgid "Installed · built for %s, free quota used"
+msgstr "Wis dipasang · dibangun kanggo %s, kuota gratis wis entek"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:284
+msgid "Installed · built for a different version, free quota used"
+msgstr "Wis dipasang · dibangun kanggo versi sing beda, kuota gratis wis entek"
+
+#: admin/class-babilim-cell.php:304
+msgctxt "translation status"
+msgid "Available"
+msgstr "Kasedhiya"
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:308
+#, php-format
+msgid "Installed · %s"
+msgstr "Wis dipasang · %s"
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:311
+#, php-format
+msgid "Available · %s"
+msgstr "Kasedhiya · %s"
+
+#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-translations-table.php:412
+msgid "Update"
+msgstr "Nganyari"
+
+#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-translations-table.php:411
+msgid "Download"
+msgstr "Undhuh"
+
+#: admin/class-babilim-cell.php:351
+msgid "Updating…"
+msgstr "Nganyari…"
+
+#: admin/class-babilim-cell.php:351
+msgid "Downloading…"
+msgstr "Ngundhuh…"
+
+#: admin/class-babilim-cell.php:354
+msgid "Retry request"
+msgstr "Coba njaluk maneh"
+
+#: admin/class-babilim-cell.php:356
+msgid "Request newer translation"
+msgstr "Njaluk terjemahan sing luwih anyar"
+
+#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-translations-table.php:413
+msgid "Request translation"
+msgstr "Njaluk terjemahan"
+
+#: admin/class-babilim-cell.php:358
+msgid "Requesting…"
+msgstr "Njaluk…"
+
+#: admin/class-babilim-translations-table.php:35
+msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
+msgstr "Njaluk terjemahan bakal nggunakake siji slot gratis, kajaba komponen iki wis nggunakake siji. Terjemahan sing gagal ora mbalekake slot kasebut."
+
+#: admin/class-babilim-translations-table.php:42
+msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
+msgstr "Yen komponen iki durung nggunakake siji slot gratis, njaluk terjemahan bakal nggunakake siji. Terjemahan sing gagal ora mbalekake slot kasebut. Terusake?"
+
+#: admin/class-babilim-translations-table.php:382
+msgid "No plugins or themes found."
+msgstr "Ora ana plugin utawa tema sing ditemokake."
+
+#: admin/class-babilim-translations-table.php:386
+msgid "Clear filters"
+msgstr "Busak filter"
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:388
+#, php-format
+msgid "No components match these filters. %s"
+msgstr "Ora ana komponen sing cocog karo filter iki. %s"
+
+#: admin/class-babilim-translations-table.php:398
+msgid "Select all"
+msgstr "Pilih kabeh"
+
+#: admin/class-babilim-translations-table.php:424
+#: admin/class-babilim-translations-table.php:472
+msgid "All"
+msgstr "Kabeh"
+
+#: admin/class-babilim-translations-table.php:425
+msgid "Available"
+msgstr "Kasedhiya"
+
+#: admin/class-babilim-translations-table.php:426
+msgid "Updates"
+msgstr "Pembaruan"
+
+#: admin/class-babilim-translations-table.php:427
+msgid "Requestable"
+msgstr "Bisa dijaluk"
+
+#: admin/class-babilim-translations-table.php:428
+msgid "Installed"
+msgstr "Wis dipasang"
+
+#: admin/class-babilim-translations-table.php:473
+msgid "Plugins"
+msgstr "Plugin"
+
+#: admin/class-babilim-translations-table.php:474
+msgid "Themes"
+msgstr "Tema"
+
+#: admin/class-babilim-translations-table.php:499
+msgid "All languages"
+msgstr "Kabeh basa"
+
+#: admin/class-babilim-translations-table.php:511
+msgid "Language:"
+msgstr "Basa:"
+
+#: admin/class-babilim-translations-table.php:547
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "Tindakan massal ditrapake kanggo saben basa sing cocog saka saben komponen sing dipilih."
+
+#: admin/class-babilim-translations-table.php:548
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "Tindakan massal mung ditrapake kanggo basa sing dipilih saka saben komponen sing dipilih."
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:572
+#, php-format
+msgid "Version %s"
+msgstr "Versi %s"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:575
+#, php-format
+msgid "Theme · %s"
+msgstr "Tema · %s"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:578
+#, php-format
+msgid "Plugin · %s"
+msgstr "Plugin · %s"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:635
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "Busak terjemahan %2$s saka %1$s saka situs iki?"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:638
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "Kembalikan terjemahan %2$s saka %1$s menyang build sakdurunge?"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:731
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:734
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "Tantangan registrasi ora ana ing wujud sing dikarepake."
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "Iku dudu identifier build sing sah."
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Ora gelem nulis ing njaban Direktori berkas basa Babilim."
+
+#: includes/class-babilim-api-client.php:331
+msgid "Could not write the downloaded package to disk."
+msgstr "Ora bisa nulis paket sing wis diundhuh menyang disk."
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:592
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "Respons HTTP %d sing ora dikarepake."
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "URL situs iki, supaya layanan bisa mbuktekake yen sampeyan sing duwe."
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "Versi WordPress sampeyan, kanggo nyedhiyakake berkas terjemahan sing cocog."
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "Versi PHP sampeyan, kanggo kompatibilitas."
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "Versi plugin iki dhewe, supaya layanan bisa ngandhani sampeyan kanggo nganyari yen wis kadaluwarsa banget kanggo komunikasi."
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "Locale sing dikonfigurasi ing situs iki."
+
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "Saben locale sing digunakake ing situs iki (locale situs, paket basa sing wis diinstal, locale pangguna, lan sing sampeyan tambahake kanthi manual). Ora ana locale sing dianggep beda saka liyane."
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(kunci publik sing digawe kanggo situs iki)"
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "Kunci publik instalasi situs iki, digunakake kanggo mbuktekake yen panyuwunan pancen teka saka situs iki. Mung separo publik sing tau dikirim."
+
+#: includes/class-babilim-consent.php:107
+msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
+msgstr "Saben plugin/tema sing diinstal: slug, versi, text domain, apa iku daftar wp.org, locale bawaan dhewe, lan locale endi sing wis sampeyan instal terjemahan Babilim."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
+msgstr "Mung nalika sampeyan ngonfirmasi unggahan kanggo plugin utawa tema sing ora ana ing WordPress.org: kabeh direktori komponen kasebut, minangka zip."
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(mung kode umum lan koordinat)"
+
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "Nganti 20 kajadian diagnostik sing isih ngenteni (kayata berkas sing gagal pemeriksaan integritas), saben mung arupa kode, komponen, lan locale, lan ora tau isi string utawa teks terjemahan."
+
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
+#, php-format
+msgid "Unsafe locale: %s"
+msgstr "Locale ora aman: %s"
+
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-default-index.php:112
+#: includes/class-babilim-default-index.php:275
+#: includes/class-babilim-default-index.php:382
+#: includes/class-babilim-installer.php:550
+#: includes/class-babilim-installer.php:626
+#: includes/class-babilim-installer.php:683
+#: includes/class-babilim-installer.php:782
+#: includes/class-babilim-installer.php:818
+#: includes/class-babilim-installer.php:1006
+#: includes/class-babilim-installer.php:1054
+#, php-format
+msgid "Manifest unavailable: %s"
+msgstr "Manifest ora kasedhiya: %s"
+
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "Ora bisa nemtokake komponen aktif; indeks gabungan sing ana ora diowahi."
+
+#: includes/class-babilim-default-index.php:399
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "Ora bisa nemtokake plugin/tema sing diinstal; resiki dilewati, ora ana sing dibusak."
+
+#. translators: %s: the technical reason the sweep was aborted.
+#: includes/class-babilim-default-index.php:531
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "Proses reresik dibatalake tanpa njalari berkas utawa data apa wae kelangan sesambungane: %s."
+
+#: includes/class-babilim-default-index.php:622
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "Pembersihan wis mlaku, nanging sawetara owahane ora bisa dicathet ing indeks terjemahan; pembersihan sabanjure bakal nyoba maneh."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:814
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "Indeks gabungan kanggo '%s' wis dibangun maneh, nanging indeks terjemahan ora bisa nyathet; pambangunan maneh sabanjure bakal nyoba maneh."
+
+#: includes/class-babilim-default-index.php:890
+msgid "Could not write the staged merged index."
+msgstr "Ora bisa nulis indeks gabungan sing disiapake."
+
+#: includes/class-babilim-default-index.php:898
+msgid "Re-parsed entry count did not match the built index."
+msgstr "Jumlah entri sing diurai maneh ora cocog karo indeks sing dibangun."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:929
+#, php-format
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "Ora bisa mindhahake indeks gabungan kanggo '%s' menyang panggonane; indeks sing disajikake sadurunge (yen ana) wis dibusak tinimbang ditinggal separo dianyari. Ora ana suplemen domain default sing disajikake kanggo locale iki nganti pambangunan maneh sing sabanjure kasil."
+
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
+#, php-format
+msgid "Could not open zip: %s"
+msgstr "Ora bisa mbukak zip: %s"
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "Zip ora duwe manifest.json."
+
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "manifest.json ing zip ora JSON sing sah."
+
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "'%s' ing manifest.json ora cocog karo nilai sing dikarepake."
+
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "Ana instalasi liyane sing lagi mlaku; coba maneh sedhela."
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "Dudu server_build_id sing sah: %s"
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "Kind '%1$s' ing manifest paket ora cocog karo kind sing dijaluk '%2$s'."
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "Text domain paket '%1$s' ora cocog karo salinan komponen ing situs iki ('%2$s'), mula ora diinstal."
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "Domain sing diwenehake '%1$s' ora cocog karo slug manifest paket '%2$s' lan uga text_domain '%3$s'."
+
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
+#, php-format
+msgid "Unsafe slug: %s"
+msgstr "Slug ora aman: %s"
+
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
+#, php-format
+msgid "Unsafe text_domain: %s"
+msgstr "text_domain ora aman: %s"
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "Paket iki ora duwe %s kanggo text domain dhewe."
+
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "Kolom '%s' ing manifest.json ora ana utawa ora valid."
+
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "Kolom 'entries' ing manifest.json ora ana utawa ora valid."
+
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "Kolom 'files' ing manifest.json ora ana utawa ora valid."
+
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "Kolom 'extra_domains' ing manifest.json ora ana utawa ora valid."
+
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "Kolom 'build_no' ing manifest.json ora ana utawa ora valid."
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' ing manifest.json dudu build id sing valid."
+
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "'contract' ing manifest.json dudu string versi sing valid."
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "'status' ing manifest.json kudu 'published'."
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "'kind' ing manifest.json kudu 'plugin' utawa 'theme'."
+
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json nduwe 'default_domain_entries' sing ora valid."
+
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json nduwe 'default_domain_files' sing ora valid."
+
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest ora ana utawa nduwe '%s' sing ora valid."
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' ing expected_manifest dudu build id sing valid."
+
+#. translators: %s: the kind/domain/locale identifier that has no installed record.
+#: includes/class-babilim-installer.php:555
+#: includes/class-babilim-installer.php:631
+#: includes/class-babilim-installer.php:688
+#: includes/class-babilim-installer.php:787
+#, php-format
+msgid "No record for %s"
+msgstr "Ora ana cathetan kanggo %s"
+
+#: includes/class-babilim-installer.php:599
+msgid "One or more served files no longer match the manifest."
+msgstr "Siji utawa luwih berkas sing disajikake wis ora cocog karo manifest."
+
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "Ora ana build sakdurunge kanggo dikembalikan."
+
+#: includes/class-babilim-installer.php:927
+msgid "The change could not be recorded in the translation index; please try again."
+msgstr "Owah-owahan ora bisa dicathet ing indeks terjemahan; coba maneh."
+
+#. translators: %s: the unrecognized kind value.
+#: includes/class-babilim-installer.php:943
+#, php-format
+msgid "Unknown kind: %s"
+msgstr "Kind ora dikenal: %s"
+
+#. translators: %s: the invalid domain.
+#: includes/class-babilim-installer.php:946
+#, php-format
+msgid "Unsafe domain: %s"
+msgstr "Domain ora aman: %s"
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "Text domain '%1$s' (%2$s) wis disajikake kanggo komponen liyane sing wis diinstal (%3$s); ora ana sing diinstal."
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "Pangembalian bakal nimpa '%1$s' (%2$s), sing saiki disajikake kanggo komponen liyane sing wis diinstal (%3$s); ora ana sing diowahi."
+
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
+#, php-format
+msgid "Zip is missing expected file: %s"
+msgstr "Zip ora ana berkas sing dikarepake: %s"
+
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
+#, php-format
+msgid "sha256 mismatch for %s"
+msgstr "sha256 ora cocog kanggo %s"
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "Paket ora nyatakake berkas terjemahan utama."
+
+#. translators: %s: the filename missing from the zip's default-domain supplement.
+#: includes/class-babilim-installer.php:1187
+#, php-format
+msgid "Zip is missing expected default file: %s"
+msgstr "Zip ora ana berkas default sing dikarepake: %s"
+
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
+#, php-format
+msgid "sha256 mismatch for default/%s"
+msgstr "sha256 ora cocog kanggo default/%s"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "Ora bisa nyiapake (stage) %s"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "Ora bisa nyiapake (stage) default/%s"
+
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "Jumlah entri ora cocog kanggo %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "Ora bisa verifikasi jumlah entri kanggo %s"
+
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "Jumlah entri l10n.php ora cocog kanggo %s"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "Jumlah entri suplemen default ora cocog."
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "Paket ora ngasilake berkas terjemahan utama sing bisa disajikake."
+
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
+#, php-format
+msgid "Could not prepare %s for rollback."
+msgstr "Ora bisa nyiapake %s kanggo dikembalikan."
+
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
+#, php-format
+msgid "Could not back up %s before replacing it."
+msgstr "Ora bisa nggawe serep %s sadurunge diganti."
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
+#, php-format
+msgid "Could not move %s into place."
+msgstr "Ora bisa mindhah %s menyang panggonane."
+
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "Inggris (Amerika Serikat)"
+
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest ora kasedhiya: %s"
+
+#. translators: %s: the underlying filesystem error message.
+#: includes/class-babilim-manifest.php:587
+#, php-format
+msgid "could not read _manifest.json: %s"
+msgstr "ora bisa maca _manifest.json: %s"
+
+#. translators: %s: the underlying JSON parser error message.
+#: includes/class-babilim-manifest.php:601
+#, php-format
+msgid "failed to parse _manifest.json: %s"
+msgstr "gagal ngurai _manifest.json: %s"
+
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json nduweni struktur sing ora dikarepake"
+
+#: includes/class-babilim-packager.php:84
+#: includes/class-babilim-packager.php:93
+#: includes/class-babilim-packager.php:105
+msgid "Could not create the package archive."
+msgstr "Arsip paket ora bisa digawe."
+
+#: includes/class-babilim-packager.php:88
+msgid "No writable temporary directory is available for packaging."
+msgstr "Ora ana direktori sementara sing bisa ditulis kanggo nggawe paket."
+
+#: includes/class-babilim-packager.php:99
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "Ana berkas ing komponen sing ora bisa diwaca, mula ora dipaketake."
+
+#: includes/class-babilim-packager.php:139
+msgid "Only plugins and themes can be packaged."
+msgstr "Namung plugin lan tema sing bisa dipaketake."
+
+#: includes/class-babilim-packager.php:144
+#: includes/class-babilim-packager.php:153
+msgid "The component's main file was not found."
+msgstr "Berkas utama komponen ora ditemokake."
+
+#: includes/class-babilim-packager.php:149
+msgid "The component is not inside the plugins or themes directory."
+msgstr "Komponen iki ora ana ing direktori plugin utawa tema."
+
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:930
+#: includes/class-babilim-site.php:1261
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Babilim kehabisan wektu kanggo langkah iki lan bakal nerusake ing pengecekan sabanjure."
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:316
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim ora bisa verifikasi situs iki, mula ora ana sing diundhuh utawa dipasang nganti verifikasi kasil."
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "Wangsulan registrasi kekurangan kolom sing dibutuhake."
+
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "Ora ana tantangan sing nunggu verifikasi."
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "Wangsulan verifikasi ora ana site_token."
+
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "Ora ana ID situs sing kasimpen kanggo ngrotasi token."
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "Wangsulan rotate-token ora ana site_token."
+
+#: includes/class-babilim-site.php:781
+#: includes/class-babilim-site.php:786
+msgid "nonce must be a hexadecimal string."
+msgstr "nonce kudu awujud string heksadesimal."
+
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "Ora ana tantangan sing nunggu kanggo nonce iki."
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "Panyuwunan kakehan."
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:902
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "Situs iki nduweni %1$d komponen ing %2$d basa, sing mbutuhake %3$d batch pengecekan; Babilim mung bisa nangani paling akeh %4$d saben proses. Kurangi basa sing dikelola ing Setelan utawa nonaktifake plugin lan tema sing ora dienggo, banjur pencet Priksa maneh saiki."
+
+#: includes/class-babilim-site.php:977
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim ora bisa ngrampungake pengecekan situs iki."
+
+#: includes/class-babilim-site.php:1472
+msgid "This site's address is too long for Babilim to register."
+msgstr "Alamat situs iki dawa banget kanggo diregistrasi dening Babilim."
+
+#: includes/class-babilim-site.php:1475
+msgid "This site's locale code is not one Babilim can register."
+msgstr "Kode locale situs iki dudu kode sing bisa diregistrasi dening Babilim."
+
+#: includes/class-babilim-sync-installer.php:330
+msgid "The download response was missing a usable location."
+msgstr "Wangsulan undhuhan ora ana lokasi sing bisa digunakake."
+
+#: includes/class-babilim-upload.php:64
+msgid "The service's upload offer was incomplete."
+msgstr "Tawaran unggah saka layanan ora lengkap."
+
+#: includes/class-babilim-upload.php:104
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "Komponen iki luwih gedhe tinimbang sing ditampa layanan, mula ora bisa diunggah."
+
+#: includes/class-babilim-upload.php:148
+msgid "The packaged component could not be read."
+msgstr "Komponen sing wis dipaketake ora bisa diwaca."
+
+#: includes/class-babilim-upload.php:259
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "Salah siji bagean unggahan terus gagal, mula unggahan dibatalake."
+
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
+#, php-format
+msgid "Could not read: %s"
+msgstr "Ora bisa diwaca: %s"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1690
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:1986
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2102
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2134
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: how many translations were installed automatically.
+#: admin/class-babilim-admin.php:2524
+#, php-format
+msgid "Babilim installed %d translation automatically since your last visit."
+msgid_plural "Babilim installed %d translations automatically since your last visit."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:2582
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:2586
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:2590
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:2594
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:502
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] ""
+msgstr[1] ""

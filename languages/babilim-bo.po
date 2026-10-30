@@ -1,0 +1,1865 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: babilim-0.1.0-bo-babilim-0.1.0-bo-20261030T020450\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: bo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-30T06:25:11+00:00\n"
+"PO-Revision-Date: 2026-10-30T06:25:11+00:00\n"
+"Language: bo\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Babilim-Build: babilim-0.1.0-bo-babilim-0.1.0-bo-20261030T020450\n"
+"X-Generator: Babilim\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: babilim.php
+#: admin/class-babilim-admin.php:296
+#: admin/class-babilim-admin.php:297
+#: admin/class-babilim-admin.php:2453
+#: admin/class-babilim-admin.php:2507
+msgid "Babilim"
+msgstr "Babilim"
+
+#. Description of the plugin
+#: babilim.php
+msgid "Fills in missing translations for the plugins and themes already installed on your site."
+msgstr "ཁྱེད་ཀྱི་དྲ་ཚིགས་སུ་སྒྲིག་འཇུག་བྱས་ཟིན་པའི་འཇུག་ཚན་དང་བཟོ་ལྟའི་ནང་དུ་ཆད་པའི་སྐད་སྒྱུར་རྣམས་ཁ་སྐོང་བྱེད།"
+
+#: admin/class-babilim-admin.php:320
+#: admin/class-babilim-admin.php:321
+#: admin/class-babilim-translations-table.php:400
+msgid "Translations"
+msgstr "སྐད་སྒྱུར།"
+
+#: admin/class-babilim-admin.php:328
+msgid "Babilim Settings"
+msgstr "Babilim སྒྲིག་འགོད།"
+
+#: admin/class-babilim-admin.php:329
+#: admin/class-babilim-admin.php:2510
+#: admin/class-babilim-admin.php:2734
+msgid "Settings"
+msgstr "སྒྲིག་འགོད།"
+
+#: admin/class-babilim-admin.php:356
+#: admin/class-babilim-admin.php:763
+msgid "You are not allowed to do this."
+msgstr "ཁྱེད་ལ་འདི་བྱེད་ཆོག་པའི་ཆོག་མཆན་མེད།"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:385
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "ཆ་ཤས་ཉུང་བ་འདེམས་རོགས། ཐེངས་རེར་བཀོལ་སྤྱོད་%1$d ལས་མང་བ་མི་ཆོག (ཁྱེད་ཀྱིས་%2$d བདམས་ཡོད)།"
+
+#: admin/class-babilim-admin.php:398
+#: admin/class-babilim-admin.php:1116
+#: admin/class-babilim-admin.php:1287
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "ཆ་ཤས་དེ་དྲ་ཚིགས་འདིར་སྒྲིག་འཇུག་བྱས་མེད་པས། དེའི་སྐད་སྒྱུར་ཞུ་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:917
+msgid "Already installed."
+msgstr "སྒྲིག་འཇུག་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:917
+msgid "Downloaded and installed."
+msgstr "ཕབ་ལེན་དང་སྒྲིག་འཇུག་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:940
+#: admin/class-babilim-admin.php:1281
+#: admin/class-babilim-admin.php:1357
+#: admin/class-babilim-admin.php:1922
+#: admin/class-babilim-admin.php:2070
+#: includes/class-babilim-api-client.php:519
+#: includes/class-babilim-site.php:311
+#: includes/class-babilim-site.php:362
+#: includes/class-babilim-site.php:705
+#: includes/class-babilim-site.php:838
+msgid "Babilim has not been enabled for this site yet."
+msgstr "དྲ་ཚིགས་འདིར་ Babilim ད་དུང་སྤྱོད་འགོ་བཙུགས་མེད།"
+
+#: admin/class-babilim-admin.php:959
+msgid "No build is available to download for this locale."
+msgstr "སྐད་ཡིག་འདིའི་ཆེད་དུ་ཕབ་ལེན་བྱ་རུང་བའི་བཟོ་བསྐྲུན་ཐོན་རིམ་མེད།"
+
+#: admin/class-babilim-admin.php:1014
+msgid "Rolled back to the previous build."
+msgstr "བཟོ་བསྐྲུན་ཐོན་རིམ་སྔ་མར་ཕྱིར་ལོག་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1073
+msgid "Rolled back and reported."
+msgstr "ཕྱིར་ལོག་དང་སྙན་ཞུ་བྱས་ཟིན།"
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1079
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "ཕྱིར་ལོག་བྱས་ཟིན། འོན་ཀྱང་སྙན་ཞུ་བསྐུར་མ་ཐུབ། %s"
+
+#: admin/class-babilim-admin.php:1103
+msgid "Removed."
+msgstr "བསུབས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1139
+msgid "Translation requested."
+msgstr "སྐད་སྒྱུར་ཞུས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1161
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "ཆ་ཤས་འདི་སྔོན་ཆད་ཡར་འཇུག་བྱས་ཟིན། Babilim གྱིས་ད་ལྟ་ཞིབ་བཤེར་བྱེད་བཞིན་འདུག"
+
+#: admin/class-babilim-admin.php:1201
+msgid "Upload cancelled."
+msgstr "ཡར་འཇུག་ཕྱིར་འཐེན་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1212
+msgid "Upload complete — translation requested."
+msgstr "ཡར་འཇུག་ཚར་ཟིན། སྐད་སྒྱུར་ཞུས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1290
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "ཆ་ཤས་འདིས་པར་གཞིའི་གྲངས་ཨང་གསལ་བཀོད་བྱས་མེད་པས། དེའི་སྐད་སྒྱུར་ཞུ་མི་ཐུབ།"
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1297
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "ཆ་ཤས་འདིའི་པར་གཞིའི་གྲངས་ཨང་གི་རིང་ཚད་ཡིག་འབྲུ་ %d ལས་བརྒལ་བས། Babilim གྱིས་དེ་ལ་ལས་སྣོན་བྱེད་མི་ཐུབ། དེའི་ཕྱིར་དེའི་སྐད་སྒྱུར་ཞུ་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:1303
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "ད་ལྟ་དྲ་ཚིགས་འདིར་སྐད་ཡིག་དེའི་སྐད་སྒྱུར་ཞུ་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:1329
+msgid "Thank you. Your report was sent."
+msgstr "ཐུགས་རྗེ་ཆེ། ཁྱེད་ཀྱི་སྙན་ཞུ་བསྐུར་ཟིན།"
+
+#: admin/class-babilim-admin.php:1362
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "སྙན་ཞུ་འདིའི་ནང་དུ་ཚད་ལྡན་གྱི་འཇུག་ཚན་ནམ་བཟོ་ལྟ་དང་སྐད་ཡིག་གསལ་བཀོད་བྱས་མི་འདུག"
+
+#: admin/class-babilim-admin.php:1366
+msgid "Please choose a category for this report."
+msgstr "སྙན་ཞུ་འདིའི་དབྱེ་བ་ཞིག་འདེམས་རོགས།"
+
+#: admin/class-babilim-admin.php:1370
+msgid "This report is missing a valid build to report against."
+msgstr "སྙན་ཞུ་འདིར་སྙན་ཞུ་གཏོང་རྒྱུའི་ཚད་ལྡན་བཟོ་བསྐྲུན་ཐོན་རིམ་ཞིག་མ་ཚང་།"
+
+#: admin/class-babilim-admin.php:1373
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "བཟོ་བསྐྲུན་ཐོན་རིམ་འདི་ནི་ཆ་ཤས་དང་སྐད་ཡིག་འདིའི་ཆེད་དུ་དྲ་ཚིགས་འདིས་ད་ལྟ་ངོས་ཟིན་པ་ཞིག་མ་ཡིན།"
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1425
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "འབྲི་ས་ \"%1$s\" རིང་དྲགས་འདུག དེར་ཡིག་འབྲུ་ %2$d ཡོད་ཅིང་། ཡིག་འབྲུའི་མང་མཐའ་ནི་ %3$d ཡིན། ཅི་ཡང་བསྐུར་མེད། ཐུང་དུ་བཏང་ནས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད་རོགས།"
+
+#: admin/class-babilim-admin.php:1450
+msgid "Original string"
+msgstr "ཡིག་ཕྲེང་ཐོག་མ།"
+
+#: admin/class-babilim-admin.php:1454
+msgid "String context"
+msgstr "ཡིག་ཕྲེང་གི་སྐབས་དོན།"
+
+#: admin/class-babilim-admin.php:1458
+#: admin/class-babilim-admin.php:3945
+msgid "Current translation"
+msgstr "ད་ལྟའི་འགྱུར་བ།"
+
+#: admin/class-babilim-admin.php:1462
+#: admin/class-babilim-admin.php:3947
+msgid "Suggested translation"
+msgstr "གྲོས་འདེབས་ཀྱི་འགྱུར་བ།"
+
+#: admin/class-babilim-admin.php:1466
+#: admin/class-babilim-admin.php:3949
+msgid "Note (optional)"
+msgstr "མཆན་བུ། (མ་བྲིས་ཀྱང་ཆོག)"
+
+#: admin/class-babilim-admin.php:1470
+#: admin/class-babilim-admin.php:3951
+msgid "Where you saw this (optional)"
+msgstr "ཁྱེད་ཀྱིས་འདི་མཐོང་ས། (མ་བྲིས་ཀྱང་ཆོག)"
+
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1517
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "Babilim ཟླ་སྒྲིག་ཞབས་ཞུའི་ཕྱོགས་ནས་ཡུན་ཐུང་དུ་འགོར་བཞིན་འདུག (ཚད་ཀྱིས་བཀག)། %s རྗེས་སུ་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད།"
+
+#. translators: %d: the most characters a locale code may have.
+#: admin/class-babilim-admin.php:1552
+#, php-format
+msgid "The locale you added is not valid: use a WordPress locale code such as ll_CC (letters, digits, underscore, hyphen or @, at most %d characters). Nothing was saved."
+msgstr "ཁྱེད་ཀྱིས་སྣོན་པའི་སྐད་ཡིག་ཚད་ལྡན་མ་ཡིན། ll_CC ལྟ་བུའི་ WordPress སྐད་ཡིག་གི་ཨང་རྟགས་(locale code)བེད་སྤྱོད་གྱིས། (ཡིག་འབྲུ་དང་ཨང་ཡིག ཐིག་ཁྲ་(_) འབྲེལ་ཐིག་(-) ཡང་ན་ @ ཡིན་དགོས། མང་ཤོས་ཡིག་འབྲུ་ %d)། ཅི་ཡང་ཉར་མེད།"
+
+#: admin/class-babilim-admin.php:1587
+msgid "Settings saved."
+msgstr "སྒྲིག་འགོད་ཉར་ཚགས་བྱས་ཟིན།"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1649
+#, php-format
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "འདི་སྒོ་ཕྱེ་ན། སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས་དྲ་ཚིགས་འདིའི་ངོ་འཕྲོད་ཀྱང་སུབ་ངེས། དེའི་རྗེས་སུ་དྲ་ཚིགས་འདིར་སྦྲེལ་ཡོད་པའི་རིན་དང་བཅས་པའི་ཆོག་མཆན་རང་འགུལ་གྱིས་སླར་གསོ་བྱེད་མི་ཐུབ། དེ་སླར་ལེན་ན་ %s ཐོག་ Babilim གྱི་རོགས་སྐྱོར་ལ་འབྲེལ་བ་བྱེད་དགོས།"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1665
+#, php-format
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Babilim ལ་སྒྲིག་འཇུག་སུབ་སྐབས་དྲ་ཚིགས་འདིའི་ངོ་འཕྲོད་སུབ་པར་བཀོད་ཡོད། དེ་ཚེ་དྲ་ཚིགས་འདིར་སྦྲེལ་ཡོད་པའི་རིན་དང་བཅས་པའི་ཆོག་མཆན་རང་འགུལ་གྱིས་སླར་གསོ་བྱེད་མི་ཐུབ། %s ཐོག་ Babilim གྱི་རོགས་སྐྱོར་ལ་འབྲེལ་བ་བྱེད་དགོས། ངོ་འཕྲོད་ཉར་འདོད་ན་ \"Cancel\" མནན་ནས་ Babilim སྒྲིག་འགོད་ནང་ \"སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས་ Babilim གྱི་གཞི་གྲངས་ཚང་མ་སུབ\" གི་རྟགས་སུབ་ནས་སླར་ཡང་མཚམས་འཇོག་བྱེད། ཡིན་ཡང་མཚམས་འཇོག་བྱེད་དམ།"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1690
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "དྲ་བ་འདིའི་ནང་གི་དྲ་ཚིགས་ %1$d ལ་སྒྲིག་འཇུག་སུབ་སྐབས་ Babilim ངོ་འཕྲོད་སུབ་པར་བཀོད་ཡོད། དེ་ཚེ་དྲ་ཚིགས་དེར་སྦྲེལ་ཡོད་པའི་རིན་དང་བཅས་པའི་ཆོག་མཆན་རང་འགུལ་གྱིས་སླར་གསོ་བྱེད་མི་ཐུབ། %2$s ཐོག་ Babilim གྱི་རོགས་སྐྱོར་ལ་འབྲེལ་བ་བྱེད་དགོས། ངོ་འཕྲོད་ཉར་འདོད་ན་ \"Cancel\" མནན་ནས་འབྲེལ་ཡོད་དྲ་ཚིགས་རེ་རེའི་ Babilim སྒྲིག་འགོད་ནང་ \"སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས་ Babilim གྱི་གཞི་གྲངས་ཚང་མ་སུབ\" གི་རྟགས་སུབ་ནས་སླར་ཡང་མཚམས་འཇོག་བྱེད། ཡིན་ཡང་མཚམས་འཇོག་བྱེད་དམ།"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1709
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "དྲ་བ་འདི་ལ་དྲ་ཚིགས་མང་དྲགས་ནས་གཅིག་རྗེས་གཅིག་བརྟག་མི་ཐུབ་པ་དང་། དེ་དག་གི་ཁ་ཅིག་ལ་སྒྲིག་འཇུག་(plugin)སུབ་སྐབས་རང་ཉིད་ཀྱི་ Babilim ངོ་འཕྲོད་སུབ་པར་སྒྲིག་འགོད་བྱས་ཡོད་སྲིད། དེ་ལྟར་ན་དྲ་ཚིགས་དེ་ལ་སྦྲེལ་ཡོད་པའི་རིན་དང་བཅས་པའི་ཆོག་མཆན་རང་འགུལ་གྱིས་སླར་གསོ་བྱེད་མི་ཐུབ། ཁྱེད་ཀྱིས་ %s ནས་ Babilim གྱི་རོགས་སྐྱོར་ལ་འབྲེལ་བ་བྱེད་དགོས། ངོ་འཕྲོད་རྣམས་ཉར་འདོད་ན། “Cancel” མཐེབ་གནོན་བྱས་ཏེ། དྲ་ཚིགས་རེ་རེའི་ Babilim སྒྲིག་འགོད་ནང་ “སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས་ Babilim གྱི་གཞི་གྲངས་ཚང་མ་སུབ” གི་རྟགས་སུབ་ནས། སྒྲིག་འཇུག་དེ་སླར་ཡང་ལས་ཤུགས་མེད་པར་གཏོང་། དེ་ལྟར་ཡིན་རུང་ལས་ཤུགས་མེད་པར་གཏོང་ངམ།"
+
+#: admin/class-babilim-admin.php:1798
+msgid "Open Babilim settings"
+msgstr "Babilim སྒྲིག་འགོད་ཁ་ཕྱེ།"
+
+#: admin/class-babilim-admin.php:1803
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim གྱིས་དྲ་ཚིགས་འདི་ར་སྤྲོད་བྱེད་མ་ཐུབ་པས་ཕབ་ལེན་དང་སྒྲིག་འཇུག་ག་གི་ཡང་མི་བྱེད།"
+
+#: admin/class-babilim-admin.php:1815
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "ཞབས་ཞུའི་མ་ལག་གིས་ཁྱེད་ཀྱི་དྲ་ཚིགས་ལ་འབྲེལ་མ་ཐུབ། མེ་ལྕགས་རྭ་(firewall)དང་། བདེ་འཇགས་སྒྲིག་འཇུག་(security plugin) ཡང་ན་ཧོསི་ཊིང་གི་སྒྲིག་སྲོལ་གྱིས་ཞུ་བ་བཀག་པ་འདྲ། /wp-json/babilim/v1/challenge ལ་ཞུ་བ་ཆོག་པར་སྒྲིག་རོགས།"
+
+#: admin/class-babilim-admin.php:1817
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "ཁྱེད་ཀྱི་དྲ་ཚིགས་ཀྱིས་ལན་འདེབས་པར་དུས་ཡུན་རིང་དྲགས་སོང་། ཕྱིས་སུ་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད་རོགས། ཞབས་ཞུའི་འཕྲུལ་ཆས་དེ་དལ་དྲགས་པའམ་ཁུར་ཚད་ལྡན་དྲགས་མེད་པ་ཡང་ཞིབ་བཤེར་བྱེད་རོགས།"
+
+#: admin/class-babilim-admin.php:1819
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "ཁྱེད་ཀྱི་དྲ་ཚིགས་ཀྱིས་ལན་བཏབ་ཀྱང་རེ་བ་བྱས་པ་དང་མི་མཐུན། REST API འདི་སྒྲིག་འཇུག་(plugin)གཞན་ཞིག་གིས་བསྐྱར་འབྲི་བྱས་སམ། མཇུག་གནད་དེ་གནས་སྐབས་ཉར་ཚགས་(cache)བྱས་ཡོད་སྲིད། /wp-json/babilim/v1/challenge དེ་ cache དང་བསྐྱར་འབྲི་ལས་ཕྱིར་འབུད་རོགས།"
+
+#: admin/class-babilim-admin.php:1821
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "ཁྱེད་ཀྱི་དྲ་ཚིགས་ལ་དྲ་སྦྲེལ་ནས་འབྲེལ་ཐུབ་མིན་ཞིབ་བཤེར་བྱས་རྗེས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད་རོགས།"
+
+#: admin/class-babilim-admin.php:1844
+msgid "Re-verify"
+msgstr "ཡང་བསྐྱར་ར་སྤྲོད།"
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:1865
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "དྲ་ཚིགས་འདིའི་ཆེ་ཆུང་གིས་ཞབས་ཞུའི་མ་ལག་གིས་ཐེངས་གཅིག་གི་མཉམ་སྒྲིག་ནང་ཁས་ལེན་པའི་ཚད་ལས་བརྒལ་བས། ཆ་ཤས་ %1$d དང་སྐད་ཡིག་ %2$d ཕྱིར་བཞག་སོང་།"
+
+#: admin/class-babilim-admin.php:1894
+msgid "This site is verified."
+msgstr "དྲ་ཚིགས་འདི་ར་སྤྲོད་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:1907
+msgid "Registration restarted."
+msgstr "ཐོ་འགོད་ཡང་བསྐྱར་མགོ་བརྩམས་སོང་།"
+
+#: admin/class-babilim-admin.php:1928
+#: admin/class-babilim-admin.php:1994
+msgid "Sync complete."
+msgstr "མཉམ་སྒྲིག་ཆ་ཚང་བྱུང་སོང་།"
+
+#: admin/class-babilim-admin.php:1955
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim གྱིས་དྲ་ཚིགས་འདིའི་སྤྱོད་སྒོ་འབྱེད་ཅིང་ཞིབ་བཤེར་བྱེད་བཞིན་ཡོད། ཤོག་ངོས་འདི་བསྐྱར་དུ་འགེལ་བའམ། དུས་བཀག་ཞིབ་བཤེར་མཇུག་འགྲིལ་བར་སྒུགས།"
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:1960
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim གྱིས་སྤྱོད་སྒོ་འབྱེད་པའི་བྱ་རིམ་མཇུག་སྒྲིལ་མ་ཐུབ། (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:1965
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "ཐེངས་རེར་ PHP ཞུ་འཕྲིན་གཅིག་ཁོ་ན་སྒྲུབ་ཐུབ་པའི་ཞབས་ཞུ་འཕྲུལ་ཆས་ཀྱིས་གོ་རིམ་འདི་མཇུག་སྒྲིལ་མི་ཐུབ།"
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:1986
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim གྱི་སྤྱོད་སྒོ་ཕྱེ་ཟིན། དྲ་ཚིགས་འདི་ར་སྤྲོད་བྱས་ཟིན་ཅིང་ཆ་ཤས་ %d རྙེད་སོང་།"
+
+#: admin/class-babilim-admin.php:2062
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim ལས་ཤུགས་མེད་པར་བཏང་ཡོད། ད་ནས་བཟུང་གང་ཡང་མི་བསྐུར། སྒྲིག་འཇུག་བྱས་ཟིན་པའི་སྐད་སྒྱུར་རྣམས་ལས་ཀ་མུ་མཐུད་བྱེད།"
+
+#: admin/class-babilim-admin.php:2084
+msgid "Supplementary translation index rebuilt."
+msgstr "འགྱུར་བའི་ཁ་སྐོང་གི་ཚད་ལྡན་དཀར་ཆག་བསྐྱར་བཟོ་བྱས་སོང་།"
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2102
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "གཙང་སེལ་ཆ་ཚང་བྱུང་སོང་། ཡིག་ཆ་ %d བསུབས་སོང་།"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2134
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "སྒྲིག་འཇུག་བྱས་པའི་ཆ་ཤས་ %d བསུབས་སོང་།"
+
+#: admin/class-babilim-admin.php:2136
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "རང་འགུལ་སྒྲིག་འཇུག་ད་ལྟ་ཁ་བརྒྱབ་ཡོད། དགོས་ན་སྒྲིག་འགོད་ནང་ཡང་བསྐྱར་ཁ་ཕྱེ།"
+
+#: admin/class-babilim-admin.php:2455
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim གྱིས་དྲ་ཚིགས་འདིའི་སྒྲིག་འཇུག་(plugins)དང་བརྗོད་གཞི་(themes)ནང་ཁྱེད་ཀྱི་སྐད་ཡིག་གི་སྐད་སྒྱུར་མེད་པ་རྣམས་རྙེད་ནས། དེ་རེ་རེར་སྐད་སྒྱུར་རེ་སྒྲིག་འཇུག་བྱེད།"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:2463
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "དྲ་ཚིགས་འདིར་རྙེད་པའི་སྐད་ཡིག %s།"
+
+#: admin/class-babilim-admin.php:2468
+msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
+msgstr "ཡོད་པའི་སྐད་སྒྱུར་རྣམས་མཐེབ་གནོན་ཐེངས་གཅིག་གིས་སྒྲིག་འཇུག་བྱེད་ཐུབ་ལ། མེད་པ་རྣམས་ཞུ་ཆོག དེའི་རྗེས་སུ་སྐད་སྒྱུར་གསར་པ་དང་གསར་སྒྱུར་རྣམས་རང་འགུལ་གྱིས་སྒྲིག་འཇུག་བྱེད། (རིན་མེད་འཆར་གཞིའི་ནང་། རིན་མེད་ས་སྒོ་བཀོལ་ཟིན་པའི་སྒྲིག་འཇུག་དང་བརྗོད་གཞི་རྣམས་ལ་ཁོ་ན།)"
+
+#: admin/class-babilim-admin.php:2469
+msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
+msgstr "རིན་མེད་འཆར་གཞིས་གྲངས་ཚད་བཀག་ཡོད་པའི་ཁ་སྣོན་ལས་རིམ་དང་བརྗོད་གཞི་རྣམས་ལ་ཞབས་ཞུ་སྤྲོད། Babilim གྱི་སྤྱོད་སྒོ་ཕྱེ་རྗེས། ཁྱེད་ཀྱི་ཚད་བཅད་ཀྱི་གྲངས་ཀ་ངེས་ཅན་དེ་སྒྲིག་འགོད་ནང་སྟོན།"
+
+#: admin/class-babilim-admin.php:2470
+msgid "What is sent when you enable Babilim"
+msgstr "Babilim གྱི་སྤྱོད་སྒོ་འབྱེད་སྐབས་བསྐུར་བའི་ཆ་འཕྲིན།"
+
+#: admin/class-babilim-admin.php:2474
+msgid "Enabling…"
+msgstr "སྤྱོད་སྒོ་འབྱེད་བཞིན་པ…"
+
+#: admin/class-babilim-admin.php:2474
+msgid "Enable Babilim"
+msgstr "Babilim གྱི་སྤྱོད་སྒོ་ཕྱེ།"
+
+#: admin/class-babilim-admin.php:2475
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "“སྤྱོད་སྒོ་ཕྱེ།” ལ་བསྣུན་ན། གོང་དུ་བཀོད་པའི་ཆ་འཕྲིན་ Babilim ལ་བསྐུར་བར་ཁས་ལེན་བྱེད་པ་ཡིན།"
+
+#: admin/class-babilim-admin.php:2509
+#: admin/class-babilim-admin.php:2551
+#: admin/class-babilim-admin.php:3831
+msgid "Check again now"
+msgstr "ད་ལྟ་ཡང་བསྐྱར་བརྟག"
+
+#. translators: %d: how many translations were installed automatically.
+#: admin/class-babilim-admin.php:2524
+#, php-format
+msgid "Babilim installed %d translation automatically since your last visit."
+msgid_plural "Babilim installed %d translations automatically since your last visit."
+msgstr[0] "ཁྱེད་ཀྱིས་ཐེངས་སྔོན་མར་དྲ་ཚིགས་འདིར་ལྟ་སྐོར་བྱས་པ་ནས་བཟུང་། Babilim གྱིས་སྐད་སྒྱུར་ %d རང་འགུལ་གྱིས་སྒྲིག་འཇུག་བྱས་སོང་།"
+
+#. translators: %s: when the last attempt happened.
+#: admin/class-babilim-admin.php:2544
+#, php-format
+msgid "Babilim is enabling and checking this site… (last attempt: %s)"
+msgstr "Babilim རང་ཉིད་ལས་ཤུགས་ཅན་དུ་བཏང་ནས་དྲ་ཚིགས་འདི་བརྟག་དཔྱད་བྱེད་བཞིན་ཡོད། (ཐེངས་སྔོན་མའི་འབད་བརྩོན་: %s)"
+
+#: admin/class-babilim-admin.php:2548
+msgid "Check again"
+msgstr "ཡང་བསྐྱར་བརྟག"
+
+#: admin/class-babilim-admin.php:2561
+msgid "No components synced yet."
+msgstr "ཆ་ཤས་གང་ཡང་ད་དུང་མཉམ་སྒྲིག་མ་བྱས།"
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:2582
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d ལེགས་འགྲུབ་བྱུང་།"
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:2586
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d མཆོངས་སོང་།"
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:2590
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d ཕམ་སོང་།"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:2594
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d ད་དུང་ཚོད་ལྟ་མ་བྱས།"
+
+#. translators: %s: the bulk action (download, update or request).
+#: admin/class-babilim-admin.php:2597
+#, php-format
+msgid "Bulk %s:"
+msgstr "སྡེབ་སྒྲུབ་ %s:"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:2600
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s བྱ་རྒྱུ་ཅི་ཡང་མེད།"
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:2603
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:2638
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#: admin/class-babilim-admin.php:2673
+msgid "Continuing…"
+msgstr "མུ་མཐུད་བཞིན་པ།…"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:2676
+#, php-format
+msgid "Continue next batch (%d left)"
+msgstr "ཚན་པ་རྗེས་མ་མུ་མཐུད་པ། (%d ལྷག་ཡོད།)"
+
+#: admin/class-babilim-admin.php:2726
+msgid "Search components"
+msgstr "ཆ་ཤས་བཤེར་འཚོལ།"
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:2733
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "འདི་དག་ནི་དྲ་ཚིགས་འདིས་སྤྱོད་བཞིན་པའི་སྐད་ཡིག་ཡིན། ཁྱེད་ཀྱིས་%sནང་བསྒྱུར་ཆོག"
+
+#: admin/class-babilim-admin.php:2752
+msgid "Upload this component?"
+msgstr "ཆ་ཤས་འདི་ཡར་འཇུག་བྱེད་དམ།"
+
+#: admin/class-babilim-admin.php:2754
+#: includes/class-babilim-upload.php:91
+msgid "There is no upload waiting for confirmation."
+msgstr "གཏན་འཁེལ་སྒུགས་བཞིན་པའི་ཡར་འཇུག་གང་ཡང་མེད།"
+
+#: admin/class-babilim-admin.php:2754
+#: admin/class-babilim-admin.php:2781
+msgid "Back"
+msgstr "ཕྱིར་ལོག"
+
+#: admin/class-babilim-admin.php:2758
+msgid "To translate this component, Babilim needs its source."
+msgstr "ཆ་ཤས་འདི་སྒྱུར་ཆེད། Babilim ལ་འདིའི་ཁུངས་དགོས།"
+
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:2760
+#, php-format
+msgid "The entire plugin or theme directory of %1$s (version %2$s) will be uploaded to Babilim."
+msgstr "%1$s (པར་གཞི་ %2$s) ཡི་ཁ་སྣོན་ལས་རིམ་མམ་བརྗོད་གཞིའི་དཀར་ཆག་ཧྲིལ་པོ་ Babilim ལ་ཡར་འཇུག་བྱེད་ངེས།"
+
+#: admin/class-babilim-admin.php:2761
+msgid "If that directory contains keys, logs or customer data, they will be uploaded too. The service removes common sensitive files (configuration, environment, database dumps, logs, keys) but cannot guarantee it finds everything."
+msgstr "དཀར་ཆག་དེའི་ནང་ལ་ལྡེ་མིག ཉིན་ཐོ་(logs) ཡང་ན་ཚོང་འབྲེལ་མཁོ་སྤྱོད་པའི་གཞི་གྲངས་ཡོད་ན་དེ་དག་ཡང་ཡར་འཇུག་འགྱུར། ཞབས་ཞུའི་མ་ལག་གིས་ཡིག་ཆ་གསང་བ་ཅན་སྤྱིར་བཏང་བ་(སྒྲིག་འགོད། ཁོར་ཡུག གཞི་གྲངས་མཛོད་ཀྱི་འདྲ་བཤུས། ཉིན་ཐོ། ལྡེ་མིག)སེལ་ཡང་ཚང་མ་རྙེད་པའི་ཁག་ཐེག་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:2762
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "ཁྱེད་ཀྱིས་ Babilim ལ་བསུབ་པར་མ་བཤད་བར་ཡར་འཇུག་དེ་ཉར་ཚགས་བྱེད།"
+
+#: admin/class-babilim-admin.php:2763
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "དེ་ཞབས་ཞུའི་ཧོསི་ཊིང་(hosting)མཁོ་སྤྲོད་པས་ཉར་ཚགས་བྱེད་ཅིང་ AI དཔེ་དབྱིབས་ཀྱིས་ཐག་གཅོད་བྱས་ནས་སྐད་སྒྱུར་བཟོ།"
+
+#: admin/class-babilim-admin.php:2764
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "ཡིག་ཆ་ཐོག་མ་དང་དེ་ནས་བཟོས་པའི་འགྱུར་ཡིག་དག་པར་གཞི་གཅིག་པ་སྒྲིག་འཇུག་བྱེད་པའི་དྲ་ཚིགས་གཞན་ལ་སྤྲོད་འགྱུར།"
+
+#: admin/class-babilim-admin.php:2765
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "མུ་མཐུད་ན་ཁྱེད་ཚོར་ཆ་ཤས་འདི་ཡར་འཇུག་བྱེད་པའི་ཐོབ་ཐང་ཡོད་པ་ཁས་ལེན་པ་ཡིན།"
+
+#: admin/class-babilim-admin.php:2766
+msgid "Upload and request"
+msgstr "ཡར་འཇུག་དང་རེ་སྐུལ།"
+
+#: admin/class-babilim-admin.php:2766
+msgid "Uploading…"
+msgstr "ཡར་འཇུག་བྱེད་བཞིན་པ།…"
+
+#: admin/class-babilim-admin.php:2767
+#: admin/class-babilim-admin.php:2786
+#: admin/class-babilim-admin.php:2823
+#: admin/class-babilim-admin.php:2880
+msgid "Cancel"
+msgstr "འདོར་བ།"
+
+#: admin/class-babilim-admin.php:2779
+msgid "Uploading"
+msgstr "ཡར་འཇུག་བྱེད་བཞིན་པ།"
+
+#: admin/class-babilim-admin.php:2781
+#: includes/class-babilim-upload.php:133
+msgid "There is no upload in progress."
+msgstr "ཡར་འཇུག་བྱེད་བཞིན་པ་གང་ཡང་མེད།"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:2784
+#, php-format
+msgid "Uploading part %1$d of %2$d…"
+msgstr "ཆ་ %2$d ནང་གི་ %1$d པ་ཡར་འཇུག་བྱེད་བཞིན་པ།…"
+
+#: admin/class-babilim-admin.php:2785
+msgid "Continue"
+msgstr "མུ་མཐུད།"
+
+#: admin/class-babilim-admin.php:2825
+msgid "Confirm"
+msgstr "གཏན་འཁེལ།"
+
+#: admin/class-babilim-admin.php:2828
+#: admin/class-babilim-admin.php:2892
+#: admin/class-babilim-translations-table.php:691
+msgid "Remove"
+msgstr "བསུབ།"
+
+#: admin/class-babilim-admin.php:2832
+#: admin/class-babilim-admin.php:2891
+#: admin/class-babilim-translations-table.php:690
+msgid "Roll back"
+msgstr "ཕྱིར་ལོག"
+
+#: admin/class-babilim-admin.php:2835
+msgid "Nothing to confirm."
+msgstr "གཏན་འཁེལ་བྱ་རྒྱུ་གང་ཡང་མེད།"
+
+#: admin/class-babilim-admin.php:2881
+msgid "Choose a language"
+msgstr "སྐད་ཡིག་ཅིག་འདེམས།"
+
+#: admin/class-babilim-admin.php:2893
+#: admin/class-babilim-translations-table.php:692
+msgid "Roll back and report"
+msgstr "ཕྱིར་ལོག་ནས་སྙན་སེང་བྱེད།"
+
+#: admin/class-babilim-admin.php:2894
+#: admin/class-babilim-admin.php:3906
+#: admin/class-babilim-translations-table.php:693
+msgid "Report a problem"
+msgstr "དཀའ་ངལ་ཞིག་སྙན་སེང་བྱེད།"
+
+#: admin/class-babilim-admin.php:2898
+msgid "Nothing to choose."
+msgstr "འདེམས་རྒྱུ་གང་ཡང་མེད།"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:2904
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s། སྐད་ཡིག་འདེམས།"
+
+#: admin/class-babilim-admin.php:3050
+msgid "Supplementary translations"
+msgstr "ཁ་སྣོན་འགྱུར་ཡིག"
+
+#: admin/class-babilim-admin.php:3051
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "ཆ་ཤས་རེ་རེས་སྐད་ཡིག་རེ་རེའི་མཉམ་སྤྱོད་ཀྱི་ default text domain གི་ཁ་སྣོན་ལ་ཞུགས་པའི་ཆ་ཤས།"
+
+#: admin/class-babilim-admin.php:3053
+#: admin/class-babilim-translations-table.php:399
+msgid "Component"
+msgstr "ཆ་ཤས།"
+
+#: admin/class-babilim-admin.php:3054
+#: admin/class-babilim-admin.php:3737
+msgid "Language"
+msgstr "སྐད་ཡིག"
+
+#: admin/class-babilim-admin.php:3055
+msgid "Included in index"
+msgstr "དཀར་ཆག་ནང་ཚུད་ཡོད"
+
+#: admin/class-babilim-admin.php:3056
+msgid "Entries"
+msgstr "ཐོ་འགོད"
+
+#: admin/class-babilim-admin.php:3057
+#: admin/class-babilim-admin.php:3741
+msgid "Conflicting keys"
+msgstr "འགལ་ཟླ་ཅན་གྱི་ལྡེ་མིག"
+
+#: admin/class-babilim-admin.php:3060
+msgid "Yes"
+msgstr "ཡིན"
+
+#: admin/class-babilim-admin.php:3077
+msgid "No — component inactive"
+msgstr "མིན — ཆ་ཤས་སྐུལ་སློང་བྱས་མེད"
+
+#: admin/class-babilim-admin.php:3079
+msgid "No — installed version differs from the active one"
+msgstr "མིན — སྒྲིག་འཇུག་བྱས་པའི་པར་གཞི་དང་ད་ལྟ་བེད་སྤྱོད་བྱེད་བཞིན་པ་མི་འད།"
+
+#: admin/class-babilim-admin.php:3081
+msgid "No — component removed"
+msgstr "མིན — ཆ་ཤས་འདི་བསུབས་ཟིན"
+
+#: admin/class-babilim-admin.php:3083
+msgid "No"
+msgstr "མིན"
+
+#: admin/class-babilim-admin.php:3105
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "འདི་ནི་དྲ་རྒྱ་འདིའི་དྲ་ཚིགས་ཚང་མས་མཉམ་སྤྱོད་བྱེད་པའི་ཡིག་སྒྱུར་ཡིག་ཆ་བརྗེ་བའི་ཕྱིར། དྲ་རྒྱའི་དོ་དམ་པས་ཁོ་ན་བྱེད་ཐུབ།"
+
+#: admin/class-babilim-admin.php:3121
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim གྱིས་དྲ་ཚིགས་འདིའི་ར་སྤྲོད་མཇུག་སྒྲིལ་མ་ཐུབ། (ཞབས་ཞུ་དེས་དྲ་ཚིགས་འདིར་ཕྱིར་འབྲེལ་བྱེད་མ་ཐུབ།) ཐོ་འགོད་གནས་སྐབས་མཚམས་བཞག་ཡོད།"
+
+#: admin/class-babilim-admin.php:3122
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "དྲ་ཚིགས་འདིར་ནུས་ལྡན་གྱི་ཐོ་འགོད་ཡོད་ཅིང་། རང་འགུལ་གྱིས་སླར་གསོ་བྱེད་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:3129
+msgid "Restart registration"
+msgstr "ཐོ་འགོད་བསྐྱར་འགོ་འཛུགས།"
+
+#: admin/class-babilim-admin.php:3156
+msgid "Babilim settings"
+msgstr "Babilim སྒྲིག་འགོད།"
+
+#: admin/class-babilim-admin.php:3163
+msgid "General"
+msgstr "སྤྱིར་བཏང་།"
+
+#: admin/class-babilim-admin.php:3164
+msgid "Advanced"
+msgstr "མཐོ་རིམ།"
+
+#: admin/class-babilim-admin.php:3189
+msgid "Languages"
+msgstr "སྐད་ཡིག"
+
+#: admin/class-babilim-admin.php:3191
+msgid "Automatic installs"
+msgstr "རང་འགུལ་སྒྲིག་འཇུག"
+
+#: admin/class-babilim-admin.php:3193
+msgid "Install available translations automatically"
+msgstr "ཡོད་པའི་ཡིག་སྒྱུར་རང་འགུལ་གྱིས་སྒྲིག་འཇུག་བྱ།"
+
+#: admin/class-babilim-admin.php:3194
+msgid "On the free plan, only components that already use one of your free slots are installed automatically, so no new slot is taken."
+msgstr "རིན་མེད་འཆར་གཞི་ལ། རིན་མེད་གྱི་གླེགས་བུའི་གནས་ཚད་གཅིག་བེད་སྤྱོད་བྱས་ཟིན་པའི་ཆ་ཤས་ཁོ་ན་རང་འགུལ་གྱིས་སྒྲིག་འཇུག་བྱེད་པས། གནས་ཚད་གསར་པ་མི་ལེན།"
+
+#: admin/class-babilim-admin.php:3195
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "དྲ་ཚིགས་འདི་ནི་དྲ་ཚིགས་མང་པོའི་དྲ་རྒྱའི་ཆ་ཤས་ཡིན་པས། ཡིག་སྒྱུར་གསར་པ་རང་འགུལ་གྱིས་སྒྲིག་འཇུག་མི་བྱེད། སྒྲིག་འཇུག་བྱས་ཟིན་པ་རྣམས་ད་དུང་གསར་སྤར་བྱེད།"
+
+#: admin/class-babilim-admin.php:3198
+msgid "Custom overrides"
+msgstr "རང་མཚན་ཅན་གྱི་བརྗེ་སྒྱུར"
+
+#: admin/class-babilim-admin.php:3200
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "ཚང་མ་གཙང་སྦྲ་བྱེད་སྐབས་ཡང་ན་ཁ་སྣོན་འདི་སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས། ངའི་རང་གི་ཡིག་སྒྱུར་བརྗེ་སྒྱུར་རྣམས་ཉར་ཚགས་བྱ།"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "ཁྱེད་ཀྱིས %s ནང་བཞག་པའི་ཡིག་སྒྱུར་ཡིག་ཆ་རྣམས་ Babilim གྱི་ཡིག་སྒྱུར་ཡིག་ཆ་ལས་རྟག་ཏུ་སྔོན་ལ་བེད་སྤྱོད་བྱེད། འདིའི་འདེམས་རྟགས་མ་བསལ་ན་ཡིག་ཆ་དེ་དག་ཉར་ཚགས་བྱེད།"
+
+#: admin/class-babilim-admin.php:3207
+msgid "Uninstall"
+msgstr "སྒྲིག་འཇུག་མེད་པ་བྱ།"
+
+#: admin/class-babilim-admin.php:3209
+msgid "Delete all Babilim data on uninstall"
+msgstr "སྒྲིག་འཇུག་མེད་པ་བྱེད་སྐབས་ Babilim གྱི་གཞི་གྲངས་ཚང་མ་སུབ།"
+
+#: admin/class-babilim-admin.php:3210
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "སོར་བཞག་ཏུ་ཁ་ཕྱེ་མེད། ཁ་སྣོན་སུབ་ཀྱང་དྲ་ཚིགས་འདིའི་ངོ་འཕྲོད་ཉར་ཡོད་པས། བསྐྱར་སྒྲིག་འཇུག་བྱས་ན་བེད་སྤྱོད་བྱེད་ཐུབ།"
+
+#: admin/class-babilim-admin.php:3213
+msgid "Account"
+msgstr "ཐོ་ཁོངས།"
+
+#: admin/class-babilim-admin.php:3216
+msgid "Save changes"
+msgstr "བཟོ་བཅོས་ཉར་ཚགས་བྱ།"
+
+#: admin/class-babilim-admin.php:3219
+#: admin/class-babilim-admin.php:3224
+msgid "Disable Babilim"
+msgstr "Babilim ནུས་མེད་བཟོ།"
+
+#: admin/class-babilim-admin.php:3220
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "སྒྲིག་འཇུག་བྱས་ཟིན་པའི་ཡིག་སྒྱུར་ཉར་ཡོད་ཀྱང་། ཞིབ་བཤེར་དང་ཕབ་ལེན་ཁ་སྣོན་མི་བྱེད།"
+
+#: admin/class-babilim-admin.php:3224
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Babilim ནུས་མེད་བཟོ་ཡིན་ནམ། སྒྲིག་འཇུག་བྱས་ཟིན་པའི་ཡིག་སྒྱུར་ཉར་ཡོད་ཀྱང་། ཞིབ་བཤེར་དང་ཕབ་ལེན་ཁ་སྣོན་མི་བྱེད།"
+
+#: admin/class-babilim-admin.php:3280
+#: admin/class-babilim-admin.php:3514
+#: admin/class-babilim-admin.php:3554
+#: includes/class-babilim-site.php:848
+#: includes/class-babilim-sync-installer.php:320
+msgid "This site is not registered with Babilim yet."
+msgstr "དྲ་ཚིགས་འདི་ Babilim ལ་ད་དུང་ཐོ་འགོད་མ་བྱས།"
+
+#: admin/class-babilim-admin.php:3288
+msgid "This site is already licensed. Reload the page."
+msgstr "དྲ་ཚིགས་འདིར་ཆོག་མཆན་ཡོད་ཟིན། ཤོག་ངོས་བསྐྱར་ལེན་བྱ།"
+
+#: admin/class-babilim-admin.php:3290
+#: admin/class-babilim-admin.php:3301
+msgid "Checkout is not available for this site right now."
+msgstr "ད་ལྟ་དྲ་ཚིགས་འདིར་འཛིན་ཕྲི་བེད་སྤྱོད་བྱེད་མི་ཐུབ།"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3293
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "འཛིན་ཕྲི་འགོ་འཛུགས་མ་ཐུབ། %s"
+
+#: admin/class-babilim-admin.php:3376
+msgid "Babilim is not enabled."
+msgstr "Babilim ནུས་ལྡན་བཟོས་མེད།"
+
+#: admin/class-babilim-admin.php:3379
+msgid "Not registered yet"
+msgstr "ད་དུང་ཐོ་འགོད་མ་བྱས།"
+
+#: admin/class-babilim-admin.php:3381
+msgid "Not verified"
+msgstr "ར་སྤྲོད་མ་བྱས།"
+
+#: admin/class-babilim-admin.php:3383
+msgid "Verified"
+msgstr "ར་སྤྲོད་བྱས་ཟིན།"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Status"
+msgstr "གནས་སྟངས།"
+
+#: admin/class-babilim-admin.php:3396
+msgid "Licensed"
+msgstr "ཆོག་མཆན་ཐོབ་ཟིན།"
+
+#: admin/class-babilim-admin.php:3398
+msgid "Partner"
+msgstr "མཉམ་ལས་པ།"
+
+#: admin/class-babilim-admin.php:3400
+msgid "Free"
+msgstr "རིན་མེད།"
+
+#: admin/class-babilim-admin.php:3404
+msgid "License"
+msgstr "ཆོག་མཆན།"
+
+#: admin/class-babilim-admin.php:3407
+#: admin/class-babilim-translations-table.php:865
+msgid "Upgrade this site"
+msgstr "དྲ་ཚིགས་འདི་རིམ་འཕར་བྱེད།"
+
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:3411
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "དྲ་ཚིགས་འདིའི་ཆེད་དུ་ཐེངས་གཅིག་གི་ཉོ་སྒྲུབ། %1$s %2$s། མ་འོངས་པའི་ཡིག་སྒྱུར་གསར་སྒྱུར་ཚང་མ་ཚུད་ཡོད། དངུལ་སྤྲོད་ཀྱི་ལས་རིམ་ནི་བཤེར་ཆས་ཀྱི་ཤོག་བྱང་གསར་པ་ཞིག་ཏུ་ Paddle ཡིས་འགན་འཁུར་བྱེད།"
+
+#: admin/class-babilim-admin.php:3468
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "འདིས་སླར་གསོའི་ཚགས་རྟགས་གསར་པ་ཞིག་སྤྲོད་ཅིང་སྔོན་མ་དེ་ནུས་མེད་ཡིན་པར་འགྱུར། མུ་མཐུད་དམ།"
+
+#: admin/class-babilim-admin.php:3468
+msgid "Show a new restore code"
+msgstr "སླར་གསོའི་ཚགས་རྟགས་གསར་པ་སྟོན།"
+
+#: admin/class-babilim-admin.php:3470
+msgid "rc_…"
+msgstr "rc_…"
+
+#: admin/class-babilim-admin.php:3470
+msgid "Restore code"
+msgstr "སླར་གསོའི་ཚགས་རྟགས།"
+
+#: admin/class-babilim-admin.php:3471
+msgid "Restore purchase"
+msgstr "ཉོ་སྒྲུབ་སླར་གསོ།"
+
+#: admin/class-babilim-admin.php:3472
+msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
+msgstr "ཁྱེད་ཀྱིས་སྔོན་ཆད་ཁྱབ་ཁོངས་འདིའི་ཆོག་མཆན་ཉོས་མྱོང་ངམ། འཛིན་ཕྲི་བྱེད་སྐབས་ཐོབ་པའི་སླར་གསོའི་ཚགས་རྟགས་འཇུག་རོགས།"
+
+#: admin/class-babilim-admin.php:3508
+msgid "That does not look like a restore code."
+msgstr "འདི་སླར་གསོའི་ཚགས་རྟགས་ལྟར་མི་སྣང་།"
+
+#: admin/class-babilim-admin.php:3522
+msgid "This restore code was not recognised for this site."
+msgstr "སླར་གསོའི་ཚགས་རྟགས་འདི་དྲ་ཚིགས་འདིའི་ཆེད་དུ་ངོས་འཛིན་མ་ཐུབ།"
+
+#: admin/class-babilim-admin.php:3524
+msgid "Too many attempts. Try again tomorrow."
+msgstr "ཐེངས་མང་དྲག་སོང་། སང་ཉིན་ཡང་བསྐྱར་ཚོད་ལྟ་བྱོས།"
+
+#: admin/class-babilim-admin.php:3526
+msgid "This site must be verified first."
+msgstr "དྲ་ཚིགས་འདི་ཐོག་མར་ར་སྤྲོད་བྱ་དགོས།"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3529
+#, php-format
+msgid "Could not restore the purchase: %s"
+msgstr "ཉོ་སྒྲུབ་སླར་གསོ་བྱེད་མ་ཐུབ། %s"
+
+#: admin/class-babilim-admin.php:3539
+msgid "Purchase restored. This site is now licensed."
+msgstr "ཉོ་སྒྲུབ་སླར་གསོ་བྱས་ཟིན། དྲ་ཚིགས་འདིར་ད་ལྟ་ཆོག་མཆན་ཡོད།"
+
+#: admin/class-babilim-admin.php:3562
+msgid "This site has no purchase to show a code for."
+msgstr "དྲ་ཚིགས་འདིར་ཚགས་རྟགས་སྟོན་རྒྱུའི་ཉོ་སྒྲུབ་མེད།"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3565
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "སླར་གསོའི་ཚགས་རྟགས་གསར་པ་སྟོན་མ་ཐུབ། %s"
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:3576
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "ཁྱེད་ཀྱི་སླར་གསོའི་ཚགས་རྟགས་གསར་པ། %s། བདེ་འཇགས་ཀྱི་ས་ཚིགས་ཤིག་ཏུ་སྲུངས། སྔོན་མའི་ཚགས་རྟགས་ད་ནས་ནུས་མེད་ཡིན།"
+
+#: admin/class-babilim-admin.php:3591
+msgid "What is sent when Babilim checks this site"
+msgstr "Babilim གྱིས་དྲ་ཚིགས་འདི་ཞིབ་བཤེར་བྱེད་སྐབས་གཏོང་བའི་གནས་ཚུལ།"
+
+#: admin/class-babilim-admin.php:3620
+msgid "(detected)"
+msgstr "(ཤེས་རྟོགས་བྱས་ཟིན)"
+
+#: admin/class-babilim-admin.php:3623
+msgid "No language is managed yet."
+msgstr "ད་ལྟ་སྐད་ཡིག་གང་ཡང་དོ་དམ་བྱེད་མེད།"
+
+#: admin/class-babilim-admin.php:3625
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim གྱིས་འདིར་རྟགས་བཀོད་པའི་སྐད་ཡིག་རེ་རེའི་འགྱུར་ཡིག་སྣོན་སྤྲོད་བྱེད།"
+
+#: admin/class-babilim-admin.php:3630
+msgid "Add another language"
+msgstr "སྐད་ཡིག་གཞན་ཞིག་སྣོན།"
+
+#: admin/class-babilim-admin.php:3631
+msgid "Choose a language…"
+msgstr "སྐད་ཡིག་ཅིག་གདམ་པ།…"
+
+#: admin/class-babilim-admin.php:3637
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "ཞབས་ཞུའི་ཁུངས་ནས་WordPress.org ཀྱི་སྐད་ཡིག་ཐོ་གཞུང་ཆ་ཚང་ལེན་མ་ཐུབ་པས། ད་ལྟ་སྐད་ཡིག་གཞན་སྣོན་མི་ཐུབ།"
+
+#: admin/class-babilim-admin.php:3689
+msgid "Theme"
+msgstr "བརྗོད་གཞི།"
+
+#: admin/class-babilim-admin.php:3689
+msgid "Plugin"
+msgstr "འཕར་སྣོན།"
+
+#: admin/class-babilim-admin.php:3696
+msgid "Free quota"
+msgstr "རིན་མེད་ཚད་བཅད"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "daily".
+#: admin/class-babilim-admin.php:3703
+#, php-format
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "ཕབ་ལེན། %1$d/%2$d (%3$s)"
+
+#: admin/class-babilim-admin.php:3735
+msgid "Supplementary translation index"
+msgstr "འགྱུར་བའི་ཁ་སྐོང་གི་ཚད་ལྡན་དཀར་ཆག"
+
+#: admin/class-babilim-admin.php:3738
+msgid "Built"
+msgstr "བཟོས་ཟིན"
+
+#: admin/class-babilim-admin.php:3739
+msgid "Included"
+msgstr "ཚུད་ཡོད"
+
+#: admin/class-babilim-admin.php:3740
+msgid "Excluded"
+msgstr "སྤངས་ཡོད"
+
+#: admin/class-babilim-admin.php:3742
+msgid "Already in WordPress core"
+msgstr "WordPress ཡི་ལྟེ་བའི་མ་ལག་ནང་ཡོད་ཟིན"
+
+#: admin/class-babilim-admin.php:3761
+msgid "Supplementary translation maintenance"
+msgstr "འགྱུར་བའི་ཁ་སྐོང་གི་ཉམས་གསོ།"
+
+#: admin/class-babilim-admin.php:3764
+msgid "Maintenance status is not available right now."
+msgstr "ད་ལྟ་ཉམས་གསོའི་གནས་སྟངས་ལེན་མི་ཐུབ།"
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:3772
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "གཙང་སེལ་ཞིག་ %1$s ལ་མཚམས་འཇོག་བྱས། རྒྱུ་མཚན། %2$s། ཅི་ཡང་བསུབས་མེད།"
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:3782
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "%1$s ཉིན་གྱི་གཙང་སེལ་མཐའ་མ། %2$d གསར་དུ་རྟགས་བཀོད་བྱས། ཡིག་ཆ་ %3$d བསུབས། ཐོ་འགོད་ %4$d སྤངས།"
+
+#: admin/class-babilim-admin.php:3789
+msgid "No cleanup has run yet."
+msgstr "གཙང་སེལ་ད་དུང་མ་བྱས།"
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:3800
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "%1$s ཐོག་འགྱུར་བའི་དཀར་ཆག་ཏུ་འབྲི་བ་ (%2$s) དང་རེ་ཞུ་གཞན་ཞིག་གཉིས་འགལ་བས་ལག་བསྟར་མ་བྱས། ཐོན་རིམ་གསར་ཤོས་ཉར་ཚགས་བྱས།"
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:3813
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "%1$s ཐོག་འགྱུར་བའི་དཀར་ཆག་ཏུ་འབྲི་བ་ (%2$s) མཇུག་མ་སྒྲུབ་པས་ལག་བསྟར་མ་བྱས། (%3$s)"
+
+#: admin/class-babilim-admin.php:3829
+msgid "Maintenance"
+msgstr "རྒྱུན་སྐྱོང་།"
+
+#: admin/class-babilim-admin.php:3840
+msgid "Rebuild index now"
+msgstr "དཀར་ཆག་ད་ལྟ་བསྐྱར་བཟོ།"
+
+#: admin/class-babilim-admin.php:3846
+msgid "Sweep now"
+msgstr "ད་ལྟ་གཙང་སེལ།"
+
+#: admin/class-babilim-admin.php:3862
+msgid "Danger zone"
+msgstr "ཉེན་ཁའི་ས་ཁུལ།"
+
+#: admin/class-babilim-admin.php:3870
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "དྲ་ཚིགས་འདི་ཐོག་གི་ཁ་སྣོན་དང་བརྗོད་གཞིའི་ཆེད་དུ་ Babilim གྱིས་འཇུག་སྒྲིག་བྱས་པའི་སྐད་ཡིག་ཡིག་ཆ་ཡོངས་རྫོགས་སུབ་བྱེད།"
+
+#: admin/class-babilim-admin.php:3871
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Babilim གྱིས་འཇུག་སྒྲིག་བྱས་པ་ཐམས་ཅད་སུབ་བམ། འདིས་དྲ་ཚིགས་འདི་ཐོག་གི་ཁ་སྣོན་དང་བརྗོད་གཞི་ཡོངས་ཀྱི་ཆེད་དུ་ཁོང་གིས་འཇུག་སྒྲིག་བྱས་པའི་སྐད་ཡིག་ཡིག་ཆ་ཐམས་ཅད་སུབ་ངེས།"
+
+#: admin/class-babilim-admin.php:3871
+msgid "Remove everything Babilim installed"
+msgstr "Babilim གྱིས་འཇུག་སྒྲིག་བྱས་པ་ཐམས་ཅད་སུབ་"
+
+#: admin/class-babilim-admin.php:3910
+msgid "This string is too long to be sent as a report, so no report form is offered for it."
+msgstr "ཡིག་ཕྲེང་འདི་རིང་དྲགས་པས་སྙན་ཞུ་རུ་གཏོང་མི་ཐུབ། དེའི་ཕྱིར་འདིའི་ཆེད་དུ་སྙན་ཞུའི་འགེངས་ཤོག་མི་སྤྲོད།"
+
+#: admin/class-babilim-admin.php:3937
+msgid "Category"
+msgstr "རིགས།"
+
+#: admin/class-babilim-admin.php:3939
+msgid "Choose a category…"
+msgstr "རིགས་ཤིག་འདེམས།"
+
+#: admin/class-babilim-admin.php:3954
+msgid "Roll back and send report"
+msgstr "ཕྱིར་ལོག་ནས་སྙན་ཞུ་གཏོང་།"
+
+#: admin/class-babilim-admin.php:3954
+msgid "Send report"
+msgstr "སྙན་ཞུ་གཏོང་།"
+
+#: admin/class-babilim-cell.php:61
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "ཆ་ཤས་འདིའི་ཡིག་གེ་ཁ་ཤས་དེའི་རྩོམ་པ་པོས་ཚབ་རྟགས་ནང་ཐད་ཀར་བཅུག་ཡོད་པས། སྐད་ཡིག་ཐུམ་བུ་བརྒྱུད་ནས་སྐད་སྒྱུར་བྱེད་མི་ཐུབ།"
+
+#: admin/class-babilim-cell.php:101
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-cell.php:104
+msgid "Bundled with the theme"
+msgstr "བརྗོད་གཞིའི་ཁོངས་སུ་ཡོད་པ།"
+
+#: admin/class-babilim-cell.php:105
+msgid "Bundled with the plugin"
+msgstr "ཁ་སྣོན་གྱི་ཁོངས་སུ་ཡོད་པ།"
+
+#: admin/class-babilim-cell.php:112
+msgid "Upload was not accepted"
+msgstr "སྐྱེལ་འཇུག་ལ་དང་ལེན་མ་བྱས།"
+
+#: admin/class-babilim-cell.php:115
+msgid "Upload expired before it finished"
+msgstr "སྐྱེལ་འཇུག་མ་ཚར་བའི་སྔོན་དུ་དུས་ལས་ཡོལ།"
+
+#: admin/class-babilim-cell.php:117
+msgid "No translation"
+msgstr "འགྱུར་ཡིག་མེད།"
+
+#: admin/class-babilim-cell.php:123
+#: admin/class-babilim-cell.php:125
+#: admin/class-babilim-cell.php:254
+#: admin/class-babilim-cell.php:256
+msgid "Upload in progress — continue or cancel"
+msgstr "སྐྱེལ་འཇུག་བྱེད་བཞིན་པ། — མུ་མཐུད་པའམ་ཕྱིར་འཐེན།"
+
+#: admin/class-babilim-cell.php:127
+msgid "Scheduled, waiting to be processed"
+msgstr "དུས་བཀག་བྱས་ཟིན། ཐག་གཅོད་ལ་སྒུགས་བཞིན་ཡོད།"
+
+#: admin/class-babilim-cell.php:129
+msgid "Translating…"
+msgstr "སྐད་སྒྱུར་བྱེད་བཞིན་པ…"
+
+#: admin/class-babilim-cell.php:131
+msgid "Translation failed"
+msgstr "སྐད་སྒྱུར་ལེགས་འགྲུབ་མ་བྱུང་།"
+
+#: admin/class-babilim-cell.php:133
+msgid "Free quota used"
+msgstr "རིན་མེད་ཀྱི་ཚད་བཅད་བེད་སྤྱོད་བྱས་ཟིན།"
+
+#: admin/class-babilim-cell.php:135
+msgid "Needs a paid license"
+msgstr "རིན་དང་བཅས་པའི་ཆོག་མཆན་དགོས།"
+
+#: admin/class-babilim-cell.php:137
+msgid "Not supported"
+msgstr "རྒྱབ་སྐྱོར་མེད།"
+
+#: admin/class-babilim-cell.php:139
+msgid "Status unknown"
+msgstr "གནས་སྟངས་མི་ཤེས།"
+
+#: admin/class-babilim-cell.php:159
+#: admin/class-babilim-cell.php:186
+#: admin/class-babilim-cell.php:304
+msgctxt "translation status"
+msgid "Installed"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན།"
+
+#: admin/class-babilim-cell.php:172
+#: admin/class-babilim-cell.php:174
+msgid "Update available"
+msgstr "གསར་སྒྱུར་ཡོད།"
+
+#: admin/class-babilim-cell.php:199
+msgid "Removed after a failed integrity check"
+msgstr "ཆ་ཚང་རང་བཞིན་ཞིབ་བཤེར་ཕམ་པས་བསུབས་ཟིན།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:259
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · %s ལ་བཟོས་པ། ཐོན་རིམ་གསར་པ་དུས་བཀག་བྱས་ཟིན།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:259
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འད་བ་ལ་བཟོས་པ། ཐོན་རིམ་གསར་པ་དུས་བཀག་བྱས་ཟིན།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:263
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · %s ལ་བཟོས་པ། ཐོན་རིམ་གསར་པ་སྐད་བསྒྱུར་བྱེད་བཞིན་པ…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:263
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འདྲ་བ་ལ་བཟོས་པ། ཐོན་རིམ་གསར་པ་སྐད་བསྒྱུར་བྱེད་བཞིན་པ…"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:268
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · %1$s ལ་བཟོས་པ། དྲ་ཚིགས་འདིར་ %2$s ཡོད།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:272
+#: admin/class-babilim-cell.php:288
+#, php-format
+msgid "Installed · built for %s"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · %s ལ་བཟོས་པ།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:272
+#: admin/class-babilim-cell.php:288
+msgid "Installed · built for a different version"
+msgstr "འཇུག་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འད་བ་ལ་བཟོས་པ།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:276
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · %s ཆེད་དུ་བཟོས་པ། ཐོན་རིམ་གསར་པ་ཕམ་ཁ་བྱུང་།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:276
+msgid "Installed · built for a different version, new version failed"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འད་བ་ཞིག་གི་ཆེད་དུ་བཟོས་པ། ཐོན་རིམ་གསར་པ་ཕམ་ཁ་བྱུང་།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:280
+#, php-format
+msgid "Installed · built for %s, new version needs a paid license"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · %s ཆེད་དུ་བཟོས་པ། ཐོན་རིམ་གསར་པར་རིན་དང་བཅས་པའི་ཆོག་མཆན་དགོས།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:280
+msgid "Installed · built for a different version, new version needs a paid license"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འད་བ་ཞིག་གི་ཆེད་དུ་བཟོས་པ། ཐོན་རིམ་གསར་པར་རིན་དང་བཅས་པའི་ཆོག་མཆན་དགོས།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:284
+#, php-format
+msgid "Installed · built for %s, free quota used"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · %s ཆེད་དུ་བཟོས་པ། རིན་མེད་ཀྱི་ཚད་བཅད་བཀོལ་ཚར།"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:284
+msgid "Installed · built for a different version, free quota used"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · ཐོན་རིམ་མི་འད་བ་ཞིག་གི་ཆེད་དུ་བཟོས་པ། རིན་མེད་ཀྱི་ཚད་བཅད་བཀོལ་ཚར།"
+
+#: admin/class-babilim-cell.php:304
+msgctxt "translation status"
+msgid "Available"
+msgstr "ཐོབ་ཐུབ།"
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:308
+#, php-format
+msgid "Installed · %s"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན། · %s"
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:311
+#, php-format
+msgid "Available · %s"
+msgstr "ཐོབ་ཐུབ། · %s"
+
+#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-translations-table.php:412
+msgid "Update"
+msgstr "གསར་སྒྱུར།"
+
+#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-translations-table.php:411
+msgid "Download"
+msgstr "ཕབ་ལེན།"
+
+#: admin/class-babilim-cell.php:351
+msgid "Updating…"
+msgstr "གསར་སྒྱུར་བྱེད་བཞིན་པ…"
+
+#: admin/class-babilim-cell.php:351
+msgid "Downloading…"
+msgstr "ཕབ་ལེན་བྱེད་བཞིན་པ…"
+
+#: admin/class-babilim-cell.php:354
+msgid "Retry request"
+msgstr "རེ་ཞུ་བསྐྱར་དུ་བྱེད།"
+
+#: admin/class-babilim-cell.php:356
+msgid "Request newer translation"
+msgstr "ལོ་ཙཱ་གསར་བ་ཞིག་རེ་ཞུ་བྱེད།"
+
+#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-translations-table.php:413
+msgid "Request translation"
+msgstr "འགྱུར་བ་རེ་ཞུ་བྱེད།"
+
+#: admin/class-babilim-cell.php:358
+msgid "Requesting…"
+msgstr "རེ་ཞུ་བྱེད་བཞིན་པ…"
+
+#: admin/class-babilim-translations-table.php:35
+msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
+msgstr "འགྱུར་བ་རེ་ཞུ་བྱེད་ན་ཆ་ཤས་འདིས་རིན་མེད་གྱི་གླེགས་བུའི་གནས་ཚད་ཅིག་བཀོལ་ཟིན་མེད་ན་ཁྱེད་ཀྱི་རིན་མེད་གྱི་གླེགས་བུའི་གནས་ཚད་ཅིག་བཀོལ་གྱི་ཡོད། འགྱུར་བ་ཕམ་ན་གནས་ཚད་དེ་ཕྱིར་མི་སྤྲོད།"
+
+#: admin/class-babilim-translations-table.php:42
+msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
+msgstr "ཆ་ཤས་འདིས་རིན་མེད་གྱི་གླེགས་བུའི་གནས་ཚད་ཅིག་བཀོལ་ཟིན་མེད་ན། འགྱུར་བ་རེ་ཞུ་བྱེད་པས་གཅིག་བཀོལ་གྱི་ཡོད། འགྱུར་བ་ཕམ་ན་གནས་ཚད་དེ་ཕྱིར་མི་སྤྲོད། མུ་མཐུད་དམ།"
+
+#: admin/class-babilim-translations-table.php:382
+msgid "No plugins or themes found."
+msgstr "ཁ་སྣོན་དང་བརྗོད་གཞི་གང་ཡང་མ་ཐོབ།"
+
+#: admin/class-babilim-translations-table.php:386
+msgid "Clear filters"
+msgstr "འཚག་སྒྲུབ་སྤངས།"
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:388
+#, php-format
+msgid "No components match these filters. %s"
+msgstr "ཆ་ཤས་གང་ཡང་འཚག་སྒྲུབ་འདིར་མི་མཐུན། %s"
+
+#: admin/class-babilim-translations-table.php:398
+msgid "Select all"
+msgstr "ཚང་མ་འདེམས།"
+
+#: admin/class-babilim-translations-table.php:424
+#: admin/class-babilim-translations-table.php:472
+msgid "All"
+msgstr "ཚང་མ།"
+
+#: admin/class-babilim-translations-table.php:425
+msgid "Available"
+msgstr "ཐོབ་ཐུབ།"
+
+#: admin/class-babilim-translations-table.php:426
+msgid "Updates"
+msgstr "གསར་སྒྱུར།"
+
+#: admin/class-babilim-translations-table.php:427
+msgid "Requestable"
+msgstr "རེ་ཞུ་བྱེད་ཆོག་པ།"
+
+#: admin/class-babilim-translations-table.php:428
+msgid "Installed"
+msgstr "བཀོད་སྒྲིག་བྱས་ཟིན།"
+
+#: admin/class-babilim-translations-table.php:473
+msgid "Plugins"
+msgstr "ཁ་སྣོན།"
+
+#: admin/class-babilim-translations-table.php:474
+msgid "Themes"
+msgstr "བརྗོད་གཞི།"
+
+#: admin/class-babilim-translations-table.php:499
+msgid "All languages"
+msgstr "སྐད་ཡིག་ཚང་མ།"
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:502
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "%d བཀོད་སྒྲིག་བྱ་རྒྱུ།"
+
+#: admin/class-babilim-translations-table.php:511
+msgid "Language:"
+msgstr "སྐད་ཡིག:"
+
+#: admin/class-babilim-translations-table.php:547
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "སྡེབ་སྒྲིག་བྱ་འགུལ་རྣམས་བདམས་པའི་ཆ་ཤས་རེ་རེའི་ཆ་རྐྱེན་དང་མཐུན་པའི་སྐད་ཡིག་ཚང་མར་འཇུག་གི་ཡོད།"
+
+#: admin/class-babilim-translations-table.php:548
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "སྡེབ་སྒྲིག་བྱ་འགུལ་རྣམས་བདམས་པའི་ཆ་ཤས་རེ་རེའི་བདམས་པའི་སྐད་ཡིག་ཁོ་ནར་འཇུག་གི་ཡོད།"
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:572
+#, php-format
+msgid "Version %s"
+msgstr "ཐོན་རིམ་ %s"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:575
+#, php-format
+msgid "Theme · %s"
+msgstr "བརྗོད་གཞི · %s"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:578
+#, php-format
+msgid "Plugin · %s"
+msgstr "ཁ་སྣོན · %s"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:635
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "དྲ་ཚིགས་འདི་ནས་ %1$s གྱི་ %2$s སྐད་ཡིག་གི་འགྱུར་བ་བསུབ་བམ།"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:638
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "%1$s གྱི་ %2$s སྐད་ཡིག་གི་འགྱུར་བ་དེ་བཟོ་བསྐྲུན་ཐོན་རིམ་སྔོན་མར་ཕྱིར་ལོག་བྱེད་དམ།"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:731
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:734
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "ཐོ་འགོད་ཀྱི་ར་སྤྲོད་བརྟག་དཔྱད་(challenge)དེ་རེ་འདོད་ཀྱི་རྣམ་པར་མི་གནས།"
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "དེ་ནི་ནུས་ལྡན་གྱི་བཟོ་བསྐྲུན་ཐོན་རིམ་ངོ་རྟགས་མ་ཡིན།"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Babilim གི་སྐད་ཡིག་ཡིག་ཆའི་ཡིག་སྣོད་ཕྱི་རོལ་ལ་འབྲི་མི་ཆོག"
+
+#: includes/class-babilim-api-client.php:331
+msgid "Could not write the downloaded package to disk."
+msgstr "ཕབ་ལེན་བྱས་པའི་ཐུམ་བུ་སྡུད་སྡེར་ལ་འབྲི་མ་ཐུབ།"
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:592
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "རེ་མ་བྱས་པའི་ HTTP %d ལན།"
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "དྲ་ཚིགས་འདིའི་ URL། ཞབས་ཞུ་ཡིས་ཁྱེད་རང་གི་ཡིན་པ་ར་སྤྲོད་ཐུབ་ཆེད།"
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "ཁྱེད་ཀྱི་ WordPress པར་གཞི། དེ་དང་མཐུན་སྒྲིག་ཡོད་པའི་འགྱུར་ཡིག་ཡིག་ཆ་སྤྲོད་ཆེད།"
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "ཁྱེད་ཀྱི་ PHP པར་གཞི། མཐུན་སྒྲིག་གི་ཆེད་དུ།"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "ཕྱི་སྣོན་འདི་རང་གི་པར་གཞི། པར་གཞི་དེ་རྙིང་དྲགས་ནས་ཞབས་ཞུ་དང་འབྲེལ་མཐུད་བྱེད་མི་ཐུབ་ཚེ། ཞབས་ཞུས་ཁྱེད་ལ་དེ་གསར་སྒྱུར་བྱེད་དགོས་པའི་བརྡ་ལན་སྤྲོད་ཐུབ་པའི་ཆེད་དུ།"
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "དྲ་ཚིགས་འདིའི་སྒྲིག་འགོད་བྱས་པའི་ locale།"
+
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "དྲ་ཚིགས་འདི་ནང་བེད་སྤྱོད་བྱེད་བཞིན་པའི་ locale ཚང་མ (དྲ་ཚིགས་ locale, སྒྲིག་འཇུག་བྱས་པའི་སྐད་ཡིག་ཐུམ་བུ, སྤྱོད་མཁན་གྱི་ locale, དང་ཁྱེད་ཀྱིས་ལག་པས་ཁ་སྣོན་བྱས་པ་རྣམས)། locale གང་ཡང་གཞན་ལས་ཁད་པར་མི་བྱེད།"
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(དྲ་ཚིགས་འདིའི་ཆེད་དུ་བཟོས་པའི་སྤྱི་ཡི་ལྡེ་མིག)"
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "དྲ་ཚིགས་འདིའི་སྒྲིག་འཇུག་གི་སྤྱི་སྤྱོད་ལྡེ་མིག རེ་ཞུ་རྣམས་དྲ་ཚིགས་འདི་ནས་དངོས་སུ་བྱུང་བ་ར་སྤྲོད་བྱེད་པར་བེད་སྤྱོད་བྱེད། སྤྱི་སྤྱོད་ཀྱི་ཆ་ཤས་ཁོ་ན་གཏོང་གི་ཡོད།"
+
+#: includes/class-babilim-consent.php:107
+msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
+msgstr "སྒྲིག་འཇུག་བྱས་པའི་ plugin/theme རེ་རེའི་ slug, པར་གཞི, ཡིག་རྐྱང་ཁྱབ་ཁོངས, wp.org ཐོ་ཡིག་ཡིན་མིན, རང་གི་ locale, དང་ཁྱེད་ཀྱིས་ Babilim འགྱུར་ཡིག་སྒྲིག་འཇུག་བྱས་ཟིན་པའི་ locale རྣམས།"
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
+msgstr "WordPress.org ལ་མེད་པའི་ཕྱི་སྣོན་ནམ་བརྗོད་གཞི་ཞིག་ཡར་འཇུག་བྱེད་པ་ཁྱེད་ཀྱིས་གཏན་འཁེལ་བྱས་དུས་ཁོ་ན། ཆ་ཤས་དེའི་དཀར་ཆག་ཧྲིལ་པོ་ zip ཡིག་ཆའི་རྣམ་པར་གཏོང་གི་ཡོད།"
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(སྤྱིར་བཏང་གི་ཨང་རྟགས་དང་མཐུན་གྲངས་ཁོ་ན།)"
+
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "བཤེར་སྒུག་གི་དཔྱད་བརྟག་བྱ་བ་༢༠ བར། (དཔེར་ན་ཆ་ཚང་རང་བཞིན་ཞིབ་བཤེར་ལ་ཕམ་པའི་ཡིག་ཆ)། རེ་རེར་ཨང་རྟགས་དང་ཆ་ཤས་དང་ locale ཁོ་ན་ཡིན། ཡི་གེའི་ནང་དོན་དང་འགྱུར་ཡིག་གང་ཡང་མི་འདུག"
+
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
+#, php-format
+msgid "Unsafe locale: %s"
+msgstr "locale ཉེན་ཡོད།: %s"
+
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-default-index.php:112
+#: includes/class-babilim-default-index.php:275
+#: includes/class-babilim-default-index.php:382
+#: includes/class-babilim-installer.php:550
+#: includes/class-babilim-installer.php:626
+#: includes/class-babilim-installer.php:683
+#: includes/class-babilim-installer.php:782
+#: includes/class-babilim-installer.php:818
+#: includes/class-babilim-installer.php:1006
+#: includes/class-babilim-installer.php:1054
+#, php-format
+msgid "Manifest unavailable: %s"
+msgstr "ཡིག་ཆའི་དཀར་ཆག་མི་ཐོབ།: %s"
+
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "ལག་ལེན་བྱེད་བཞིན་པའི་ཆ་ཤས་ངོས་འཛིན་མ་ཐུབ། མཉམ་བསྡེབས་ཟིན་པའི་ཐོ་གཞི་ནང་འགྱུར་མེད།"
+
+#: includes/class-babilim-default-index.php:399
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "སྒྲིག་འཇུག་བྱས་པའི་ plugin/theme ངོས་འཛིན་མ་ཐུབ། གཙང་སེལ་བྱེད་རྒྱུ་བསྐྱུར་བས། གང་ཡང་མ་བསུབས།"
+
+#: includes/class-babilim-default-index.php:622
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "གཙང་སེལ་བྱས་ཟིན། འོན་ཀྱང་འགྱུར་བ་ཁ་ཤས་འགྱུར་ཡིག་ཐོ་གཞི་ནང་ཟིན་འགོད་མ་ཐུབ། ཐེངས་རྗེས་མའི་གཙང་སེལ་གྱིས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད།"
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:814
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "'%s' ཀྱི་མཉམ་བསྡེབས་ཐོ་གཞི་བསྐྱར་བཟོ་བྱས་ཀྱང་། འགྱུར་ཡིག་ཐོ་གཞིས་ཟིན་འགོད་མ་ཐུབ། ཐེངས་རྗེས་མའི་བསྐྱར་བཟོས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད།"
+
+#: includes/class-babilim-default-index.php:890
+msgid "Could not write the staged merged index."
+msgstr "གནས་སྐབས་ཀྱི་མཉམ་བསྡེབས་ཐོ་གཞི་ལ་འབྲི་མ་ཐུབ།"
+
+#: includes/class-babilim-default-index.php:898
+msgid "Re-parsed entry count did not match the built index."
+msgstr "ཡང་བསྐྱར་དབྱེ་ཞིབ་བྱས་པའི་ཚན་གྲངས་དང་བཟོས་པའི་ཐོ་གཞི་མི་མཐུན།"
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:929
+#, php-format
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "'%s' ཀྱི་མཉམ་བསྡེབས་ཐོ་གཞི་དམིགས་འཛུགས་བྱས་པའི་གནས་སུ་སྤོ་མ་ཐུབ། སྔོན་ལ་མཁོ་འདོན་བྱས་པའི་ཐོ་གཞི་(ཡོད་ན) ཕྱེད་ཙམ་གསར་སྒྱུར་བྱས་པའི་གནས་སུ་མ་བཞག་པར་བསུབས་ཡོད། རྗེས་མར་བསྐྱར་བཟོ་ལེགས་གྲུབ་མ་བྱུང་བར་དུ་སྐད་ཡིག་འདིའི་ཆེད་དུ་ default-domain གྱི་ཁ་སྐོང་ནང་དོན་མཁོ་འདོན་མི་བྱེད།"
+
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
+#, php-format
+msgid "Could not open zip: %s"
+msgstr "zip ཁ་ཕྱེ་མ་ཐུབ།: %s"
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "Zip ནང་ manifest.json མེད།"
+
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "zip ནང་གི་ manifest.json ནི་ནུས་ལྡན་ JSON མ་ཡིན།"
+
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "manifest.json གི་ '%s' ནི་རེ་བའི་རིན་ཐང་དང་མི་མཐུན།"
+
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "སྒྲིག་འཇུག་གཞན་ཞིག་ལག་ལེན་བྱེད་བཞིན་ཡོད། ཕྱིས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱོས།"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "ནུས་ལྡན་གྱི server_build_id མ་ཡིན།: %s"
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "ཐུམ་བུའི་དཀར་ཆག་གི་རིགས་ '%1$s' ནི་རེ་ཞུས་པའི་རིགས་ '%2$s' དང་མི་མཐུན།"
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "ཐུམ་བུའི་ཡིག་རྐྱང་ཁྱབ་ཁོངས་ '%1$s' ནི་དྲ་ཚིགས་འདིའི་ཆ་ཤས་ཀྱི་འདྲ་བཤུས་ ('%2$s') དང་མི་མཐུན་པས་སྒྲིག་འཇུག་མ་བྱས།"
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "སྤྲད་པའི་ཁྱབ་ཁོངས་ '%1$s' ནི་ཐུམ་བུའི་དཀར་ཆག་གི་ slug '%2$s' དང་ text_domain '%3$s' གང་དང་ཡང་མི་མཐུན།"
+
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
+#, php-format
+msgid "Unsafe slug: %s"
+msgstr "ཉེན་ཡོད་ slug: %s"
+
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
+#, php-format
+msgid "Unsafe text_domain: %s"
+msgstr "ཉེན་ཡོད་ text_domain: %s"
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "ཐུམ་སྒྲིལ་འདིར་རང་ཉིད་ཀྱི་ཡིག་རྐྱང་ཁྱབ་ཁོངས་ཀྱི་ཆེད་དུ་ %s མེད།"
+
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json ནང་ '%s' མེད་པའམ། དེའི་ནང་དོན་ཚད་ལྡན་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json ནང་ 'entries' མེད་པའམ། དེའི་ནང་དོན་ཚད་ལྡན་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json ནང་ 'files' མེད་པའམ། དེའི་ནང་དོན་ཚད་ལྡན་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json ནང་ 'extra_domains' མེད་པའམ། དེའི་ནང་དོན་ཚད་ལྡན་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json ནང་ 'build_no' མེད་པའམ། དེའི་ནང་དོན་ཚད་ལྡན་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "manifest.json གི་ 'server_build_id' ནི་ནུས་ལྡན་གྱི་བཟོ་བསྐྲུན་ཐོན་རིམ་ཨང་རྟགས་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "manifest.json གི་ 'contract' ནི་ནུས་ལྡན་གྱི་ཐོན་རིམ་ཡིག་ཕྲེང་མ་ཡིན།"
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "manifest.json གི་ 'status' ནི་ 'published' ཡིན་དགོས།"
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "manifest.json གི་ 'kind' ནི་ 'plugin' ཡང་ན་ 'theme' ཡིན་དགོས།"
+
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json ནང་ 'default_domain_entries' ནུས་མེད་ཡིན།"
+
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json ནང་ 'default_domain_files' ནུས་མེད་ཡིན།"
+
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest ཡོད་མ་རེད་ཡང་ན་ '%s' ནུས་མེད་ཡིན།"
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "expected_manifest གི་ 'server_build_id' ནི་ནུས་ལྡན་གྱི་བཟོ་བསྐྲུན་ཐོན་རིམ་ཨང་རྟགས་མ་ཡིན།"
+
+#. translators: %s: the kind/domain/locale identifier that has no installed record.
+#: includes/class-babilim-installer.php:555
+#: includes/class-babilim-installer.php:631
+#: includes/class-babilim-installer.php:688
+#: includes/class-babilim-installer.php:787
+#, php-format
+msgid "No record for %s"
+msgstr "%s གི་ཟིན་ཐོ་མེད།"
+
+#: includes/class-babilim-installer.php:599
+msgid "One or more served files no longer match the manifest."
+msgstr "མཁོ་སྤྲོད་བྱེད་བཞིན་པའི་ཡིག་ཆ་གཅིག་གམ་དེ་ལས་མང་བ་ད་ནི་ཡིག་ཆའི་དཀར་ཆག་དང་མི་མཐུན།"
+
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "ཕྱིར་ལོག་བྱེད་རྒྱུའི་སྔོན་མའི་བཟོ་བསྐྲུན་ཐོན་རིམ་མེད།"
+
+#: includes/class-babilim-installer.php:927
+msgid "The change could not be recorded in the translation index; please try again."
+msgstr "འགྱུར་བ་འདི་ཡིག་སྒྱུར་གྱི་ཟུར་ཐོའི་ནང་ཟིན་ཐོ་བྱེད་མ་ཐུབ། ཡང་བསྐྱར་ཚོད་ལྟ་བྱེད་རོགས།"
+
+#. translators: %s: the unrecognized kind value.
+#: includes/class-babilim-installer.php:943
+#, php-format
+msgid "Unknown kind: %s"
+msgstr "མི་ཤེས་པའི་རིགས་དབྱེ། %s"
+
+#. translators: %s: the invalid domain.
+#: includes/class-babilim-installer.php:946
+#, php-format
+msgid "Unsafe domain: %s"
+msgstr "བདེ་འཇགས་མིན་པའི་ཁྱབ་ཁོངས། %s"
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "ཡིག་རྐྱང་ཁྱབ་ཁོངས་ '%1$s' (%2$s) ནི་སྒྲིག་འཇུག་བྱས་ཟིན་པའི་ཆ་ཤས་གཞན་ (%3$s) ལ་གནས་སྤྲོད་བྱེད་བཞིན་ཡོད། ཅི་ཡང་སྒྲིག་འཇུག་མ་བྱས།"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "ཕྱིར་ལོག་བྱས་ན་ '%1$s' (%2$s) ལ་བསྐྱར་འབྲི་བྱེད་སྲིད། དེ་ནི་ད་ལྟ་སྒྲིག་འཇུག་བྱས་ཟིན་པའི་ཆ་ཤས་གཞན་ (%3$s) ལ་གནས་སྤྲོད་བྱེད་བཞིན་ཡོད། ཅི་ཡང་མ་བཟོ་བཅོས།"
+
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
+#, php-format
+msgid "Zip is missing expected file: %s"
+msgstr "Zip ནང་དགོས་ངེས་ཀྱི་ཡིག་ཆ་ཞིག་མེད། %s"
+
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
+#, php-format
+msgid "sha256 mismatch for %s"
+msgstr "%s གི་ sha256 མི་མཐུན།"
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "ཐུམ་སྒྲིལ་འདིས་ཡིག་སྒྱུར་གཙོ་བོའི་ཡིག་ཆ་གསལ་བསྒྲགས་མ་བྱས།"
+
+#. translators: %s: the filename missing from the zip's default-domain supplement.
+#: includes/class-babilim-installer.php:1187
+#, php-format
+msgid "Zip is missing expected default file: %s"
+msgstr "Zip ནང་དགོས་ངེས་ཀྱི་སོར་བཞག་ཡིག་ཆ་ཞིག་མེད། %s"
+
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
+#, php-format
+msgid "sha256 mismatch for default/%s"
+msgstr "default/%s ཡི་ sha256 ཚོད་ལྟ་མི་མཐུན་པ་ཡོད།"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "%s གནས་སྐབས་ཀྱི་གསོག་ཡུལ་དུ་འཇོག་མ་ཐུབ།"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "default/%s གནས་སྐབས་ཀྱི་གསོག་ཡུལ་དུ་འཇོག་མི་ཐུབ་བྱུང་།"
+
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "%s གི་ཚིག་ཐོའི་གྲངས་མི་མཐུན།"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "%s གི་ཚིག་ཐོའི་གྲངས་ཞིབ་བཤེར་བྱེད་མ་ཐུབ།"
+
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "%s གི་ l10n.php ཚིག་ཐོའི་གྲངས་མི་མཐུན།"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "སོར་བཞག་ཁ་སྣོན་གྱི་ཚིག་ཐོའི་གྲངས་མི་མཐུན།"
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "ཐུམ་སྒྲིལ་འདིས་མཁོ་སྤྲོད་བྱེད་ཐུབ་པའི་ཡིག་སྒྱུར་གཙོ་བོའི་ཡིག་ཆ་བཟོ་མ་ཐུབ།"
+
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
+#, php-format
+msgid "Could not prepare %s for rollback."
+msgstr "ཕྱིར་ལོག་བྱེད་པའི་ཆེད་དུ་ %s གྲ་སྒྲིག་བྱེད་མ་ཐུབ།"
+
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
+#, php-format
+msgid "Could not back up %s before replacing it."
+msgstr "%s བརྗེ་བའི་སྔོན་ལ་གྲབས་ཉར་བྱེད་མ་ཐུབ།"
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
+#, php-format
+msgid "Could not move %s into place."
+msgstr "%s གནས་སུ་སྤོ་མ་ཐུབ།"
+
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "ཨིང་ཇིའི་སྐད། (ཨ་མེ་རི་ཀ།)"
+
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest ལག་ལེན་བྱེད་མི་ཐུབ། %s"
+
+#. translators: %s: the underlying filesystem error message.
+#: includes/class-babilim-manifest.php:587
+#, php-format
+msgid "could not read _manifest.json: %s"
+msgstr "_manifest.json ཀློག་མ་ཐུབ། %s"
+
+#. translators: %s: the underlying JSON parser error message.
+#: includes/class-babilim-manifest.php:601
+#, php-format
+msgid "failed to parse _manifest.json: %s"
+msgstr "_manifest.json དབྱེ་ཞིབ་བྱེད་པར་ཕམ་སོང་། %s"
+
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json གྱི་གྲུབ་ཚུལ་ནི་རེ་འདུན་དང་མི་མཐུན་པ་ཞིག་ཡིན།"
+
+#: includes/class-babilim-packager.php:84
+#: includes/class-babilim-packager.php:93
+#: includes/class-babilim-packager.php:105
+msgid "Could not create the package archive."
+msgstr "ཐུམ་སྒྲིལ་གྱི་ཡིག་ཆ་བསྡུས་པ་གསར་འཛུགས་བྱེད་མ་ཐུབ།"
+
+#: includes/class-babilim-packager.php:88
+msgid "No writable temporary directory is available for packaging."
+msgstr "ཐུམ་སྒྲིལ་བྱེད་པར་འབྲི་ཐུབ་པའི་གནས་སྐབས་ཀྱི་དཀར་ཆག་མེད།"
+
+#: includes/class-babilim-packager.php:99
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "ཆ་ཤས་ནང་གི་ཡིག་ཆ་ཞིག་ཀློག་མ་ཐུབ་པས་ཐུམ་སྒྲིལ་མ་བྱས།"
+
+#: includes/class-babilim-packager.php:139
+msgid "Only plugins and themes can be packaged."
+msgstr "plugin དང་ theme རྣམས་ཁོ་ན་ཐུམ་སྒྲིལ་བྱེད་ཆོག"
+
+#: includes/class-babilim-packager.php:144
+#: includes/class-babilim-packager.php:153
+msgid "The component's main file was not found."
+msgstr "ཆ་ཤས་ཀྱི་ཡིག་ཆ་གཙོ་བོ་རྙེད་མ་སོང་།"
+
+#: includes/class-babilim-packager.php:149
+msgid "The component is not inside the plugins or themes directory."
+msgstr "ཆ་ཤས་འདི་ plugins དང་ themes ཡིག་ཆའི་སྣོད་ནང་མེད།"
+
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:930
+#: includes/class-babilim-site.php:1261
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Babilim གིས་གོ་རིམ་འདིའི་དུས་ཚོད་ཚར་སོང་། ཞིབ་བཤེར་རྗེས་མར་མུ་མཐུད་བྱེད་རྒྱུ་ཡིན།"
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:316
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim གིས་དྲ་ཚིག་འདི་ར་སྤྲོད་བྱེད་མ་ཐུབ་པས། ར་སྤྲོད་ཐུབ་ཚུན་ཅི་ཡང་ཕབ་ལེན་ཡང་ན་སྒྲིག་འཇུག་བྱེད་མི་སྲིད།"
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "ཐོ་འགོད་ཀྱི་ལན་ནང་དགོས་ངེས་ཀྱི་གཤར་བྱང་ཁ་ཤས་ཆད་འདུག"
+
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "ར་སྤྲོད་བྱེད་རྒྱུའི་བཤེར་སྒུག་ཞུ་བ་(challenge)མེད།"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "ར་སྤྲོད་ཀྱི་ལན་ལ་ site_token ཆད་འདུག"
+
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "token བརྗེ་རྒྱུའི་དྲ་ཚིག་ id ཡིག་ཆར་མེད།"
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "Rotate-token གི་ལན་ལ་ site_token ཆད་འདུག"
+
+#: includes/class-babilim-site.php:781
+#: includes/class-babilim-site.php:786
+msgid "nonce must be a hexadecimal string."
+msgstr "nonce ནི་བཅུ་དྲུག་གཞི་གྲངས་ལམ་གྱི་ཡིག་རྟགས་ཕྲེང་བ་ཞིག་ཡིན་དགོས།"
+
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "nonce འདིའི་ཆེད་དུ་བཤེར་སྒུག་གི་ཞུ་བ་(challenge)མེད།"
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "རེ་ཞུ་མང་དྲགས་འདུག"
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:902
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "དྲ་ཚིགས་འདིར་ཆ་ཤས་ %1$d དང་སྐད་ཡིག་ %2$d ཡོད་པས་ཞིབ་བཤེར་ཚན་ %3$d དགོས། Babilim གྱིས་ཐེངས་རེར་མང་ཤོས་ %4$d ཁོ་ན་སྒྲུབ་ཐུབ། སྒྲིག་འགོད་ནང་གི་སྐད་ཡིག་ཉུང་དུ་བཏང་ངམ་སྤྱོད་མེད་ཀྱི་སྒྲིག་འཇུག་(plugins)དང་བརྗོད་གཞི་(themes)རྣམས་ལས་ཤུགས་མེད་པར་བཏང་རྗེས། ད་ལྟ་ཡང་ཞིབ་བཤེར་ལ་མནན།"
+
+#: includes/class-babilim-site.php:977
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim གིས་དྲ་ཚིག་འདིའི་ཞིབ་བཤེར་མཇུག་སྒྲིལ་མ་ཐུབ།"
+
+#: includes/class-babilim-site.php:1472
+msgid "This site's address is too long for Babilim to register."
+msgstr "དྲ་ཚིགས་འདིའི་ཁ་བྱང་ཧ་ཅང་རིང་བས་ Babilim གིས་ཐོ་འགོད་བྱེད་མི་ཐུབ།"
+
+#: includes/class-babilim-site.php:1475
+msgid "This site's locale code is not one Babilim can register."
+msgstr "དྲ་ཚིགས་འདིའི་ས་ཁུལ་སྐད་ཡིག་གི་ཨང་རྟགས་ནི་ Babilim གིས་ཐོ་འགོད་བྱེད་ཐུབ་པ་ཞིག་མིན།"
+
+#: includes/class-babilim-sync-installer.php:330
+msgid "The download response was missing a usable location."
+msgstr "ཕབ་ལེན་གྱི་ལན་ལ་སྤྱོད་ཐུབ་པའི་ས་གནས་མེད།"
+
+#: includes/class-babilim-upload.php:64
+msgid "The service's upload offer was incomplete."
+msgstr "ཞབས་ཞུས་སྤྲད་པའི་ཡར་སྐྱེལ་གྱི་གྲོས་འཆར་ཆ་ཚང་པོ་མེད།"
+
+#: includes/class-babilim-upload.php:104
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "ཆ་ཤས་འདིའི་ཆེ་ཆུང་ནི་ཞབས་ཞུས་དང་ལེན་བྱེད་ཐུབ་པའི་ཚད་ལས་ཆེ་བས་ཡར་སྐྱེལ་བྱེད་མི་ཐུབ།"
+
+#: includes/class-babilim-upload.php:148
+msgid "The packaged component could not be read."
+msgstr "ཐུམ་སྒྲིལ་བྱས་པའི་ཆ་ཤས་ཀློག་མ་ཐུབ།"
+
+#: includes/class-babilim-upload.php:259
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "ཡར་སྐྱེལ་གྱི་ཆ་ཤས་ཤིག་ཡང་ཡང་ལམ་ལྷོངས་མ་བྱུང་བས་ཡར་སྐྱེལ་རྩིས་མེད་བཏང་བ་ཡིན།"
+
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
+#, php-format
+msgid "Could not read: %s"
+msgstr "ཀློག་མ་ཐུབ། %s"
+
+#. translators: %s: the technical reason the sweep was aborted.
+#: includes/class-babilim-default-index.php:531
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr ""
