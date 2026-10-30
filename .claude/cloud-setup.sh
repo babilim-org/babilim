@@ -5,10 +5,6 @@ set -u
 [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] || exit 0
 cd "${CLAUDE_PROJECT_DIR:-$(dirname "$0")/..}" || exit 0
 
-# Commit identity for this repository (repo-local, never global).
-git config user.name "Babilim"
-git config user.email "dev@babilim.org"
-
 # Commit-message and discipline hooks (see CLAUDE.md).
 make install-hooks >/dev/null 2>&1 || echo "cloud-setup: make install-hooks failed" >&2
 
