@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "feedback.request.schema.json",
+  "title": "POST /v1/feedback request",
+  "type": "object",
+  "required": ["kind", "slug", "locale", "build_id", "category"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {"type": "string", "enum": ["plugin", "theme"]},
+    "slug": {"type": "string", "minLength": 1, "maxLength": 200},
+    "locale": {"type": "string", "minLength": 1, "maxLength": 35},
+    "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$", "description": "must be a build the reporting site has downloaded or has installed, else 422"},
+    "category": {
+      "type": "string",
+      "enum": ["mistranslation", "terminology", "placeholder", "context", "plural", "negation", "loading", "other"]
+    },
+    "msgid": {"type": "string", "maxLength": 4000},
+    "msgctxt": {"type": "string", "maxLength": 4000},
+    "plural_index": {"type": "integer", "minimum": 0},
+    "current_msgstr": {"type": "string", "maxLength": 4000},
+    "suggested": {"type": "string", "maxLength": 4000},
+    "note": {"type": "string", "maxLength": 4000},
+    "screen_path": {"type": "string", "maxLength": 500}
+  }
+}

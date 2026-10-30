@@ -1,0 +1,45 @@
+{
+  "description": "A verified free site asks for a checkout page; the service returns the babilim.org checkout URL (opened in a new tab, token in the fragment) with a short expiry and the one-time price.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/checkout"
+  },
+  "schema": {
+    "request": "schemas/sites.rotate-token.request.schema.json",
+    "response": "schemas/sites.checkout.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/price"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "User-Agent": "Babilim/1.7.0; https://example.org",
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "checkout_url": "https://babilim.example/pay/#s=tCk3Qx7mLp2VdR9aZ0nW5sYb8cHf1JgE4uKoT6iAvBe",
+      "expires_at": "2026-10-19T12:30:00Z",
+      "price": {
+        "amount": "8.99",
+        "currency": "USD"
+      }
+    }
+  }
+}

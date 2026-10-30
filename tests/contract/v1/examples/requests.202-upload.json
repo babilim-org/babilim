@@ -1,0 +1,27 @@
+{
+  "description": "1.5.0: a paid site asks for a component that is not on WordPress.org, no accepted source package exists, and the client declared it can upload -- the job is queued (it will park as source_pending until a package is accepted) and the response hands the site an upload to fill.",
+  "http": {"method": "POST", "path": "/v1/requests"},
+  "schema": {"request": "schemas/requests.request.schema.json", "response": "schemas/requests.response.schema.json"},
+  "setup": {
+    "sites": [
+      {"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}
+    ],
+    "wporg_registry": [{"kind": "theme", "slug": "component-u", "state": "not_wporg"}],
+    "site_components": [{"site_id": "st_3f9c2a1b7e4d", "kind": "theme", "slug": "component-u", "version": "7.11.4"}],
+    "note": "no source_package row exists for theme/component-u/7.11.4"
+  },
+  "stable_fields": ["/status", "/eta_minutes", "/upload/part_bytes", "/upload/max_parts", "/upload/max_bytes"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "Content-Type": "application/json", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": {"kind": "theme", "slug": "component-u", "version": "7.11.4", "locale": "fr_FR", "client_caps": ["upload"]}
+  },
+  "response": {
+    "status": 202,
+    "body": {
+      "request_id": "rq_4b7c1e0a3d6f",
+      "status": "queued",
+      "eta_minutes": null,
+      "upload": {"upload_id": "up_9a1b2c3d4e5f", "part_bytes": 16777216, "max_parts": 32, "max_bytes": 524288000, "expires_at": "2026-10-14T12:00:00Z"}
+    }
+  }
+}

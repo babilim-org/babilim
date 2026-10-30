@@ -1,0 +1,16 @@
+{
+  "description": "1.5.0: the site's upload for this job was rejected by verification (here: the main file's Version header did not match the declared version). GET answers the existing failed branch with a specific reason; the site may request again -- this failure does not count toward retry_exhausted and does not consume the retry cooldown.",
+  "http": {"method": "GET", "path": "/v1/requests/rq_d7f8a9b0c1d2"},
+  "schema": {"request": null, "response": "schemas/requests.response.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "jobs": [{"id": "rq_d7f8a9b0c1d2", "kind": "theme", "slug": "component-u", "version": "7.11.4", "locale": "fr_FR", "status": "failed", "error_kind": "source_rejected", "reason": "version_mismatch"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "rejected", "uploaded_by_site": "st_3f9c2a1b7e4d", "reject_reason": "version_mismatch"}]
+  },
+  "stable_fields": ["/request_id", "/status", "/reason"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": null
+  },
+  "response": {"status": 200, "body": {"request_id": "rq_d7f8a9b0c1d2", "status": "failed", "reason": "source_rejected"}}
+}

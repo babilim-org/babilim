@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uploads.complete.response.schema.json",
+  "title": "202 response to POST /v1/uploads/{upload_id}/complete",
+  "type": "object",
+  "required": ["state"],
+  "additionalProperties": false,
+  "properties": {
+    "state": {"type": "string", "enum": ["verifying", "accepted", "rejected"], "description": "verifying on first complete; a re-sent complete with identical parts/size answers with whatever state the package is in now (idempotent)"}
+  }
+}

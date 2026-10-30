@@ -1,0 +1,67 @@
+{
+  "description": "No published build exists yet for this (component, locale); a translation_job is queued.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/requests"
+  },
+  "schema": {
+    "request": "schemas/requests.request.schema.json",
+    "response": "schemas/requests.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "note": "no build and no open job exist yet for component-b 1.0.3 / fr_FR",
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-b",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.3"
+        ],
+        "stable_version": "1.0.3"
+      }
+    ],
+    "site_components": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-b",
+        "version": "1.0.3"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/status",
+    "/eta_minutes"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "kind": "plugin",
+      "slug": "component-b",
+      "version": "1.0.3",
+      "locale": "fr_FR"
+    }
+  },
+  "response": {
+    "status": 202,
+    "body": {
+      "request_id": "rq_4b7c1e0a3d6f",
+      "status": "queued",
+      "eta_minutes": null
+    }
+  }
+}

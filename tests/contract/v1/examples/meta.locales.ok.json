@@ -1,0 +1,19 @@
+{
+  "description": "Full wp.org locale registry, unranked and unfiltered.",
+  "http": {"method": "GET", "path": "/v1/meta/locales"},
+  "schema": {"request": null, "response": "schemas/meta.locales.response.schema.json"},
+  "setup": {"note": "global reference data; not derived from any site/build/job fixture"},
+  "stable_fields": [],
+  "request": {
+    "headers": {"User-Agent": "Babilim/1.3.0; https://example.org"},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {"wp_locale": "de_DE", "english_name": "German", "native_name": "Deutsch"},
+      {"wp_locale": "fr_FR", "english_name": "French (France)", "native_name": "Français"},
+      {"wp_locale": "ja", "english_name": "Japanese", "native_name": "日本語"}
+    ]
+  }
+}

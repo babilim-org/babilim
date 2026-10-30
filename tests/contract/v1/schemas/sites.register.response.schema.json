@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.register.response.schema.json",
+  "title": "201 response to POST /v1/sites",
+  "type": "object",
+  "required": ["site_id", "challenge"],
+  "additionalProperties": false,
+  "properties": {
+    "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+    "challenge": {
+      "type": "object",
+      "required": ["nonce", "expires_at"],
+      "additionalProperties": false,
+      "properties": {
+        "nonce": {"type": "string", "pattern": "^[0-9a-f]{16,64}$"},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

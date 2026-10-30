@@ -1,0 +1,72 @@
+{
+  "description": "The service-wide daily limit of new translation jobs has been reached; this request would have created a new job. Retry after Retry-After seconds (until the daily window resets).",
+  "http": {
+    "method": "POST",
+    "path": "/v1/requests"
+  },
+  "schema": {
+    "request": "schemas/requests.request.schema.json",
+    "response": "schemas/_error.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "site_components": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-x",
+        "version": "1.0.0"
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-x",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      }
+    ],
+    "note": "the service-wide daily new-job counter is already at its limit"
+  },
+  "stable_fields": [
+    "/error/code"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.4.0; https://example.org"
+    },
+    "body": {
+      "kind": "plugin",
+      "slug": "component-x",
+      "version": "1.0.0",
+      "locale": "fr_FR"
+    }
+  },
+  "response": {
+    "status": 503,
+    "headers": {
+      "Retry-After": "3600"
+    },
+    "body": {
+      "error": {
+        "code": "capacity_exhausted",
+        "message": "The service is at capacity for new translations today.",
+        "hint": "Try again tomorrow."
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Shared definitions referenced by $ref from other v1 schemas",
+  "$defs": {
+    "license": {
+      "type": "object",
+      "required": ["kind", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"type": "string", "enum": ["free", "paid", "partner"]},
+        "status": {"type": "string", "enum": ["active", "refunded", "transferred", "revoked"]}
+      }
+    },
+    "quota_slot": {
+      "type": "object",
+      "required": ["used", "limit"],
+      "additionalProperties": false,
+      "properties": {
+        "used": {"type": "integer", "minimum": 0},
+        "limit": {"type": "integer", "minimum": 0}
+      }
+    },
+    "quota": {
+      "type": "object",
+      "required": ["free_slots", "downloads"],
+      "additionalProperties": false,
+      "properties": {
+        "free_slots": {
+          "type": "object",
+          "required": ["theme", "plugin"],
+          "additionalProperties": false,
+          "properties": {
+            "theme": {"$ref": "#/$defs/quota_slot"},
+            "plugin": {"$ref": "#/$defs/quota_slot"}
+          }
+        },
+        "downloads": {
+          "type": "object",
+          "required": ["used", "limit", "period"],
+          "additionalProperties": false,
+          "properties": {
+            "used": {"type": "integer", "minimum": 0},
+            "limit": {"type": "integer", "minimum": 0},
+            "period": {"type": "string", "enum": ["daily"]}
+          }
+        }
+      }
+    },
+    "price": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "amount": {"type": "string", "pattern": "^[0-9]{1,6}\\.[0-9]{2}$", "description": "decimal string, never a float"},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.verify.request.schema.json",
+  "title": "POST /v1/sites/{id}/verify request",
+  "type": "object",
+  "required": ["nonce", "proof"],
+  "additionalProperties": false,
+  "properties": {
+    "nonce": {"type": "string", "pattern": "^[0-9a-f]{16,64}$", "description": "the nonce issued in the registration challenge"},
+    "proof": {"type": "string", "minLength": 1, "maxLength": 200, "description": "\"b64:\" + base64 of the raw 64-byte Ed25519 signature of the ASCII bytes \"babilim-challenge-v1\\n{site_id}\\n{nonce}\", produced with the install keypair's private half; the same value GET /wp-json/babilim/v1/challenge?nonce= would return. A malformed or non-verifying proof is rejected with 401 invalid_proof and does not consume the nonce."}
+  }
+}

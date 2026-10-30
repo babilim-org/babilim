@@ -1,0 +1,79 @@
+{
+  "description": "Site is entitled to the build; server redirects to a short-lived signed package URL. Location is relative to the API base URL (docs/api/v1.md Base URL); clients resolve it against that base, they don't need it to already be absolute.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/downloads"
+  },
+  "schema": {
+    "request": "schemas/downloads.request.schema.json",
+    "response": "schemas/downloads.302.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active",
+        "quota": {
+          "free_slots": {
+            "theme": {
+              "used": 0,
+              "limit": 1
+            },
+            "plugin": {
+              "used": 1,
+              "limit": 2
+            }
+          },
+          "downloads": {
+            "used": 3,
+            "limit": 500,
+            "period": "daily"
+          }
+        }
+      }
+    ],
+    "builds": [
+      {
+        "id": "bd_9e8d7c6b5a4f",
+        "kind": "plugin",
+        "slug": "component-b",
+        "version": "1.0.3",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": true
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-b",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.3"
+        ],
+        "stable_version": "1.0.3"
+      }
+    ]
+  },
+  "stable_fields": [],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "build_id": "bd_9e8d7c6b5a4f"
+    }
+  },
+  "response": {
+    "status": 302,
+    "headers": {
+      "Location": "/v1/packages/bd_9e8d7c6b5a4f?site=st_3f9c2a1b7e4d&exp=1790600000&sig=3f6b8c1e4a7d0f3b6c9e2a5d8f1b4c7e0a3d6f9b2c5e8a1d4f7b5f2b1c9e7a0d"
+    },
+    "body": null
+  }
+}

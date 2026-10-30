@@ -1,0 +1,38 @@
+{
+  "description": "Site reports a mistranslated string against an installed build.",
+  "http": {"method": "POST", "path": "/v1/feedback"},
+  "schema": {"request": "schemas/feedback.request.schema.json", "response": "schemas/feedback.response.schema.json"},
+  "setup": {
+    "sites": [
+      {"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "free", "license_status": "active"}
+    ],
+    "installed": [
+      {"site_id": "st_3f9c2a1b7e4d", "kind": "plugin", "slug": "component-a", "locale": "de_DE", "build_id": "bd_a1b2c3d4e5f6", "verified_at": "2026-09-26T09:00:00Z", "integrity": "ok"}
+    ]
+  },
+  "stable_fields": [],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "kind": "plugin",
+      "slug": "component-a",
+      "locale": "de_DE",
+      "build_id": "bd_a1b2c3d4e5f6",
+      "category": "mistranslation",
+      "msgid": "Save changes",
+      "msgctxt": "settings button",
+      "current_msgstr": "Änderungen retten",
+      "suggested": "Änderungen speichern",
+      "note": "„retten“ reads like an emergency rescue, not a save action",
+      "screen_path": "settings > general"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {"feedback_id": "fb_6c9e2a5d8f1b"}
+  }
+}

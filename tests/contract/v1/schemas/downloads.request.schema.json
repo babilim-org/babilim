@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "downloads.request.schema.json",
+  "title": "POST /v1/downloads request",
+  "type": "object",
+  "required": ["build_id"],
+  "additionalProperties": false,
+  "properties": {
+    "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"}
+  }
+}

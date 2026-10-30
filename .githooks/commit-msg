@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# git commit-msg hook -- only active once someone opts in with
+# `git config core.hooksPath .githooks` (or `make install-hooks`). See
+# scripts/commit-msg-check.sh (the actual check) and CLAUDE.md's
+# "Public-repo discipline" section.
+set -euo pipefail
+repo_root="$(git rev-parse --show-toplevel)"
+exec "$repo_root/scripts/commit-msg-check.sh" "$1"

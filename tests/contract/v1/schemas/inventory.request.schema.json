@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "inventory.request.schema.json",
+  "title": "POST /v1/sites/{id}/inventory request",
+  "type": "object",
+  "required": ["components", "locales"],
+  "additionalProperties": false,
+  "description": "final-fix-server-rereview.md B-1: `components` (max 500) x `locales` (max 256, unique) must not exceed 20,000 -- each list's own maxItems bounds it individually, but the SERVICE'S actual per-request work is the full cross product of the two, so the product itself is capped independently (over the limit -> 422 validation_error; not expressible as a JSON Schema keyword, enforced service-side). A real multilingual site's example fanout (200 components x 30 locales = 6,000) sits far below this.",
+  "properties": {
+    "components": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "version", "text_domain", "extra_domains", "is_wporg", "bundled_locales", "installed"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string", "minLength": 1, "maxLength": 200},
+          "version": {"type": "string", "minLength": 1, "maxLength": 64},
+          "text_domain": {"type": "string", "minLength": 1, "maxLength": 200},
+          "extra_domains": {
+            "type": "array",
+            "maxItems": 512,
+            "items": {"type": "string", "maxLength": 200},
+            "description": "additional text domains served by the same slug (e.g. Avada's fusion-* domains)"
+          },
+          "is_wporg": {"type": "boolean"},
+          "bundled_locales": {
+            "type": "array",
+            "maxItems": 512,
+            "items": {"type": "string", "maxLength": 35},
+            "description": "locales the component already ships with its own translation files"
+          },
+          "installed": {
+            "type": "object",
+            "description": "keyed by locale code; only locales for which this site currently has a Babilim-installed language file",
+            "maxProperties": 256,
+            "additionalProperties": {
+              "type": "object",
+              "required": ["build_id", "verified_at", "integrity"],
+              "additionalProperties": false,
+              "properties": {
+                "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+                "verified_at": {"type": "string", "format": "date-time"},
+                "integrity": {"type": "string", "enum": ["ok", "failed"]}
+              }
+            }
+          }
+        }
+      }
+    },
+    "locales": {
+      "type": "array",
+      "items": {"type": "string", "maxLength": 35},
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "description": "final-fix-server-rereview.md B-1: a repeated locale used to cost the service N times the per-cell work for every single component, for zero legitimate benefit -- unlike bundled_locales/extra_domains/components, where a duplicate is merely wasteful, not itself a per-cell query-count amplifier (those deliberately do NOT require uniqueItems, see docs/api/CHANGELOG.md's 1.2.0 entry)."
+    },
+    "client_events": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["at", "code", "kind", "slug", "locale"],
+        "additionalProperties": false,
+        "properties": {
+          "at": {"type": "string", "format": "date-time"},
+          "code": {"type": "string", "minLength": 1, "maxLength": 100, "description": "generic error code only, e.g. integrity_failed; never string content"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string", "minLength": 1, "maxLength": 200},
+          "locale": {"type": "string", "minLength": 1, "maxLength": 35}
+        }
+      }
+    }
+  }
+}

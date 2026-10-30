@@ -1,0 +1,30 @@
+{
+  "description": "Calling plugin_version is older than the minimum this deployment still accepts for this endpoint. Already-downloaded language files keep working; only this call is rejected until the plugin updates.",
+  "http": {"method": "POST", "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"},
+  "schema": {"request": null, "response": "schemas/_error.schema.json"},
+  "setup": {
+    "sites": [
+      {"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "free", "license_status": "active"}
+    ],
+    "note": "User-Agent reports Babilim/0.4.0, below the deployment's minimum supported plugin_version"
+  },
+  "stable_fields": ["/error/code"],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/0.4.0; https://example.org"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 426,
+    "body": {
+      "error": {
+        "code": "plugin_outdated",
+        "message": "This plugin version is no longer supported.",
+        "hint": "Update Babilim from the WordPress plugin updates screen."
+      }
+    }
+  }
+}

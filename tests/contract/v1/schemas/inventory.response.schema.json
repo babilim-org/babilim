@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "inventory.response.schema.json",
+  "title": "200 response to POST /v1/sites/{id}/inventory",
+  "type": "object",
+  "required": ["components", "updates", "license", "quota", "features", "contract"],
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "locales"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string", "minLength": 1},
+          "locales": {
+            "type": "object",
+            "description": "keyed by locale code, one entry per locale the site asked about for this component",
+            "additionalProperties": {
+              "type": "object",
+              "required": ["status"],
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["bundled", "wporg", "babilim_installed", "babilim_available", "requestable", "queued", "running", "failed", "unsupported", "quota_exceeded", "license_required"]
+                },
+                "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+                "build_no": {"type": "integer", "minimum": 1},
+                "built_at": {"type": "string", "format": "date-time"},
+                "update_available": {"type": "boolean"},
+                "wporg_percent": {"type": "number", "minimum": 0, "maximum": 100},
+                "built_for_version": {"type": "string", "minLength": 1, "description": "1.4.0: only when status is babilim_installed -- the component version the installed build was made for"},
+                "newer_version": {
+                  "type": "object",
+                  "description": "1.4.0: only when status is babilim_installed, built_for_version differs from the version this call reported, and the reported version has no active build yet (an active build is expressed by update_available instead)",
+                  "required": ["version", "status"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "version": {"type": "string", "minLength": 1},
+                    "status": {"type": "string", "enum": ["queued", "running", "failed", "requestable", "license_required", "quota_exceeded"]}
+                  }
+                },
+                "hardcoded_text_warning": {"type": "boolean", "description": "1.6.0: present and true only when status is babilim_installed or babilim_available AND the build named by this entry's build_id belongs to a component whose source has a substantial amount of user-visible text that is not passed through translation functions, so a language pack cannot cover it. Absent means no notice -- it does NOT mean the component is fully translatable. Never false"},
+                "upload_pending": {"type": "boolean", "description": "1.5.0: true only when status is queued and THIS site holds an open (not yet completed) source upload for this component version -- the site should offer the same request action again so the upload can be resumed or cancelled"},
+                "reason": {"type": "string", "minLength": 1, "description": "generic reason code only when status is failed or unsupported; also present when status is babilim_installed and the installed build's local integrity check failed (\"integrity_failed\"); 1.5.0: also present when status is requestable because the last source upload was rejected (\"source_rejected\") or expired (\"upload_expired\")"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "updates": {
+      "type": "array",
+      "description": "entries for (component, locale) pairs the site has ALREADY INSTALLED where the installed build_id differs from the current active build (includes the service rolling an active build back to an older build_no, which the site should pick up as a downgrade); shaped for direct injection into site_transient_update_plugins/themes. A (component, locale) the site has never installed never appears here, regardless of its status (e.g. babilim_available is not an update).",
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "locale", "build_id", "build_no"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string", "minLength": 1},
+          "locale": {"type": "string", "minLength": 1},
+          "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+          "build_no": {"type": "integer", "minimum": 1},
+          "package": {"type": "string", "format": "uri-reference", "description": "POST /v1/downloads {build_id} is the authoritative way to fetch it; this is an optional convenience pointer, relative to the API base URL"}
+        }
+      }
+    },
+    "license": {"$ref": "common.schema.json#/$defs/license"},
+    "quota": {"$ref": "common.schema.json#/$defs/quota"},
+    "features": {
+      "type": "object",
+      "required": ["checkout", "upload"],
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {"type": "boolean", "description": "1.7.0: true when the service offers checkout (POST /v1/sites/{id}/checkout is usable)"},
+        "upload": {"type": "boolean"}
+      }
+    },
+    "contract": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "price": {"$ref": "common.schema.json#/$defs/price", "description": "1.7.0: present only when the service currently offers checkout to this site's deployment; a one-time price per site domain. Absent means the plugin shows no upgrade button."}
+  }
+}

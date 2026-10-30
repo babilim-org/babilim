@@ -1,0 +1,22 @@
+{
+  "description": "nonce query parameter is not a hex string; rejected before any signing is attempted.",
+  "http": {"method": "GET", "path": "/wp-json/babilim/v1/challenge"},
+  "schema": {"request": null, "response": "schemas/_error.schema.json"},
+  "setup": {"note": "runs on the WordPress site itself"},
+  "stable_fields": ["/error/code"],
+  "request": {
+    "headers": {"User-Agent": "curl/8.0"},
+    "query": {"nonce": "not-hex!!"},
+    "body": null
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": {
+        "code": "invalid_nonce",
+        "message": "nonce must be a hexadecimal string.",
+        "hint": ""
+      }
+    }
+  }
+}

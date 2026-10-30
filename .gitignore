@@ -1,0 +1,25 @@
+# Build/dependency output -- never committed, rebuilt locally or in CI.
+tools/
+vendor/
+node_modules/
+
+# SDD working directory -- planning/task-tracking scratch space, not part
+# of the plugin or its public history. See CLAUDE.md.
+.superpowers/
+
+# `make zip` output -- built artifact, not source.
+build/
+*.zip
+
+# PHPUnit's own test-result cache.
+tests/.phpunit.result.cache
+
+# WordPress Playground verification run: generated fixtures (some carry
+# non-Latin-script literal content produced at run time, never committed
+# as source -- see tests/playground/checks/lib.php) and the ad hoc run log.
+tests/playground/_generated/
+tests/playground/run.log
+
+# Common editor/OS noise.
+.DS_Store
+*.swp

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "package-manifest.schema.json",
+  "title": "manifest.json inside a downloaded package zip (see package-layout.md)",
+  "description": "The pipeline's own run manifest with its internal grading field stripped, plus the fields the service appends when it builds the zip. This is the only file interface between how the service assembles a package and how the plugin's installer verifies one -- neither side may invent fields here without a contract change.",
+  "type": "object",
+  "required": [
+    "build_id", "entries", "files", "locale", "status",
+    "kind", "slug", "version", "text_domain", "extra_domains",
+    "server_build_id", "build_no", "issued_at", "contract"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "build_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "the pipeline's own run id (pipeline_build_id), e.g. 'component-a-2.4.0-de_DE-20260901T120000-a1b2c3' -- a different id space from server_build_id"
+    },
+    "entries": {"type": "integer", "minimum": 0},
+    "files": {
+      "type": "object",
+      "description": "keyed by bare filename, relative to the zip root: the component's own text_domain files plus one entry per extra_domains[] file the zip ships (see package-layout.md)",
+      "additionalProperties": {"$ref": "#/$defs/file_digest"}
+    },
+    "default_domain_entries": {"type": "integer", "minimum": 0},
+    "default_domain_files": {
+      "type": "object",
+      "description": "keyed by bare filename, relative to the zip's default/ directory (not the zip root) -- supplementary default-domain files this component contributes; present only when the run produced any (see package-layout.md)",
+      "additionalProperties": {"$ref": "#/$defs/file_digest"}
+    },
+    "locale": {"type": "string", "minLength": 1},
+    "status": {
+      "const": "published",
+      "description": "the service only ever imports status=published runs, so this is always 'published' by the time it reaches a downloaded package"
+    },
+    "kind": {"type": "string", "enum": ["plugin", "theme"]},
+    "slug": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "text_domain": {"type": "string", "minLength": 1},
+    "extra_domains": {"type": "array", "items": {"type": "string"}},
+    "server_build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+    "build_no": {"type": "integer", "minimum": 1},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "contract": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+  },
+  "$defs": {
+    "file_digest": {
+      "type": "object",
+      "required": ["sha256", "size"],
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

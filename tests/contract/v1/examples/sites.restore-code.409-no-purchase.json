@@ -1,0 +1,44 @@
+{
+  "description": "A free site has no purchase to issue a restore code for.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/restore-code"
+  },
+  "schema": {
+    "request": "schemas/sites.rotate-token.request.schema.json",
+    "response": "schemas/_error.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/error/code"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "User-Agent": "Babilim/1.7.0; https://example.org",
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  },
+  "response": {
+    "status": 409,
+    "body": {
+      "error": {
+        "code": "no_purchase",
+        "message": "This site has no purchase to issue a restore code for.",
+        "hint": ""
+      }
+    }
+  }
+}

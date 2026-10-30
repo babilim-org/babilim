@@ -1,0 +1,44 @@
+{
+  "description": "The install currently bound to a paid order asks for a (new) restore code; the previous code stops working.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/restore-code"
+  },
+  "schema": {
+    "request": "schemas/sites.rotate-token.request.schema.json",
+    "response": "schemas/sites.restore-code.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true
+      }
+    ],
+    "orders": [
+      {
+        "id": "po_1a2b3c4d5e6f",
+        "site": "st_3f9c2a1b7e4d",
+        "status": "completed",
+        "licensed": true
+      }
+    ]
+  },
+  "stable_fields": [],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "User-Agent": "Babilim/1.7.0; https://example.org",
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "restore_code": "rc_9f3a1c5e7b2d4086a1c3e5f70912b4d6"
+    }
+  }
+}

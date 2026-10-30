@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "feedback.response.schema.json",
+  "title": "201 response to POST /v1/feedback",
+  "type": "object",
+  "required": ["feedback_id"],
+  "additionalProperties": false,
+  "properties": {
+    "feedback_id": {"type": "string", "pattern": "^fb_[0-9a-f]{12}$"}
+  }
+}

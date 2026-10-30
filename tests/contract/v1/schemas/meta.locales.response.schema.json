@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meta.locales.response.schema.json",
+  "title": "200 response to GET /v1/meta/locales",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["wp_locale", "english_name", "native_name"],
+    "additionalProperties": false,
+    "properties": {
+      "wp_locale": {"type": "string", "minLength": 1},
+      "english_name": {"type": "string", "minLength": 1},
+      "native_name": {"type": "string", "minLength": 1}
+    }
+  }
+}

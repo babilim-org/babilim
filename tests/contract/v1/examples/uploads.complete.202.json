@@ -1,0 +1,15 @@
+{
+  "description": "1.5.0: the site has stored every part and declares the part count and total size; the service checks parts 1..parts are all present with the right lengths and the sum equals size, seals the part list atomically and answers verifying -- hashing, extraction and header checks happen in the worker, not in this request.",
+  "http": {"method": "POST", "path": "/v1/uploads/up_9a1b2c3d4e5f/complete"},
+  "schema": {"request": "schemas/uploads.complete.request.schema.json", "response": "schemas/uploads.complete.response.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "uploading", "uploaded_by_site": "st_3f9c2a1b7e4d", "parts": [{"n": 1, "size": 3}]}]
+  },
+  "stable_fields": ["/state"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "Content-Type": "application/json", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": {"parts": 1, "size": 3}
+  },
+  "response": {"status": 202, "body": {"state": "verifying"}}
+}

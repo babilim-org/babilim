@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# git prepare-commit-msg hook -- records where this commit's message comes
+# from, so the commit-msg hook knows whether git will strip comment lines
+# (see scripts/commit-msg-check.sh). Never blocks a commit. Only active
+# once someone opts in with `make install-hooks` (or
+# `git config core.hooksPath .githooks`).
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+exec "$repo_root/scripts/commit-msg-check.sh" record-source "$@"

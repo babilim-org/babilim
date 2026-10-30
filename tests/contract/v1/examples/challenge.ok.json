@@ -1,0 +1,19 @@
+{
+  "description": "Plugin-exposed endpoint the server calls back during verification. Returns a signature of the nonce produced with the per-install private key.",
+  "http": {"method": "GET", "path": "/wp-json/babilim/v1/challenge"},
+  "schema": {"request": null, "response": "schemas/challenge.response.schema.json"},
+  "setup": {"note": "runs on the WordPress site itself, not on the Babilim API host; no site_token involved; nonce came from a prior POST /v1/sites challenge"},
+  "stable_fields": ["/nonce"],
+  "request": {
+    "headers": {"User-Agent": "Babilim-Verifier/1.0"},
+    "query": {"nonce": "9c2a1b7e4d3f6b8c1e4a7d0f3b6c9e2a"},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "nonce": "9c2a1b7e4d3f6b8c1e4a7d0f3b6c9e2a",
+      "proof": "b64:Oczz1Urizyn++RSrwdKCPK0Eu6Vt2phmu9TRQkTmxHS82WBW3UpKApanqpoVWgoKoNHz+Ho64A7qsyUAJ4xaBw=="
+    }
+  }
+}

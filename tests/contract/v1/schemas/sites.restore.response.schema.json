@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.restore.response.schema.json",
+  "title": "200 response to POST /v1/sites/{id}/restore",
+  "type": "object",
+  "required": ["license"],
+  "additionalProperties": false,
+  "properties": {
+    "license": {"$ref": "common.schema.json#/$defs/license"}
+  }
+}

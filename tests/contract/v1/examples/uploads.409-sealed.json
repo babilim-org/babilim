@@ -1,0 +1,16 @@
+{
+  "description": "1.5.0: once complete has sealed the part list, no part may change -- a late PUT answers upload_sealed. (The same code answers a cancel attempted while the worker is verifying.)",
+  "http": {"method": "PUT", "path": "/v1/uploads/up_9a1b2c3d4e5f/parts/1"},
+  "schema": {"request": null, "response": "schemas/_error.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "sealed", "uploaded_by_site": "st_3f9c2a1b7e4d", "parts": [{"n": 1, "size": 3}]}],
+    "note": "request body is the raw bytes b'abc'"
+  },
+  "stable_fields": ["/error/code"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "Content-Type": "application/octet-stream", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": null
+  },
+  "response": {"status": 409, "body": {"error": {"code": "upload_sealed", "message": "This upload has already been completed; its parts can no longer change.", "hint": ""}}}
+}

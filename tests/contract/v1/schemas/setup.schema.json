@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "setup.schema.json",
+  "title": "Machine-readable pre-conditions for a contract example",
+  "description": "Every http-style example's 'setup' must be one of these, so automated tests can build fixtures directly from it and replay the same state instead of each side inventing its own. 'note' is a free-text supplement for context a structured field can't capture (e.g. why a callback is unreachable) -- it must never be the only place a value the response depends on is recorded; if a status or field in the response can only be explained by prose, that's a sign setup.schema.json is missing an entity, not a reason to write the prose.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "note": {"type": "string"},
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "host": {"type": "string"},
+          "home_url": {"type": "string", "format": "uri"},
+          "token": {"type": "string", "pattern": "^tok_[0-9a-f]{32}$"},
+          "verified": {"type": "boolean"},
+          "license_kind": {"type": "string", "enum": ["free", "paid", "partner"]},
+          "license_status": {"type": "string", "enum": ["active", "refunded", "transferred", "revoked"]},
+          "quota": {"$ref": "common.schema.json#/$defs/quota"}
+        }
+      }
+    },
+    "orders": {
+      "type": "array",
+      "description": "1.7.0: checkout orders the service holds. `licensed: true` also inserts an active paid license bound to `site` and to this order; `restore_code` is the plaintext the fixture hashes.",
+      "items": {
+        "type": "object",
+        "required": ["id", "site", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^po_[0-9a-f]{12}$"},
+          "site": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "status": {"type": "string", "enum": ["created", "approved", "pending", "completed", "failed", "expired"]},
+          "env": {"type": "string", "enum": ["sandbox", "live"]},
+          "restore_code": {"type": "string", "pattern": "^rc_[0-9a-f]{32}$"},
+          "licensed": {"type": "boolean"}
+        }
+      }
+    },
+    "partner_domains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["host_pattern"],
+        "additionalProperties": false,
+        "properties": {
+          "host_pattern": {"type": "string"}
+        }
+      }
+    },
+    "builds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "slug", "version", "locale", "build_no", "active"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "version": {"type": "string"},
+          "locale": {"type": "string"},
+          "build_no": {"type": "integer", "minimum": 1},
+          "active": {"type": "boolean"},
+          "built_at": {"type": "string", "format": "date-time"},
+          "hardcoded_scan": {
+            "type": "object",
+            "required": ["strings_total", "sentences"],
+            "additionalProperties": false,
+            "description": "1.6.0: test-fixture shorthand for a build's stored scan result -- the fixture stores strings_total gettext entries and `sentences` distinct sentence-like untranslated texts",
+            "properties": {
+              "strings_total": {"type": "integer", "minimum": 0},
+              "sentences": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "slug", "version", "locale", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^rq_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "version": {"type": "string"},
+          "locale": {"type": "string"},
+          "status": {"type": "string", "enum": ["queued", "running", "failed", "blocked"]},
+          "eta_minutes": {"type": ["integer", "null"]},
+          "reason": {"type": "string"},
+          "error_kind": {"type": "string"},
+          "finished_at": {"type": "string", "format": "date-time", "description": "when a failed job finished; the failed-retry cooldown reads COALESCE(finished_at, created_at)"}
+        }
+      }
+    },
+    "downloads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["site_id", "build_id"],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"}
+        }
+      }
+    },
+    "wporg": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "locale", "percent"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "locale": {"type": "string"},
+          "percent": {"type": "number", "minimum": 0, "maximum": 100}
+        }
+      }
+    },
+    "installed": {
+      "type": "array",
+      "description": "what the requesting site currently has installed via Babilim, prior to this call",
+      "items": {
+        "type": "object",
+        "required": ["site_id", "kind", "slug", "locale", "build_id", "verified_at", "integrity"],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "locale": {"type": "string"},
+          "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
+          "verified_at": {"type": "string", "format": "date-time"},
+          "integrity": {"type": "string", "enum": ["ok", "failed"]}
+        }
+      }
+    },
+    "feedback": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["site_id", "build_id"],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"}
+        }
+      }
+    },
+    "slot_bindings": {
+      "type": "array",
+      "description": "which of a site's free slots (bound on first successful download, one per component, never released) are already bound to which component. A (kind, slug) pair listed here does not need a new free slot to become downloadable even if quota.free_slots[kind].used == limit -- that's what distinguishes a component that's merely 'has a build' (babilim_available, if bound or slots aren't full) from one that's quota_exceeded (unbound, slots full).",
+      "items": {
+        "type": "object",
+        "required": ["site_id", "kind", "slug"],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"}
+        }
+      }
+    },
+    "wporg_registry": {
+      "type": "array",
+      "description": "the service's own wp.org identity record for (kind, slug); state is what the service has determined, independent of the site's self-reported is_wporg. An absent record means unknown.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "state": {"type": "string", "enum": ["unknown", "verified_wporg", "not_wporg"]},
+          "versions": {"type": "array", "items": {"type": "string"}},
+          "stable_version": {"type": "string"},
+          "checked_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "site_components": {
+      "type": "array",
+      "description": "(kind, slug, version) a site reported in a recent inventory sync (retention window, default 48 hours); POST /v1/requests only accepts a version the site recently reported.",
+      "items": {
+        "type": "object",
+        "required": ["site_id", "kind", "slug", "version"],
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "version": {"type": "string"},
+          "reported_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "source_packages": {
+      "type": "array",
+      "description": "1.5.0: uploaded source packages the service holds for (kind, slug, version). state follows the service's own lifecycle; uploaded_by_site is the site that owns the upload (only that site may operate it); parts lists the parts already stored for an `uploading` package.",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "slug", "version", "state", "uploaded_by_site"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^up_[0-9a-f]{12}$"},
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "version": {"type": "string"},
+          "state": {"type": "string", "enum": ["uploading", "sealed", "verifying", "accepted", "rejected", "expired", "cancelled", "revoked"]},
+          "uploaded_by_site": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+          "parts": {"type": "array", "items": {"type": "object", "required": ["n", "size"], "additionalProperties": false, "properties": {"n": {"type": "integer", "minimum": 1}, "size": {"type": "integer", "minimum": 0}}}},
+          "reject_reason": {"type": "string"}
+        }
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "description": "(kind, slug, locale) pairs the service will never produce a translation for, regardless of quota or wp.org status -- drives an inventory response of status=unsupported for that pair.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "slug", "locale", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["plugin", "theme"]},
+          "slug": {"type": "string"},
+          "locale": {"type": "string"},
+          "reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

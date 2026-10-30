@@ -1,0 +1,39 @@
+{
+  "description": "Submitted proof does not verify against the site's install_pub (wrong key, corrupted signature, or garbage input) -- rejected before any token is issued and without consuming the pending nonce, so the plugin can retry with a corrected proof before the challenge expires.",
+  "http": {"method": "POST", "path": "/v1/sites/st_2b4d6f8a0c1e/verify"},
+  "schema": {"request": "schemas/sites.verify.request.schema.json", "response": "schemas/_error.schema.json"},
+  "setup": {
+    "sites": [
+      {
+        "id": "st_2b4d6f8a0c1e",
+        "host": "example.org",
+        "home_url": "https://example.org",
+        "verified": false,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "note": "site has a pending, not-yet-expired challenge with nonce 2b4d6f8a0c1e3579b1d3f5a7c9e1f3a5; the submitted proof's signature does not verify against the site's stored install_pub"
+  },
+  "stable_fields": ["/error/code"],
+  "request": {
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "nonce": "2b4d6f8a0c1e3579b1d3f5a7c9e1f3a5",
+      "proof": "b64:9Ly0ThV1dtGzuA8tgazAJLjpJHNaTUUgKJWrNuQ/aiK1OhHBOOTqwoWWdpWFol1EqHnE4Qfyww0UK+vLp/psBQ=="
+    }
+  },
+  "response": {
+    "status": 401,
+    "body": {
+      "error": {
+        "code": "invalid_proof",
+        "message": "The submitted proof is malformed or does not verify against install_pub.",
+        "hint": ""
+      }
+    }
+  }
+}

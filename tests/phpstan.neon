@@ -1,0 +1,41 @@
+# PHPStan config for tests/ specifically (kept separate from the root
+# ../phpstan.neon; `make stan` runs both -- see the Makefile).
+#
+# PHPUnit ships as a phar (tools/phpunit.phar, see the Makefile's
+# `tools` target) with no Composer classmap in this repo, so PHPStan
+# can't resolve PHPUnit\Framework\TestCase the way it resolves
+# WordPress core via phpstan.neon's wordpress-stubs.php scanFile.
+# phpstan-stubs/PHPUnitTestCase.stub.php stands in for just that one
+# class -- scanned for symbols, excluded from analysis (it's never
+# loaded at runtime; PHPUnit's own phar provides the real class then).
+#
+# babilim.php/uninstall.php/includes/ are scanned (not analysed again
+# here -- ../phpstan.neon already does that) so the constants,
+# functions and classes tests reference resolve too.
+parameters:
+	level: 5
+	phpVersion: 70400
+
+	paths:
+		- .
+
+	excludePaths:
+		- phpstan-stubs/*
+		# Playground verification run output (gitignored, never committed --
+		# see .gitignore and tests/playground/run-checks.sh): a fresh
+		# checkout never has this directory, and its contents are a plain
+		# copy of includes/ made at run time, analysed once already as the
+		# real source above.
+		- playground/_generated/*
+
+	scanFiles:
+		- phpstan-stubs/PHPUnitTestCase.stub.php
+		- phpstan-stubs/real-kses.stub.php
+		- ../babilim.php
+		- ../uninstall.php
+		- ../phpstan-stubs/third-party-i18n-functions.stub.php
+		- ../tools/wordpress-stubs.php
+
+	scanDirectories:
+		- ../includes
+		- ../admin

@@ -1,0 +1,222 @@
+{
+  "description": "A free-tier site whose two plugin slots are full. A failed job for a component that already holds a slot stays failed (the site may retry it); a failed job for an unbound component is quota_exceeded (a retry could not take a slot), and so is a never-requested unbound component.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
+  },
+  "schema": {
+    "request": "schemas/inventory.request.schema.json",
+    "response": "schemas/inventory.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active",
+        "quota": {
+          "free_slots": {
+            "theme": {
+              "used": 0,
+              "limit": 1
+            },
+            "plugin": {
+              "used": 2,
+              "limit": 2
+            }
+          },
+          "downloads": {
+            "used": 0,
+            "limit": 500,
+            "period": "daily"
+          }
+        }
+      }
+    ],
+    "slot_bindings": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-a"
+      },
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-f"
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-a",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-f",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-g",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-h",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "rq_a1b2c3d4e5f6",
+        "kind": "plugin",
+        "slug": "component-a",
+        "version": "1.0.0",
+        "locale": "fr_FR",
+        "status": "failed",
+        "reason": "pipeline_error",
+        "finished_at": "2026-09-30T08:00:00Z"
+      },
+      {
+        "id": "rq_b1c2d3e4f5a6",
+        "kind": "plugin",
+        "slug": "component-g",
+        "version": "1.0.0",
+        "locale": "fr_FR",
+        "status": "failed",
+        "reason": "pipeline_error",
+        "finished_at": "2026-09-30T08:00:00Z"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/components",
+    "/quota"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.4.0; https://example.org"
+    },
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-a",
+          "version": "1.0.0",
+          "text_domain": "component-a",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-g",
+          "version": "1.0.0",
+          "text_domain": "component-g",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-h",
+          "version": "1.0.0",
+          "text_domain": "component-h",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        }
+      ],
+      "locales": [
+        "fr_FR"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-a",
+          "locales": {
+            "fr_FR": {
+              "status": "failed",
+              "reason": "pipeline_error"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-g",
+          "locales": {
+            "fr_FR": {
+              "status": "quota_exceeded"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-h",
+          "locales": {
+            "fr_FR": {
+              "status": "quota_exceeded"
+            }
+          }
+        }
+      ],
+      "updates": [],
+      "license": {
+        "kind": "free",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 2,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 0,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "features": {
+        "checkout": false,
+        "upload": true
+      },
+      "contract": "1.4.0"
+    }
+  }
+}

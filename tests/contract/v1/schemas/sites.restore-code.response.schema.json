@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.restore-code.response.schema.json",
+  "title": "200 response to POST /v1/sites/{id}/restore-code",
+  "type": "object",
+  "required": ["restore_code"],
+  "additionalProperties": false,
+  "properties": {
+    "restore_code": {"type": "string", "pattern": "^rc_[0-9a-f]{32}$", "description": "shown once; the previous code stops working the moment this one is issued"}
+  }
+}

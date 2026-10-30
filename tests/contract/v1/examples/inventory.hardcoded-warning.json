@@ -1,0 +1,228 @@
+{
+  "description": "1.6.0: hardcoded_text_warning. component-w de_DE is installed and the installed build qualifies -> babilim_installed + warning (a newer active build that does NOT qualify does not remove it: the flag follows the entry's build_id). component-x fr_FR is downloadable and its active build qualifies -> babilim_available + warning. component-y de_DE is downloadable and does not qualify -> no key. Absence never means fully translatable.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
+  },
+  "schema": {
+    "request": "schemas/inventory.request.schema.json",
+    "response": "schemas/inventory.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "paid",
+        "license_status": "active"
+      }
+    ],
+    "builds": [
+      {
+        "id": "bd_a1b2c3d4e600",
+        "kind": "plugin",
+        "slug": "component-w",
+        "version": "1.0.0",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": false,
+        "built_at": "2026-10-01T10:00:00Z",
+        "hardcoded_scan": {
+          "strings_total": 10,
+          "sentences": 25
+        }
+      },
+      {
+        "id": "bd_a1b2c3d4e601",
+        "kind": "plugin",
+        "slug": "component-w",
+        "version": "1.0.0",
+        "locale": "de_DE",
+        "build_no": 2,
+        "active": true,
+        "built_at": "2026-10-10T10:00:00Z",
+        "hardcoded_scan": {
+          "strings_total": 500,
+          "sentences": 25
+        }
+      },
+      {
+        "id": "bd_a1b2c3d4e602",
+        "kind": "plugin",
+        "slug": "component-x",
+        "version": "1.0.0",
+        "locale": "fr_FR",
+        "build_no": 1,
+        "active": true,
+        "built_at": "2026-10-01T10:00:00Z",
+        "hardcoded_scan": {
+          "strings_total": 20,
+          "sentences": 20
+        }
+      },
+      {
+        "id": "bd_a1b2c3d4e603",
+        "kind": "plugin",
+        "slug": "component-y",
+        "version": "1.0.0",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": true,
+        "built_at": "2026-10-01T10:00:00Z",
+        "hardcoded_scan": {
+          "strings_total": 300,
+          "sentences": 3
+        }
+      }
+    ],
+    "installed": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-w",
+        "locale": "de_DE",
+        "build_id": "bd_a1b2c3d4e600",
+        "verified_at": "2026-10-12T09:00:00Z",
+        "integrity": "ok"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/components"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.5.0; https://example.org"
+    },
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-w",
+          "version": "1.0.0",
+          "text_domain": "component-w",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {
+            "de_DE": {
+              "build_id": "bd_a1b2c3d4e600",
+              "verified_at": "2026-10-12T09:00:00Z",
+              "integrity": "ok"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-x",
+          "version": "1.0.0",
+          "text_domain": "component-x",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-y",
+          "version": "1.0.0",
+          "text_domain": "component-y",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        }
+      ],
+      "locales": [
+        "de_DE",
+        "fr_FR"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-w",
+          "locales": {
+            "de_DE": {
+              "status": "babilim_installed",
+              "build_id": "bd_a1b2c3d4e600",
+              "build_no": 1,
+              "built_at": "2026-10-01T10:00:00Z",
+              "update_available": true,
+              "built_for_version": "1.0.0",
+              "hardcoded_text_warning": true
+            },
+            "fr_FR": {
+              "status": "requestable"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-x",
+          "locales": {
+            "de_DE": {
+              "status": "requestable"
+            },
+            "fr_FR": {
+              "status": "babilim_available",
+              "build_id": "bd_a1b2c3d4e602",
+              "build_no": 1,
+              "built_at": "2026-10-01T10:00:00Z",
+              "hardcoded_text_warning": true
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-y",
+          "locales": {
+            "de_DE": {
+              "status": "babilim_available",
+              "build_id": "bd_a1b2c3d4e603",
+              "build_no": 1,
+              "built_at": "2026-10-01T10:00:00Z"
+            },
+            "fr_FR": {
+              "status": "requestable"
+            }
+          }
+        }
+      ],
+      "updates": [],
+      "license": {
+        "kind": "paid",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 0,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 0,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "features": {
+        "checkout": false,
+        "upload": true
+      },
+      "contract": "1.6.0"
+    }
+  }
+}

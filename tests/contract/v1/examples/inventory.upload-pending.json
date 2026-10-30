@@ -1,0 +1,33 @@
+{
+  "description": "1.5.0: this site holds an open source upload for a component version whose job is parked waiting for a package -- the locale shows the usual queued, plus upload_pending so the plugin keeps offering the request action (re-entry resumes or cancels the upload).",
+  "http": {"method": "POST", "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"},
+  "schema": {"request": "schemas/inventory.request.schema.json", "response": "schemas/inventory.response.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "wporg_registry": [{"kind": "theme", "slug": "component-u", "state": "not_wporg"}],
+    "jobs": [{"id": "rq_4b7c1e0a3d6f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "locale": "fr_FR", "status": "blocked", "error_kind": "source_pending"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "uploading", "uploaded_by_site": "st_3f9c2a1b7e4d"}]
+  },
+  "stable_fields": ["/components/0/locales/fr_FR/status", "/components/0/locales/fr_FR/upload_pending"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "Content-Type": "application/json", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": {
+      "components": [{"kind": "theme", "slug": "component-u", "version": "7.11.4", "text_domain": "component-u", "extra_domains": [], "is_wporg": false, "bundled_locales": [], "installed": {}}],
+      "locales": ["fr_FR"]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [{"kind": "theme", "slug": "component-u", "locales": {"fr_FR": {"status": "queued", "upload_pending": true}}}],
+      "updates": [],
+      "license": {"kind": "paid", "status": "active"},
+      "quota": {
+        "free_slots": {"theme": {"used": 0, "limit": 1}, "plugin": {"used": 0, "limit": 2}},
+        "downloads": {"used": 0, "limit": 500, "period": "daily"}
+      },
+      "features": {"checkout": false, "upload": true},
+      "contract": "1.5.0"
+    }
+  }
+}

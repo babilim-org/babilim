@@ -1,0 +1,15 @@
+{
+  "description": "1.5.0: the site gives up an upload it owns. Stored parts are discarded, the daily upload allowance is not consumed further, and the waiting job becomes requestable again (the next request may start a fresh upload).",
+  "http": {"method": "DELETE", "path": "/v1/uploads/up_9a1b2c3d4e5f"},
+  "schema": {"request": null, "response": "schemas/uploads.cancel.response.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "uploading", "uploaded_by_site": "st_3f9c2a1b7e4d", "parts": [{"n": 1, "size": 3}]}]
+  },
+  "stable_fields": ["/state"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": null
+  },
+  "response": {"status": 200, "body": {"state": "cancelled"}}
+}

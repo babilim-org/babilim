@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "requests.response.schema.json",
+  "title": "Response body shared by POST /v1/requests and GET /v1/requests/{id}",
+  "description": "Which branch is legal at which HTTP status is enforced per-example by tools/status_index.json, not by this schema (the status code is a sibling of the body, not a body field): POST /v1/requests answers 202 with the queued-or-running branch or 200 with the available branch (it never returns the failed branch itself -- calling POST again after a failure always creates a fresh queued job); GET /v1/requests/{id} answers 200 with whichever branch reflects the job's current state, including failed.",
+  "oneOf": [
+    {
+      "type": "object",
+      "title": "queued or running job (POST 202, or GET 200)",
+      "required": ["request_id", "status", "eta_minutes"],
+      "additionalProperties": false,
+      "properties": {
+        "request_id": {"type": "string", "pattern": "^rq_[0-9a-f]{12}$"},
+        "status": {"type": "string", "enum": ["queued", "running"]},
+        "eta_minutes": {"type": ["integer", "null"], "minimum": 0},
+        "upload": {
+          "type": "object",
+          "description": "1.5.0: present only on POST 202 when the component is not on WordPress.org, no accepted source package exists for (kind, slug, version), and the request listed client_caps [\"upload\"]. The same site asking again for the same (kind, slug, version) while its upload is still open gets the SAME upload_id back; another site's open upload means no `upload` here (the job waits for that result).",
+          "required": ["upload_id", "part_bytes", "max_parts", "max_bytes", "expires_at"],
+          "additionalProperties": false,
+          "properties": {
+            "upload_id": {"type": "string", "pattern": "^up_[0-9a-f]{12}$"},
+            "part_bytes": {"type": "integer", "minimum": 1, "description": "every part except the last must be exactly this many bytes; the last must be <= this"},
+            "max_parts": {"type": "integer", "minimum": 1},
+            "max_bytes": {"type": "integer", "minimum": 1, "description": "sum of all parts must not exceed this"},
+            "expires_at": {"type": "string", "format": "date-time"}
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "failed job, re-requestable (GET 200 only)",
+      "required": ["request_id", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "request_id": {"type": "string", "pattern": "^rq_[0-9a-f]{12}$"},
+        "status": {"const": "failed"},
+        "reason": {"type": "string", "minLength": 1, "description": "generic reason code; 1.5.0 adds source_rejected / upload_expired / upload_cancelled for a job whose source upload did not succeed -- the site may request again, and these do not count toward retry_exhausted"}
+      }
+    },
+    {
+      "type": "object",
+      "title": "already available, no job created (POST 200, or GET 200)",
+      "required": ["status", "build_id"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "available"},
+        "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"}
+      }
+    }
+  ]
+}

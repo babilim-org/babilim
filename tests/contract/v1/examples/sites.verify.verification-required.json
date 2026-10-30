@@ -1,0 +1,38 @@
+{
+  "description": "The submitted proof is cryptographically valid (checked against this site's own install_pub), but the server's callback to home_url could not be completed at all (private network, DNS failure, connection refused, or every resolved address rejected by the SSRF check). When the callback does not succeed, no token is issued, for any host, whether or not it has ever had a verified site before. Contract versions before 1.3.0 returned 200 with verified:false and a free-tier token in this case; 1.3.0 refuses instead. error.reason is a machine-readable sub-code (callback_unreachable here; callback_timeout and callback_invalid are the other two possible values, see docs/api/v1.md) that a client can branch on without parsing message or hint prose. The nonce is NOT consumed: the caller can retry with the same nonce once the callback is reachable, before the challenge expires.",
+  "http": {"method": "POST", "path": "/v1/sites/st_1a2b3c4d5e6f/verify"},
+  "schema": {"request": "schemas/sites.verify.request.schema.json", "response": "schemas/_error.schema.json"},
+  "setup": {
+    "sites": [
+      {
+        "id": "st_1a2b3c4d5e6f",
+        "host": "staging.local",
+        "home_url": "https://staging.local",
+        "verified": false
+      }
+    ],
+    "note": "the server's callback to https://staging.local/wp-json/babilim/v1/challenge?nonce=... is unreachable from the server (private network)"
+  },
+  "stable_fields": ["/error/code", "/error/reason"],
+  "request": {
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://staging.local"
+    },
+    "body": {
+      "nonce": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+      "proof": "b64:SJOJLKTWbfCNA9rawnsdq+kkfZ4cal+quLpy4SR7Vl5TaMr1q8S97VV+5fONS/CgOssQBaZXUoHqZqDue3OeDA=="
+    }
+  },
+  "response": {
+    "status": 403,
+    "body": {
+      "error": {
+        "code": "verification_required",
+        "reason": "callback_unreachable",
+        "message": "The verification callback did not succeed; no token was issued.",
+        "hint": "Make sure /wp-json/babilim/v1/challenge is publicly reachable and returns the matching nonce/proof, then retry verification before the challenge expires."
+      }
+    }
+  }
+}

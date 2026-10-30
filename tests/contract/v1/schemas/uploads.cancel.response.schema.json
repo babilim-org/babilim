@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uploads.cancel.response.schema.json",
+  "title": "200 response to DELETE /v1/uploads/{upload_id}",
+  "type": "object",
+  "required": ["state"],
+  "additionalProperties": false,
+  "properties": {
+    "state": {"const": "cancelled"}
+  }
+}

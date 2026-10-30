@@ -1,0 +1,33 @@
+# Files excluded from the packaged plugin zip (the wp.org SVN release /
+# `make dist` artifact, once that target exists). Everything here is a
+# development-time concern, not something a site running the plugin needs.
+
+.git
+.gitignore
+.distignore
+.editorconfig
+
+CLAUDE.md
+task-report.md
+docs/
+scripts/
+.githooks/
+.claude/
+tests/
+Makefile
+phpstan.neon
+phpstan-stubs/
+
+phpunit.xml
+phpunit.xml.dist
+composer.json
+composer.lock
+package.json
+package-lock.json
+node_modules/
+vendor/bin/
+
+build/
+*.zip
+.DS_Store
+tools/

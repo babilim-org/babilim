@@ -1,0 +1,15 @@
+parameters:
+	level: 5
+	phpVersion: 70400
+
+	paths:
+		- babilim.php
+		- uninstall.php
+		- includes
+		- admin
+		- scripts/build-zip.php
+
+	scanFiles:
+		- tools/wordpress-stubs.php
+		- phpstan-stubs/wp-runtime-constants.stub.php
+		- phpstan-stubs/third-party-i18n-functions.stub.php

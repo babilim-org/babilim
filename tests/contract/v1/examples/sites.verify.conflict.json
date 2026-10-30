@@ -1,0 +1,40 @@
+{
+  "description": "The site already has a site_token (a prior verify already succeeded, which also consumed its nonce) and retries /verify with that same, now-stale nonce -- verify never reissues a token for a site that already has one; use rotate-token (Bearer-authenticated) instead.",
+  "http": {"method": "POST", "path": "/v1/sites/st_6a8c0e2f4b1d/verify"},
+  "schema": {"request": "schemas/sites.verify.request.schema.json", "response": "schemas/_error.schema.json"},
+  "setup": {
+    "sites": [
+      {
+        "id": "st_6a8c0e2f4b1d",
+        "host": "example.org",
+        "home_url": "https://example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "note": "the nonce below was this site's registration nonce, already consumed by the earlier successful verify that issued its token -- it is no longer a pending challenge"
+  },
+  "stable_fields": ["/error/code"],
+  "request": {
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "nonce": "6a8c0e2f4b1d3579b1d3f5a7c9e1f3a5",
+      "proof": "b64:8/ccvBxn26vYdRa4S+rzgNfxUCFF01fA6lPskPGRWJWdhBYnpofECF1wrd1Mn5c7cRsJsYFbMNfIi1dZgM4WAQ=="
+    }
+  },
+  "response": {
+    "status": 409,
+    "body": {
+      "error": {
+        "code": "conflict",
+        "message": "This site already has a token; verify cannot reissue one.",
+        "hint": "Use POST /v1/sites/{id}/rotate-token with the existing Bearer token instead."
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "description": "A reinstalled site (new install, same domain) restores a purchase with the restore code shown on the original install; the license moves to the new install.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_0a1b2c3d4e5f/restore"
+  },
+  "schema": {
+    "request": "schemas/sites.restore.request.schema.json",
+    "response": "schemas/sites.restore.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true
+      },
+      {
+        "id": "st_0a1b2c3d4e5f",
+        "host": "example.org",
+        "token": "tok_2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d1f",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "orders": [
+      {
+        "id": "po_1a2b3c4d5e6f",
+        "site": "st_3f9c2a1b7e4d",
+        "status": "completed",
+        "restore_code": "rc_9f3a1c5e7b2d4086a1c3e5f70912b4d6",
+        "licensed": true
+      }
+    ]
+  },
+  "stable_fields": [
+    "/license"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_2b4d6f8a0c1e3a5b7d9f1c3e5a7b9d1f",
+      "User-Agent": "Babilim/1.7.0; https://example.org",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "restore_code": "rc_9f3a1c5e7b2d4086a1c3e5f70912b4d6"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "license": {
+        "kind": "paid",
+        "status": "active"
+      }
+    }
+  }
+}

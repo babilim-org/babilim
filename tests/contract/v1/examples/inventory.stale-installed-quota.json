@@ -1,0 +1,266 @@
+{
+  "description": "A free-tier site whose two plugin slots are full. component-a is installed but holds no slot: a request for its newer version could not take one -> newer_version quota_exceeded. component-h also holds no slot and its job for the newer version already failed: a retry could not take a slot either -> quota_exceeded (not failed).",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
+  },
+  "schema": {
+    "request": "schemas/inventory.request.schema.json",
+    "response": "schemas/inventory.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active",
+        "quota": {
+          "free_slots": {
+            "theme": {
+              "used": 0,
+              "limit": 1
+            },
+            "plugin": {
+              "used": 2,
+              "limit": 2
+            }
+          },
+          "downloads": {
+            "used": 2,
+            "limit": 500,
+            "period": "daily"
+          }
+        }
+      }
+    ],
+    "slot_bindings": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-f"
+      },
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-i"
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-a",
+        "state": "verified_wporg",
+        "versions": [
+          "2.3.0",
+          "2.4.0"
+        ],
+        "stable_version": "2.4.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-h",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "stable_version": "1.1.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-f",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-i",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "rq_a1b2c3d4e5f6",
+        "kind": "plugin",
+        "slug": "component-h",
+        "version": "1.1.0",
+        "locale": "de_DE",
+        "status": "failed",
+        "reason": "pipeline_error",
+        "finished_at": "2026-09-30T08:00:00Z"
+      }
+    ],
+    "builds": [
+      {
+        "id": "bd_a1b2c3d4e500",
+        "kind": "plugin",
+        "slug": "component-a",
+        "version": "2.3.0",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": true,
+        "built_at": "2026-09-20T10:00:00Z"
+      },
+      {
+        "id": "bd_a1b2c3d4e502",
+        "kind": "plugin",
+        "slug": "component-h",
+        "version": "1.0.0",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": true,
+        "built_at": "2026-09-20T10:00:00Z"
+      }
+    ],
+    "installed": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-a",
+        "locale": "de_DE",
+        "build_id": "bd_a1b2c3d4e500",
+        "verified_at": "2026-09-30T09:00:00Z",
+        "integrity": "ok"
+      },
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-h",
+        "locale": "de_DE",
+        "build_id": "bd_a1b2c3d4e502",
+        "verified_at": "2026-09-30T09:00:00Z",
+        "integrity": "ok"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/components",
+    "/quota"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.4.0; https://example.org"
+    },
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-a",
+          "version": "2.4.0",
+          "text_domain": "component-a",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {
+            "de_DE": {
+              "build_id": "bd_a1b2c3d4e500",
+              "verified_at": "2026-09-30T09:00:00Z",
+              "integrity": "ok"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-h",
+          "version": "1.1.0",
+          "text_domain": "component-h",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {
+            "de_DE": {
+              "build_id": "bd_a1b2c3d4e502",
+              "verified_at": "2026-09-30T09:00:00Z",
+              "integrity": "ok"
+            }
+          }
+        }
+      ],
+      "locales": [
+        "de_DE"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-a",
+          "locales": {
+            "de_DE": {
+              "status": "babilim_installed",
+              "build_id": "bd_a1b2c3d4e500",
+              "build_no": 1,
+              "built_at": "2026-09-20T10:00:00Z",
+              "update_available": false,
+              "built_for_version": "2.3.0",
+              "newer_version": {
+                "version": "2.4.0",
+                "status": "quota_exceeded"
+              }
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-h",
+          "locales": {
+            "de_DE": {
+              "status": "babilim_installed",
+              "build_id": "bd_a1b2c3d4e502",
+              "build_no": 1,
+              "built_at": "2026-09-20T10:00:00Z",
+              "update_available": false,
+              "built_for_version": "1.0.0",
+              "newer_version": {
+                "version": "1.1.0",
+                "status": "quota_exceeded"
+              }
+            }
+          }
+        }
+      ],
+      "updates": [],
+      "license": {
+        "kind": "free",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 2,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 2,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "features": {
+        "checkout": false,
+        "upload": true
+      },
+      "contract": "1.4.0"
+    }
+  }
+}

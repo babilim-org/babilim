@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "_example.schema.json",
+  "title": "Envelope every HTTP-style contract example must follow",
+  "description": "Validated by tools/validate_examples.py against every examples/*.json that has an 'http' key (the package manifest example is a different, instance-style shape and is exempt -- see package-layout.md).",
+  "type": "object",
+  "required": ["description", "http", "schema", "setup", "stable_fields", "request", "response"],
+  "additionalProperties": false,
+  "properties": {
+    "description": {"type": "string", "minLength": 1},
+    "http": {
+      "type": "object",
+      "required": ["method", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {"type": "string", "enum": ["GET", "POST", "PUT", "DELETE"]},
+        "path": {"type": "string", "minLength": 1}
+      }
+    },
+    "schema": {
+      "type": "object",
+      "required": ["response"],
+      "additionalProperties": false,
+      "description": "response must always name a schema (even a {\"type\":\"null\"} one for a bodyless response, e.g. a 302); request may be null only when request.body is also null (a GET with no body to validate).",
+      "properties": {
+        "request": {"type": ["string", "null"]},
+        "response": {"type": "string", "minLength": 1}
+      }
+    },
+    "setup": {"$ref": "setup.schema.json"},
+    "stable_fields": {
+      "type": "array",
+      "description": "JSON pointers, rooted at response.body, of fields automated tests must assert byte-equal against this fixture. Everything else in the body is server-generated (ids, tokens, timestamps) and should only be asserted for shape/type, not exact value. May be empty when the whole response is server-generated.",
+      "items": {"type": "string", "pattern": "^/"}
+    },
+    "request": {
+      "type": "object",
+      "required": ["headers", "body"],
+      "additionalProperties": false,
+      "properties": {
+        "headers": {"type": "object"},
+        "query": {"type": "object"},
+        "body": {}
+      }
+    },
+    "response": {
+      "type": "object",
+      "required": ["status", "body"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"type": "integer", "minimum": 100, "maximum": 599},
+        "headers": {"type": "object"},
+        "body": {}
+      }
+    }
+  }
+}

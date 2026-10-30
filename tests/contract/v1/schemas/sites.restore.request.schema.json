@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.restore.request.schema.json",
+  "title": "POST /v1/sites/{id}/restore request",
+  "type": "object",
+  "required": ["restore_code"],
+  "additionalProperties": false,
+  "properties": {
+    "restore_code": {"type": "string", "pattern": "^rc_[0-9a-f]{32}$"}
+  }
+}

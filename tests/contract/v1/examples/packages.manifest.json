@@ -1,0 +1,28 @@
+{
+  "description": "manifest.json as it appears inside a downloaded package zip: the pipeline's own run manifest (see package-layout.md) with its internal grading field stripped, plus the fields the service appends. Illustrative shape (component slug/ids are fictional); entry counts, file layout and hash format match what a real package produces.",
+  "schema": "schemas/package-manifest.schema.json",
+  "instance": {
+    "build_id": "component-g-2.4.0-ja-20260901T120000-a1b2c3",
+    "entries": 2103,
+    "files": {
+      "component-g-ja.mo": {"sha256": "2ede0e9a44db0b3036cb8620871dec0978cf17a01ebdcce022654b3c5a29c642", "size": 218185},
+      "component-g-ja.po": {"sha256": "c6c34e026b8e4fb6cfe15161f0e392c4e27e5238aafe3786a74a538c77c8e64d", "size": 458078}
+    },
+    "default_domain_entries": 10,
+    "default_domain_files": {
+      "component-g-ja.mo": {"sha256": "17be931dc598094e87916250c857626e3062bcd24c331dce048b0e7d6abad16c", "size": 1313},
+      "component-g-ja.po": {"sha256": "1b201946fa7e8a7a01fe7267dcafb8a3ef080f5fd5e1e35c889ddd361c1da4f0", "size": 2171}
+    },
+    "locale": "ja",
+    "status": "published",
+    "kind": "plugin",
+    "slug": "component-g",
+    "version": "2.4.0",
+    "text_domain": "component-g",
+    "extra_domains": [],
+    "server_build_id": "bd_5e2a9c1f3d70",
+    "build_no": 1,
+    "issued_at": "2026-09-27T06:00:00Z",
+    "contract": "1.0.0"
+  }
+}

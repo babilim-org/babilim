@@ -1,0 +1,15 @@
+{
+  "description": "Liveness/readiness probe; also reports which contract version this deployment is speaking.",
+  "http": {"method": "GET", "path": "/v1/health"},
+  "schema": {"request": null, "response": "schemas/health.response.schema.json"},
+  "setup": {"note": "stateless"},
+  "stable_fields": ["/ok"],
+  "request": {
+    "headers": {"User-Agent": "Babilim/1.3.0; https://example.org"},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": {"ok": true, "version": "2026.09.27-1", "contract": "1.0.0"}
+  }
+}

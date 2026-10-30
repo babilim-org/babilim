@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "health.response.schema.json",
+  "title": "200 response to GET /v1/health",
+  "type": "object",
+  "required": ["ok", "version", "contract"],
+  "additionalProperties": false,
+  "properties": {
+    "ok": {"type": "boolean"},
+    "version": {"type": "string", "minLength": 1, "description": "server deployment version"},
+    "contract": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+  }
+}

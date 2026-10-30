@@ -1,0 +1,129 @@
+{
+  "description": "A free-tier site reports one component the service has determined is not on WordPress.org and one that is. The component that is not on WordPress.org gets license_required (free language packs are for WordPress.org components only) even though the site claims is_wporg:true; the wp.org one is requestable.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
+  },
+  "schema": {
+    "request": "schemas/inventory.request.schema.json",
+    "response": "schemas/inventory.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-x",
+        "state": "not_wporg"
+      },
+      {
+        "kind": "plugin",
+        "slug": "component-y",
+        "state": "verified_wporg",
+        "versions": [
+          "2.0.0"
+        ],
+        "stable_version": "2.0.0"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/components",
+    "/license"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.4.0; https://example.org"
+    },
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-x",
+          "version": "1.0.0",
+          "text_domain": "component-x",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-y",
+          "version": "2.0.0",
+          "text_domain": "component-y",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        }
+      ],
+      "locales": [
+        "de_DE"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-x",
+          "locales": {
+            "de_DE": {
+              "status": "license_required"
+            }
+          }
+        },
+        {
+          "kind": "plugin",
+          "slug": "component-y",
+          "locales": {
+            "de_DE": {
+              "status": "requestable"
+            }
+          }
+        }
+      ],
+      "updates": [],
+      "license": {
+        "kind": "free",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 0,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 0,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "features": {
+        "checkout": false,
+        "upload": true
+      },
+      "contract": "1.4.0"
+    }
+  }
+}

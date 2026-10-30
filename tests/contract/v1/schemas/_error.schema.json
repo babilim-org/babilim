@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "error.schema.json",
+  "title": "Error envelope",
+  "type": "object",
+  "required": ["error"],
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "hint"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "hint": {"type": "string", "description": "empty string when there is no further hint to give; always present so clients can rely on the key existing"},
+        "reason": {"type": "string", "minLength": 1, "description": "Optional machine-readable sub-code for a caller that needs to branch on WHY (e.g. plugin-side messaging) without parsing `message`/`hint` prose -- present only on errors that define one (1.3.0: POST /v1/sites/{id}/verify's verification_required uses callback_unreachable/callback_timeout/callback_invalid); absent from every other error."}
+      }
+    }
+  }
+}

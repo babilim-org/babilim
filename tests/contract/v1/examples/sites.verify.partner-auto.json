@@ -1,0 +1,48 @@
+{
+  "description": "The verified hostname matches an entry in the operator's partner_domain list, so a partner license is granted automatically in the same response (no separate licensing step).",
+  "http": {"method": "POST", "path": "/v1/sites/st_9f8e7d6c5b4a/verify"},
+  "schema": {"request": "schemas/sites.verify.request.schema.json", "response": "schemas/sites.verify.response.schema.json"},
+  "setup": {
+    "sites": [
+      {
+        "id": "st_9f8e7d6c5b4a",
+        "host": "client-site.example",
+        "home_url": "https://client-site.example",
+        "verified": false,
+        "license_kind": "free",
+        "license_status": "active",
+        "quota": {
+          "free_slots": {"theme": {"used": 0, "limit": 1}, "plugin": {"used": 0, "limit": 2}},
+          "downloads": {"used": 0, "limit": 500, "period": "daily"}
+        }
+      }
+    ],
+    "partner_domains": [
+      {"host_pattern": "client-site.example"}
+    ],
+    "note": "the server's callback succeeds; host_norm matches the partner_domains entry above"
+  },
+  "stable_fields": ["/verified", "/license", "/quota"],
+  "request": {
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://client-site.example"
+    },
+    "body": {
+      "nonce": "5b4a9f8e7d6c5b4a9f8e7d6c5b4a9f8e",
+      "proof": "b64:4GC5sdbMQFbXcIfHdoM98BLwP0RtmjI1MukIqMJsOGCm6/Cey16tQpLCZ65gqDyYwHWDpq3HRtFw1oYdM4LaBg=="
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "site_token": "tok_9b2c5e8a1d4f7b5f2b1c9e7a0d3f6b8c",
+      "verified": true,
+      "license": {"kind": "partner", "status": "active"},
+      "quota": {
+        "free_slots": {"theme": {"used": 0, "limit": 1}, "plugin": {"used": 0, "limit": 2}},
+        "downloads": {"used": 0, "limit": 500, "period": "daily"}
+      }
+    }
+  }
+}

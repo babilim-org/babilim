@@ -1,0 +1,76 @@
+{
+  "description": "A published build for this exact (component, locale) already exists; no job is created, the caller is pointed straight at it.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/requests"
+  },
+  "schema": {
+    "request": "schemas/requests.request.schema.json",
+    "response": "schemas/requests.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "builds": [
+      {
+        "id": "bd_9e8d7c6b5a4f",
+        "kind": "plugin",
+        "slug": "component-b",
+        "version": "1.0.3",
+        "locale": "de_DE",
+        "build_no": 1,
+        "active": true
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-b",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.3"
+        ],
+        "stable_version": "1.0.3"
+      }
+    ],
+    "site_components": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-b",
+        "version": "1.0.3"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/status",
+    "/build_id"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": {
+      "kind": "plugin",
+      "slug": "component-b",
+      "version": "1.0.3",
+      "locale": "de_DE"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "status": "available",
+      "build_id": "bd_9e8d7c6b5a4f"
+    }
+  }
+}

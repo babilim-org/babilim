@@ -1,0 +1,16 @@
+{
+  "description": "1.5.0: one part of a source upload. The body is the part's raw bytes (not JSON) -- here the 3-byte string 'abc', which the replay harness sends literally (see setup.note). A part may be re-sent before complete; the later copy wins.",
+  "http": {"method": "PUT", "path": "/v1/uploads/up_9a1b2c3d4e5f/parts/1"},
+  "schema": {"request": null, "response": "schemas/uploads.part.response.schema.json"},
+  "setup": {
+    "sites": [{"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "paid", "license_status": "active"}],
+    "source_packages": [{"id": "up_9a1b2c3d4e5f", "kind": "theme", "slug": "component-u", "version": "7.11.4", "state": "uploading", "uploaded_by_site": "st_3f9c2a1b7e4d"}],
+    "note": "request body is the raw bytes b'abc' (3 bytes, application/octet-stream); the contract replay sends exactly those bytes"
+  },
+  "stable_fields": ["/n", "/size"],
+  "request": {
+    "headers": {"Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "Content-Type": "application/octet-stream", "User-Agent": "Babilim/1.5.0; https://example.org"},
+    "body": null
+  },
+  "response": {"status": 200, "body": {"n": 1, "size": 3}}
+}

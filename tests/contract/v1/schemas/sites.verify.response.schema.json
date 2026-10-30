@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.verify.response.schema.json",
+  "title": "200 response to POST /v1/sites/{id}/verify",
+  "type": "object",
+  "required": ["site_token", "verified", "license", "quota"],
+  "additionalProperties": false,
+  "properties": {
+    "site_token": {
+      "type": "string",
+      "pattern": "^tok_[0-9a-f]{32}$",
+      "description": "issued only when the server's own callback to {home_url}/wp-json/babilim/v1/challenge?nonce= succeeds and returns the same proof; any callback failure yields 403 verification_required (with error.reason) instead of a token"
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "always true in a 200 response: a site whose callback cannot be confirmed (unreachable, timed out or invalid) receives 403 verification_required and no site_token"
+    },
+    "license": {"$ref": "common.schema.json#/$defs/license"},
+    "quota": {"$ref": "common.schema.json#/$defs/quota"}
+  }
+}

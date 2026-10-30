@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uploads.complete.request.schema.json",
+  "title": "POST /v1/uploads/{upload_id}/complete request",
+  "description": "No client-side hash: the service computes SHA-256 itself while verifying (the plugin only moves bytes).",
+  "type": "object",
+  "required": ["parts", "size"],
+  "additionalProperties": false,
+  "properties": {
+    "parts": {"type": "integer", "minimum": 1, "description": "number of parts sent; parts 1..parts must all be present"},
+    "size": {"type": "integer", "minimum": 1, "description": "total bytes; must equal the sum of the stored parts"}
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.get.response.schema.json",
+  "title": "200 response to GET /v1/sites/{id}",
+  "type": "object",
+  "required": ["site_id", "host", "verified", "license", "quota", "last_seen_at"],
+  "additionalProperties": false,
+  "properties": {
+    "site_id": {"type": "string", "pattern": "^st_[0-9a-f]{12}$"},
+    "host": {"type": "string", "minLength": 1},
+    "verified": {"type": "boolean"},
+    "license": {"$ref": "common.schema.json#/$defs/license"},
+    "quota": {"$ref": "common.schema.json#/$defs/quota"},
+    "last_seen_at": {"type": "string", "format": "date-time"},
+    "price": {"$ref": "common.schema.json#/$defs/price", "description": "1.7.0: present only when the service currently offers checkout to this site's deployment; a one-time price per site domain. Absent means the plugin shows no upgrade button."}
+  }
+}

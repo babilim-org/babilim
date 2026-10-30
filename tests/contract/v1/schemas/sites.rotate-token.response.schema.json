@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.rotate-token.response.schema.json",
+  "title": "200 response to POST /v1/sites/{id}/rotate-token",
+  "type": "object",
+  "required": ["site_token", "rotated_at"],
+  "additionalProperties": false,
+  "properties": {
+    "site_token": {"type": "string", "pattern": "^tok_[0-9a-f]{32}$"},
+    "rotated_at": {"type": "string", "format": "date-time"}
+  }
+}

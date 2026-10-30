@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "requests.request.schema.json",
+  "title": "POST /v1/requests request",
+  "type": "object",
+  "required": ["kind", "slug", "version", "locale"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {"type": "string", "enum": ["plugin", "theme"]},
+    "slug": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64},
+    "locale": {"type": "string", "minLength": 1, "maxLength": 35},
+    "client_caps": {
+      "type": "array",
+      "description": "1.5.0: capabilities this client supports. A client that lists \"upload\" may be handed an `upload` object in the 202 response for a component that is not on WordPress.org and has no accepted source package yet; a client that omits it is never asked to upload (the job simply waits).",
+      "items": {"type": "string", "enum": ["upload"]},
+      "maxItems": 8,
+      "uniqueItems": true
+    }
+  }
+}

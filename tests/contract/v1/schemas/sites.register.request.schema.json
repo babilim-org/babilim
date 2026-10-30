@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.register.request.schema.json",
+  "title": "POST /v1/sites request",
+  "type": "object",
+  "required": ["home_url", "wp_version", "php_version", "plugin_version", "site_locale", "locales", "install_pub"],
+  "additionalProperties": false,
+  "properties": {
+    "home_url": {"type": "string", "format": "uri", "maxLength": 2048, "description": "wp home_url(), used as the challenge callback target"},
+    "wp_version": {"type": "string", "maxLength": 32},
+    "php_version": {"type": "string", "maxLength": 32},
+    "plugin_version": {"type": "string", "maxLength": 32},
+    "site_locale": {"type": "string", "maxLength": 35, "description": "get_locale() at registration time"},
+    "locales": {
+      "type": "array",
+      "items": {"type": "string", "maxLength": 35},
+      "minItems": 1,
+      "maxItems": 256,
+      "description": "distinct locales in use on the site (site_locale + user locales + multilingual-plugin locales)"
+    },
+    "install_pub": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "base64 Ed25519 public key of the per-install keypair generated on activation, in either of two forms: the raw 32-byte key, or its 44-byte SubjectPublicKeyInfo DER encoding (prefix 302a300506032b6570032100 + the same 32 raw bytes). The server normalises either form to the raw 32 bytes before storing it. The matching private key signs the proof returned by GET /wp-json/babilim/v1/challenge and submitted to POST /v1/sites/{id}/verify -- see docs/api/v1.md section 5 for the exact signed-message format. Anything else is rejected with 422 unprocessable."
+    }
+  }
+}

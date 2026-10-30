@@ -1,0 +1,89 @@
+{
+  "description": "Same as sites.get.ok.json while the service offers checkout: the response also carries the one-time price.",
+  "http": {
+    "method": "GET",
+    "path": "/v1/sites/st_3f9c2a1b7e4d"
+  },
+  "schema": {
+    "request": null,
+    "response": "schemas/sites.get.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active",
+        "quota": {
+          "free_slots": {
+            "theme": {
+              "used": 0,
+              "limit": 1
+            },
+            "plugin": {
+              "used": 1,
+              "limit": 2
+            }
+          },
+          "downloads": {
+            "used": 4,
+            "limit": 500,
+            "period": "daily"
+          }
+        }
+      }
+    ]
+  },
+  "stable_fields": [
+    "/site_id",
+    "/host",
+    "/verified",
+    "/license",
+    "/quota",
+    "/price"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "User-Agent": "Babilim/1.3.0; https://example.org"
+    },
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "site_id": "st_3f9c2a1b7e4d",
+      "host": "example.org",
+      "verified": true,
+      "license": {
+        "kind": "free",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 1,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 4,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "last_seen_at": "2026-09-27T11:58:00Z",
+      "price": {
+        "amount": "8.99",
+        "currency": "USD"
+      }
+    }
+  }
+}

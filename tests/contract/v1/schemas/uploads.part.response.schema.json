@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uploads.part.response.schema.json",
+  "title": "200 response to PUT /v1/uploads/{upload_id}/parts/{n}",
+  "type": "object",
+  "required": ["n", "size"],
+  "additionalProperties": false,
+  "properties": {
+    "n": {"type": "integer", "minimum": 1},
+    "size": {"type": "integer", "minimum": 0, "description": "bytes actually stored for this part (re-sending a part before complete overwrites it)"}
+  }
+}

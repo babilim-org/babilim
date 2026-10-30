@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sites.checkout.response.schema.json",
+  "title": "201 response to POST /v1/sites/{id}/checkout",
+  "description": "201 response to POST /v1/sites/{id}/checkout. The URL opens the Babilim checkout page at babilim.org in a new tab; the entry token is in the URL fragment and the plugin must open the URL unchanged. It stops working after expires_at (about 30 minutes) and is replaced by the next call, but an order already paid through it is still credited.",
+  "type": "object",
+  "required": ["checkout_url", "expires_at", "price"],
+  "additionalProperties": false,
+  "properties": {
+    "checkout_url": {"type": "string", "format": "uri"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "price": {"$ref": "common.schema.json#/$defs/price"}
+  }
+}
