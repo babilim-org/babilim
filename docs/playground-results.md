@@ -544,7 +544,7 @@ suite now boots. A check id matches its own file under
 | b9-integrity | PASS | PASS | PASS | a real `verify()` catches a tampered `.l10n.php`; `degrade()` removes it; clean fallback |
 | b10 | PASS | PASS | PASS | multisite: two sites, each under its own locale, each correct, no cross-site leakage |
 | b10b | PASS | PASS | PASS | multisite: a manifest lock held while serving site 1 keeps site 2 out until released; the row lives only in the main site's options table |
-| b11-identity-and-warning | PASS | not run | not run | see "Contract 1.3.0 batch" below: verification failure is a warning with no token, a default uninstall keeps the site identity, a reinstall reuses it, delete-all removes it |
+| b11-identity-and-warning | PASS | not run | not run | see "Contract 1.3.0 batch" below: verification failure is a warning with no token, a default uninstall keeps the install key (and the identity of a verified site), a reinstall reuses it, delete-all removes it. Its first-step assertions were brought in line with current behavior in the fix wave; the PASS in the first column predates that |
 
 The rows above other than b11 passed on all three WordPress versions
 at the time of that run (the two update-download checks b1 and b2 were
@@ -579,7 +579,10 @@ local mock service (`tests/playground/mock-server/router.php`):
    stored, the warning is recorded with its reason, and the
    administrator notice printed on `admin_notices` shows it.
 2. The real `uninstall.php`, delete-all setting off: warning, consent
-   and the rest are gone; install key and site id stay.
+   and the rest are gone; the install key stays. The site id of a
+   never-verified site lives only in the pending-verification record,
+   which the uninstall removes, so it goes too (a complete site id and
+   token pair is the identity that is kept).
 3. Reinstall (fresh singleton, consent given again, service now able to
    verify): the site registers again with the same install key (the mock
    saw the same public key twice) and stores a token.
@@ -589,11 +592,11 @@ local mock service (`tests/playground/mock-server/router.php`):
 5. With the delete-all setting on, the same uninstall removes all three.
 
 This check found a real defect on its first run: a never-verified site
-keeps its site id across a default uninstall but loses its pending
+kept its site id across a default uninstall but lost its pending
 challenge, so reinstalling stopped at "No pending challenge to verify".
 `Babilim_Site::attempt_register_and_verify()` now registers again (with
 the kept key) in that case, unless the site is stalled or in conflict.
-Reverting that fix makes b11 fail with exactly that message.
+With that fix reverted, b11 failed with exactly that message.
 
 Command and result (`bash tests/playground/run-checks.sh 6.6 3.1.54
 <out-dir>`): 25 PASS lines, no FAIL, WordPress 6.6.9 on PHP 8.1.34,
@@ -857,8 +860,23 @@ later load translations just in time and remember where a domain was already
 found, so without that reset the check failed on those versions although a
 new request behaves correctly. `run-checks.sh 6.6 / 6.8 / latest 3.1.54`: all
 three `b12-bundled-l10n` lines PASS on each version (27 PASS, 1 FAIL each; the
-one FAIL is the known `b11` item above).
+one FAIL was `b11`, see the next paragraph).
 
-Known, not caused by this change: `b11-identity-and-warning` reports
-`site id or key missing after registration` on WordPress 6.6 with the
-current master as well; it is unrelated to the translation files.
+`b11-identity-and-warning` reported `site id or key missing after
+registration` in those runs. That was a stale assertion in the check, not a
+product defect: a site id counts as an identity only together with a token,
+so after a failed verification it exists only in the pending-verification
+record. The check now asserts exactly that, and also that the pending record
+is removed by a default uninstall. `run-checks.sh 6.6 3.1.54` after the fix:
+28 PASS, 0 FAIL.
+
+## WordPress 7.1
+
+2026-10-30: `run-checks.sh 7.1 3.1.54` (WordPress 7.1.4, PHP 8.1.34, the
+pinned CLI) booted and ran every check: 27 PASS, 1 FAIL. The one FAIL was
+the stale `b11-identity-and-warning` assertion described above (same
+message, not related to WordPress 7.1 compatibility; the check has since
+been corrected and was re-run on 6.6 only);
+the multisite checks `b10` and `b10b-multisite-lock` and the bundled
+translation check `b12-bundled-l10n` PASS. This is the evidence behind
+`Tested up to: 7.1`.

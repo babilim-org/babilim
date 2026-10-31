@@ -163,9 +163,10 @@ final class Test_Admin_Enable extends TestCase {
 		$this->assertMatchesRegularExpression( '/,\s*true\s*\);/', $js, 'registered in the capture phase' );
 		$this->assertStringContainsString( 'event.submitter', $js );
 		$this->assertStringContainsString( "querySelector( 'button[type=submit]' )", $js );
-		foreach ( array( 'data-babilim-confirm', 'data-babilim-confirmed', 'data-babilim-busy-label', 'spinner is-active', 'setTimeout' ) as $needle ) {
+		foreach ( array( 'data-babilim-confirm', 'data-babilim-confirmed', 'data-babilim-busy-label', 'spinner is-active', 'setTimeout', "getAttribute( 'data-babilim-autosubmit-delay' )" ) as $needle ) {
 			$this->assertStringContainsString( $needle, $js, $needle );
 		}
+		$this->assertStringNotContainsString( 'setInterval', $js, 'polling must not stack requests' );
 		$this->assertDoesNotMatchRegularExpression( '/jQuery|\$\(/', $js, 'no jQuery' );
 		$this->assertDoesNotMatchRegularExpression( '/site_token|token/i', $js, 'the site token never reaches the browser' );
 	}
@@ -593,6 +594,67 @@ final class Test_Admin_Enable extends TestCase {
 		$this->assertNotSame( 'Sync complete.', $errors[0]['message'], 'a sync that did not finish is not reported as complete' );
 		$this->assertNotSame( 'success', $errors[0]['type'] );
 		$this->assertSame( admin_url( 'admin.php?page=babilim' ), $GLOBALS['babilim_test_redirects'][0]['location'] );
+	}
+
+	public function test_sync_now_from_the_advanced_tab_says_so_while_the_service_holds_the_site(): void {
+		$this->one_plugin();
+		update_option( 'babilim_consent', true );
+		$this->seed_identity();
+		( new Babilim_State() )->set( array( 'rate_limited_until' => time() + 3600 ) );
+		$this->post( 'babilim_sync_now', array( 'tab' => 'advanced' ) );
+
+		$this->admin()->dispatch_babilim_sync_now();
+
+		$errors = get_settings_errors( 'babilim' );
+		$this->assertCount( 1, $errors, 'the click gets feedback' );
+		$this->assertSame( 'warning', $errors[0]['type'] );
+		$this->assertStringContainsString( 'rate limited', $errors[0]['message'] );
+		$this->assertStringContainsString( 'tab=advanced', $GLOBALS['babilim_test_redirects'][0]['location'] );
+	}
+
+	public function test_sync_now_that_hits_a_rate_limit_mid_run_shows_the_wait_not_a_reload_prompt(): void {
+		$this->one_plugin();
+		update_option( 'babilim_consent', true );
+		$this->seed_identity();
+		$limited = $this->json( 429, array( 'error' => array( 'code' => 'rate_limited', 'message' => 'slow down', 'hint' => '' ) ) );
+		$limited['headers'] = array( 'Retry-After' => '120' );
+		$http = new Babilim_Fake_Http( array( $limited ) );
+		$this->post( 'babilim_sync_now' );
+
+		$this->admin( $http )->dispatch_babilim_sync_now();
+
+		$errors = get_settings_errors( 'babilim' );
+		$this->assertCount( 1, $errors );
+		$this->assertSame( 'rate_limited', $errors[0]['code'] );
+		$this->assertSame( 'warning', $errors[0]['type'] );
+		$this->assertStringNotContainsString( 'Reload this page', $errors[0]['message'] );
+		$events = $GLOBALS['babilim_test_single_events_scheduled'];
+		$this->assertCount( 1, $events, 'one check is set for when the wait ends' );
+		$this->assertSame( Babilim::SYNC_ONCE_HOOK, $events[0]['hook'] );
+		$this->assertGreaterThanOrEqual( time() + 100, $events[0]['timestamp'], 'not before the Retry-After has passed' );
+		$this->assertSame( 0, $GLOBALS['babilim_test_spawn_cron_calls'], 'nothing is due yet, so cron is not nudged' );
+	}
+
+	public function test_enable_that_hits_a_rate_limit_mid_run_shows_the_wait_and_schedules_the_retry_for_its_end(): void {
+		$this->one_plugin();
+		$limited = $this->json( 429, array( 'error' => array( 'code' => 'rate_limited', 'message' => 'slow down', 'hint' => '' ) ) );
+		$limited['headers'] = array( 'Retry-After' => '120' );
+		$http = new Babilim_Fake_Http( array( $this->registered(), $this->verified(), $limited ) );
+		$this->post( 'babilim_enable' );
+
+		$this->admin( $http )->dispatch_babilim_enable();
+
+		$codes = array_column( get_settings_errors( 'babilim' ), 'code' );
+		$this->assertContains( 'rate_limited', $codes );
+		$this->assertNotContains( 'in_progress', $codes );
+		$syncs = array_filter(
+			$GLOBALS['babilim_test_single_events_scheduled'],
+			static function ( $e ) {
+				return Babilim::SYNC_ONCE_HOOK === $e['hook'];
+			}
+		);
+		$this->assertCount( 1, $syncs, 'one check is set for when the wait ends' );
+		$this->assertGreaterThanOrEqual( time() + 100, array_values( $syncs )[0]['timestamp'] );
 	}
 
 	public function test_sync_now_that_runs_out_of_time_schedules_one_follow_up(): void {

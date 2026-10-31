@@ -693,6 +693,94 @@ final class Test_Site extends TestCase {
 		$this->assertSame( $until, $site->rate_limited_until(), 'a timestamp still in the future must be reported as the current rate-limit deadline' );
 	}
 
+	public function test_sync_does_not_call_the_service_while_rate_limited(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		$ok = $this->json_response( 200, array( 'components' => array(), 'updates' => array(), 'license' => array(), 'quota' => array(), 'features' => array(), 'contract' => '1.1.1' ) );
+		list( $site, $http, $state ) = $this->make_site( array( $ok ) );
+		$state->set( array_merge( $state->get(), array( 'rate_limited_until' => time() + 60 ) ) );
+
+		$result = $site->sync();
+
+		$this->assertCount( 0, $http->requests, 'no request may leave while Retry-After has not elapsed' );
+		$this->assertSame( 'rate_limited', $result->code() );
+	}
+
+	public function test_sync_held_by_the_rate_limit_keeps_an_earlier_real_error_on_record(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		$earlier = array( 'code' => 'too_many_components', 'message' => 'm', 'since' => '2026-01-01T00:00:00+00:00', 'at' => '2026-01-01T00:00:00+00:00' );
+		update_option( 'babilim_sync_last_error', $earlier, false );
+		list( $site, $http, $state ) = $this->make_site( array() );
+		$state->set( array_merge( $state->get(), array( 'rate_limited_until' => time() + 60 ) ) );
+
+		$result = $site->sync();
+
+		$this->assertSame( 'rate_limited', $result->code() );
+		$this->assertSame( $earlier, get_option( 'babilim_sync_last_error' ), 'the hold is not written over the real error' );
+	}
+
+	public function test_sync_runs_again_once_the_rate_limit_deadline_has_passed(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		$inventory = new Babilim_Inventory(
+			static function () { return array( 'a/a.php' => array( 'Name' => 'A', 'Version' => '1.0', 'TextDomain' => 'a' ) ); },
+			static function () { return array(); },
+			static function () { return false; },
+			static function () { return array(); }
+		);
+		$ok = $this->json_response( 200, array( 'components' => array(), 'updates' => array(), 'license' => array(), 'quota' => array(), 'features' => array(), 'contract' => '1.1.1' ) );
+		list( $site, $http, $state ) = $this->make_site( array( $ok ), null, $inventory );
+		$state->set( array_merge( $state->get(), array( 'rate_limited_until' => time() - 1 ) ) );
+
+		$result = $site->sync();
+
+		$this->assertCount( 1, $http->requests );
+		$this->assertTrue( $result->is_ok() );
+	}
+
+	public function test_sync_keeps_an_event_recorded_while_the_request_was_in_flight(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+
+		$fs       = new Babilim_Memory_Fs();
+		$manifest = new Babilim_Manifest( $fs );
+		$manifest->set( 'plugin', 'a', 'de_DE', array( 'build_id' => 'bd_a1b2c3d4e5f6', 'files' => array(), 'integrity' => array( 'ok' => false, 'checked_at' => '2026-01-01T00:00:00Z' ) ) );
+		$inventory = new Babilim_Inventory(
+			static function () { return array( 'a/a.php' => array( 'Name' => 'A', 'Version' => '1.0', 'TextDomain' => 'a' ) ); },
+			static function () { return array(); },
+			static function () { return false; },
+			static function () { return array(); }
+		);
+		$ok   = $this->json_response( 200, array( 'components' => array(), 'updates' => array(), 'license' => array(), 'quota' => array(), 'features' => array(), 'contract' => '1.1.1' ) );
+		$http = new class( $ok ) implements Babilim_Http {
+			/** @var array */
+			private $response;
+			public function __construct( array $response ) {
+				$this->response = $response;
+			}
+			/**
+			 * @return array
+			 */
+			public function request( string $method, string $url, array $args ) {
+				( new Babilim_State() )->record_client_event( 'install_failed', 'plugin', 'late', 'fr_FR' );
+				return $this->response;
+			}
+		};
+		$state = new Babilim_State();
+		$site  = new Babilim_Site( $http, 'https://api.babilim.org', $state, $inventory, $manifest );
+
+		$site->sync();
+
+		$pending = $state->pending_client_events();
+		$this->assertCount( 1, $pending, 'only the events that were sent may be removed' );
+		$this->assertSame( 'late', $pending[0]['slug'] );
+	}
+
 	/**
 	 * rate_limited_until() itself: null before any rate limiting has
 	 * happened, the stored timestamp while it's still in the future, and

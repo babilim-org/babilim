@@ -99,7 +99,7 @@ final class Test_Uninstall extends TestCase {
 	public function test_uninstall_removes_the_admin_screens_own_settings_options(): void {
 		update_option( 'babilim_consent', true );
 		update_option( 'babilim_manual_locales', array( 'pt_BR' ) );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 
 		if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 			define( 'WP_UNINSTALL_PLUGIN', true );
@@ -143,6 +143,17 @@ final class Test_Uninstall extends TestCase {
 		$this->assertFalse( get_transient( 'babilim_meta_locales_cache' ), 'babilim_meta_locales_cache transient must be removed by uninstall.php' );
 	}
 
+	public function test_uninstall_removes_the_meta_locales_failure_transient(): void {
+		set_transient( 'babilim_meta_locales_failed', 1, 300 );
+
+		if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+			define( 'WP_UNINSTALL_PLUGIN', true );
+		}
+		require dirname( __DIR__, 2 ) . '/uninstall.php';
+
+		$this->assertFalse( get_transient( 'babilim_meta_locales_failed' ) );
+	}
+
 	/**
 	 * The language names kept from the service's locale list are
 	 * Babilim's own option and go with the rest.
@@ -165,7 +176,7 @@ final class Test_Uninstall extends TestCase {
 	 * babilim_keep_custom_on_purge to.
 	 */
 	public function test_uninstall_purges_installed_files_and_respects_keep_custom(): void {
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 
 		require_once dirname( __DIR__, 2 ) . '/includes/class-babilim-paths.php';
 		require_once dirname( __DIR__, 2 ) . '/includes/class-babilim-fs.php';
@@ -264,7 +275,7 @@ final class Test_Uninstall extends TestCase {
 	}
 
 	public function test_uninstall_removes_every_managed_file_including_default_supplements_and_history(): void {
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		$seed = $this->seed_real_disk();
 
 		$this->run_uninstall();
@@ -276,7 +287,7 @@ final class Test_Uninstall extends TestCase {
 	}
 
 	public function test_uninstall_keeps_custom_and_the_root_guard_files_when_keep_custom_is_on(): void {
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 		$seed = $this->seed_real_disk();
 
 		$this->run_uninstall();
@@ -297,7 +308,7 @@ final class Test_Uninstall extends TestCase {
 	}
 
 	public function test_uninstall_never_touches_core_owned_language_directories(): void {
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		$seed = $this->seed_real_disk();
 
 		$this->run_uninstall();
@@ -306,7 +317,7 @@ final class Test_Uninstall extends TestCase {
 	}
 
 	public function test_uninstall_still_removes_files_when_the_manifest_is_corrupt(): void {
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		$seed = $this->seed_real_disk();
 		file_put_contents( Babilim_Paths::manifest_file(), '{not json' );
 
@@ -371,12 +382,12 @@ final class Test_Uninstall extends TestCase {
 		$this->assertFalse( wp_next_scheduled( 'babilim_maintenance' ), 'the maintenance cron event must be cleared' );
 	}
 
-	public function test_uninstall_removes_the_settings_notice_transient(): void {
+	public function test_uninstall_leaves_cores_settings_notice_transient_alone(): void {
 		set_transient( 'settings_errors', array( 'x' ), MINUTE_IN_SECONDS );
 
 		$this->run_uninstall();
 
-		$this->assertFalse( get_transient( 'settings_errors' ) );
+		$this->assertSame( array( 'x' ), get_transient( 'settings_errors' ) );
 	}
 
 	/**
@@ -528,7 +539,7 @@ final class Test_Uninstall extends TestCase {
 	public function test_uninstall_purges_shared_language_files_once_on_multisite(): void {
 		$GLOBALS['babilim_test_multisite'] = true;
 		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		$seed = $this->seed_real_disk();
 
 		$this->run_uninstall();
@@ -625,7 +636,7 @@ final class Test_Uninstall extends TestCase {
 
 		for ( $id = 1; $id <= $site_count; $id++ ) {
 			switch_to_blog( $id );
-			update_option( 'babilim_keep_custom_on_purge', $site_count === $id );
+			update_option( 'babilim_keep_custom_on_purge', $site_count === $id ? 1 : 0 );
 			restore_current_blog();
 		}
 		$seed = $this->seed_real_disk();
@@ -646,10 +657,10 @@ final class Test_Uninstall extends TestCase {
 		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
 
 		switch_to_blog( 1 );
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 		restore_current_blog();
 		switch_to_blog( 2 );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		restore_current_blog();
 
 		$seed = $this->seed_real_disk();
@@ -669,10 +680,10 @@ final class Test_Uninstall extends TestCase {
 		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
 
 		switch_to_blog( 1 );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		restore_current_blog();
 		switch_to_blog( 2 );
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 		restore_current_blog();
 
 		$seed = $this->seed_real_disk();
@@ -691,10 +702,10 @@ final class Test_Uninstall extends TestCase {
 		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
 
 		switch_to_blog( 1 );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		restore_current_blog();
 		switch_to_blog( 2 );
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		restore_current_blog();
 
 		$seed = $this->seed_real_disk();

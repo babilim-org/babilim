@@ -224,13 +224,13 @@ final class Test_Contract_Limits extends TestCase {
 
 	public function test_the_locale_list_drops_a_locale_over_35_characters(): void {
 		list( $site, $http, $inventory ) = $this->site( array() );
-		$inventory->set_manual_locales( array( str_repeat( 'x', 35 ), str_repeat( 'y', 36 ) ) );
+		$inventory->set_manual_locales( array( 'de_DE_' . str_repeat( 'x', 29 ), 'de_DE_' . str_repeat( 'y', 30 ) ) );
 
 		$site->sync();
 
 		$body = $this->sent_inventory( $http );
-		$this->assertContains( str_repeat( 'x', 35 ), $body['locales'] );
-		$this->assertNotContains( str_repeat( 'y', 36 ), $body['locales'] );
+		$this->assertContains( 'de_DE_' . str_repeat( 'x', 29 ), $body['locales'] );
+		$this->assertNotContains( 'de_DE_' . str_repeat( 'y', 30 ), $body['locales'] );
 	}
 
 	// -- inventory: installed map --------------------------------------------

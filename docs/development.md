@@ -190,14 +190,19 @@ make l10n L10N_SRC=<dir>   # rebuilds languages/babilim-<locale>.{po,mo,l10n.php
                            # (after `make pot` only moved line references, l10n-check says STALE (+0/-0) for every
                            # locale: run `make l10n L10N_SRC=languages` to rebuild from the committed .po files)
 make zip                   # builds build/babilim-<version>.zip
+make wporg-assets          # renders .wordpress-org/ icons and banners from their SVG sources (needs Playwright)
+make wporg-screenshots     # captures .wordpress-org/screenshot-N.png on the neutral site (needs Playwright)
+make release               # one SVN commit: trunk + assets + tag; RELEASE_ARGS=--dry-run to rehearse (needs svn)
 ```
 
 `contract-check`/`public-check`/`public-history-check`/`install-hooks` are
 pure shell — no network, no PHP/Python toolchain required
 (`install-hooks` runs one `git config` command; nothing else here
-touches your git config). `tools` is the one target that touches the
-network, and only that one (see "Running the plugin locally" above);
-everything else after it stays offline.
+touches your git config). `tools`, `release` and `wporg-screenshots` are the
+targets that touch the network (see "Running the plugin locally" above for
+`tools`; `release` talks to the directory's SVN repository;
+`wporg-screenshots` downloads WordPress, the SQLite integration plugin and
+wp-cli into a cache on its first run); everything else stays offline.
 
 ## WordPress official skills
 

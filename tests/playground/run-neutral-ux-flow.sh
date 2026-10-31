@@ -9,7 +9,7 @@
 # Usage: run-neutral-ux-flow.sh <out-dir> [runs] [scenarios]
 #   out-dir    results and per-run logs go here (outside the repository)
 #   runs       how many times each scenario is repeated, default 1
-#   scenarios  space separated, default "enable settings list"; also bulk, rowactions and l10n; each scenario runs
+#   scenarios  space separated, default "enable settings list"; also bulk, rowactions, l10n and screenshots; each scenario runs
 #              with and without the admin script (--no-js), on a fresh database
 #
 # Environment:
@@ -27,6 +27,8 @@
 # whether anything is left. Exit code is non-zero on any FAIL line.
 
 set -uo pipefail
+# extglob must be on before the function that uses !(...) is parsed.
+shopt -s extglob
 
 OUT_DIR="${1:?usage: run-neutral-ux-flow.sh <out-dir> [runs] [scenarios]}"
 RUNS="${2:-1}"
@@ -105,13 +107,6 @@ fixture_plugin() { # <slug> <name>
 # A fresh WordPress download has no languages directory yet; sites that
 # ever installed a language have one.
 mkdir -p "${ROOT}/wp-content/languages"
-fixture_plugin woocommerce "WooCommerce"
-fixture_plugin queued-demo "Queued Demo"
-fixture_plugin newer-demo "Newer Demo"
-for letter in a b c d e f g h i j k l; do
-	fixture_plugin "bulk-${letter}" "Bulk ${letter}"
-done
-fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
 
 cat > "${ROOT}/wp-config.php" <<EOF
 <?php
@@ -174,6 +169,53 @@ mkdir -p "${WORK}/pkgs"
 
 # A fresh database for every run; then the server.
 fresh_site() { # <scenario>
+	# Fixture plugins: screenshots shows only neutral sample names (it ends up in public images); every other scenario gets the test set.
+	rm -rf "${ROOT}"/wp-content/plugins/!(babilim|sqlite-database-integration|index.php)
+	rm -rf "${ROOT}/wp-content/mu-plugins"
+	if [ "$1" = screenshots ]; then
+		# Quiet the test environment in the public images: no update notices or counts (the checks answer "nothing to update" without contacting wordpress.org, so the output does not depend on the day it is rendered) and no database node in the admin bar.
+		mkdir -p "${ROOT}/wp-content/mu-plugins"
+		cat > "${ROOT}/wp-content/mu-plugins/quiet-screenshots.php" <<'MU'
+<?php
+/**
+ * Plugin Name: Quiet screenshots
+ * Description: Test environment only. Reports no updates and hides the database plugin's admin bar node.
+ */
+foreach ( array( 'core', 'plugins', 'themes' ) as $babilim_shot_kind ) {
+	add_filter(
+		'pre_site_transient_update_' . $babilim_shot_kind,
+		static function () {
+			return (object) array(
+				'last_checked'    => time(),
+				'updates'         => array(),
+				'version_checked' => $GLOBALS['wp_version'],
+				'response'        => array(),
+				'no_update'       => array(),
+				'translations'    => array(),
+			);
+		}
+	);
+}
+add_action(
+	'admin_bar_menu',
+	static function ( $bar ) {
+		$bar->remove_node( 'sqlite-db-integration' );
+	},
+	1000
+);
+MU
+		fixture_plugin sample-gallery "Sample Gallery"
+		fixture_plugin sample-forms "Sample Forms"
+		fixture_plugin sample-shop "Sample Shop"
+	else
+		fixture_plugin woocommerce "WooCommerce"
+		fixture_plugin queued-demo "Queued Demo"
+		fixture_plugin newer-demo "Newer Demo"
+		for letter in a b c d e f g h i j k l; do
+			fixture_plugin "bulk-${letter}" "Bulk ${letter}"
+		done
+		fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
+	fi
 	local profile=""
 	[ "$1" = list ] && profile=',"profile":"list"'
 	# bulk: bulk-e answers its download with a 500; every download waits a little.
@@ -188,6 +230,11 @@ fresh_site() { # <scenario>
 	rm -rf "${ROOT}/wp-content/languages/babilim" "${ROOT}/wp-content/languages/zh_TW.mo"
 	wp core install --title=Neutral --admin_user=admin --admin_password="${PASS}" --admin_email=admin@example.org --skip-email > "${WORK}/install.log" 2>&1 || return 1
 	wp plugin activate babilim >> "${WORK}/install.log" 2>&1 || return 1
+	if [ "$1" = screenshots ]; then
+		wp option update babilim_manual_locales '["de_DE","fr_FR"]' --format=json >> "${WORK}/install.log" 2>&1 || return 1
+		# The site language is always detected; stop managing it so the images list only other languages.
+		wp option update babilim_disabled_locales '["en_US"]' --format=json >> "${WORK}/install.log" 2>&1 || return 1
+	fi
 	# l10n: a zh_TW site. WPLANG alone installs no core language pack (no download), so core strings stay English and only the plugin's own bundled file is translated.
 	# core only accepts a WPLANG whose "{locale}.mo" exists in the languages directory, so an empty, header-only one stands in for the pack.
 	if [ "$1" = l10n ]; then

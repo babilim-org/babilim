@@ -24,6 +24,27 @@ final class Test_State extends TestCase {
 		$this->assertSame( array( 'contract' => '1.1.1' ), $state->get() );
 	}
 
+	public function test_state_and_events_options_are_stored_without_autoload(): void {
+		$state = new Babilim_State();
+		$state->set( array( 'components' => array() ) );
+		$state->record_client_event( 'integrity_failed', 'plugin', 'a', 'de_DE' );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload']['babilim_state'] );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload']['babilim_client_events'] );
+
+		// Every later write to the events option keeps it out of autoload.
+		$state->record_client_event( 'integrity_failed', 'plugin', 'b', 'de_DE' );
+		$GLOBALS['babilim_test_options_autoload']['babilim_client_events'] = true;
+		$state->drain_client_events();
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload']['babilim_client_events'] );
+
+		$state->record_client_event( 'integrity_failed', 'plugin', 'c', 'de_DE' );
+		$sent = $state->pending_client_events();
+		$state->record_client_event( 'integrity_failed', 'plugin', 'd', 'de_DE' );
+		$GLOBALS['babilim_test_options_autoload']['babilim_client_events'] = true;
+		$state->drain_client_events( $sent );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload']['babilim_client_events'] );
+	}
+
 	public function test_updates_reads_from_stored_state(): void {
 		$state = new Babilim_State();
 		$state->set( array( 'updates' => array( array( 'kind' => 'plugin', 'slug' => 'a' ) ) ) );
@@ -119,6 +140,18 @@ final class Test_State extends TestCase {
 		$this->assertCount( 1, $state->pending_client_events() );
 	}
 
+	public function test_drain_removes_only_the_events_that_were_sent(): void {
+		$state = new Babilim_State();
+		$state->record_client_event( 'integrity_failed', 'plugin', 'a', 'de_DE' );
+		$sent = $state->pending_client_events();
+		$state->record_client_event( 'install_failed', 'plugin', 'b', 'fr_FR' ); // Arrives during the sync.
+
+		$state->drain_client_events( $sent );
+
+		$this->assertCount( 1, $state->pending_client_events() );
+		$this->assertSame( 'install_failed', $state->pending_client_events()[0]['code'] );
+	}
+
 	public function test_record_client_event_allows_a_repeat_once_the_first_is_drained(): void {
 		$state = new Babilim_State();
 		$state->record_client_event( 'integrity_failed', 'plugin', 'a', 'de_DE' );
@@ -181,6 +214,7 @@ final class Test_State extends TestCase {
 		$remaining = $state->pending_client_events();
 		$this->assertCount( 1, $remaining );
 		$this->assertSame( 'integrity_failed', $remaining[0]['code'] );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload']['babilim_client_events'] );
 	}
 
 	public function test_purge_invalid_client_events_is_a_no_op_when_everything_is_already_valid(): void {

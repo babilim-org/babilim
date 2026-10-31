@@ -1651,7 +1651,11 @@ final class Babilim_Installer {
 			}
 			$renamed[]                                     = array( $dest, $rename_source );
 			$history_served_out[ $served_filename ]        = $history_path;
-			$files_out[ $relative_prefix . '/' . $served_filename ] = (string) $this->fs->sha256( $dest );
+			$sha = $this->fs->sha256( $dest );
+			if ( ! is_string( $sha ) ) {
+				return Babilim_Result::error( 'hash_failed', sprintf( /* translators: %s: the filename that could not be read back after it was moved into place. */ __( 'Could not read %s back after moving it into place.', 'babilim' ), $served_filename ) );
+			}
+			$files_out[ $relative_prefix . '/' . $served_filename ] = $sha;
 		}
 		return null;
 	}

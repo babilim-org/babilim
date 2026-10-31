@@ -76,6 +76,21 @@ final class Test_Default_Index extends TestCase {
 
 	// -- Happy path: two matching, active components -----------------
 
+	public function test_brake_message_words_the_general_and_the_whole_kind_cases(): void {
+		$this->assertSame(
+			'it would orphan 3 of 4 managed components (more than half)',
+			Babilim_Default_Index::brake_message( array( 'code' => 'majority', 'count' => 3, 'total' => 4 ) )
+		);
+		$this->assertSame(
+			'it would orphan every managed plugin component (2 of 2)',
+			Babilim_Default_Index::brake_message( array( 'code' => 'whole_kind', 'kind' => 'plugin', 'count' => 2, 'total' => 5 ) )
+		);
+		$this->assertSame(
+			'it would orphan every managed theme component (1 of 1)',
+			Babilim_Default_Index::brake_message( array( 'code' => 'whole_kind', 'kind' => 'theme', 'count' => 1, 'total' => 5 ) )
+		);
+	}
+
 	public function test_two_active_matching_components_are_both_included(): void {
 		$fs = new Babilim_Memory_Fs();
 		$this->put_fragment( $fs, 'a', 'zh_TW', array( 'Save' => 'Save-A' ) );
@@ -437,6 +452,37 @@ final class Test_Default_Index extends TestCase {
 		$this->assertTrue( $result->is_ok() );
 		$this->assertTrue( $fs->exists( Babilim_Paths::merged_default( 'zh_TW', 'mo' ) ) );
 		$this->assertTrue( $fs->exists( Babilim_Paths::merged_default( 'de_DE', 'mo' ) ) );
+	}
+
+	public function test_rebuild_all_across_locales_walks_a_network_only_once(): void {
+		$GLOBALS['babilim_test_multisite']          = true;
+		$GLOBALS['babilim_test_sites']              = array( 1, 2, 3 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array( 'a/a.php' => array( 'Version' => '1.0.0' ) );
+		$GLOBALS['babilim_test_is_plugin_active_return'] = array( 'a/a.php' => true );
+		$GLOBALS['babilim_test_get_sites_calls']    = 0;
+		$GLOBALS['babilim_test_switch_calls']       = 0;
+		Babilim::reset_for_tests();
+
+		$fs = new Babilim_Memory_Fs();
+		$this->put_fragment( $fs, 'a', 'zh_TW', array( 'Save' => 'Save-A' ) );
+		$this->put_fragment( $fs, 'a', 'de_DE', array( 'Save' => 'Save-A-de' ) );
+		$this->put_fragment( $fs, 'a', 'fr_FR', array( 'Save' => 'Save-A-fr' ) );
+		$manifest = $this->manifest_with_records(
+			$fs,
+			array(
+				array_merge( array( 'kind' => 'plugin', 'slug' => 'a', 'locale' => 'zh_TW' ), $this->default_record( 'plugin', 'a', 'zh_TW', '1.0.0' ) ),
+				array_merge( array( 'kind' => 'plugin', 'slug' => 'a', 'locale' => 'de_DE' ), $this->default_record( 'plugin', 'a', 'de_DE', '1.0.0' ) ),
+				array_merge( array( 'kind' => 'plugin', 'slug' => 'a', 'locale' => 'fr_FR' ), $this->default_record( 'plugin', 'a', 'fr_FR', '1.0.0' ) ),
+			)
+		);
+
+		$index  = new Babilim_Default_Index( $fs, $manifest, array( Babilim::instance(), 'active_components' ), $this->parse_entries_fake( $fs ), $this->never_core_has() );
+		$result = $index->rebuild_all();
+
+		$this->assertTrue( $result->is_ok() );
+		$this->assertSame( 3, count( $result->get( 'locales' ) ), 'three locales were rebuilt' );
+		$this->assertSame( 1, $GLOBALS['babilim_test_get_sites_calls'], 'the network is listed once, not once per locale' );
+		$this->assertSame( 2, $GLOBALS['babilim_test_switch_calls'], 'each other site is entered once, not once per locale' );
 	}
 
 	// -- sweep_orphans ----------------------------------------------------
@@ -1483,6 +1529,90 @@ final class Test_Default_Index extends TestCase {
 
 		$mo_bytes = $fs->get( Babilim_Paths::merged_default( 'ru', 'mo' ) );
 		$this->assertStringNotContainsString( 'Plural-Forms:', (string) $mo_bytes );
+	}
+
+	public function test_plural_entries_are_dropped_when_the_parser_returns_nul_joined_strings(): void {
+		$fs = new Babilim_Memory_Fs();
+		$this->put_fragment_with_headers(
+			$fs, 'a', 'ru',
+			array(
+				'Save'              => 'Save-A',
+				"1 item\x004 items" => array( 'form0', 'form1', 'form2' ),
+			),
+			array()
+		);
+		$manifest = $this->manifest_with_records(
+			$fs,
+			array( array_merge( array( 'kind' => 'plugin', 'slug' => 'a', 'locale' => 'ru' ), $this->default_record( 'plugin', 'a', 'ru', '1.0.0' ) ) )
+		);
+		$active = static function () {
+			return array( array( 'kind' => 'plugin', 'slug' => 'a', 'version' => '1.0.0' ) );
+		};
+		// WP_Translation_File::entries() returns plural values as one
+		// NUL-joined string, not an array.
+		$inner  = $this->parse_entries_fake( $fs );
+		$parser = static function ( string $path ) use ( $inner ) {
+			$entries = $inner( $path );
+			foreach ( $entries as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$entries[ $key ] = implode( "\0", $value );
+				}
+			}
+			return $entries;
+		};
+
+		$index  = new Babilim_Default_Index( $fs, $manifest, $active, $parser, $this->never_core_has() );
+		$result = $index->rebuild( 'ru' );
+
+		$this->assertTrue( $result->is_ok() );
+		$meta = $manifest->default_index( 'ru' );
+		$this->assertSame( 1, $meta['skipped_plurals'] );
+		$mo_entries = call_user_func( $inner, Babilim_Paths::merged_default( 'ru', 'mo' ) );
+		$this->assertArrayNotHasKey( "1 item\x004 items", $mo_entries );
+		$this->assertSame( 'Save-A', $mo_entries['Save'] );
+	}
+
+	private function three_plugin_sweep_index( Babilim_Memory_Fs $fs, Babilim_Manifest $manifest ): Babilim_Default_Index {
+		foreach ( array( 'a', 'b', 'c' ) as $slug ) {
+			$fs->put( Babilim_Paths::file( 'plugins', $slug, 'ja', 'mo' ), $slug );
+			$manifest->set( 'plugin', $slug, 'ja', $this->plugin_record_for_sweep( $slug ) );
+		}
+		$GLOBALS['babilim_test_get_plugins_return'] = array( 'a/a.php' => array( 'Name' => 'A' ) );
+		$active                                     = static function () {
+			return array();
+		};
+		return new Babilim_Default_Index( $fs, $manifest, $active, $this->parse_entries_fake( $fs ), $this->never_core_has() );
+	}
+
+	public function test_a_forced_sweep_ignores_the_mass_orphan_brake(): void {
+		$fs       = new Babilim_Memory_Fs();
+		$manifest = new Babilim_Manifest( $fs );
+		$index    = $this->three_plugin_sweep_index( $fs, $manifest );
+
+		$this->assertSame( 'mass_orphan_brake', $index->sweep_orphans()->code() );
+
+		$result = $index->sweep_orphans( true );
+
+		$this->assertTrue( $result->is_ok() );
+		$this->assertNotNull( $manifest->installed( 'plugin', 'b', 'ja' )['orphaned_at'] );
+		$this->assertNotNull( $manifest->installed( 'plugin', 'c', 'ja' )['orphaned_at'] );
+		$this->assertNull( $manifest->installed( 'plugin', 'a', 'ja' )['orphaned_at'] );
+	}
+
+	public function test_brake_reason_is_structured_not_an_english_sentence(): void {
+		$fs       = new Babilim_Memory_Fs();
+		$manifest = new Babilim_Manifest( $fs );
+		$index    = $this->three_plugin_sweep_index( $fs, $manifest );
+
+		$result = $index->sweep_orphans();
+
+		$this->assertSame(
+			array( 'code' => 'more_than_half', 'count' => 2, 'total' => 3 ),
+			$result->get( 'brake' )
+		);
+		$guard = $manifest->sweep_guard();
+		$this->assertSame( $result->get( 'brake' ), $guard['brake'] );
+		$this->assertArrayNotHasKey( 'reason', $guard );
 	}
 
 	// -- rebuild_all() reconciles a locale whose last contributing

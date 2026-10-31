@@ -190,7 +190,7 @@ final class Babilim_Default_Index {
 			// (not just missing) -- omit every plural entry rather than
 			// risk that; English is always a safe fallback for those.
 			foreach ( $final as $key => $msgstr ) {
-				if ( is_array( $msgstr ) ) {
+				if ( self::is_plural_entry( (string) $key, $msgstr ) ) {
 					unset( $final[ $key ] );
 					++$skipped_plurals;
 				}
@@ -373,11 +373,12 @@ final class Babilim_Default_Index {
 	 * list looks wrong, rather than partially acting on a list it's
 	 * about to distrust.
 	 *
+	 * @param bool $force True for a run the site owner asked for by hand: the mass-orphan brake is skipped (nothing else about the run changes).
 	 * @return Babilim_Result data: {deleted: string[], orphaned: array[],
 	 *         kept: array[], integrity_failed: array[], files_deleted:
 	 *         array[], purged: array[]}.
 	 */
-	public function sweep_orphans(): Babilim_Result {
+	public function sweep_orphans( bool $force = false ): Babilim_Result {
 		if ( ! $this->manifest->is_available() ) {
 			return Babilim_Result::error( 'manifest_unavailable', sprintf( /* translators: %s: the technical reason the manifest is unavailable. */ __( 'Manifest unavailable: %s', 'babilim' ), (string) $this->manifest->unavailable_reason() ) );
 		}
@@ -506,7 +507,7 @@ final class Babilim_Default_Index {
 		// case; this catches the "available, but badly wrong" case that
 		// guard can't) than that a site genuinely uninstalled half its
 		// plugins between two daily runs.
-		$brake_reason = $this->mass_orphan_brake_reason( $candidate_component_count, $managed_component_count, $candidate_by_kind_count, $managed_by_kind_count );
+		$brake_reason = $force ? null : $this->mass_orphan_brake_reason( $candidate_component_count, $managed_component_count, $candidate_by_kind_count, $managed_by_kind_count );
 		if ( null !== $brake_reason ) {
 			// Zero deletion when the brake trips -- not even
 			// delete_unregistered_files() (an unregistered file is still
@@ -518,7 +519,7 @@ final class Babilim_Default_Index {
 			$guard_recorded   = $this->manifest->set_sweep_guard(
 				array(
 					'tripped_at'    => gmdate( 'c' ),
-					'reason'        => $brake_reason,
+					'brake'         => $brake_reason,
 					'would_orphan'  => $candidate_component_count,
 					'managed_total' => $managed_component_count,
 				)
@@ -527,11 +528,12 @@ final class Babilim_Default_Index {
 			return Babilim_Result::error(
 				'mass_orphan_brake',
 				sprintf(
-					/* translators: %s: the technical reason the sweep was aborted. */
+					/* translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message(). */
 					__( 'Sweep aborted without orphaning anything: %s.', 'babilim' ),
-					$brake_reason
+					self::brake_message( $brake_reason )
 				),
 				array(
+					'brake'            => $brake_reason,
 					'deleted'          => array(),
 					'orphaned'         => array(),
 					'kept'             => $kept,
@@ -678,9 +680,9 @@ final class Babilim_Default_Index {
 	 * @param int $managed_component_count   Distinct kind|slug components with >=1 non-orphaned record.
 	 * @param array<string,int> $candidate_by_kind_count Same numerator, broken down by `kind`.
 	 * @param array<string,int> $managed_by_kind_count   Same denominator, broken down by `kind`.
-	 * @return string|null A human-readable reason, or null if the brake doesn't trip.
+	 * @return array{code:string,count:int,total:int,kind?:string}|null Structured reason, or null if the brake doesn't trip.
 	 */
-	private function mass_orphan_brake_reason( int $candidate_component_count, int $managed_component_count, array $candidate_by_kind_count, array $managed_by_kind_count ): ?string {
+	private function mass_orphan_brake_reason( int $candidate_component_count, int $managed_component_count, array $candidate_by_kind_count, array $managed_by_kind_count ): ?array {
 		if ( $candidate_component_count < 2 || 0 === $managed_component_count ) {
 			// Orphaning a single component is never "mass" -- a site
 			// with exactly one plugin installed (however many locales it
@@ -691,7 +693,11 @@ final class Babilim_Default_Index {
 			return null;
 		}
 		if ( $candidate_component_count > 0.5 * $managed_component_count ) {
-			return sprintf( 'would orphan %d of %d managed components (more than half)', $candidate_component_count, $managed_component_count );
+			return array(
+				'code'  => 'more_than_half',
+				'count' => $candidate_component_count,
+				'total' => $managed_component_count,
+			);
 		}
 		foreach ( $candidate_by_kind_count as $kind => $count ) {
 			$kind_total = $managed_by_kind_count[ $kind ] ?? 0;
@@ -699,10 +705,64 @@ final class Babilim_Default_Index {
 			// component isn't "wiped out" in any meaningful sense by
 			// removing that one component.
 			if ( $kind_total >= 2 && $count === $kind_total ) {
-				return "would orphan every managed '{$kind}' component ({$count} of {$count})";
+				return array(
+					'code'  => 'whole_kind',
+					'count' => $count,
+					'total' => $count,
+					'kind'  => (string) $kind,
+				);
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Whether a parsed entry is a plural one. The key form
+	 * `msgid\0msgid_plural` is what both a `.mo` and
+	 * WP_Translation_File::entries() use, and that parser returns the
+	 * forms as one NUL-joined string rather than an array.
+	 *
+	 * @param string $key    Entry key.
+	 * @param mixed  $msgstr Entry value.
+	 */
+	private static function is_plural_entry( string $key, $msgstr ): bool {
+		return is_array( $msgstr )
+			|| false !== strpos( $key, "\0" )
+			|| ( is_string( $msgstr ) && false !== strpos( $msgstr, "\0" ) );
+	}
+
+	/**
+	 * Turns a structured brake reason into a translated sentence.
+	 *
+	 * @param array $brake {code, count, total, kind?}.
+	 */
+	public static function brake_message( array $brake ): string {
+		$count = (int) ( $brake['count'] ?? 0 );
+		$total = (int) ( $brake['total'] ?? 0 );
+		if ( 'whole_kind' === ( $brake['code'] ?? '' ) ) {
+			$kind = (string) ( $brake['kind'] ?? '' );
+			if ( 'theme' === $kind ) {
+				/* translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun. */
+				$kind_label = _x( 'theme', 'component kind in the sweep brake message', 'babilim' );
+			} elseif ( 'plugin' === $kind ) {
+				/* translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun. */
+				$kind_label = _x( 'plugin', 'component kind in the sweep brake message', 'babilim' );
+			} else {
+				$kind_label = $kind;
+			}
+			return sprintf(
+				/* translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind. */
+				__( 'it would orphan every managed %1$s component (%2$d of %2$d)', 'babilim' ),
+				$kind_label,
+				$count
+			);
+		}
+		return sprintf(
+			/* translators: 1: components that would be orphaned, 2: components managed in total. */
+			__( 'it would orphan %1$d of %2$d managed components (more than half)', 'babilim' ),
+			$count,
+			$total
+		);
 	}
 
 	/**

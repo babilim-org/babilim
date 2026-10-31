@@ -315,7 +315,7 @@ final class Test_Fs extends TestCase {
 		$fs->rename( $from, '/etc/passwd' );
 	}
 
-	public function test_wp_fs_mkdir_never_creates_anything_above_the_babilim_root(): void {
+	public function test_wp_fs_mkdir_creates_wp_lang_dir_itself_but_nothing_above_it(): void {
 		$lang_dir = rtrim( WP_LANG_DIR, '/' );
 		$this->remove_recursive( Babilim_Paths::root() );
 		if ( is_dir( $lang_dir ) ) {
@@ -324,19 +324,10 @@ final class Test_Fs extends TestCase {
 
 		try {
 			$fs = new Babilim_Wp_Fs();
-			// The Babilim root's own creation is expected to fail here --
-			// its parent (WP_LANG_DIR) was just removed and must not be
-			// recreated by this call; the resulting mkdir() warning is
-			// exactly what this test is proving, not a real error.
-			@$fs->mkdir( Babilim_Paths::dir( 'custom/plugins' ) );
+			$fs->mkdir( Babilim_Paths::dir( 'custom/plugins' ) );
 
-			$this->assertFalse(
-				is_dir( $lang_dir ),
-				'WP_LANG_DIR itself must never be (re)created by Babilim_Wp_Fs::mkdir()'
-			);
-			foreach ( $GLOBALS['babilim_test_mkdir_calls'] as $called ) {
-				$this->assertNotSame( $lang_dir, $called );
-			}
+			$this->assertTrue( is_dir( $lang_dir ), 'a missing WP_LANG_DIR is the one directory outside the root that may be created' );
+			$this->assertNotContains( dirname( $lang_dir ), $GLOBALS['babilim_test_mkdir_calls'], 'nothing above WP_LANG_DIR may ever be created' );
 		} finally {
 			if ( ! is_dir( $lang_dir ) ) {
 				mkdir( $lang_dir, 0777, true );

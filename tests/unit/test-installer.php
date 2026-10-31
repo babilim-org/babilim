@@ -1711,6 +1711,41 @@ final class Test_Installer extends TestCase {
 		$this->assertSame( array(), $real_fs->list( $staging_dir ), 'Expected no staging remnants' );
 	}
 
+	public function test_a_file_unreadable_right_after_it_is_placed_fails_the_install_cleanly_and_rolls_back(): void {
+		$real_fs  = new Babilim_Memory_Fs();
+		$manifest = new Babilim_Manifest( $real_fs );
+
+		list( $expected1, $zip1 ) = $this->basic_package( 'woocommerce', 'zh_TW', 'bd_000000000001', array( 'Save' => 'v1' ) );
+		$this->put_fake_zip( 'zip://1', $zip1 );
+		( new Babilim_Installer( $real_fs, $manifest, $this->transform_fake( $real_fs ), $this->parse_fake( $real_fs ), $this->unzip_fake() ) )
+			->install( 'plugin', 'woocommerce', 'zh_TW', 'zip://1', $expected1 );
+
+		$v1_mo_path   = Babilim_Paths::file( 'plugins', 'woocommerce', 'zh_TW', 'mo' );
+		$v1_mo_before = $real_fs->get( $v1_mo_path );
+		$this->assertNotNull( $v1_mo_before );
+
+		// The .l10n.php is renamed into place fine, but reading it back
+		// to hash it then returns a WP_Error.
+		$served_l10n_path = Babilim_Paths::file( 'plugins', 'woocommerce', 'zh_TW', 'l10n.php' );
+		$unreadable_fs    = new Babilim_Test_Installer_Unreadable_After_Rename_Fs( $real_fs, $served_l10n_path );
+
+		list( $expected2, $zip2 ) = $this->basic_package( 'woocommerce', 'zh_TW', 'bd_000000000002', array( 'Save' => 'v2' ) );
+		$this->put_fake_zip( 'zip://2', $zip2 );
+		$installer2 = new Babilim_Installer( $unreadable_fs, $manifest, $this->transform_fake( $unreadable_fs ), $this->parse_fake( $unreadable_fs ), $this->unzip_fake() );
+		$result     = $installer2->install( 'plugin', 'woocommerce', 'zh_TW', 'zip://2', $expected2 );
+
+		$this->assertFalse( $result->is_ok() );
+		$this->assertSame( 'hash_failed', $result->code() );
+
+		// Backups restored: the previous version's served .mo is untouched.
+		$this->assertSame( $v1_mo_before, $real_fs->get( $v1_mo_path ) );
+		$manifest_after = $manifest->installed( 'plugin', 'woocommerce', 'zh_TW' );
+		$this->assertSame( 'bd_000000000001', $manifest_after['build_id'] );
+
+		$staging_dir = Babilim_Paths::version_dir( 'plugins', 'woocommerce', 'zh_TW', 'bd_000000000002' );
+		$this->assertSame( array(), $real_fs->list( $staging_dir ), 'Expected no staging remnants' );
+	}
+
 	/**
 	 * A backup WRITE failure (not a rename failure) must abort before the
 	 * rename it was meant to protect is even attempted -- otherwise the
@@ -2172,6 +2207,70 @@ final class Babilim_Test_Installer_Failing_Rename_Fs implements Babilim_Fs {
 	}
 
 	public function sha256( string $path ) {
+		return $this->inner->sha256( $path );
+	}
+
+	public function rmdir( string $path ): bool {
+		return $this->inner->rmdir( $path );
+	}
+
+	public function is_dir( string $path ): bool {
+		return $this->inner->is_dir( $path );
+	}
+}
+
+/**
+ * A Babilim_Fs decorator whose sha256() returns a WP_Error for one path
+ * once a rename() has moved a file onto it -- a file that is placed
+ * fine but cannot be read back to hash.
+ */
+final class Babilim_Test_Installer_Unreadable_After_Rename_Fs implements Babilim_Fs {
+
+	private $inner;
+	private $unreadable_path;
+	private $placed = false;
+
+	public function __construct( Babilim_Fs $inner, string $unreadable_path ) {
+		$this->inner           = $inner;
+		$this->unreadable_path = $unreadable_path;
+	}
+
+	public function put( string $path, string $contents ): bool {
+		return $this->inner->put( $path, $contents );
+	}
+
+	public function get( string $path ) {
+		return $this->inner->get( $path );
+	}
+
+	public function exists( string $path ): bool {
+		return $this->inner->exists( $path );
+	}
+
+	public function delete( string $path ): bool {
+		return $this->inner->delete( $path );
+	}
+
+	public function rename( string $from, string $to ): bool {
+		$ok = $this->inner->rename( $from, $to );
+		if ( $ok && $to === $this->unreadable_path ) {
+			$this->placed = true;
+		}
+		return $ok;
+	}
+
+	public function mkdir( string $path ): bool {
+		return $this->inner->mkdir( $path );
+	}
+
+	public function list( string $dir, string $glob = '*' ): array {
+		return $this->inner->list( $dir, $glob );
+	}
+
+	public function sha256( string $path ) {
+		if ( $this->placed && $path === $this->unreadable_path ) {
+			return new WP_Error( 'babilim_unreadable', 'Cannot read the file back.' );
+		}
 		return $this->inner->sha256( $path );
 	}
 

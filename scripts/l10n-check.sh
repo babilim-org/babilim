@@ -13,7 +13,10 @@
 #   MISSING L                     the .po, .mo or .l10n.php is absent
 #   STALE L (+added/-removed)     update-po against babilim.pot changes the .po
 #   UNTRANSLATED L n              more empty msgstr entries than allowed
-#   PLACEHOLDER L "<msgid>"       %s / %d / %1$s / %l set differs from the msgstr
+#   PLACEHOLDER L "<msgid>"       the positions and types of %s / %d / %1$s / %l differ
+#   HEADER L                      the .po carries X-Babilim-Build or a Project-Id-Version
+#                                 other than "Babilim <Stable tag>"
+#   ORPHAN FILE                   a babilim-<locale>.po/.mo/.l10n.php whose locale is not listed
 #   DERIVED L (mo|l10n.php)       the file is not what the .po produces
 #
 # L10N_MAX_UNTRANSLATED is the allowed number of empty entries (the make
@@ -40,10 +43,14 @@ pot="$repo/languages/babilim.pot"
 wpcli="$repo/tools/wp-cli.phar"
 lang_dir="$repo/languages"
 max_untranslated="${L10N_MAX_UNTRANSLATED:-0}"
+readme="$repo/readme.txt"
 
 [ -f "$locales_file" ] || { echo "FAIL: locales file not found: $locales_file" >&2; exit 2; }
 [ -f "$pot" ] || { echo "FAIL: $pot not found -- run 'make pot'" >&2; exit 2; }
 [ -f "$wpcli" ] || { echo "FAIL: $wpcli not found -- run 'make tools'" >&2; exit 2; }
+[ -f "$readme" ] || { echo "FAIL: $readme not found" >&2; exit 2; }
+version="$(sed -n -E 's/^Stable tag:[[:space:]]*([^[:space:]]+).*/\1/p' "$readme" | head -n 1)"
+[ -n "$version" ] || { echo "FAIL: no Stable tag in $readme" >&2; exit 2; }
 [[ "$max_untranslated" =~ ^[0-9]+$ ]] || { echo "FAIL: L10N_MAX_UNTRANSLATED must be a number" >&2; exit 2; }
 
 flags=()
@@ -63,13 +70,19 @@ cat > "$tmp/check-po.php" <<'PHP'
 <?php
 // Invoked through `wp eval-file --skip-wordpress`: $args = [ locale, po, max ].
 list( $locale, $po_file, $max ) = $args;
-$placeholders = static function ( array $strings ): array {
+// Maps one string to its placeholders as "position:type" keys. An
+// unnumbered placeholder takes the next position in order of appearance, a
+// numbered one keeps its number, so "%2$s and %1$s" matches "%s and %s".
+$placeholders = static function ( string $s ): array {
 	$found = array();
-	foreach ( $strings as $s ) {
-		if ( preg_match_all( '/%[0-9]*\$?[sd]|%l/', $s, $m ) ) {
-			foreach ( $m[0] as $p ) {
-				$found[ $p ] = true;
+	$next  = 1;
+	if ( preg_match_all( '/%%|%(?:(\d+)\$)?([sdl])/', $s, $m, PREG_SET_ORDER ) ) {
+		foreach ( $m as $hit ) {
+			if ( '%%' === $hit[0] ) {
+				continue;
 			}
+			$pos             = '' !== $hit[1] ? (int) $hit[1] : $next++;
+			$found[ $pos . ':' . $hit[2] ] = true;
 		}
 	}
 	$found = array_keys( $found );
@@ -90,12 +103,32 @@ foreach ( $translations as $t ) {
 		++$empty;
 		continue;
 	}
-	$source = array( $t->getOriginal() );
-	if ( '' !== $t->getPlural() ) {
-		$source[] = $t->getPlural();
+	$is_plural = '' !== $t->getPlural();
+	$source    = $placeholders( $t->getOriginal() );
+	if ( $is_plural ) {
+		// Union of both source forms: a language with a single plural form
+		// may carry a placeholder in only one of them.
+		$source = array_values( array_unique( array_merge( $source, $placeholders( $t->getPlural() ) ) ) );
+		sort( $source );
 	}
-	if ( $placeholders( $source ) !== $placeholders( $forms ) ) {
-		echo 'PLACEHOLDER ' . $locale . ' "' . str_replace( array( "\n", '"' ), array( '\n', '\"' ), $t->getOriginal() ) . "\"\n";
+	$covered = array();
+	$bad     = false;
+	foreach ( $forms as $form ) {
+		$have = $placeholders( $form );
+		if ( $is_plural ) {
+			// A form may use fewer placeholders than the source, never others.
+			$bad     = $bad || (bool) array_diff( $have, $source );
+			$covered = array_merge( $covered, $have );
+		} elseif ( $have !== $source ) {
+			$bad = true;
+		}
+	}
+	// Taken together the forms must still carry every placeholder of the source.
+	if ( $is_plural && array_diff( $source, $covered ) ) {
+		$bad = true;
+	}
+	if ( $bad ) {
+		echo 'PLACEHOLDER ' . $locale . ' "' . str_replace( array( "\n", '"' ), array( '\n', '\\"' ), $t->getOriginal() ) . "\"\n";
 	}
 }
 if ( $empty > (int) $max ) {
@@ -156,6 +189,12 @@ while IFS= read -r line || [ -n "$line" ]; do
 		problems=1
 	fi
 
+	# HEADER: no build id, and a plain project id.
+	if grep -q 'X-Babilim-Build' "$base.po" || ! grep -qxF "\"Project-Id-Version: Babilim $version\\n\"" "$base.po"; then
+		echo "HEADER $locale"
+		problems=1
+	fi
+
 	# DERIVED: rebuild .mo and .l10n.php from the committed .po.
 	if wp i18n make-mo "$base.po" "$work/derived/" >/dev/null 2>&1 \
 		&& cmp -s "$base.mo" "$work/derived/babilim-$locale.mo"; then
@@ -176,6 +215,35 @@ while IFS= read -r line || [ -n "$line" ]; do
 		bad+=("$locale")
 	fi
 done < "$locales_file"
+
+# ORPHAN: a translation file whose locale is not in the list.
+listed=" "
+while IFS= read -r line || [ -n "$line" ]; do
+	l="${line%%#*}"
+	l="${l//[[:space:]]/}"
+	[ -n "$l" ] && listed="$listed$l "
+done < "$locales_file"
+orphans=0
+for f in "$lang_dir"/babilim-*.po "$lang_dir"/babilim-*.mo "$lang_dir"/babilim-*.l10n.php; do
+	[ -e "$f" ] || continue
+	name="$(basename "$f")"
+	name="${name#babilim-}"
+	name="${name%.l10n.php}"
+	name="${name%.po}"
+	name="${name%.mo}"
+	case "$listed" in
+		*" $name "*) ;;
+		*)
+			echo "ORPHAN $(basename "$f")"
+			orphans=$((orphans + 1))
+			;;
+	esac
+done
+
+if [ "$orphans" -gt 0 ] && [ "${#bad[@]}" -eq 0 ]; then
+	echo "FAIL: $orphans translation files are not in the locale list"
+	exit 1
+fi
 
 if [ "${#bad[@]}" -gt 0 ]; then
 	echo "FAIL: ${#bad[@]} of $count locales need attention: ${bad[*]}"

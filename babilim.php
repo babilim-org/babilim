@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Babilim
  * Description:       Fills in missing translations for the plugins and themes already installed on your site.
- * Version:           0.1.0
+ * Version:           1.0.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '0.1.0' );
+	define( 'BABILIM_VERSION', '1.0.0' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {
@@ -124,11 +124,27 @@ if ( function_exists( 'register_deactivation_hook' ) ) {
  * skill's references/data-and-cron.md). The same jobs can be run by hand
  * from the admin screens (Check again now, Rebuild index now, Sweep now);
  * there is no WP-CLI command.
+ *
+ * @param bool $network_wide Whether this is a network-wide deactivation; then the scheduled events are cleared on every site.
  */
-function babilim_deactivate() {
-	if ( function_exists( 'wp_clear_scheduled_hook' ) ) {
+function babilim_deactivate( $network_wide = false ) {
+	if ( ! function_exists( 'wp_clear_scheduled_hook' ) ) {
+		return;
+	}
+	$clear = static function () {
 		wp_clear_scheduled_hook( 'babilim_maintenance' );
 		wp_clear_scheduled_hook( 'babilim_sync' );
 		wp_clear_scheduled_hook( 'babilim_sync_once' );
+	};
+	// A network-wide deactivation runs once, on the main site: every
+	// site has its own cron queue, so clear each one.
+	if ( $network_wide && function_exists( 'is_multisite' ) && is_multisite() && function_exists( 'get_sites' ) ) {
+		foreach ( get_sites( array( 'fields' => 'ids', 'number' => 0 ) ) as $site_id ) {
+			switch_to_blog( (int) $site_id );
+			$clear();
+			restore_current_blog();
+		}
+		return;
 	}
+	$clear();
 }

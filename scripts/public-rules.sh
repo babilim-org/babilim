@@ -46,7 +46,9 @@
 #     them): the one test fixture with native locale names, and the
 #     bundled translation files languages/babilim-<locale>.po and
 #     .l10n.php. Compiled languages/babilim-<locale>.mo files are binary
-#     and not scanned at all; the .po they are built from is.
+#     and not scanned at all; the .po they are built from is. The same
+#     goes for the rendered directory-listing PNGs under .wordpress-org/;
+#     their SVG sources and the blueprint beside them are text and scanned.
 #   - In THIS script only, a line whose last characters are `#selfdata`
 #     is excused from the banned word/phrase/path/section-mark checks --
 #     the ban list has to live somewhere as literal data, and this is the
@@ -230,6 +232,7 @@ hostname_allowed() {
     raw.githubusercontent.com) return 0 ;;
     phar.phpunit.de) return 0 ;;
     json-schema.org) return 0 ;;
+    www.w3.org) return 0 ;; # SVG namespace URI
     paddle.com|*.paddle.com) return 0 ;;
     example.com|*.example.com|example.org|*.example.org|example.net|*.example.net) return 0 ;;
     *.test|*.invalid|*.example) return 0 ;;
@@ -678,8 +681,10 @@ scan_files() {
   [ -n "$files" ] || return 0
 
   # Compiled .mo files are binary; their text lives in the .po next to
-  # them, which is still scanned.
-  files="$(grep_text "$files" -v -E '^languages/babilim-[A-Za-z0-9_]+\.mo$')"
+  # them, which is still scanned. So are the rendered directory-listing
+  # PNGs under .wordpress-org/, whose SVG sources and blueprint beside
+  # them are text and still scanned.
+  files="$(grep_text "$files" -v -E '^languages/babilim-[A-Za-z0-9_]+\.mo$|^\.wordpress-org/[A-Za-z0-9-]+\.png$')"
   [ -n "$files" ] || return 0
 
   scan_paths "$files"

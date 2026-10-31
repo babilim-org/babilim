@@ -83,4 +83,64 @@ final class Test_Wp_Fs extends TestCase {
 
 		$this->cleanup( $to );
 	}
+
+	/**
+	 * Moves WP_LANG_DIR aside (it is shared by the rest of the suite) and
+	 * returns its path; restore_languages_dir() puts it back.
+	 */
+	private function remove_languages_dir(): string {
+		$lang_dir = rtrim( WP_LANG_DIR, '/' );
+		$aside    = $lang_dir . '.aside';
+		babilim_test_rmtree( $aside );
+		if ( is_dir( $lang_dir ) ) {
+			rename( $lang_dir, $aside );
+		}
+		return $lang_dir;
+	}
+
+	/**
+	 * Drops whatever the test built at WP_LANG_DIR and brings back the
+	 * directory remove_languages_dir() moved aside, if there was one.
+	 */
+	private function restore_languages_dir(): void {
+		$lang_dir = rtrim( WP_LANG_DIR, '/' );
+		$aside    = $lang_dir . '.aside';
+		babilim_test_rmtree( $lang_dir );
+		if ( is_dir( $aside ) ) {
+			rename( $aside, $lang_dir );
+		}
+	}
+
+	public function test_mkdir_creates_a_missing_languages_directory_itself_and_nothing_above_it(): void {
+		$lang_dir = $this->remove_languages_dir();
+		try {
+			$this->assertDirectoryDoesNotExist( $lang_dir );
+
+			$ok = ( new Babilim_Wp_Fs() )->mkdir( Babilim_Paths::dir( 'plugins' ) );
+
+			$this->assertTrue( $ok );
+			$this->assertDirectoryExists( Babilim_Paths::dir( 'plugins' ) );
+			$this->assertSame( array( $lang_dir, Babilim_Paths::root(), Babilim_Paths::dir( 'plugins' ) ), $GLOBALS['babilim_test_mkdir_calls'] );
+		} finally {
+			$this->restore_languages_dir();
+		}
+	}
+
+	public function test_mkdir_on_a_non_direct_transfer_also_creates_the_languages_directory(): void {
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
+		$GLOBALS['wp_filesystem']->method = 'ftpext';
+		$lang_dir                         = $this->remove_languages_dir();
+		try {
+			$ok = ( new Babilim_Wp_Fs() )->mkdir( Babilim_Paths::dir( 'plugins' ) );
+
+			$this->assertTrue( $ok );
+			$this->assertDirectoryExists( Babilim_Paths::dir( 'plugins' ) );
+			$this->assertSame( array( $lang_dir, Babilim_Paths::root(), Babilim_Paths::dir( 'plugins' ) ), $GLOBALS['babilim_test_mkdir_calls'] );
+		} finally {
+			$this->restore_languages_dir();
+		}
+	}
 }

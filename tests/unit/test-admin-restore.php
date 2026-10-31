@@ -199,7 +199,7 @@ final class Test_Admin_Restore extends TestCase {
 		$this->assertSame( $new_code ? 1 : 0, $x->query( '//button[normalize-space()="Show a new restore code"]' )->length );
 		$this->assertSame( $new_code ? 1 : 0, $x->query( '//form[@id="babilim-restore-code-form"]' )->length );
 		$this->assertSame( $free_quota, false !== strpos( $x->document->textContent, 'Free quota' ) );
-		$this->assertStringContainsString( 'Downloads: 4/500 (daily)', $x->document->textContent );
+		$this->assertStringContainsString( 'Downloads: 4/500 (per day)', $x->document->textContent );
 		$this->assertSame( 1, $this->form_depth( $html ) );
 	}
 

@@ -118,18 +118,19 @@ final class Test_Readme extends TestCase {
 		$this->assertStringNotContainsString( 'contact: TODO-OWNER', $this->readme );
 	}
 
-	/**
-	 * Every field the owner must fill in by hand before release
-	 * (Contributors, Tested up to, Terms of Service, Privacy Policy)
-	 * carries an explicit, greppable TODO-OWNER placeholder rather than
-	 * a value that merely looks plausible -- see `make release-check`,
-	 * which refuses to let a release ship with any of these still
-	 * present.
-	 */
-	public function test_owner_placeholders_are_explicit_and_greppable(): void {
-		$headers = $this->headers();
-		$this->assertSame( 'TODO-OWNER', $headers['Contributors'] );
-		$this->assertSame( 'TODO-OWNER', $headers['Tested up to'] );
+	public function test_contributors_and_tested_up_to_are_real_values(): void {
+		$h = $this->headers();
+		$this->assertMatchesRegularExpression( '/^[a-z0-9_-]+(, ?[a-z0-9_-]+)*$/', $h['Contributors'], 'wp.org usernames' );
+		$this->assertMatchesRegularExpression( '/^\d+\.\d+$/', $h['Tested up to'], 'major.minor only' );
+		$this->assertTrue( version_compare( $h['Tested up to'], $h['Requires at least'], '>=' ) );
+		$this->assertStringNotContainsString( 'TODO-OWNER', $this->readme );
+	}
+
+	public function test_screenshot_captions_match_the_screenshot_files_one_to_one(): void {
+		$s = $this->section( 'Screenshots' );
+		preg_match_all( '/^(\d+)\. \S/m', $s, $m );
+		$files = glob( dirname( __DIR__, 2 ) . '/.wordpress-org/screenshot-*.png' );
+		$this->assertSame( range( 1, count( $files ) ), array_map( 'intval', $m[1] ) );
 	}
 
 	public function test_external_services_links_the_legal_pages(): void {
@@ -137,32 +138,6 @@ final class Test_Readme extends TestCase {
 		$this->assertStringContainsString( 'Terms of Service: https://babilim.org/terms/', $s );
 		$this->assertStringContainsString( 'Privacy Policy: https://babilim.org/privacy/', $s );
 		$this->assertStringContainsString( 'Refund Policy: https://babilim.org/refund/', $s );
-	}
-
-	/**
-	 * `make release-check` must actually refuse to ship while any
-	 * TODO-OWNER placeholder remains -- proven against the real,
-	 * current readme.txt (which does, during normal development) rather
-	 * than a scratch copy, so this also proves `make test` itself is
-	 * unaffected by the gate (this test runs as part of that same
-	 * suite and does not fail).
-	 */
-	public function test_release_check_refuses_to_ship_with_todo_owner_placeholders(): void {
-		$root = dirname( __DIR__, 2 );
-		if ( false === strpos( $this->readme, 'TODO-OWNER' ) ) {
-			$this->markTestSkipped( 'readme.txt has no TODO-OWNER placeholders left to gate on.' );
-		}
-		$output    = array();
-		$exit_code = 0;
-		// An empty locale list keeps the translation gate out of the way, so
-		// this exercises the placeholder gate on its own.
-		$locales = BABILIM_TEST_TMP_ROOT . '/no-locales-' . uniqid( '', true );
-		file_put_contents( $locales, "# none\n" );
-		exec( 'cd ' . escapeshellarg( $root ) . ' && make release-check L10N_LOCALES=' . escapeshellarg( $locales ) . ' 2>&1', $output, $exit_code );
-		unlink( $locales );
-		$text = implode( "\n", $output );
-		$this->assertNotSame( 0, $exit_code, "make release-check must fail while placeholders remain:\n{$text}" );
-		$this->assertStringContainsString( 'TODO-OWNER', $text );
 	}
 
 	/**
@@ -177,6 +152,13 @@ final class Test_Readme extends TestCase {
 		$this->assertMatchesRegularExpression( '/only ever purged once|purged once/i', $s );
 	}
 
+	public function test_faq_discloses_the_free_allowance_and_the_paid_conditions(): void {
+		$s = $this->section( 'Frequently Asked Questions' );
+		$this->assertStringContainsString( 'one theme and two plugins', $s );
+		$this->assertStringContainsString( 'not listed on WordPress.org', $s );
+		$this->assertStringContainsString( 'may change', $s );
+	}
+
 	public function test_no_quality_grading_or_verification_claims(): void {
 		$this->assertDoesNotMatchRegularExpression( '/\b(?:grade[sd]?|grading|verified|verification|quality|accura(?:te|cy)|reviewed|certified|score[sd]?)\b/i', $this->readme );
 	}
@@ -184,6 +166,13 @@ final class Test_Readme extends TestCase {
 	public function test_readme_is_english_only_and_names_nothing_internal(): void {
 		$this->assertSame( 0, preg_match( '/[\x{2E80}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{30FF}]/u', $this->readme ), 'no CJK text' );
 		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b)/i', $this->readme, 'only allow-listed domains may be linked' );
+	}
+
+	public function test_the_submission_document_asks_the_directory_team_about_each_disclosed_behavior(): void {
+		$doc = file_get_contents( dirname( __DIR__, 2 ) . '/docs/wporg-submission.md' );
+		foreach ( array( 'plugins@wordpress.org', 'WP_Translation_File::transform', 'Guideline 8', 'Guideline 6', 'Guideline 5', 'merchant of record', 'entire plugin or theme directory', 'Delay auto-updates for 24 hours', 'Release Confirmation', 'Test Preview' ) as $needle ) {
+			$this->assertStringContainsString( $needle, $doc, $needle );
+		}
 	}
 
 	public function test_external_services_discloses_a_source_upload(): void {

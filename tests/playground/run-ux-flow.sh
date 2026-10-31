@@ -105,11 +105,23 @@ cat > "${WORK}/blueprint.json" <<EOF
 }
 EOF
 
+# Plain fixture plugins for the list-style scenarios (each is only a header;
+# none is activated). Their slugs are what the mock service keys on; the
+# neutral runner creates the same set. MOUNT_FIXTURES holds the extra --mount
+# arguments for the scenario being booted.
+MOUNT_FIXTURES=()
+fixture_plugin() { # <slug> <name>
+	mkdir -p "${WORK}/fixtures/$1"
+	printf '<?php\n/**\n * Plugin Name: %s\n * Version: 1.0.0\n * Text Domain: %s\n */\n' "$2" "$1" > "${WORK}/fixtures/$1/$1.php"
+	MOUNT_FIXTURES+=("--mount=${WORK}/fixtures/$1:/wordpress/wp-content/plugins/$1")
+}
+
 boot_server() {
 	: > "${WORK}/server.log"
 	( NODE_OPTIONS=--max-old-space-size=3072 npx "@wp-playground/cli@${CLI_VERSION}" server \
 		--blueprint="${WORK}/blueprint.json" \
 		--mount="${WORK}/plugin-src:/wordpress/wp-content/plugins/babilim" \
+		"${MOUNT_FIXTURES[@]}" \
 		--port=${PORT} --php=8.1 --verbosity=debug ${BABILIM_UX_PG_ARGS:-} \
 		> "${WORK}/server.log" 2>&1 & echo $! > "${WORK}/server.pid" )
 	local i
@@ -121,13 +133,37 @@ boot_server() {
 }
 
 for scenario in ${BABILIM_UX_SCENARIOS:-enable settings}; do
+MOUNT_FIXTURES=()
+case "${scenario}" in
+list | rowactions | l10n)
+	fixture_plugin woocommerce "WooCommerce"
+	fixture_plugin queued-demo "Queued Demo"
+	fixture_plugin newer-demo "Newer Demo"
+	fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
+	;;
+esac
 for flag in "" "--no-js"; do
 	if ! boot_server; then
 		echo "FAIL infra playground did not boot (see ${WORK}/server.log)" >> "${RESULTS}"
 		kill_tree "$(cat "${WORK}/server.pid" 2>/dev/null)"
 		continue
 	fi
-	curl -s -XPOST "127.0.0.1:${MOCK_PORT}/_mock/reset" -d "${RESET}" > /dev/null
+	# The list, rowactions and l10n scenarios need the mock's "list" profile
+	# and the two packages its Download buttons fetch (same as the neutral runner).
+	profile=""
+	case "${scenario}" in
+	list | rowactions | l10n) profile=',"profile":"list"' ;;
+	esac
+	if [ -n "${profile}" ]; then
+		for slug in woocommerce newer-demo; do
+			build="bd_$(printf '%s' "${slug}de_DE" | md5sum | cut -c1-12)"
+			ver=1.0.0
+			[ "${slug}" = newer-demo ] && ver=0.9
+			printf '{"server_build_id":"%s","kind":"plugin","slug":"%s","locale":"de_DE","version":"%s","entries":{"Cart":"Warenkorb"}}' "${build}" "${slug}" "${ver}" > "${WORK}/pkg-spec.json"
+			php "${SCRIPT_DIR}/mock-server/build-package.php" "${WORK}/pkgs/${build}.zip" "${WORK}/pkg-spec.json" > /dev/null
+		done
+	fi
+	curl -s -XPOST "127.0.0.1:${MOCK_PORT}/_mock/reset" -d "${RESET%\}}${profile}}" > /dev/null
 	# shellcheck disable=SC2086
 	node "${SCRIPT_DIR}/browser/ux-flow.mjs" "http://127.0.0.1:${PORT}" "${RESULTS}" ${scenario} ${flag} > "${WORK}/flow-${scenario}${flag}.log" 2>&1
 	kill_tree "$(cat "${WORK}/server.pid" 2>/dev/null)"

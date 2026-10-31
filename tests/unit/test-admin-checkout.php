@@ -374,6 +374,7 @@ final class Test_Admin_Checkout extends TestCase {
 		$this->assertTrue( $sent['success'] );
 		$this->assertSame( 'paid', $sent['data']['kind'] );
 		$this->assertSame( 'paid', ( new Babilim_State() )->get()['license']['kind'] );
+		$this->assertSame( 5, $http->requests[0]['args']['timeout'], 'the status poll uses the short interactive timeout' );
 		$this->assertCount( 2, $http->requests );
 		$this->assertStringContainsString( '/v1/sites/st_test/inventory', $http->requests[1]['url'] );
 	}

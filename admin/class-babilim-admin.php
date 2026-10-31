@@ -156,6 +156,29 @@ final class Babilim_Admin {
 	private const META_LOCALES_CACHE_TTL = 12 * HOUR_IN_SECONDS;
 
 	/**
+	 * Seconds an admin-screen request to the service may take before it
+	 * gives up (the page or poll is waiting on it).
+	 *
+	 * @var int
+	 */
+	private const INTERACTIVE_TIMEOUT = 5;
+
+	/**
+	 * Transient set when the locale catalog fetch fails, so the settings
+	 * screen does not wait on a failing service again on every render.
+	 *
+	 * @var string
+	 */
+	private const META_LOCALES_FAILURE_TRANSIENT = 'babilim_meta_locales_failed';
+
+	/**
+	 * How long a failed locale catalog fetch is remembered.
+	 *
+	 * @var int
+	 */
+	private const META_LOCALES_FAILURE_TTL = 5 * MINUTE_IN_SECONDS;
+
+	/**
 	 * `POST /v1/feedback`'s own `category` enum, pinned by the service's
 	 * own versioned HTTP contract.
 	 *
@@ -300,15 +323,7 @@ final class Babilim_Admin {
 			array( $this, 'render' ),
 			self::MENU_ICON
 		);
-		// Real WordPress core (wp-admin/includes/plugin.php) types
-		// add_menu_page()'s return as `string|false` -- it returns false
-		// when the current user actually lacks self::CAPABILITY at the
-		// moment this runs, a real (if rare) possibility this defensive
-		// check exists for. The pinned tools/wordpress-stubs.php types it
-		// narrower, as always `string`, which is what makes phpstan
-		// itself call this check already-narrowed and therefore always
-		// true -- a stub limitation, not something wrong with this line.
-		$this->menu_hook_suffix = is_string( $hook_suffix ) ? $hook_suffix : ''; // @phpstan-ignore function.alreadyNarrowedType
+		$this->menu_hook_suffix = $hook_suffix;
 		if ( '' !== $this->menu_hook_suffix ) {
 			add_action( 'load-' . $this->menu_hook_suffix, array( $this, 'on_translations_load' ) );
 		}
@@ -409,14 +424,14 @@ final class Babilim_Admin {
 	 * @return string[]
 	 */
 	private static function post_list( string $key ): array {
-		$raw = $_POST[ $key ] ?? array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is checked by on_translations_load() before this is read.
+		$raw = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the nonce is checked by on_translations_load(); each string element is sanitized in the loop below.
 		if ( ! is_array( $raw ) ) {
 			return array();
 		}
 		$out = array();
 		foreach ( $raw as $value ) {
 			if ( is_string( $value ) ) {
-				$out[] = sanitize_text_field( wp_unslash( $value ) );
+				$out[] = sanitize_text_field( $value );
 			}
 		}
 		return $out;
@@ -488,11 +503,11 @@ final class Babilim_Admin {
 	 * @return string|null download|update|request, or null.
 	 */
 	public static function bulk_action_from_post(): ?string {
-		$action = $_POST['action'] ?? ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read only; the nonce is checked before anything runs.
+		$action = isset( $_POST['action'] ) ? sanitize_key( wp_unslash( $_POST['action'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read only; the nonce is checked before anything runs.
 		if ( '' === $action || '-1' === $action ) {
-			$action = $_POST['action2'] ?? ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$action = isset( $_POST['action2'] ) ? sanitize_key( wp_unslash( $_POST['action2'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read only; the nonce is checked before anything runs.
 		}
-		return is_string( $action ) && in_array( $action, array( 'download', 'update', 'request' ), true ) ? $action : null;
+		return in_array( $action, array( 'download', 'update', 'request' ), true ) ? $action : null;
 	}
 
 	/**
@@ -581,9 +596,10 @@ final class Babilim_Admin {
 		return '.babilim-inline{display:inline}.babilim-inline-block{display:inline-block}.babilim-mr-1em{margin-right:1em}'
 			. '.babilim-cell-list{container-type:inline-size}.babilim-cell-line{display:grid;grid-template-columns:minmax(min-content,max-content) minmax(10em,1fr) max-content;gap:0 1em;align-items:start;padding:2px 0}'
 			. '.babilim-cell-action{position:relative;text-align:right}'
-			// The busy label plus room for the spinner is laid out invisibly from the start, so pressing the button never changes the column width; the buttons of a cell fill that width and the spinner is drawn inside the button, left of its text, never over the status column.
+			// The busy label (and the idle label, so the button never shrinks back) plus room for the spinner is laid out invisibly from the start, so pressing the button never changes the column width; the buttons of a cell fill that width and the spinner is drawn inside the button, left of its text, never over the status column.
 			. '.babilim-cell-action button[data-babilim-busy-label]{min-width:100%}'
 			. '.babilim-cell-action button[data-babilim-busy-label]::after{content:attr(data-babilim-busy-label);display:block;height:0;overflow:hidden;visibility:hidden;padding-left:22px}'
+			. '.babilim-cell-action button[data-babilim-busy-label]::before{content:attr(data-babilim-idle-label);display:block;height:0;overflow:hidden;visibility:hidden}'
 			. '.babilim-cell-action .spinner{position:absolute;left:5px;top:7px;float:none;width:16px;height:16px;background-size:16px 16px;margin:0}'
 			. '.babilim-cell-text{display:contents}.babilim-cell-lang,.babilim-cell-status{display:block}'
 			. '.babilim-cell-status{overflow-wrap:anywhere}.babilim-cell-lang{white-space:normal}.babilim-cell-tail{display:inline-block;max-width:100%}'
@@ -1512,11 +1528,27 @@ final class Babilim_Admin {
 		if ( null === $until ) {
 			return '';
 		}
-		return '<div class="notice notice-warning"><p>' . sprintf(
+		foreach ( get_settings_errors( 'babilim' ) as $queued ) {
+			if ( 'rate_limited' === $queued['code'] ) {
+				// A click on a button already queued this same message.
+				return '';
+			}
+		}
+		return '<div class="notice notice-warning"><p>' . esc_html( self::rate_limited_message( $until ) ) . '</p></div>';
+	}
+
+	/**
+	 * The sentence that says syncing is on hold until a given time.
+	 *
+	 * @param int $until Unix time the wait ends.
+	 * @return string
+	 */
+	private static function rate_limited_message( int $until ): string {
+		return sprintf(
 			/* translators: %s: the date and time syncing is expected to resume. */
-			esc_html__( 'Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s.', 'babilim' ),
-			esc_html( self::format_time( $until ) )
-		) . '</p></div>';
+			__( 'Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s.', 'babilim' ),
+			self::format_time( $until )
+		);
 	}
 
 	/**
@@ -1544,14 +1576,11 @@ final class Babilim_Admin {
 		// saved: one that is not a locale code, or is longer than the
 		// service accepts, would only be dropped later without a word.
 		$new_locale = self::field( 'new_locale' );
-		if ( '' !== $new_locale && ( ! Babilim_Paths::is_safe_locale( $new_locale ) || ! Babilim_Contract_Limits::fits( $new_locale, Babilim_Contract_Limits::LOCALE ) ) ) {
+		$canonical = '' === $new_locale ? '' : Babilim_Inventory::canonical_locale( $new_locale );
+		if ( '' !== $new_locale && ( null === $canonical || ! Babilim_Paths::is_safe_locale( $canonical ) || ! Babilim_Contract_Limits::fits( $canonical, Babilim_Contract_Limits::LOCALE ) ) ) {
 			$this->notice(
 				'invalid_locale',
-				sprintf(
-					/* translators: %d: the most characters a locale code may have. */
-					__( 'The locale you added is not valid: use a WordPress locale code such as ll_CC (letters, digits, underscore, hyphen or @, at most %d characters). Nothing was saved.', 'babilim' ),
-					Babilim_Contract_Limits::LOCALE
-				),
+				__( 'That is not a valid WordPress locale code. Nothing was saved.', 'babilim' ),
 				'error'
 			);
 			wp_safe_redirect( self::page_url( 'settings', array( 'tab' => 'general' ) ) );
@@ -1566,7 +1595,7 @@ final class Babilim_Admin {
 			}
 		}
 		if ( '' !== $new_locale ) {
-			$submitted[] = $new_locale;
+			$submitted[] = (string) $canonical;
 		}
 		$submitted = array_values( array_unique( $submitted ) );
 
@@ -1579,7 +1608,7 @@ final class Babilim_Admin {
 		$this->inventory()->set_disabled_locales( array_values( array_diff( $detected, $submitted ) ) );
 		$this->inventory()->set_manual_locales( array_values( array_diff( $submitted, $detected ) ) );
 
-		update_option( self::OPTION_KEEP_CUSTOM, 'on' === self::field( 'keep_custom' ) );
+		update_option( self::OPTION_KEEP_CUSTOM, 'on' === self::field( 'keep_custom' ) ? 1 : 0 );
 		update_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 'on' === self::field( 'auto_install' ) ? 1 : 0, false );
 		// Through the registered Settings API sanitizer (see register_settings()).
 		update_option( self::OPTION_DELETE_DATA, 'on' === self::field( 'delete_data_on_uninstall' ) ? 'on' : '' );
@@ -1932,7 +1961,7 @@ final class Babilim_Admin {
 			$this->notice( 'not_verified', self::verification_headline(), 'warning' );
 		} else {
 			if ( 'in_progress' === $result->code() ) {
-				$this->schedule_follow_up_sync();
+				$this->schedule_follow_up_sync( $this->site()->rate_limited_until() );
 			}
 			$this->notice_sync_failure( $result );
 		}
@@ -1945,12 +1974,20 @@ final class Babilim_Admin {
 	 * Records the notice for a sync that did not finish: `in_progress`
 	 * is information (a background check was scheduled by the caller or
 	 * will be), anything else is an error carrying the failed step's own
-	 * message.
+	 * message. While the service holds the site (Retry-After), the wait
+	 * notice wins whatever the code is -- a 429 in the middle of a run
+	 * comes back as `in_progress`, and "reload this page" would then
+	 * contradict the wait notice the reload shows.
 	 *
 	 * @param Babilim_Result $result The failed sync result.
 	 */
 	private function notice_sync_failure( Babilim_Result $result ): void {
-		$code = (string) $result->code();
+		$code  = (string) $result->code();
+		$until = $this->site()->rate_limited_until();
+		if ( null !== $until ) {
+			$this->notice( 'rate_limited', self::rate_limited_message( $until ), 'warning' );
+			return;
+		}
 		if ( 'in_progress' === $code ) {
 			$this->notice( 'in_progress', __( 'Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish.', 'babilim' ), 'info' );
 			return;
@@ -1997,7 +2034,7 @@ final class Babilim_Admin {
 			return true;
 		}
 		if ( 'in_progress' === $result->code() ) {
-			$this->schedule_follow_up_sync();
+			$this->schedule_follow_up_sync( $this->site()->rate_limited_until() );
 		}
 		$this->notice_sync_failure( $result );
 		return false;
@@ -2006,12 +2043,20 @@ final class Babilim_Admin {
 	/**
 	 * Schedules one background check (never a second while one is
 	 * pending) and nudges WP-Cron, for a sync that ran out of time.
+	 * While the service holds the site (Retry-After), the check is set
+	 * for the end of the wait instead -- the notice says it will try
+	 * again then -- and WP-Cron is not nudged, as nothing is due yet.
+	 *
+	 * @param int|null $not_before Unix time the service's wait ends, or null when there is none.
 	 */
-	private function schedule_follow_up_sync(): void {
+	private function schedule_follow_up_sync( ?int $not_before = null ): void {
+		$waiting = null !== $not_before && $not_before > time();
 		if ( false === wp_next_scheduled( Babilim::SYNC_ONCE_HOOK ) ) {
-			wp_schedule_single_event( time(), Babilim::SYNC_ONCE_HOOK );
+			wp_schedule_single_event( $waiting ? $not_before : time(), Babilim::SYNC_ONCE_HOOK );
 		}
-		spawn_cron();
+		if ( ! $waiting ) {
+			spawn_cron();
+		}
 	}
 
 	public function dispatch_babilim_enable(): void {
@@ -2092,7 +2137,7 @@ final class Babilim_Admin {
 
 	public function dispatch_babilim_sweep_now(): void {
 		$this->guard( 'babilim_sweep_now', true );
-		$result = $this->default_index()->sweep_orphans();
+		$result = $this->default_index()->sweep_orphans( true );
 		if ( $result->is_ok() ) {
 			$deleted = count( $result->get( 'files_deleted', array() ) );
 			$this->notice(
@@ -2239,6 +2284,7 @@ final class Babilim_Admin {
 				'target'                   => true,
 				'rel'                      => true,
 				'data-babilim-autosubmit'  => true,
+				'data-babilim-autosubmit-delay' => true,
 				'data-babilim-poll-url'    => true,
 			),
 			'label'    => $common + array(
@@ -2286,6 +2332,7 @@ final class Babilim_Admin {
 				'data-babilim-confirm'     => true,
 				'data-babilim-confirmed'   => true,
 				'data-babilim-busy-label'  => true,
+				'data-babilim-idle-label'  => true,
 			),
 			'details'  => $common,
 			'summary'  => $common,
@@ -2534,6 +2581,12 @@ final class Babilim_Admin {
 		$html  .= $bulk['alerts'];
 
 		$progress = '';
+		// While the service has the site on hold, the yellow notice above
+		// is the whole message: a red box or a retry button would only
+		// repeat it, and a retry cannot succeed before the wait is over.
+		if ( is_array( $error ) && null !== $this->site()->rate_limited_until() ) {
+			$error = false;
+		}
 		if ( is_array( $error ) ) {
 			$code    = (string) ( $error['code'] ?? '' );
 			$message = (string) ( $error['message'] ?? '' );
@@ -2593,14 +2646,73 @@ final class Babilim_Admin {
 			/* translators: %d: how many items were not tried yet. */
 			$parts[] = sprintf( _n( '%d not yet tried', '%d not yet tried', $untried, 'babilim' ), $untried );
 		}
-		/* translators: %s: the bulk action (download, update or request). */
-		$head = sprintf( __( 'Bulk %s:', 'babilim' ), $op );
+		$head = self::bulk_op_label( $op );
 		if ( array() === $parts ) {
 			/* translators: 1: the "Bulk <action>:" lead-in. */
 			return sprintf( __( '%1$s nothing to do.', 'babilim' ), $head );
 		}
 		/* translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list. */
 		return sprintf( __( '%1$s %2$s.', 'babilim' ), $head, wp_sprintf( '%l', $parts ) );
+	}
+
+	/**
+	 * The lead-in of a bulk result notice, one whole sentence per action.
+	 *
+	 * @param string $op One of download, update, request.
+	 * @return string The translated lead-in; an unknown action comes back as given.
+	 */
+	private static function bulk_op_label( string $op ): string {
+		switch ( $op ) {
+			case 'download':
+				return __( 'Bulk download:', 'babilim' );
+			case 'update':
+				return __( 'Bulk update:', 'babilim' );
+			case 'request':
+				return __( 'Bulk request:', 'babilim' );
+		}
+		return $op;
+	}
+
+	/**
+	 * The period a download allowance resets over, in words.
+	 *
+	 * @param string $period The contract's period value.
+	 * @return string The translated words; an unknown value comes back as given.
+	 */
+	private static function quota_period_label( string $period ): string {
+		if ( 'daily' === $period ) {
+			return __( 'per day', 'babilim' );
+		}
+		return $period;
+	}
+
+	/**
+	 * The label of a problem-report category.
+	 *
+	 * @param string $category One of self::FEEDBACK_CATEGORIES.
+	 * @return string The translated label; an unknown value comes back as given.
+	 */
+	private static function feedback_category_label( string $category ): string {
+		switch ( $category ) {
+			case 'mistranslation':
+				return __( 'Wrong meaning', 'babilim' );
+			case 'terminology':
+				return __( 'Wrong term', 'babilim' );
+			case 'placeholder':
+				return __( 'Broken placeholder', 'babilim' );
+			case 'context':
+				return __( 'Wrong for this context', 'babilim' );
+			case 'plural':
+				return __( 'Wrong plural form', 'babilim' );
+			case 'negation':
+				return __( 'Negation reversed', 'babilim' );
+			case 'loading':
+				return __( 'Translation does not load', 'babilim' );
+			case 'other':
+				/* translators: a problem report category: none of the other listed kinds of problem applies. */
+				return _x( 'Other', 'problem report category', 'babilim' );
+		}
+		return $category;
 	}
 
 	/**
@@ -2782,14 +2894,14 @@ final class Babilim_Admin {
 		}
 		/* translators: 1: number of the part being sent, 2: total number of parts. */
 		$html .= '<p>' . esc_html( sprintf( __( 'Uploading part %1$d of %2$d…', 'babilim' ), min( (int) $pending['next'], (int) $pending['parts'] ), (int) $pending['parts'] ) ) . '</p>';
-		$html .= $this->upload_form( 'babilim_upload_step', __( 'Continue', 'babilim' ), true, '', true );
+		$html .= $this->upload_form( 'babilim_upload_step', __( 'Continue', 'babilim' ), true, '', true, max( 500, max( 0, (int) ( $pending['not_before'] ?? 0 ) - time() ) * 1000 ) );
 		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false );
 		return $html . '</div>';
 	}
 
 	/** A one-button admin-post form for the upload screens. */
-	private function upload_form( string $action, string $label, bool $primary, string $busy_label = '', bool $autosubmit = false ): string {
-		return '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="babilim-inline"' . ( $autosubmit ? ' data-babilim-autosubmit="1"' : '' ) . '>'
+	private function upload_form( string $action, string $label, bool $primary, string $busy_label = '', bool $autosubmit = false, int $autosubmit_delay_ms = 500 ): string {
+		return '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="babilim-inline"' . ( $autosubmit ? ' data-babilim-autosubmit="1" data-babilim-autosubmit-delay="' . (int) $autosubmit_delay_ms . '"' : '' ) . '>'
 			. '<input type="hidden" name="action" value="' . esc_attr( $action ) . '" />'
 			. wp_nonce_field( $action, '_wpnonce', true, false )
 			. '<button type="submit" class="button' . ( $primary ? ' button-primary' : '' ) . '"' . ( '' !== $busy_label ? ' data-babilim-busy-label="' . esc_attr( $busy_label ) . '"' : '' ) . '>' . esc_html( $label ) . '</button></form> ';
@@ -3349,7 +3461,7 @@ final class Babilim_Admin {
 		if ( null === $identity ) {
 			wp_send_json_error( array( 'code' => 'not_registered' ) );
 		}
-		$result = $this->api()->get_site( $identity['site_id'] );
+		$result = $this->api()->get_site( $identity['site_id'], self::INTERACTIVE_TIMEOUT );
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'code' => $result->get_error_code() ) );
 		}
@@ -3642,7 +3754,9 @@ final class Babilim_Admin {
 	/**
 	 * The service's locale list (`GET /v1/meta/locales`), cached for
 	 * a while; null before consent (nothing is requested then) or when
-	 * it cannot be read. A failed call is not cached.
+	 * it cannot be read. A failed call is remembered for a few minutes
+	 * (META_LOCALES_FAILURE_TTL), so a service that is down is asked
+	 * once per that time rather than on every page load.
 	 *
 	 * @return string[]|null
 	 */
@@ -3654,8 +3768,12 @@ final class Babilim_Admin {
 		if ( is_array( $cached ) ) {
 			return array_values( array_map( 'strval', $cached ) );
 		}
-		$response = $this->api()->meta_locales();
+		if ( false !== get_transient( self::META_LOCALES_FAILURE_TRANSIENT ) ) {
+			return null;
+		}
+		$response = $this->api()->meta_locales( self::INTERACTIVE_TIMEOUT );
 		if ( is_wp_error( $response ) ) {
+			set_transient( self::META_LOCALES_FAILURE_TRANSIENT, 1, self::META_LOCALES_FAILURE_TTL );
 			return null;
 		}
 		Babilim_Locale_Label::remember( $response );
@@ -3699,11 +3817,11 @@ final class Babilim_Admin {
 		$downloads = (array) ( $quota['downloads'] ?? array() );
 		if ( isset( $downloads['used'] ) && isset( $downloads['limit'] ) ) {
 			$html .= '<li>' . sprintf(
-				/* translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "daily". */
+				/* translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day". */
 				esc_html__( 'Downloads: %1$d/%2$d (%3$s)', 'babilim' ),
 				(int) $downloads['used'],
 				(int) $downloads['limit'],
-				esc_html( (string) ( $downloads['period'] ?? '' ) )
+				esc_html( self::quota_period_label( (string) ( $downloads['period'] ?? '' ) ) )
 			) . '</li>';
 		}
 		return $html;
@@ -3771,7 +3889,11 @@ final class Babilim_Admin {
 				/* translators: 1: when the guard tripped, 2: why. */
 				esc_html__( 'A cleanup was paused on %1$s: %2$s. Nothing was deleted.', 'babilim' ),
 				esc_html( self::format_time( (string) ( $guard['tripped_at'] ?? '' ) ) ),
-				esc_html( (string) ( $guard['reason'] ?? '' ) )
+				esc_html(
+					is_array( $guard['brake'] ?? null )
+						? Babilim_Default_Index::brake_message( $guard['brake'] )
+						: (string) ( $guard['reason'] ?? '' )
+				)
 			) . '</p>';
 		}
 
@@ -3938,7 +4060,7 @@ final class Babilim_Admin {
 		$html .= '<select id="babilim-category" name="category" required>';
 		$html .= '<option value="" disabled selected>' . esc_html__( 'Choose a category…', 'babilim' ) . '</option>';
 		foreach ( self::FEEDBACK_CATEGORIES as $category ) {
-			$html .= '<option value="' . esc_attr( $category ) . '">' . esc_html( $category ) . '</option>';
+			$html .= '<option value="' . esc_attr( $category ) . '">' . esc_html( self::feedback_category_label( $category ) ) . '</option>';
 		}
 		$html .= '</select></p>';
 

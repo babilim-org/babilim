@@ -2179,6 +2179,50 @@ final class Test_Admin extends TestCase {
 		$this->assertStringContainsString( $expected_date, $html, 'the rate-limit notice must show a full date, not just a time of day' );
 	}
 
+	public function test_overview_shows_only_the_rate_limit_notice_while_the_service_holds_the_site(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		( new Babilim_State() )->set( array( 'rate_limited_until' => time() + 3600 ) );
+		update_option( Babilim_Site::OPTION_LAST_SYNC_ERROR, array( 'code' => 'not_registered', 'message' => 'This site is not registered with Babilim yet.', 'since' => gmdate( 'c' ), 'at' => gmdate( 'c' ) ) );
+		$_GET = array();
+
+		$html = $this->admin()->render_current_page();
+
+		$this->assertStringContainsString( 'notice-warning', $html );
+		$this->assertStringContainsString( 'rate limited', $html );
+		$this->assertStringNotContainsString( 'notice-error', $html, 'no red box next to the yellow notice' );
+		$this->assertStringNotContainsString( 'babilim_sync_restart', $html, 'a retry cannot work before the wait is over' );
+	}
+
+	public function test_overview_still_shows_the_error_box_once_the_wait_is_over(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		update_option( Babilim_Site::OPTION_LAST_SYNC_ERROR, array( 'code' => 'not_registered', 'message' => 'This site is not registered with Babilim yet.', 'since' => gmdate( 'c' ), 'at' => gmdate( 'c' ) ) );
+		( new Babilim_State() )->set( array( 'rate_limited_until' => time() - 60 ) );
+		$_GET = array();
+
+		$html = $this->admin()->render_current_page();
+
+		$this->assertStringContainsString( 'notice-error', $html );
+		$this->assertStringContainsString( 'babilim_sync_restart', $html );
+	}
+
+	public function test_overview_does_not_repeat_the_rate_limit_notice_a_click_already_queued(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_x' );
+		update_option( 'babilim_site_token', 'tok_x' );
+		$until = time() + 3600;
+		( new Babilim_State() )->set( array( 'rate_limited_until' => $until ) );
+		$_GET = array();
+		add_settings_error( 'babilim', 'rate_limited', 'queued by a click', 'warning' );
+
+		$html = $this->admin()->render_current_page();
+
+		$this->assertSame( 1, substr_count( $html, 'notice-warning' ), 'the queued notice is the only yellow box; this page adds no second one' );
+	}
+
 	public function test_overview_shows_no_rate_limit_notice_once_the_deadline_has_passed(): void {
 		update_option( 'babilim_consent', true );
 		update_option( 'babilim_site_id', 'st_x' );
@@ -2484,6 +2528,7 @@ final class Test_Admin extends TestCase {
 			'has a slash'    => array( 'de/DE' ),
 			'has a space'    => array( 'de DE' ),
 			'has a comma'    => array( 'de,DE' ),
+		'script variant' => array( 'sr_RS@latin' ),
 		);
 	}
 
@@ -2503,12 +2548,21 @@ final class Test_Admin extends TestCase {
 		$this->assertContains( 'invalid_locale', $codes );
 		$this->assertNotContains( 'settings_saved', $codes, 'no "Settings saved." next to the error' );
 		$errors = array_values( array_filter( get_settings_errors( 'babilim' ), static function ( $e ) { return 'invalid_locale' === $e['code']; } ) );
-		$this->assertStringContainsString( '35', $errors[0]['message'] );
+		$this->assertSame( 'That is not a valid WordPress locale code. Nothing was saved.', $errors[0]['message'] );
+	}
+
+	public function test_a_manually_added_locale_is_saved_in_its_canonical_form(): void {
+		$GLOBALS['babilim_test_site_locale'] = 'en_US';
+		$this->post( 'babilim_save_settings', array( 'consent' => 'on', 'locales' => array(), 'new_locale' => 'pt-br' ) );
+
+		$this->admin()->dispatch_babilim_save_settings();
+
+		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ) );
 	}
 
 	public function test_a_manually_added_locale_of_exactly_35_characters_is_saved_and_sent(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
-		$typed = str_repeat( 'l', 35 );
+		$typed = 'de_DE_' . str_repeat( 'l', 29 );
 		$this->post( 'babilim_save_settings', array( 'consent' => 'on', 'locales' => array(), 'new_locale' => $typed ) );
 
 		$this->admin()->dispatch_babilim_save_settings();
@@ -2568,13 +2622,40 @@ final class Test_Admin extends TestCase {
 	}
 
 	public function test_save_settings_persists_keep_custom_being_unchecked(): void {
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 		$this->post( 'babilim_save_settings', array( 'locales' => array() ) ); // keep_custom omitted -> unchecked.
 
 		$admin = $this->admin();
 		$admin->dispatch_babilim_save_settings();
 
 		$this->assertFalse( (bool) get_option( 'babilim_keep_custom_on_purge' ) );
+	}
+
+	public function test_save_settings_persists_keep_custom_being_unchecked_on_a_fresh_site(): void {
+		// No option yet: core's update_option() returns early when the new value equals get_option()'s default (false).
+		$this->post( 'babilim_save_settings', array( 'locales' => array() ) );
+		$this->admin()->dispatch_babilim_save_settings();
+
+		$this->assertSame( 0, (int) get_option( 'babilim_keep_custom_on_purge', 1 ) );
+	}
+
+	public function test_feedback_category_options_show_translated_labels_not_enum_values(): void {
+		$_GET = array( 'screen' => 'report', 'kind' => 'plugin', 'slug' => 'woocommerce', 'locale' => 'zh_TW', 'build_id' => 'bd_000000000001' );
+		$html = $this->admin()->render_current_page();
+
+		$expected = array(
+			'mistranslation' => 'Wrong meaning',
+			'terminology'    => 'Wrong term',
+			'placeholder'    => 'Broken placeholder',
+			'context'        => 'Wrong for this context',
+			'plural'         => 'Wrong plural form',
+			'negation'       => 'Negation reversed',
+			'loading'        => 'Translation does not load',
+			'other'          => 'Other',
+		);
+		foreach ( $expected as $value => $label ) {
+			$this->assertStringContainsString( '<option value="' . $value . '">' . $label . '</option>', $html, $value );
+		}
 	}
 
 	public function test_save_settings_persists_keep_custom_being_checked(): void {
@@ -2589,7 +2670,7 @@ final class Test_Admin extends TestCase {
 	// -- babilim_purge_all -- the settings screen's danger zone ------------
 
 	public function test_purge_all_respects_keep_custom_and_reports_what_it_removed(): void {
-		update_option( 'babilim_keep_custom_on_purge', true );
+		update_option( 'babilim_keep_custom_on_purge', 1 );
 		$fs       = new Babilim_Memory_Fs();
 		$manifest = new Babilim_Manifest( $fs );
 		$manifest->set(
@@ -2635,7 +2716,7 @@ final class Test_Admin extends TestCase {
 	}
 
 	public function test_purge_all_clears_custom_when_keep_custom_is_off(): void {
-		update_option( 'babilim_keep_custom_on_purge', false );
+		update_option( 'babilim_keep_custom_on_purge', 0 );
 		$fs = new Babilim_Memory_Fs();
 		$fs->put( Babilim_Paths::file( 'custom/plugins', 'woocommerce', 'zh_TW', 'mo' ), 'site override' );
 		$this->post( 'babilim_purge_all', array() );
@@ -2730,6 +2811,20 @@ final class Test_Admin extends TestCase {
 
 		$cached = get_transient( 'babilim_meta_locales_cache' );
 		$this->assertSame( array( 'ja' ), $cached, 'a successful service call must write the parsed catalog to the cache transient' );
+	}
+
+	public function test_a_failed_locale_catalog_fetch_is_not_retried_within_five_minutes(): void {
+		update_option( 'babilim_consent', true );
+		$http = new Babilim_Fake_Http( array( array( 'response' => array( 'code' => 500 ), 'body' => '{}', 'headers' => array() ) ) );
+		$_GET = array( 'screen' => 'settings' );
+
+		$this->admin( $http )->render_current_page();
+		$this->assertCount( 1, $http->requests, 'the first render tries once' );
+		$this->assertSame( 5, $http->requests[0]['args']['timeout'], 'with the short interactive timeout' );
+
+		$this->admin( $http )->render_current_page();
+		$this->assertCount( 1, $http->requests, 'the second render makes no request' );
+		$this->assertNotFalse( get_transient( 'babilim_meta_locales_failed' ) );
 	}
 
 	public function test_managed_locales_falls_back_with_a_notice_when_the_service_call_fails(): void {
@@ -3055,7 +3150,7 @@ final class Test_Admin extends TestCase {
 
 		$this->assertStringContainsString( 'Theme 0/1', $html );
 		$this->assertStringContainsString( 'Plugin 1/2', $html );
-		$this->assertStringContainsString( 'Downloads: 3/500 (daily)', $html );
+		$this->assertStringContainsString( 'Downloads: 3/500 (per day)', $html );
 		// Never a raw JSON dump of the quota structure.
 		$this->assertStringNotContainsString( '{&quot;', $html );
 		$this->assertStringNotContainsString( 'free_slots', $html );
@@ -3345,6 +3440,23 @@ final class Test_Admin extends TestCase {
 		// And the autosubmit attribute survives the real wp_kses allow-list.
 		$kept = wp_kses( $html, Babilim_Admin::allowed_admin_html() );
 		$this->assertStringContainsString( 'data-babilim-autosubmit', $kept );
+	}
+
+	public function test_upload_progress_autosubmit_waits_for_the_backoff(): void {
+		update_option( 'babilim_consent', true );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'plugin', 'slug' => 'acme', 'locale' => 'fr_FR', 'zip' => '/x', 'parts' => 4, 'next' => 2, 'not_before' => time() + 60 ) );
+		$_GET = array( 'page' => 'babilim', 'screen' => 'upload-progress' );
+		$html = $this->admin()->render_current_page();
+		$this->assertMatchesRegularExpression( '/data-babilim-autosubmit-delay="(59|60)\d{3}"/', $html );
+		$kept = wp_kses( $html, Babilim_Admin::allowed_admin_html() );
+		$this->assertStringContainsString( 'data-babilim-autosubmit-delay', $kept );
+	}
+
+	public function test_upload_progress_autosubmit_without_backoff_keeps_the_short_delay(): void {
+		update_option( 'babilim_consent', true );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'plugin', 'slug' => 'acme', 'locale' => 'fr_FR', 'zip' => '/x', 'parts' => 4, 'next' => 2 ) );
+		$_GET = array( 'page' => 'babilim', 'screen' => 'upload-progress' );
+		$this->assertStringContainsString( 'data-babilim-autosubmit-delay="500"', $this->admin()->render_current_page() );
 	}
 
 	public function test_the_upload_actions_refuse_a_request_without_a_nonce(): void {

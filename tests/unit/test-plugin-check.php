@@ -60,6 +60,8 @@ final class Test_Plugin_Check extends TestCase {
 		'json_encode',
 		'wp_redirect',
 		'move_uploaded_file',
+		'is_writable',
+		'is_writeable',
 	);
 
 	/**
@@ -121,7 +123,10 @@ final class Test_Plugin_Check extends TestCase {
 				if ( 1 === preg_match( '/^\s*(\*|\/\/)/', $line ) ) {
 					continue;
 				}
-				if ( false === strpos( $line, 'phpcs:ignore' ) ) {
+				$unslashed_and_sanitized = false !== strpos( $line, 'wp_unslash(' )
+					&& 1 === preg_match( '/(sanitize_text_field\(|sanitize_key\(|sanitize_textarea_field\(|absint\(|intval\(|\(int\))/', $line );
+				$ignored_input_rule      = 1 === preg_match( '/phpcs:ignore[^\n]*WordPress\.Security\.ValidatedSanitizedInput/', $line );
+				if ( ! $unslashed_and_sanitized && ! $ignored_input_rule ) {
 					$problems[] = basename( $file ) . ':' . ( $number + 1 );
 				}
 			}
@@ -234,7 +239,7 @@ final class Test_Plugin_Check extends TestCase {
 
 	public function test_the_release_zip_leaves_out_development_files(): void {
 		$ignored = (string) file_get_contents( dirname( __DIR__, 2 ) . '/.distignore' );
-		foreach ( array( 'tests/', 'scripts/', 'docs/', 'phpstan-stubs/', 'phpstan.neon', 'Makefile', 'CLAUDE.md', 'task-report.md', '.claude/', '.githooks/' ) as $entry ) {
+		foreach ( array( 'tests/', 'scripts/', 'docs/', 'phpstan-stubs/', 'phpstan.neon', 'Makefile', 'CLAUDE.md', 'task-report.md', '.claude/', '.githooks/', '.wordpress-org/' ) as $entry ) {
 			$this->assertMatchesRegularExpression( '/^' . preg_quote( $entry, '/' ) . '$/m', $ignored, "{$entry} must not ship in the release zip" );
 		}
 	}
@@ -283,7 +288,7 @@ final class Test_Plugin_Check extends TestCase {
 			$this->assertNotContains( $must_not_ship, $entries, "{$must_not_ship} must not be in the release zip" );
 		}
 		foreach ( $entries as $entry ) {
-			$this->assertDoesNotMatchRegularExpression( '#^babilim/(tests|scripts|docs|phpstan-stubs|\.claude|\.githooks)/#', $entry, "{$entry}: development directories must not ship" );
+			$this->assertDoesNotMatchRegularExpression( '#^babilim/(tests|scripts|docs|phpstan-stubs|\.claude|\.githooks|\.wordpress-org)/#', $entry, "{$entry}: development directories must not ship" );
 		}
 		foreach ( array( 'babilim/babilim.php', 'babilim/uninstall.php', 'babilim/readme.txt', 'babilim/LICENSE', 'babilim/languages/babilim.pot' ) as $must_ship ) {
 			$this->assertContains( $must_ship, $entries, "{$must_ship} must be in the release zip" );

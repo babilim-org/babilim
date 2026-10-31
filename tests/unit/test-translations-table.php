@@ -1175,6 +1175,32 @@ final class Test_Translations_Table extends TestCase {
 		$this->assertStringContainsString( '.babilim-cell-action{position:relative;', $css );
 	}
 
+	/**
+	 * The column is as wide as the wider of the idle and the busy label,
+	 * so pressing a button does not move anything.
+	 */
+	public function test_action_buttons_reserve_both_idle_and_busy_label_widths(): void {
+		$admin = $this->admin();
+		$admin->register_menu();
+		$admin->enqueue_admin_assets( 'toplevel_page_' . Babilim_Admin::MENU_SLUG );
+		$css = implode( '', $GLOBALS['babilim_test_inline_styles']['babilim-admin'] );
+		$this->assertStringContainsString( '.babilim-cell-action button[data-babilim-busy-label]::before{content:attr(data-babilim-idle-label);display:block;height:0;overflow:hidden;visibility:hidden}', $css, 'the idle label is reserved from the start' );
+
+		$item = array(
+			'kind'  => 'plugin',
+			'slug'  => 'acme',
+			'name'  => 'Acme',
+			'cells' => array(
+				'de_DE' => Babilim_Cell::from_entry( array( 'status' => 'requestable' ), 'de_DE', false, true, null ),
+			),
+		);
+		$m = new ReflectionMethod( Babilim_Translations_Table::class, 'column_translations' );
+		$m->setAccessible( true );
+		$t    = new Babilim_Translations_Table( array(), array(), 'all', '', '', false, array(), false, '' );
+		$html = (string) $m->invoke( $t, $item );
+		$this->assertMatchesRegularExpression( '/<button[^>]*data-babilim-idle-label="Request translation"[^>]*data-babilim-busy-label="[^"]+"[^>]*>Request translation<\\/button>/', $html );
+	}
+
 	public function test_the_css_has_no_rule_for_a_description_inside_the_action_cell(): void {
 		$admin = $this->admin();
 		$admin->register_menu();

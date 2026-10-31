@@ -247,7 +247,7 @@ final class Test_Site_Sync_Budget extends TestCase {
 		if ( $languages > 0 ) {
 			$locales = array();
 			for ( $i = 0; $i < $languages; $i++ ) {
-				$locales[] = sprintf( 'qa_%03d', $i );
+				$locales[] = sprintf( 'qa_QA_v%03d', $i );
 			}
 			$inventory->set_manual_locales( $locales );
 		}

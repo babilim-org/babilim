@@ -8,7 +8,8 @@
  *    no token is stored, the warning is recorded, and the admin notice
  *    shows the warning to an administrator.
  * 2. The real uninstall.php runs with the delete-all setting off: the
- *    warning and every other option are gone, the key and site id stay.
+ *    warning and every other option are gone, the key stays (the site id of
+ *    a never-verified site goes with its pending record).
  * 3. Reinstalling registers again with the SAME install key (the mock saw
  *    the same public key twice), and once the service can verify, a token
  *    is stored.
@@ -62,6 +63,9 @@ babilim_pg_run(
 		// screen object makes is_admin() true, as it is there.
 		require_once ABSPATH . 'wp-admin/includes/admin.php';
 		set_current_screen( 'dashboard' );
+		// The notice only shows on the Dashboard and Plugins screens, which it
+		// recognises by the hook suffix a real admin request sets.
+		$GLOBALS['hook_suffix'] = 'index.php';
 
 		// 1. Verification fails: warning, no token, notice visible.
 		$site   = babilim_pg_b11_site();
@@ -70,17 +74,23 @@ babilim_pg_run(
 		$warning = $site->verification_warning();
 		babilim_pg_assert( null !== $warning && 'callback_unreachable' === $warning['reason'], 'the warning was not recorded with its reason' );
 		babilim_pg_assert( null === $site->token() && false === get_option( 'babilim_identity', false ), 'a token exists although verification failed' );
-		$first_site_id = $site->site_id();
-		$first_sk      = get_option( 'babilim_install_sk' );
-		babilim_pg_assert( is_string( $first_site_id ) && '' !== $first_site_id && is_string( $first_sk ) && '' !== $first_sk, 'site id or key missing after registration' );
+		// Only a complete {site_id, token} pair is an identity, so before the
+		// first verification succeeds the site id lives in the pending record.
+		babilim_pg_assert( null === $site->site_id(), 'a site id counts as an identity although verification failed' );
+		$pending  = get_option( 'babilim_pending_verification' );
+		$first_sk = get_option( 'babilim_install_sk' );
+		babilim_pg_assert( is_array( $pending ) && is_string( $pending['site_id'] ?? null ) && '' !== $pending['site_id'], 'the pending record has no site id after registration' );
+		babilim_pg_assert( is_string( $first_sk ) && '' !== $first_sk, 'the install key is missing after registration' );
 
 		ob_start();
 		do_action( 'admin_notices' );
 		$notice = (string) ob_get_clean();
 		babilim_pg_assert( false !== strpos( $notice, 'notice-warning' ) && false !== strpos( $notice, 'challenge' ), 'the administrator notice does not show the verification warning' );
 
-		// 2. Default uninstall: identity stays, the rest goes.
+		// 2. Default uninstall: the install key stays, the rest (including
+		// the pending record that held the unverified site id) goes.
 		babilim_pg_b11_uninstall();
+		babilim_pg_assert( false === get_option( 'babilim_pending_verification', false ), 'the pending record survived the uninstall' );
 		babilim_pg_assert( false === get_option( 'babilim_verification_warning', false ), 'the warning survived the uninstall' );
 		babilim_pg_assert( false === get_option( Babilim_Site::OPTION_CONSENT, false ), 'consent survived the uninstall' );
 		babilim_pg_assert( $first_sk === get_option( 'babilim_install_sk' ), 'the install key did not survive a default uninstall' );
@@ -114,10 +124,10 @@ babilim_pg_run(
 		$deactivate_tag  = 'plugin_action_links_' . plugin_basename( WP_PLUGIN_DIR . '/babilim/babilim.php' );
 		$deactivate_link = array( 'deactivate' => '<a href="plugins.php?action=deactivate" id="deactivate-babilim">Deactivate</a>' );
 		$plain           = apply_filters( $deactivate_tag, $deactivate_link );
-		babilim_pg_assert( false === strpos( (string) ( $plain['deactivate'] ?? '' ), 'confirm(' ), 'the Deactivate link asks for confirmation while delete-all is off' );
+		babilim_pg_assert( false === strpos( (string) ( $plain['deactivate'] ?? '' ), 'data-babilim-confirm' ), 'the Deactivate link asks for confirmation while delete-all is off' );
 		update_option( 'babilim_delete_data_on_uninstall', true );
 		$guarded = apply_filters( $deactivate_tag, $deactivate_link );
-		babilim_pg_assert( false !== strpos( (string) ( $guarded['deactivate'] ?? '' ), 'onclick="return confirm(' ), 'the Deactivate link carries no confirmation while delete-all is on' );
+		babilim_pg_assert( false !== strpos( (string) ( $guarded['deactivate'] ?? '' ), 'data-babilim-confirm="' ), 'the Deactivate link carries no confirmation while delete-all is on' );
 		babilim_pg_b11_uninstall();
 		babilim_pg_assert( false === get_option( 'babilim_install_sk', false ) && false === get_option( 'babilim_identity', false ), 'the delete-all setting left identity behind' );
 	}

@@ -169,6 +169,12 @@ final class Babilim_Wp_Fs implements Babilim_Fs {
 		$this->assert_allowed( $path, true );
 		$mode = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : false;
 		$ok   = true;
+
+		$lang_dir = rtrim( dirname( Babilim_Paths::root() ), '/' );
+		if ( ! $this->fs()->is_dir( $lang_dir ) ) {
+			// The one directory outside the allow-list this plugin may create: WP_LANG_DIR itself, on a site that has never installed a language.
+			$ok = (bool) $this->fs()->mkdir( $lang_dir, $mode );
+		}
 		foreach ( Babilim_Paths::ancestors_from_root( $path ) as $ancestor ) {
 			if ( $this->fs()->is_dir( $ancestor ) ) {
 				continue;

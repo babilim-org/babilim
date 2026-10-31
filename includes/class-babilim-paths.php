@@ -534,8 +534,10 @@ final class Babilim_Paths {
 	/**
 	 * ancestor_paths(), clipped to root() and below -- so a Babilim_Fs's
 	 * mkdir() never creates (or, for the in-memory test double, never
-	 * even records as existing) anything above the plugin's own root,
-	 * such as WP_LANG_DIR itself.
+	 * even records as existing) anything above the plugin's own root.
+	 * The one exception, WP_LANG_DIR itself when it does not exist yet,
+	 * is handled by Babilim_Wp_Fs::mkdir() on its own, not through this
+	 * list.
 	 *
 	 * @param string $path Absolute path, expected to be under root().
 	 * @return string[]

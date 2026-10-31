@@ -27,11 +27,15 @@ repo="${BABILIM_L10N_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 pot="$repo/languages/babilim.pot"
 wpcli="$repo/tools/wp-cli.phar"
 out_dir="$repo/languages"
+readme="$repo/readme.txt"
 
 [ -d "$src_dir" ] || { echo "FAIL: source directory not found: $src_dir" >&2; exit 2; }
 [ -f "$locales_file" ] || { echo "FAIL: locales file not found: $locales_file" >&2; exit 2; }
 [ -f "$pot" ] || { echo "FAIL: $pot not found -- run 'make pot'" >&2; exit 2; }
 [ -f "$wpcli" ] || { echo "FAIL: $wpcli not found -- run 'make tools'" >&2; exit 2; }
+[ -f "$readme" ] || { echo "FAIL: $readme not found" >&2; exit 2; }
+version="$(sed -n -E 's/^Stable tag:[[:space:]]*([^[:space:]]+).*/\1/p' "$readme" | head -n 1)"
+[ -n "$version" ] || { echo "FAIL: no Stable tag in $readme" >&2; exit 2; }
 
 flags=()
 if [ "$(id -u)" = 0 ]; then
@@ -45,6 +49,14 @@ wp() {
 locale_re='^[a-z]{2,3}(_[A-Z]{2})?(_[a-z0-9]+)?$'
 missing=()
 failed=()
+stage=""
+# An interrupted run must not leave its staging directory behind; the trap
+# reads the current value of $stage.
+# INT and TERM exit explicitly (a bare trap handler would let the loop go on);
+# the EXIT trap then does the cleanup.
+trap 'if [ -n "$stage" ]; then rm -rf "$stage"; fi' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 while IFS= read -r line || [ -n "$line" ]; do
 	locale="${line%%#*}"
@@ -68,13 +80,17 @@ while IFS= read -r line || [ -n "$line" ]; do
 	po="$stage/babilim-$locale.po"
 	# Drop run annotations: comment lines starting "#. babilim:", "# babilim:"
 	# (and the "babilim-" variants).
-	sed -E '/^#\.? babilim[:-]/d' "$src" > "$po"
+	# Also drop the build id header and give the file a plain project id.
+	sed -E -e '/^#\.? babilim[:-]/d' \
+		-e '/^"X-Babilim-Build:/d' \
+		-e "s/^\"Project-Id-Version:.*/\"Project-Id-Version: Babilim $version\\\\n\"/" "$src" > "$po"
 	if ! { wp i18n update-po "$pot" "$po" \
 		&& wp i18n make-mo "$po" "$stage/" \
 		&& wp i18n make-php "$po" "$stage/" \
 		&& [ -s "$stage/babilim-$locale.mo" ] \
 		&& [ -s "$stage/babilim-$locale.l10n.php" ]; } >/dev/null 2>&1; then
 		rm -rf "$stage"
+		stage=""
 		echo "FAIL $locale (wp-cli error)"
 		failed+=("$locale")
 		continue
@@ -89,6 +105,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	' "$po")"
 	mv -f "$po" "$stage/babilim-$locale.mo" "$stage/babilim-$locale.l10n.php" "$out_dir/"
 	rm -rf "$stage"
+	stage=""
 	echo "OK $locale (untranslated=$untranslated)"
 done < "$locales_file"
 

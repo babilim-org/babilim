@@ -825,6 +825,41 @@ final class Test_Loader extends TestCase {
 		$this->assertSame( array( 'core-bye' ), $decoded['locale_data']['messages']['Bye'] );
 	}
 
+	public function test_script_translations_for_two_handles_of_one_domain_read_the_files_once(): void {
+		$GLOBALS['babilim_test_current_locale'] = 'de_DE';
+		$this->write_file(
+			'plugins',
+			'mini',
+			'de_DE',
+			'json',
+			wp_json_encode( array( 'locale_data' => array( 'messages' => array( 'Hi' => array( 'ours' ) ) ) ) )
+		);
+		$core = wp_json_encode( array( 'locale_data' => array( 'messages' => array( 'Bye' => array( 'core-bye' ) ) ) ) );
+
+		$first = Babilim_Loader::load_script_translations( $core, '/core/a.json', 'a', 'mini' );
+		$after_first = Babilim_Loader::fs_probe_count_for_tests();
+		$this->assertGreaterThan( 0, $after_first, 'the first call must probe the layer files' );
+
+		$second = Babilim_Loader::load_script_translations( $core, '/core/b.json', 'b', 'mini' );
+		$this->assertSame( $after_first + 1, Babilim_Loader::fs_probe_count_for_tests(), 'the second handle adds only the check that the root directory is still there, no layer file probes' );
+		$this->assertSame( $first, $second, 'both handles still get the whole domain merged' );
+		$this->assertSame( array( 'ours' ), json_decode( $second, true )['locale_data']['messages']['Hi'] );
+	}
+
+	public function test_script_translations_are_empty_once_the_root_directory_is_gone_even_after_a_read(): void {
+		$GLOBALS['babilim_test_current_locale'] = 'de_DE';
+		$this->write_file( 'plugins', 'mini', 'de_DE', 'json', wp_json_encode( array( 'locale_data' => array( 'messages' => array( 'Hi' => array( 'ours' ) ) ) ) ) );
+		$core  = wp_json_encode( array( 'locale_data' => array( 'messages' => array( 'Bye' => array( 'core-bye' ) ) ) ) );
+		$first = json_decode( (string) Babilim_Loader::load_script_translations( $core, '/core/a.json', 'a', 'mini' ), true );
+		$this->assertSame( array( 'ours' ), $first['locale_data']['messages']['Hi'] );
+
+		$this->remove_recursive( Babilim_Paths::root() );
+		$second = json_decode( (string) Babilim_Loader::load_script_translations( $core, '/core/b.json', 'b', 'mini' ), true );
+
+		$this->assertArrayNotHasKey( 'Hi', $second['locale_data']['messages'], 'with no root directory the loader does nothing, whatever it remembers' );
+		$this->assertSame( array( 'core-bye' ), $second['locale_data']['messages']['Bye'] );
+	}
+
 	/**
 	 * Some Jed catalogs key their messages by the domain itself
 	 * (`locale_data.{$domain}`) instead of the more common `messages`

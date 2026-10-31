@@ -181,6 +181,18 @@ final class Test_Api_Client extends TestCase {
 		$this->assertSame( 'de_DE', $result[0]['wp_locale'] );
 	}
 
+	public function test_meta_locales_passes_the_timeout_and_disables_retry_when_given_one(): void {
+		$http   = new Babilim_Fake_Http( array( $this->json_response( 500, array( 'error' => array( 'code' => 'unexpected_response', 'message' => 'boom', 'hint' => '' ) ) ), $this->json_response( 200, array() ) ) );
+		$client = new Babilim_Api_Client( $http, 'https://api.babilim.org', null );
+
+		$result = $client->meta_locales( 5 );
+
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertSame( 5, $http->requests[0]['args']['timeout'] );
+		$this->assertFalse( $http->requests[0]['args']['retry'], 'the transport is told not to resend' );
+		$this->assertCount( 1, $http->requests, 'a request with a time limit is not resent after a 5xx' );
+	}
+
 	public function test_meta_locales_maps_a_non_2xx_response_to_a_wp_error(): void {
 		$http   = new Babilim_Fake_Http( array( $this->json_response( 500, array( 'error' => array( 'code' => 'unexpected_response', 'message' => 'boom', 'hint' => '' ) ) ) ) );
 		$client = new Babilim_Api_Client( $http, 'https://api.babilim.org', null );

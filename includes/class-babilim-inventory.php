@@ -292,9 +292,11 @@ final class Babilim_Inventory {
 	 * Every locale in play on this site: the site locale, every
 	 * installed language pack, every user's own locale, a best-effort
 	 * read of any active multilingual plugin's configured languages,
-	 * and anything manually added on the settings screen -- deduped,
-	 * filtered to path-safe strings, and sorted by wp_locale string with
-	 * no locale favored over another.
+	 * and anything manually added on the settings screen -- each spelled
+	 * the WordPress.org way (see canonical_locale(): `pt-br` becomes
+	 * `pt_BR`; anything that is not a locale code is dropped), deduped,
+	 * filtered to path-safe strings of an accepted length, and sorted by
+	 * wp_locale string with no locale favored over another.
 	 *
 	 * @return string[]
 	 */
@@ -336,14 +338,40 @@ final class Babilim_Inventory {
 	}
 
 	/**
-	 * Dedupes, filters to path-safe strings, and sorts a list of locale
-	 * codes -- the shared tail of locales()/detected_locales().
+	 * Canonical WordPress.org locale spelling: `xx`, `xxx`, `xx_XX` or
+	 * `xx_XX_variant`, with a lowercase language, uppercase region and
+	 * lowercase variant. Dashes are accepted as separators. Anything
+	 * else is not a locale code and yields null.
+	 *
+	 * @param string $raw Locale code as read from another plugin.
+	 */
+	public static function canonical_locale( string $raw ): ?string {
+		$raw = str_replace( '-', '_', trim( $raw ) );
+		if ( 1 !== preg_match( '/^([a-z]{2,3})(?:_([a-z]{2}))?(?:_([a-z][a-z0-9]*))?$/i', $raw, $m ) ) {
+			return null;
+		}
+		$out = strtolower( $m[1] );
+		if ( isset( $m[2] ) && '' !== $m[2] ) {
+			$out .= '_' . strtoupper( $m[2] );
+		}
+		if ( isset( $m[3] ) ) {
+			$out .= '_' . strtolower( $m[3] );
+		}
+		return $out;
+	}
+
+	/**
+	 * Spells each code the WordPress.org way (canonical_locale(); what is
+	 * not a locale code is dropped), then dedupes, filters to path-safe
+	 * strings of an accepted length, and sorts the list -- the shared tail
+	 * of locales()/detected_locales().
 	 *
 	 * @param array $locales Raw locale codes.
 	 * @return string[]
 	 */
 	private static function normalize_locales( array $locales ): array {
 		$locales = array_map( 'strval', $locales );
+		$locales = array_filter( array_map( array( self::class, 'canonical_locale' ), $locales ), 'is_string' );
 		$locales = array_values(
 			array_unique(
 				array_filter(

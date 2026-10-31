@@ -59,6 +59,11 @@ task on:
   and so leaves a window with no file at all. Both paths are checked
   against the same allow-list first, and no other method may use a native
   write call.
+  The fourth exception is `Babilim_Wp_Fs::mkdir()`: when `WP_LANG_DIR`
+  itself does not exist (a fresh WordPress install has no
+  `wp-content/languages/` until a language is installed), it creates that
+  one directory -- exactly that path, never anything above it -- before
+  creating its own tree beneath.
 - **Every user-facing string** goes through `__()` (or equivalent) with
   the `babilim` text domain.
 - **Every state-changing action** (anything that writes) requires a
@@ -178,7 +183,9 @@ File layout on disk follows the design spec's directory structure
 it before then). The one rule that matters at this stage: the serving
 directories only ever hold `.l10n.php`/`.mo`/`.json`; `.po` files live in
 a `_versions/` history directory, never somewhere WordPress core would
-actually load from.
+actually load from. `.wordpress-org/` holds the wordpress.org directory
+assets (icons, banners, screenshots, Playground blueprint) and is
+excluded from the zip by `.distignore`.
 
 ## Locale neutrality
 
@@ -260,7 +267,9 @@ Nothing tracked in this repo may reference:
   `languages/babilim-<locale>.po` and `.l10n.php`, get the same exception
   (they are translations of the plugin's English strings); the compiled
   `.mo` files are binary and skipped, with their `.po` still scanned. No
-  other file gets this exception.
+  other file gets this exception. Rendered directory-listing images,
+  `.wordpress-org/*.png`, are binary and skipped the same way; their SVG
+  sources and the blueprint next to them are text and fully scanned.
 - Internal-only vocabulary about how a translation is graded or reviewed
   — see "How language packs become available" above; nothing about that
   process belongs in this repo at all, in any language.
@@ -445,6 +454,9 @@ task report must cite the specific checklist items you followed, with
 make contract-check   # tests/contract/v1/ matches PINNED + its own SHA256SUMS
 make public-check     # public-repo discipline guard — must pass before every commit
 make l10n-check       # bundled translations match the pot and their .mo/.l10n.php
+make wporg-assets      # renders .wordpress-org/ icons and banners from their SVG sources (needs Playwright)
+make wporg-screenshots # captures .wordpress-org/screenshot-N.png on the neutral site (needs Playwright)
+make release           # one SVN commit: trunk + assets + tag; RELEASE_ARGS=--dry-run to rehearse (needs svn)
 ```
 
 Bundled translations: when `make pot` only moved line references,

@@ -24,8 +24,13 @@ $babilim_pg_b12_log_len = ( '' !== $babilim_pg_b12_log && is_readable( $babilim_
 $babilim_pg_b12_errors = array();
 set_error_handler(
 	static function ( int $errno, string $errstr, string $errfile ) use ( &$babilim_pg_b12_errors ) {
+		// Honour the @ operator and the current error_reporting level.
+		if ( ! ( error_reporting() & $errno ) ) {
+			return false;
+		}
 		$babilim_pg_b12_errors[] = array( $errno, $errstr, $errfile );
-		return true;
+		// Record only; let PHP's standard handling (debug.log) go on.
+		return false;
 	}
 );
 
@@ -58,7 +63,9 @@ babilim_pg_run(
 		wp_mkdir_p( $override_dir );
 		$php = "<?php\nreturn array( 'domain' => 'babilim', 'language' => 'zh_TW', 'plural-forms' => 'nplurals=1; plural=0;', 'messages' => array( 'Enable Babilim' => 'SITE-OVERRIDE' ) );\n";
 		file_put_contents( $override_file, $php );
-		$depth = 0;
+		$depth             = 0;
+		$replaced_registry = false;
+		$previous_registry = null;
 		try {
 			unload_textdomain( 'babilim' );
 			// WordPress >= 6.8 loads translations just in time and remembers where
@@ -67,7 +74,12 @@ babilim_pg_run(
 			// never be looked for. Start from a state where nothing is remembered,
 			// as a fresh request would be, so every version proves the same thing.
 			if ( class_exists( 'WP_Textdomain_Registry' ) ) {
-				$GLOBALS['wp_textdomain_registry'] = new WP_Textdomain_Registry();
+				$replaced_registry                 = true;
+				$previous_registry                 = $GLOBALS['wp_textdomain_registry'] ?? null;
+				$fresh_registry                    = new WP_Textdomain_Registry();
+				// init() exists from WordPress 6.5 on (the plugin's floor is 6.6); it hooks cache invalidation.
+				$fresh_registry->init();
+				$GLOBALS['wp_textdomain_registry'] = $fresh_registry;
 			}
 			wp_cache_delete( md5( WP_LANG_DIR . '/plugins/' ), 'translation_files' );
 			$depth += switch_to_locale( 'en_US' ) ? 1 : 0;
@@ -84,6 +96,13 @@ babilim_pg_run(
 				restore_current_locale();
 			}
 			unload_textdomain( 'babilim' );
+			if ( $replaced_registry ) {
+				if ( null === $previous_registry ) {
+					unset( $GLOBALS['wp_textdomain_registry'] );
+				} else {
+					$GLOBALS['wp_textdomain_registry'] = $previous_registry;
+				}
+			}
 		}
 	}
 );

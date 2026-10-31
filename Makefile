@@ -157,15 +157,12 @@ public-check:
 public-history-check:
 	@bash scripts/public-history-check.sh
 
-# Gates a real release on every readme.txt placeholder the owner must
-# fill in by hand (Contributors, Tested up to, Terms of Service,
-# Privacy Policy) being replaced first. Deliberately not part
-# of `make test` -- these are expected to still read TODO-OWNER
-# throughout normal development, and only need to be real before the
-# plugin actually ships. Also runs public-check, since both are
-# pre-release gates.
+# Gates a real release on no TODO-OWNER placeholder remaining in
+# readme.txt (a field that is not yet known is written as TODO-OWNER
+# during development). Deliberately not part of `make test`. Also runs
+# public-check, since both are pre-release gates.
 .PHONY: release-check
-release-check: public-check l10n-check zip
+release-check: public-check pot-check l10n-check zip
 	@version=$$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' readme.txt | head -n 1); \
 	size=$$(stat -c %s "build/babilim-$$version.zip"); \
 	[ $$size -le 10000000 ] || { echo "FAIL: zip is $$size bytes (> 10 MB)"; exit 1; }
@@ -180,3 +177,20 @@ release-check: public-check l10n-check zip
 install-hooks:
 	@git config core.hooksPath .githooks
 	@echo "core.hooksPath set to .githooks -- prepare-commit-msg and commit-msg hooks are now active."
+
+.PHONY: wporg-assets
+wporg-assets:
+	@node scripts/render-wporg-assets.mjs
+
+# Renders the three wordpress.org directory screenshots from the neutral
+# browser flow (needs Playwright on NODE_PATH; takes a couple of minutes).
+.PHONY: wporg-screenshots
+wporg-screenshots:
+	@out="$$(mktemp -d)"; BABILIM_UX_SHOTS="$$out" bash tests/playground/run-neutral-ux-flow.sh "$$out" 1 screenshots || exit 1; \
+	cp "$$out"/screenshot-1.png "$$out"/screenshot-2.png "$$out"/screenshot-3.png .wordpress-org/
+
+# One release, one SVN commit: trunk + assets + tags/<version>. Needs svn
+# and rsync; run `make release RELEASE_ARGS=--dry-run` first.
+.PHONY: release
+release:
+	@bash scripts/release.sh $(RELEASE_ARGS)

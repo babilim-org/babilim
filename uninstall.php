@@ -147,8 +147,7 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		delete_option( 'babilim_keep_custom_on_purge' );
 		delete_option( 'babilim_locale_names' );
 		delete_transient( 'babilim_meta_locales_cache' );
-		// The settings screen re-uses core's own short-lived notice transient.
-		delete_transient( 'settings_errors' );
+		delete_transient( 'babilim_meta_locales_failed' );
 		// A restore code notice lives at most a minute (this clears the current user's).
 		delete_transient( 'babilim_restore_code_notice_' . get_current_user_id() );
 

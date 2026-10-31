@@ -418,16 +418,17 @@ final class Babilim_Api_Client {
 	 * unranked; this is the source of truth the settings screen's
 	 * managed-locales list is built from. No auth required.
 	 *
+	 * @param int|null $timeout Seconds for this request, or null for the transport default.
 	 * @return array|WP_Error {wp_locale, english_name, native_name}[] on success.
 	 */
-	public function meta_locales() {
+	public function meta_locales( ?int $timeout = null ) {
 		$args = array(
 			'headers' => $this->headers( false ),
 			// Safe to retry: a GET with no side effect, same rationale as
 			// fetch_package()'s own 'retry' => true.
 			'retry'   => true,
 		);
-		$response = $this->transport( 'GET', $this->base_url . '/v1/meta/locales', $args, null );
+		$response = $this->transport( 'GET', $this->base_url . '/v1/meta/locales', $args, $timeout );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}

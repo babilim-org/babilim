@@ -828,7 +828,7 @@ final class Babilim_Site {
 	 * everything again.
 	 *
 	 * @param int|null $budget Seconds this run may take in total, or null for no limit.
-	 * @return Babilim_Result Ok (`components` = how many were reported), or an error whose code is `no_consent`, `in_progress` (ran out of time, or a failure that a later run is likely to get past), `too_many_components`, or the service's own refusal.
+	 * @return Babilim_Result Ok (`components` = how many were reported), or an error whose code is `no_consent`, `rate_limited` (the service asked this site to wait; nothing was sent), `in_progress` (ran out of time, or a failure that a later run is likely to get past), `too_many_components`, or the service's own refusal.
 	 */
 	public function sync( ?int $budget = null ): Babilim_Result {
 		try {
@@ -836,6 +836,15 @@ final class Babilim_Site {
 				// Not recorded as a sync error: turning Babilim off removes
 				// the record, and a later background run must not bring it back.
 				return Babilim_Result::error( 'no_consent', __( 'Babilim has not been enabled for this site yet.', 'babilim' ) );
+			}
+			// The service asked this site to wait (Retry-After): nothing
+			// goes out until that has elapsed. The wait itself is the
+			// service's decision; this only honours it. It is not
+			// recorded as a sync error: rate_limited_until() already says
+			// so, and an earlier real error must stay visible.
+			$until = $this->rate_limited_until();
+			if ( null !== $until && time() < $until ) {
+				return Babilim_Result::error( 'rate_limited', __( 'The service asked this site to wait before syncing again.', 'babilim' ) );
 			}
 			$deadline = new Babilim_Deadline( $budget );
 
@@ -962,7 +971,7 @@ final class Babilim_Site {
 				}
 				$merged = self::merge_inventory_responses( $merged, $response );
 			}
-			$this->state->drain_client_events();
+			$this->state->drain_client_events( $events );
 
 			$merged['fetched_at'] = gmdate( 'c' );
 			$merged['omitted']    = array(

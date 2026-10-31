@@ -93,6 +93,14 @@ final class Babilim_Loader {
 	private static $fs_probe_count = 0;
 
 	/**
+	 * Per-request memo of layer_messages(), keyed "{locale}\0{domain}".
+	 * Files do not change within a request, so no invalidation hook.
+	 *
+	 * @var array<string,array<string,mixed>>
+	 */
+	private static $messages_cache = array();
+
+	/**
 	 * Registers the loading-layer hooks. Safe to call more than once --
 	 * only the first call does anything.
 	 */
@@ -119,6 +127,15 @@ final class Babilim_Loader {
 	public static function reset_for_tests(): void {
 		self::$translation_lock = array();
 		self::$fs_probe_count   = 0;
+		self::reset_messages_cache_for_tests();
+	}
+
+	/**
+	 * Empties the per-request script-translation messages memo.
+	 * Test-only.
+	 */
+	public static function reset_messages_cache_for_tests(): void {
+		self::$messages_cache = array();
 	}
 
 	/**
@@ -496,12 +513,21 @@ final class Babilim_Loader {
 	 * @return array<string,mixed>
 	 */
 	private static function layer_messages( string $domain ): array {
-		if ( ! Babilim_Paths::is_safe_name( $domain ) || ! self::root_exists() ) {
+		if ( ! Babilim_Paths::is_safe_name( $domain ) ) {
 			return array();
 		}
 		$locale = determine_locale();
 		if ( ! Babilim_Paths::is_safe_locale( $locale ) ) {
 			return array();
+		}
+
+		// No root directory: nothing at all, remembered or not.
+		if ( ! self::root_exists() ) {
+			return array();
+		}
+		$cache_key = $locale . "\0" . $domain;
+		if ( isset( self::$messages_cache[ $cache_key ] ) ) {
+			return self::$messages_cache[ $cache_key ];
 		}
 
 		$messages = array();
@@ -519,6 +545,7 @@ final class Babilim_Loader {
 				}
 			}
 		}
+		self::$messages_cache[ $cache_key ] = $messages;
 		return $messages;
 	}
 

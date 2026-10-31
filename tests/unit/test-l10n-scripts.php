@@ -29,6 +29,7 @@ final class Test_L10n_Scripts extends TestCase {
 		mkdir( $this->tmp_repo . '/languages', 0777, true );
 		mkdir( $this->tmp_repo . '/tools', 0777, true );
 		copy( $this->root . '/languages/babilim.pot', $this->tmp_repo . '/languages/babilim.pot' );
+		copy( $this->root . '/readme.txt', $this->tmp_repo . '/readme.txt' );
 		symlink( $this->root . '/tools/wp-cli.phar', $this->tmp_repo . '/tools/wp-cli.phar' );
 	}
 
@@ -268,6 +269,166 @@ final class Test_L10n_Scripts extends TestCase {
 		$res                   = $this->run_check( $locales );
 		$this->assertSame( 1, $res['rc'], $res['stdout'] );
 		$this->assertMatchesRegularExpression( '/^UNTRANSLATED zz_ZZ \d+$/m', $res['stdout'] );
+	}
+
+	/**
+	 * Rewrites one entry's msgstr in the fixture locale and rebuilds the
+	 * derived files so only the placeholder check can object.
+	 */
+	private function set_msgstr_and_rebuild( string $msgid, string $msgstr_lines ): void {
+		$po = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
+		$this->replace_in_file( $po, 'msgid "' . $msgid . '"' . "\n" . 'msgstr ""', 'msgid "' . $msgid . '"' . "\n" . $msgstr_lines );
+		foreach ( array( 'make-mo', 'make-php' ) as $op ) {
+			exec( 'php ' . escapeshellarg( $this->root . '/tools/wp-cli.phar' ) . ' i18n ' . $op . ' ' . escapeshellarg( $po ) . ' ' . escapeshellarg( dirname( $po ) . '/' ) . ' --allow-root 2>&1' );
+		}
+	}
+
+	public function test_l10n_check_fails_when_a_translation_has_one_placeholder_too_many(): void {
+		$locales = $this->build_fixture_locale();
+		$msgid   = 'Select fewer components: at most %1$d operations per run (you selected %2$d).';
+		$this->set_msgstr_and_rebuild( $msgid, 'msgstr "%d %d %d"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'PLACEHOLDER zz_ZZ "' . $msgid . '"', $res['stdout'] );
+	}
+
+	public function test_l10n_check_accepts_reordered_numbered_placeholders(): void {
+		$locales = $this->build_fixture_locale();
+		$msgid   = 'Select fewer components: at most %1$d operations per run (you selected %2$d).';
+		$this->set_msgstr_and_rebuild( $msgid, 'msgstr "%2$d / %1$d"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 0, $res['rc'], $res['stdout'] );
+	}
+
+	public function test_l10n_check_treats_unnumbered_placeholders_as_positions(): void {
+		$locales = $this->build_fixture_locale();
+		$msgid   = 'Select fewer components: at most %1$d operations per run (you selected %2$d).';
+		// Unnumbered %d %d are positions 1 and 2: same mapping as the original.
+		$this->set_msgstr_and_rebuild( $msgid, 'msgstr "%d / %d"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 0, $res['rc'], $res['stdout'] );
+	}
+
+	public function test_l10n_sh_strips_the_build_header_and_sets_a_plain_project_id(): void {
+		$src = BABILIM_TEST_TMP_ROOT . '/l10n-src-' . uniqid( '', true );
+		mkdir( $src, 0777, true );
+		$text = (string) file_get_contents( dirname( __DIR__ ) . '/fixtures/l10n/src/babilim-zz_ZZ.po' );
+		$text = str_replace(
+			'"Project-Id-Version: Babilim 0.1.0\n"',
+			'"Project-Id-Version: babilim-0.1.0-zz-babilim-0.1.0-zz-20261030T025349\n"' . "\n" . '"X-Babilim-Build: babilim-0.1.0-zz-20261030T025349\n"',
+			$text
+		);
+		$this->assertStringContainsString( 'X-Babilim-Build', $text, 'test setup' );
+		file_put_contents( $src . '/babilim-zz_ZZ.po', $text );
+		$res = $this->run_script( 'l10n.sh', $src, $this->locales_file( "zz_ZZ\n" ) );
+		$this->assertSame( 0, $res['rc'], $res['stdout'] );
+
+		$po = (string) file_get_contents( $this->tmp_repo . '/languages/babilim-zz_ZZ.po' );
+		$this->assertStringNotContainsString( 'X-Babilim-Build', $po );
+		$this->assertStringContainsString( 'Project-Id-Version: Babilim 1.0.0\n', $po );
+		$php = (string) file_get_contents( $this->tmp_repo . '/languages/babilim-zz_ZZ.l10n.php' );
+		$this->assertStringNotContainsString( 'X-Babilim-Build', $php );
+	}
+
+	public function test_l10n_check_reports_a_header_that_carries_a_build_id(): void {
+		$locales = $this->build_fixture_locale();
+		$po      = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
+		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.0.0\n"', '"Project-Id-Version: Babilim 1.0.0\n"' . "\n" . '"X-Babilim-Build: b1\n"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'HEADER zz_ZZ', $res['stdout'] );
+	}
+
+	public function test_l10n_check_reports_a_wrong_project_id_version(): void {
+		$locales = $this->build_fixture_locale();
+		$po      = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
+		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.0.0\n"', '"Project-Id-Version: Babilim 9.9.9\n"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'HEADER zz_ZZ', $res['stdout'] );
+	}
+
+	/**
+	 * Fills the singular-less plural entry "Sweep complete" with the given
+	 * msgstr lines and rebuilds the derived files.
+	 */
+	private function set_plural_and_rebuild( string $msgstr_lines ): void {
+		$po = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
+		$this->replace_in_file(
+			$po,
+			'msgid_plural "Sweep complete: %d files deleted."' . "\n" . 'msgstr[0] ""' . "\n" . 'msgstr[1] ""',
+			'msgid_plural "Sweep complete: %d files deleted."' . "\n" . $msgstr_lines
+		);
+		foreach ( array( 'make-mo', 'make-php' ) as $op ) {
+			exec( 'php ' . escapeshellarg( $this->root . '/tools/wp-cli.phar' ) . ' i18n ' . $op . ' ' . escapeshellarg( $po ) . ' ' . escapeshellarg( dirname( $po ) . '/' ) . ' --allow-root 2>&1' );
+		}
+	}
+
+	public function test_l10n_check_accepts_a_plural_form_that_uses_a_subset_of_the_source_placeholders(): void {
+		$locales = $this->build_fixture_locale();
+		// A language with one plural form may leave the number out of a form.
+		$this->set_plural_and_rebuild( 'msgstr[0] "done"' . "\n" . 'msgstr[1] "%d"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 0, $res['rc'], $res['stdout'] );
+	}
+
+	public function test_l10n_check_fails_when_no_plural_form_keeps_the_source_placeholder(): void {
+		$locales = $this->build_fixture_locale();
+		$this->set_plural_and_rebuild( 'msgstr[0] "done"' . "\n" . 'msgstr[1] "finished"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'PLACEHOLDER zz_ZZ "Sweep complete: %d file deleted."', $res['stdout'] );
+	}
+
+	public function test_l10n_check_accepts_a_plural_where_only_one_form_carries_the_placeholder(): void {
+		$locales = $this->build_fixture_locale();
+		// Only one form carries the number; the other is left empty.
+		$this->set_plural_and_rebuild( 'msgstr[0] "%d"' . "\n" . 'msgstr[1] ""' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 0, $res['rc'], $res['stdout'] );
+	}
+
+	public function test_l10n_check_fails_when_a_plural_form_has_a_placeholder_outside_the_source_set(): void {
+		$locales = $this->build_fixture_locale();
+		$this->set_plural_and_rebuild( 'msgstr[0] "%d"' . "\n" . 'msgstr[1] "%2$d"' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'PLACEHOLDER zz_ZZ "Sweep complete: %d file deleted."', $res['stdout'] );
+	}
+
+	public function test_l10n_check_reports_a_translation_file_for_a_locale_not_in_the_list(): void {
+		$locales = $this->build_fixture_locale();
+		file_put_contents( $this->tmp_repo . '/languages/babilim-qq_QQ.mo', 'x' );
+		$res = $this->run_check( $locales );
+		$this->assertSame( 1, $res['rc'], $res['stdout'] );
+		$this->assertStringContainsString( 'ORPHAN', $res['stdout'] );
+		$this->assertStringContainsString( 'babilim-qq_QQ.mo', $res['stdout'] );
+	}
+
+	public function test_l10n_sh_leaves_no_staging_directory_when_interrupted(): void {
+		// Stand-in wp-cli that kills its parent script the way Ctrl-C would.
+		unlink( $this->tmp_repo . '/tools/wp-cli.phar' );
+		file_put_contents(
+			$this->tmp_repo . '/tools/wp-cli.phar',
+			"<?php\nposix_kill( posix_getppid(), SIGTERM );\nsleep( 1 );\n"
+		);
+		if ( ! function_exists( 'posix_kill' ) ) {
+			$this->markTestSkipped( 'posix extension missing.' );
+		}
+		$res = $this->run_script( 'l10n.sh', dirname( __DIR__ ) . '/fixtures/l10n/src', $this->locales_file( "zz_ZZ\n" ) );
+		$this->assertSame( 143, $res['rc'], 'the script must end by the signal, or the trap was not exercised: ' . $res['stdout'] );
+		$this->assertSame( array(), glob( $this->tmp_repo . '/languages/l10n_stage_*' ) ?: array() );
+	}
+
+	public function test_release_check_runs_pot_check(): void {
+		$makefile = (string) file_get_contents( $this->root . '/Makefile' );
+		$this->assertSame( 1, preg_match( '/^release-check:([^\n]*)/m', $makefile, $m ) );
+		$this->assertContains( 'pot-check', preg_split( '/\s+/', trim( $m[1] ) ) ?: array() );
+	}
+
+	public function test_build_zip_stops_when_git_ls_files_returns_nothing(): void {
+		$src = (string) file_get_contents( $this->root . '/scripts/build-zip.php' );
+		$this->assertStringContainsString( "'' === trim( \$tracked )", $src );
 	}
 
 	public function test_the_release_zip_leaves_po_files_out(): void {

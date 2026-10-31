@@ -914,7 +914,7 @@ final class Test_Inventory extends TestCase {
 		$GLOBALS['babilim_test_site_locale']         = 'en_US';
 		$GLOBALS['babilim_test_available_languages'] = array( '../etc', 'zh TW', '', 'de_DE' );
 
-		$inventory = $this->make_inventory( array(), array(), false, array( "ja\n", 'fr_FR' ) );
+		$inventory = $this->make_inventory( array(), array(), false, array( "j\na", 'fr_FR' ) );
 
 		$locales = $inventory->locales();
 
@@ -991,6 +991,47 @@ final class Test_Inventory extends TestCase {
 		$inventory = $this->make_inventory( array(), array(), false, array() );
 
 		$this->assertSame( array( 'de_DE', 'en_US', 'fr_FR' ), $inventory->locales() );
+	}
+
+	public function test_multilingual_plugin_locales_are_canonicalized_and_deduped(): void {
+		add_filter(
+			'wpml_active_languages',
+			static function ( $value ) {
+				return array(
+					'tw'  => array( 'default_locale' => 'zh-tw' ),
+					'zh'  => array( 'default_locale' => 'zh_TW' ),
+					'bad' => array( 'default_locale' => 'zh TW!' ),
+				);
+			}
+		);
+
+		$inventory = $this->make_inventory( array(), array(), false, array() );
+
+		$this->assertSame( array( 'en_US', 'zh_TW' ), $inventory->locales() );
+	}
+
+	/**
+	 * @dataProvider canonical_cases
+	 */
+	public function test_canonical_locale( string $raw, ?string $expected ): void {
+		$this->assertSame( $expected, Babilim_Inventory::canonical_locale( $raw ) );
+	}
+
+	/**
+	 * @return array<string, array{0: string, 1: ?string}>
+	 */
+	public static function canonical_cases(): array {
+		return array(
+			'dash, lowercase'      => array( 'zh-tw', 'zh_TW' ),
+			'mixed case region'    => array( 'PT_br', 'pt_BR' ),
+			'variant kept'         => array( 'de_DE_formal', 'de_DE_formal' ),
+			'variant lowercased'   => array( 'de-ch-INFORMAL', 'de_CH_informal' ),
+			'three letter'         => array( 'rhg', 'rhg' ),
+			'bare language'        => array( 'en', 'en' ),
+			'space'                => array( 'zh TW', null ),
+			'region not two chars' => array( 'zh_Hant_TW', null ),
+			'empty'                => array( '', null ),
+		);
 	}
 
 	public function test_locales_includes_polylang_languages_when_the_function_exists_check_says_yes(): void {

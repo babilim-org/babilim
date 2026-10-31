@@ -27,6 +27,10 @@
 //                 from its row: confirm cancelled and accepted with the
 //                 script, the confirmation page without it
 //                 (needs the mock service reset with {"profile":"list"})
+//               "screenshots": enable, then screenshot the welcome screen, the
+//                 list and the settings page into BABILIM_UX_SHOTS as
+//                 screenshot-1/2/3[-nojs].png, 1280x800 (run by
+//                 `make wporg-screenshots`)
 //               "seam": against a real local instance of the service, driven by
 //                 run-seam.sh: enable (real callback), list, Download, a newer
 //                 component version, "Check again now", the newer-version
@@ -176,6 +180,21 @@ async function enableScenario( page, state ) {
 	await page.goto( `${ baseUrl }/wp-admin/plugins.php`, { waitUntil: 'domcontentloaded' } );
 	report( ( await page.locator( 'tr[data-slug="babilim"], tr[data-plugin="babilim/babilim.php"]' ).count() ) >= 1, 'Babilim is listed on the Plugins screen' );
 	report( ( await page.locator( 'tr.plugin-update-tr[data-plugin="babilim/babilim.php"], tr.plugin-update-tr[data-slug="babilim"]' ).count() ) === 0, 'no explanation row under Babilim on the Plugins screen' );
+}
+
+async function screenshotsScenario( page ) {
+	const shots = process.env.BABILIM_UX_SHOTS;
+	report( Boolean( shots ), 'BABILIM_UX_SHOTS names the output directory' );
+	if ( ! shots ) return;
+	const suffix = noJs ? '-nojs' : '';
+	await page.setViewportSize( { width: 1280, height: 800 } );
+	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim`, { waitUntil: 'domcontentloaded' } );
+	await page.screenshot( { path: `${ shots }/screenshot-1${ suffix }.png` } );
+	await submitAndSettle( page, page.locator( 'button', { hasText: 'Enable Babilim' } ) );
+	report( await openList( page ), 'the translations list shows after enabling' );
+	await page.screenshot( { path: `${ shots }/screenshot-2${ suffix }.png` } );
+	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings`, { waitUntil: 'domcontentloaded' } );
+	await page.screenshot( { path: `${ shots }/screenshot-3${ suffix }.png` } );
 }
 
 // Clicks a submit button and waits until a new document has loaded: a
@@ -758,7 +777,11 @@ async function listDownload( page ) {
 		return;
 	}
 	await submitAndSettle( page, button );
-	report( /Downloaded and installed|Already installed/.test( await bodyText( page ) ), 'the download answers with a notice' );
+	const downloadText = await bodyText( page );
+	report( /Downloaded and installed|Already installed/.test( downloadText ), 'the download answers with a notice' );
+	if ( ! /Downloaded and installed|Already installed/.test( downloadText ) ) {
+		console.log( `  page text: ${ downloadText.slice( 0, 600 ) }` );
+	}
 	report( new URL( page.url() ).searchParams.get( 's' ) === 'woo', 'the redirect keeps the search' );
 	await openList( page, '&s=woo' );
 	const after = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="de_DE"]' ) } ).first();
@@ -1113,6 +1136,8 @@ try {
 		await seamScenario( page );
 	} else if ( 'rowactions' === scenario ) {
 		await rowactionsScenario( page, state );
+	} else if ( 'screenshots' === scenario ) {
+		await screenshotsScenario( page );
 	} else {
 		report( false, `unknown scenario "${ scenario }"` );
 	}

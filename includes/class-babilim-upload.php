@@ -64,6 +64,11 @@ final class Babilim_Upload {
 				return Babilim_Result::error( 'invalid_response', __( 'The service\'s upload offer was incomplete.', 'babilim' ) );
 			}
 		}
+		foreach ( array( 'part_bytes', 'max_parts', 'max_bytes' ) as $k ) {
+			if ( (int) $upload[ $k ] < 1 ) {
+				return Babilim_Result::error( 'invalid_response', __( 'The service\'s upload offer was incomplete.', 'babilim' ) );
+			}
+		}
 		$p = array(
 			'upload_id'  => (string) $upload['upload_id'],
 			'kind'       => (string) $component['kind'],
@@ -125,7 +130,7 @@ final class Babilim_Upload {
 	 * PART_TIMEOUT; the upload advances by repeated calls (one admin-post
 	 * request each), never by chaining requests inside one.
 	 *
-	 * @return Babilim_Result ok({done, next, parts}); an error ends the upload.
+	 * @return Babilim_Result ok({done, next, parts, wait}) -- `wait` is the seconds left before the next part may be sent; an error ends the upload.
 	 */
 	public function step(): Babilim_Result {
 		$p = self::pending();
@@ -273,6 +278,7 @@ final class Babilim_Upload {
 				'done'  => $done,
 				'next'  => $done ? (int) $p['parts'] + 1 : (int) $p['next'],
 				'parts' => (int) $p['parts'],
+				'wait'  => max( 0, (int) ( $p['not_before'] ?? 0 ) - time() ),
 			)
 		);
 	}

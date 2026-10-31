@@ -203,7 +203,7 @@ final class Babilim_Packager {
 	private function candidate( string $base, bool $must_be_outside_site ): ?string {
 		$base = rtrim( $base, '/' );
 		$real = realpath( $base );
-		if ( false === $real || ! is_dir( $real ) || ! is_writable( $real ) ) {
+		if ( false === $real || ! is_dir( $real ) || ! wp_is_writable( $real ) ) {
 			return null;
 		}
 		if ( $must_be_outside_site ) {

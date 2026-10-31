@@ -518,6 +518,167 @@ final class Test_Babilim extends TestCase {
 	}
 
 	/**
+	 * Set one option on another network site, the way the multisite
+	 * doubles keep per-site state.
+	 *
+	 * @param mixed $value Option value.
+	 */
+	private function set_site_option_on( int $site_id, string $name, $value ): void {
+		switch_to_blog( $site_id );
+		update_option( $name, $value );
+		restore_current_blog();
+	}
+
+	public function test_active_components_on_a_network_include_plugins_active_on_any_site(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2, 3 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array(
+			'here/here.php'   => array( 'Version' => '1.0.0' ),
+			'there/there.php' => array( 'Version' => '2.0.0' ),
+			'nowhere/nowhere.php' => array( 'Version' => '3.0.0' ),
+		);
+		$GLOBALS['babilim_test_is_plugin_active_return'] = array( 'here/here.php' => true );
+		$this->set_site_option_on( 3, 'active_plugins', array( 'there/there.php' ) );
+
+		$slugs = array_column(
+			array_filter( (array) Babilim::instance()->active_components(), static function ( $c ) {
+				return 'plugin' === $c['kind'];
+			} ),
+			'slug'
+		);
+
+		$this->assertContains( 'here', $slugs );
+		$this->assertContains( 'there', $slugs, 'a plugin active only on another site must count as active' );
+		$this->assertNotContains( 'nowhere', $slugs );
+	}
+
+	/**
+	 * @param array<int,array<string,mixed>> $components
+	 * @return string[]
+	 */
+	private function plugin_slugs( array $components ): array {
+		return array_column(
+			array_filter( $components, static function ( $c ) {
+				return 'plugin' === $c['kind'];
+			} ),
+			'slug'
+		);
+	}
+
+	private function network_with_plugins_on_sites_two_and_three(): void {
+		$GLOBALS['babilim_test_multisite']          = true;
+		$GLOBALS['babilim_test_sites']              = array( 1, 2, 3 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array(
+			'two/two.php'     => array( 'Version' => '1.0.0' ),
+			'three/three.php' => array( 'Version' => '1.0.0' ),
+		);
+		$this->set_site_option_on( 2, 'active_plugins', array( 'two/two.php' ) );
+		$this->set_site_option_on( 3, 'active_plugins', array( 'three/three.php' ) );
+	}
+
+	public function test_other_sites_usage_is_worked_out_for_the_site_the_request_is_on_now(): void {
+		$this->network_with_plugins_on_sites_two_and_three();
+
+		$from_one = $this->plugin_slugs( (array) Babilim::instance()->active_components() );
+		$this->assertContains( 'two', $from_one );
+		$this->assertContains( 'three', $from_one );
+
+		switch_to_blog( 3 );
+		$from_three = $this->plugin_slugs( (array) Babilim::instance()->active_components() );
+		restore_current_blog();
+
+		$this->assertContains( 'two', $from_three, 'site 2 is another site seen from site 3' );
+		$this->assertNotContains( 'three', $from_three, 'site 3 is the current site there: its own plugins come from is_plugin_active()' );
+	}
+
+	public function test_other_sites_usage_is_worked_out_again_after_active_plugins_was_written(): void {
+		$this->network_with_plugins_on_sites_two_and_three();
+		$this->assertContains( 'two', $this->plugin_slugs( (array) Babilim::instance()->active_components() ) );
+
+		$this->set_site_option_on( 2, 'active_plugins', array() );
+		Babilim::instance()->on_active_plugins_option_updated();
+
+		$this->assertNotContains( 'two', $this->plugin_slugs( (array) Babilim::instance()->active_components() ) );
+	}
+
+	public function test_a_plugin_deactivated_here_stays_active_while_another_site_still_runs_it(): void {
+		$GLOBALS['babilim_test_multisite']          = true;
+		$GLOBALS['babilim_test_sites']              = array( 1, 2 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array( 'shared/shared.php' => array( 'Version' => '1.0.0' ) );
+		$this->set_site_option_on( 2, 'active_plugins', array( 'shared/shared.php' ) );
+
+		$property = new ReflectionProperty( Babilim::class, 'forced_inactive_plugins' );
+		$property->setAccessible( true );
+		$property->setValue( Babilim::instance(), array( 'shared/shared.php' => true ) );
+
+		$this->assertContains( 'shared', $this->plugin_slugs( (array) Babilim::instance()->active_components() ) );
+	}
+
+	public function test_a_plugin_deactivated_here_is_excluded_even_if_this_sites_option_is_stale(): void {
+		$GLOBALS['babilim_test_multisite']          = true;
+		$GLOBALS['babilim_test_sites']              = array( 1, 2 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array( 'shared/shared.php' => array( 'Version' => '1.0.0' ) );
+		// This site's active_plugins is not written back yet while the deactivation hook runs.
+		update_option( 'active_plugins', array( 'shared/shared.php' ) );
+
+		$property = new ReflectionProperty( Babilim::class, 'forced_inactive_plugins' );
+		$property->setAccessible( true );
+		$property->setValue( Babilim::instance(), array( 'shared/shared.php' => true ) );
+
+		$this->assertNotContains( 'shared', $this->plugin_slugs( (array) Babilim::instance()->active_components() ) );
+	}
+
+	public function test_active_components_on_a_network_skip_a_site_whose_theme_was_deleted(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
+		$GLOBALS['babilim_test_wp_get_theme_return']        = new Babilim_Test_Fake_Theme( 'site-one-theme', '1.0.0', false );
+		$GLOBALS['babilim_test_wp_get_theme_by_stylesheet'] = array(
+			'gone-theme' => new Babilim_Test_Fake_Theme( 'gone-theme', '', false, false ),
+		);
+		$this->set_site_option_on( 2, 'stylesheet', 'gone-theme' );
+
+		$themes = array_column(
+			array_filter( (array) Babilim::instance()->active_components(), static function ( $c ) {
+				return 'theme' === $c['kind'];
+			} ),
+			'slug'
+		);
+
+		$this->assertSame( array( 'site-one-theme' ), $themes );
+	}
+
+	public function test_active_components_on_a_network_include_every_sites_theme(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2, 3 );
+		$GLOBALS['babilim_test_wp_get_theme_return'] = new Babilim_Test_Fake_Theme( 'site-one-theme', '1.0.0', false );
+		$GLOBALS['babilim_test_wp_get_theme_by_stylesheet'] = array(
+			'site-one-theme' => new Babilim_Test_Fake_Theme( 'site-one-theme', '1.0.0', false ),
+			'site-two-theme' => new Babilim_Test_Fake_Theme( 'site-two-theme', '2.0.0', false ),
+			'site-three-child' => new Babilim_Test_Fake_Theme( 'site-three-child', '3.0.0', new Babilim_Test_Fake_Theme( 'site-three-parent', '3.1.0', false ) ),
+		);
+		$this->set_site_option_on( 1, 'stylesheet', 'site-one-theme' );
+		$this->set_site_option_on( 2, 'stylesheet', 'site-two-theme' );
+		$this->set_site_option_on( 3, 'stylesheet', 'site-three-child' );
+
+		$themes = array_filter( (array) Babilim::instance()->active_components(), static function ( $c ) {
+			return 'theme' === $c['kind'];
+		} );
+		$by_slug = array_column( $themes, 'version', 'slug' );
+		ksort( $by_slug );
+
+		$this->assertSame(
+			array(
+				'site-one-theme'    => '1.0.0',
+				'site-three-child'  => '3.0.0',
+				'site-three-parent' => '3.1.0',
+				'site-two-theme'    => '2.0.0',
+			),
+			$by_slug
+		);
+		$this->assertCount( 4, $themes, 'a theme shared by several sites is listed once' );
+	}
+
+	/**
 	 * Runs in its own process: once the real-core tests have run in this
 	 * process, their WP_Translation_File fake stays declared for the rest
 	 * of it (tests/support/wp-translation-file-fake.php), and whether
@@ -786,6 +947,59 @@ final class Test_Babilim extends TestCase {
 
 		$this->assertFalse( wp_next_scheduled( 'babilim_sync' ) );
 		$this->assertContains( 'babilim_sync', $GLOBALS['babilim_test_cron_cleared'] );
+	}
+
+	/**
+	 * Core fires deactivated_plugin once per plugin in a batch, right
+	 * after each one's deactivation hook. Once Babilim itself has gone,
+	 * a later plugin in the same batch must not schedule the follow-up
+	 * sync event again.
+	 */
+	public function test_a_batch_deactivation_that_includes_babilim_leaves_no_sync_once_scheduled(): void {
+		update_option( 'babilim_consent', true );
+
+		Babilim::instance()->on_deactivated_plugin( plugin_basename( BABILIM_FILE ) );
+		Babilim::instance()->on_deactivated_plugin( 'woocommerce/woocommerce.php' );
+
+		$sync_once = array_filter(
+			$GLOBALS['babilim_test_single_events_scheduled'],
+			static function ( $e ) {
+				return Babilim::SYNC_ONCE_HOOK === $e['hook'];
+			}
+		);
+		$this->assertSame( array(), array_values( $sync_once ) );
+		$this->assertFalse( wp_next_scheduled( 'babilim_sync_once' ) );
+	}
+
+	public function test_network_wide_deactivation_clears_cron_on_every_site(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
+		$hooks                             = array( 'babilim_maintenance', 'babilim_sync', 'babilim_sync_once' );
+
+		foreach ( array( 1, 2 ) as $site_id ) {
+			switch_to_blog( $site_id );
+			foreach ( $hooks as $hook ) {
+				$GLOBALS['babilim_test_cron_scheduled'][ $hook ] = time();
+			}
+			restore_current_blog();
+		}
+
+		babilim_deactivate( true );
+
+		foreach ( array( 1, 2 ) as $site_id ) {
+			switch_to_blog( $site_id );
+			foreach ( $hooks as $hook ) {
+				$this->assertFalse( wp_next_scheduled( $hook ), "$hook still scheduled on site $site_id" );
+			}
+			restore_current_blog();
+		}
+		foreach ( $hooks as $hook ) {
+			$this->assertSame(
+				2,
+				count( array_keys( $GLOBALS['babilim_test_cron_cleared'], $hook, true ) ),
+				"$hook should be cleared once per site"
+			);
+		}
 	}
 
 	/**
@@ -1305,16 +1519,23 @@ final class Babilim_Test_Fake_Theme {
 	private $stylesheet;
 	private $version;
 	private $parent;
+	private $exists;
 
 	/**
 	 * @param string                          $stylesheet Theme slug.
 	 * @param string                          $version    Theme version.
 	 * @param Babilim_Test_Fake_Theme|false    $parent     Parent theme, or false (matches WP_Theme::parent()).
+	 * @param bool                            $exists     What WP_Theme::exists() reports.
 	 */
-	public function __construct( string $stylesheet, string $version, $parent ) {
+	public function __construct( string $stylesheet, string $version, $parent, bool $exists = true ) {
 		$this->stylesheet = $stylesheet;
 		$this->version    = $version;
 		$this->parent     = $parent;
+		$this->exists     = $exists;
+	}
+
+	public function exists() {
+		return $this->exists;
 	}
 
 	public function get_stylesheet() {

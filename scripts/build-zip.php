@@ -42,7 +42,7 @@ if ( $readme_version !== $header_version || $readme_version !== $constant_versio
 $version = $readme_version;
 
 $tracked = shell_exec( 'git ls-files' );
-if ( null === $tracked ) {
+if ( ! is_string( $tracked ) || '' === trim( $tracked ) ) {
 	fwrite( STDERR, "git ls-files failed\n" );
 	exit( 1 );
 }

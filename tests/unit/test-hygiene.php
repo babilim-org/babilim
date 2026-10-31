@@ -94,4 +94,35 @@ final class Test_Hygiene extends TestCase {
 		$this->assertStringContainsString( 'hostname-shaped token', $text );
 		$this->assertStringContainsString( 'host.mo', $text );
 	}
+
+	/**
+	 * Rendered directory-listing PNGs are binary and skipped, but only in
+	 * the directory-assets folder; their SVG sources stay scanned and may
+	 * carry the SVG namespace URI.
+	 */
+	public function test_public_rules_skip_png_files_only_under_the_directory_assets_folder(): void {
+		$root = BABILIM_TEST_TMP_ROOT . '/assets-' . bin2hex( random_bytes( 4 ) );
+		mkdir( $root . '/.wordpress-org', 0777, true );
+		mkdir( $root . '/admin/img', 0777, true );
+		$repo = dirname( __DIR__, 2 );
+
+		// Assembled at run time so this file itself carries no CJK.
+		$png = "\x89PNG\r\n\x1a\n" . "\xe4\xb8\x80\xe4\xba\x8c";
+		file_put_contents( $root . '/.wordpress-org/icon-128x128.png', $png );
+		file_put_contents( $root . '/.wordpress-org/icon.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>' );
+		file_put_contents( $root . '/admin/img/stray.png', $png );
+		file_put_contents( $root . '/readme.txt', "plain\n" );
+		$list = $root . '/files.txt';
+		file_put_contents( $list, ".wordpress-org/icon-128x128.png\n.wordpress-org/icon.svg\nadmin/img/stray.png\nreadme.txt\n" );
+
+		$out = array();
+		exec( 'bash ' . escapeshellarg( $repo . '/scripts/public-rules.sh' ) . ' scan-files ' . escapeshellarg( $root ) . ' ' . escapeshellarg( $list ) . ' 2>&1', $out, $rc );
+		$text = implode( "\n", $out );
+		babilim_test_rmtree( $root );
+
+		$this->assertSame( 1, $rc, $text );
+		$this->assertStringContainsString( 'admin/img/stray.png', $text );
+		$this->assertStringNotContainsString( 'icon-128x128.png', $text );
+		$this->assertStringNotContainsString( 'www.w3.org', $text );
+	}
 }

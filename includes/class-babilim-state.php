@@ -71,7 +71,7 @@ final class Babilim_State {
 	 * @param array<string,mixed> $state New state.
 	 */
 	public function set( array $state ): void {
-		update_option( self::STATE_OPTION, $state );
+		update_option( self::STATE_OPTION, $state, false );
 	}
 
 	/**
@@ -290,7 +290,7 @@ final class Babilim_State {
 		while ( count( $events ) > self::MAX_EVENTS ) {
 			array_shift( $events );
 		}
-		update_option( self::EVENTS_OPTION, $events );
+		update_option( self::EVENTS_OPTION, $events, false );
 	}
 
 	/**
@@ -303,11 +303,34 @@ final class Babilim_State {
 	 * draining before the request is even sent would lose every event a
 	 * failed/rejected sync tried to report).
 	 *
+	 * @param array[]|null $sent The events the request carried: only these are removed, so an event recorded while the request was in flight stays. Null removes every pending event.
 	 * @return array[]
 	 */
-	public function drain_client_events(): array {
+	public function drain_client_events( ?array $sent = null ): array {
 		$events = $this->events();
-		update_option( self::EVENTS_OPTION, array() );
+		if ( null === $sent ) {
+			update_option( self::EVENTS_OPTION, array(), false );
+			return $events;
+		}
+		// Only what the caller actually sent is removed: an event recorded
+		// while the request was in flight stays for the next sync.
+		$fields    = array( 'at', 'code', 'kind', 'slug', 'locale' );
+		$remaining = array_values(
+			array_udiff(
+				$events,
+				$sent,
+				static function ( $a, $b ) use ( $fields ): int {
+					foreach ( $fields as $field ) {
+						$cmp = strcmp( (string) ( $a[ $field ] ?? '' ), (string) ( $b[ $field ] ?? '' ) );
+						if ( 0 !== $cmp ) {
+							return $cmp;
+						}
+					}
+					return 0;
+				}
+			)
+		);
+		update_option( self::EVENTS_OPTION, $remaining, false );
 		return $events;
 	}
 
@@ -348,7 +371,7 @@ final class Babilim_State {
 		);
 		$removed = count( $events ) - count( $kept );
 		if ( $removed > 0 ) {
-			update_option( self::EVENTS_OPTION, $kept );
+			update_option( self::EVENTS_OPTION, $kept, false );
 		}
 		return $removed;
 	}

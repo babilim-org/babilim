@@ -371,18 +371,13 @@ is gone: the periodic sync now installs listed language-file builds
 itself through the plugin's own installer. The old code is archived
 under `docs/archive/core-translation-updater/` (outside the shipped
 files). The check now reports nothing on the shipped source; see "1.3.0
-run" below.
+run" above.
 
 ### `readme_parser_warnings_tested_header_ignored` (WARNING)
 
 - **Check:** `plugin_readme`.
-- `readme.txt`'s `Tested up to` field is a `TODO-OWNER` placeholder, not
-  a real WordPress version, so Plugin Check's readme parser ignores it
-  and warns.
-- **Disposition:** not fixed here -- the same owner-fills-in-before-
-  release field `make release-check` already gates on (alongside
-  `Contributors` and the ToS/Privacy links). Filling in a real version
-  makes this warning disappear on its own; no code change is involved.
+- **Cause:** the readme's `Tested up to` header carried a placeholder, which the readme parser ignores and reports.
+- **Disposition:** Resolved: `Tested up to` now carries a real version, and `plugin_readme` reports nothing in the "1.0.0 fix-wave run" below.
 
 ## Also fixed (kept as hardening, not required to reach the counts above)
 
@@ -412,9 +407,43 @@ dependencies, which is the shape the `enqueued_scripts_in_footer` and
 `plugins_url()`, never a remote one. The packaged zip (`make zip`)
 contains the script and nothing from `tests/`.
 
-**Not re-run.** Plugin Check's own bundled `vendor/bin/phpcs` is not
-installed in the environment this change was made in (and there was no
-network to fetch it), so the table above was not re-run for this change.
-The statement above is from reading the code, not from a Plugin Check
-run; run the two checks named above against the zip before submitting
-to the directory.
+Superseded: the full default check set was re-run afterwards; see
+"1.0.0 fix-wave run" below.
+
+## 1.0.0 fix-wave run (source at aa8b5cd)
+
+- **Tooling:** Plugin Check 2.1.0, WordPress 6.6.4 on the SQLite
+  Database Integration plugin 3.0.2, PHP 8.3, wp-cli 2.11.0,
+  `WP_HTTP_BLOCK_EXTERNAL=true`, from a scratch directory outside the
+  repository. The plugin copy was the unpacked `build/babilim-1.0.0.zip`
+  produced by `make release-check` at aa8b5cd, so it held exactly what
+  ships (`babilim.php`, `includes/`, `admin/`, `languages/`,
+  `uninstall.php`, `readme.txt`, `LICENSE`).
+- **Command** (run from the WordPress root, no `--path=` argument to the
+  check itself):
+
+```
+wp plugin check babilim --require=<wp-content>/plugins/plugin-check/cli.php \
+  --format=csv --fields=file,line,column,type,code,severity \
+  --include-low-severity-errors --include-low-severity-warnings
+```
+
+- **Result:** every default check, including the runtime ones and
+  `plugin_readme`, ran in one pass: "Success: Checks complete. No errors
+  found." The CSV output was empty -- 0 errors, 0 warnings.
+- **Negative control:** a scratch file in `includes/` with an unprefixed
+  global function and an unescaped `echo $_GET['x']` made the same
+  command report 2 ERRORs (`missing_direct_file_access_protection`,
+  `WordPress.Security.EscapeOutput.OutputNotEscaped`) and 5 WARNINGs
+  (`PrefixAllGlobals.NonPrefixedFunctionFound` and four
+  input-handling sniffs). With the file removed, the result went back to
+  clean, so the empty result is not a silent no-op.
+- **`load_plugin_textdomainFound`:** it does not appear in this run
+  because the one call (`includes/class-babilim.php`) carries an inline
+  `phpcs:ignore` with the reason. The call is kept on purpose: the
+  plugin declares `Requires at least: 6.6`, and on that floor this call
+  is what loads the bundled `languages/` files. If the
+  directory team asks for it to be removed, it becomes a conditional call
+  guarded by the WordPress version.
+- **`readme_parser_warnings_tested_header_ignored`:** gone; `Tested up
+  to` carries a real version.

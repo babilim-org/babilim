@@ -880,7 +880,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 			. '</form>';
 
 		$confirm = $this->free && 'babilim_request' === $cell['action'];
-		$html    = '<button type="submit" form="' . esc_attr( $id ) . '" class="button" data-babilim-busy-label="' . esc_attr( $cell['busy_label'] ) . '"'
+		$html    = '<button type="submit" form="' . esc_attr( $id ) . '" class="button" data-babilim-idle-label="' . esc_attr( $cell['action_label'] ) . '" data-babilim-busy-label="' . esc_attr( $cell['busy_label'] ) . '"'
 			. ( $confirm ? ' data-babilim-confirm="' . esc_attr( self::slot_sentence() ) . '"' : '' ) . '>'
 			. esc_html( $cell['action_label'] ) . '</button>';
 		return $html;

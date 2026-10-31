@@ -146,6 +146,26 @@ class Babilim {
 	private $forced_inactive_plugins = array();
 
 	/**
+	 * What other_sites_usage() found, kept for the rest of this request:
+	 * a rebuild of every locale asks active_components() once per
+	 * locale, and each ask would otherwise walk the whole network
+	 * again. Kept per site the request is on (the answer leaves that
+	 * site out), dropped whenever an `active_plugins` option is written,
+	 * and never kept across requests.
+	 *
+	 * @var array<int,array{plugins:array<string,true>,stylesheets:string[]}>
+	 */
+	private $other_sites_usage_memo = array();
+
+	/**
+	 * Whether Babilim itself was deactivated earlier in this request, so
+	 * nothing may schedule a follow-up event for the rest of it.
+	 *
+	 * @var bool
+	 */
+	private $self_deactivated = false;
+
+	/**
 	 * The mirror image of $forced_inactive_plugins, for
 	 * on_activated_plugin() -- see that property's own docblock.
 	 *
@@ -206,6 +226,7 @@ class Babilim {
 	 * the standard loader already does nothing when no file matches.
 	 */
 	public function load_textdomain() {
+		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- loads the bundled languages/ fallback; a language pack under WP_LANG_DIR/plugins still takes priority (core looks there first).
 		load_plugin_textdomain( 'babilim', false, dirname( plugin_basename( BABILIM_FILE ) ) . '/languages' );
 	}
 
@@ -530,8 +551,11 @@ class Babilim {
 			$this->log_error( $e );
 		}
 		// Deactivating Babilim itself must leave nothing scheduled:
-		// core fires this hook right after its own deactivation hook.
+		// core fires this hook right after its own deactivation hook,
+		// and again for every later plugin in the same batch -- so
+		// remember it for the rest of the request.
 		if ( defined( 'BABILIM_FILE' ) && is_string( $plugin ) && plugin_basename( BABILIM_FILE ) === $plugin ) {
+			$this->self_deactivated = true;
 			return;
 		}
 		$this->schedule_sync_once();
@@ -558,6 +582,8 @@ class Babilim {
 	public function on_active_plugins_option_updated( ...$args ): void {
 		$this->forced_inactive_plugins = array();
 		$this->forced_active_plugins   = array();
+		// The option of any site may have changed: what was read from the other sites is out of date.
+		$this->forget_other_sites_usage();
 	}
 
 	/**
@@ -616,6 +642,9 @@ class Babilim {
 	 * pending. The event only syncs; see run_sync_once().
 	 */
 	public function schedule_sync_once( ...$args ): void {
+		if ( $this->self_deactivated ) {
+			return;
+		}
 		try {
 			if ( ! ( new Babilim_Consent() )->granted_db() ) {
 				return;
@@ -709,7 +738,11 @@ class Babilim {
 	/**
 	 * Every currently active plugin, plus the current theme (and its
 	 * parent, for a child theme) -- the real
-	 * Babilim_Default_Index `$active_components` callable.
+	 * Babilim_Default_Index `$active_components` callable. On a
+	 * multisite network the merged index is shared by every site, so
+	 * this also includes each other site's active plugins and active
+	 * theme (with its parent); the forced active/inactive overrides
+	 * only apply to the current site's half of a plugin's status.
 	 *
 	 * `get_plugins()`/`is_plugin_active()` live in
 	 * `wp-admin/includes/plugin.php`, which a cron or front-end request
@@ -741,6 +774,10 @@ class Babilim {
 			// would silently fall this back to a directory-name-only
 			// identity for every plugin, every time.
 			$update = function_exists( 'get_site_transient' ) ? get_site_transient( 'update_plugins' ) : false;
+			// On a network the merged index is shared by every site, so
+			// a plugin active on any other site counts as active too.
+			// The current site is judged below (overrides first).
+			$other = $this->other_sites_usage();
 			foreach ( (array) get_plugins() as $file => $data ) {
 				$file = (string) $file;
 				// on_deactivated_plugin()/on_activated_plugin() override
@@ -749,9 +786,12 @@ class Babilim {
 				// own docblocks for why active_plugins can't be trusted
 				// yet at the moment either hook fires, and why this
 				// accumulates for the rest of the request rather than
-				// resetting after each individual hook.
-				$is_active = isset( $this->forced_inactive_plugins[ $file ] ) ? false
+				// resetting after each individual hook. The overrides
+				// only correct this site's half: another site that still
+				// runs the plugin keeps it active in the shared index.
+				$here      = isset( $this->forced_inactive_plugins[ $file ] ) ? false
 					: ( isset( $this->forced_active_plugins[ $file ] ) ? true : is_plugin_active( $file ) );
+				$is_active = $here || isset( $other['plugins'][ $file ] );
 				if ( ! $is_active ) {
 					continue;
 				}
@@ -807,9 +847,104 @@ class Babilim {
 					'version' => (string) $parent->get( 'Version' ),
 				);
 			}
+			// Every other site's theme (and its parent) on a network.
+			try {
+				foreach ( $other['stylesheets'] as $stylesheet ) {
+					$site_theme = wp_get_theme( $stylesheet );
+					if ( ! $site_theme->exists() ) {
+						// The site points at a theme that is no longer installed.
+						continue;
+					}
+					$chain      = array( $site_theme, $site_theme->parent() );
+					foreach ( $chain as $t ) {
+						if ( false === $t ) {
+							continue;
+						}
+						$slug = (string) $t->get_stylesheet();
+						$dupe = false;
+						foreach ( $out as $seen ) {
+							if ( 'theme' === $seen['kind'] && $slug === $seen['slug'] ) {
+								$dupe = true;
+								break;
+							}
+						}
+						if ( ! $dupe ) {
+							$out[] = array(
+								'kind'    => 'theme',
+								'slug'    => $slug,
+								'version' => (string) $t->get( 'Version' ),
+							);
+						}
+					}
+				}
+			} catch ( \Throwable $e ) {
+				$this->log_error( $e );
+				return null;
+			}
 		}
 
 		return $out;
+	}
+
+	/**
+	 * What the other sites of a network use: the plugin files in their
+	 * `active_plugins` and their active themes' stylesheets. The current
+	 * site is skipped -- active_components() reads it through
+	 * is_plugin_active() (with the forced overrides) and wp_get_theme(),
+	 * and during a deactivation its `active_plugins` option is still
+	 * stale. Each other site is entered once for both options. Empty on
+	 * a single site, without calling any multisite API. The result is
+	 * memoised for the rest of the request (see $other_sites_usage_memo).
+	 *
+	 * @return array{plugins:array<string,true>,stylesheets:string[]}
+	 */
+	private function other_sites_usage(): array {
+		$current = is_multisite() ? get_current_blog_id() : 0;
+		if ( isset( $this->other_sites_usage_memo[ $current ] ) ) {
+			return $this->other_sites_usage_memo[ $current ];
+		}
+		$plugins     = array();
+		$stylesheets = array();
+		if ( ! is_multisite() ) {
+			return array(
+				'plugins'     => $plugins,
+				'stylesheets' => $stylesheets,
+			);
+		}
+		foreach ( (array) get_sites( array( 'fields' => 'ids', 'number' => 0 ) ) as $site_id ) {
+			$site_id = (int) $site_id;
+			if ( $site_id === $current ) {
+				continue;
+			}
+			switch_to_blog( $site_id );
+			try {
+				$active     = get_option( 'active_plugins', array() );
+				$stylesheet = get_option( 'stylesheet', '' );
+			} finally {
+				restore_current_blog();
+			}
+			foreach ( (array) $active as $file ) {
+				if ( is_string( $file ) && '' !== $file ) {
+					$plugins[ $file ] = true;
+				}
+			}
+			if ( is_string( $stylesheet ) && '' !== $stylesheet ) {
+				$stylesheets[ $stylesheet ] = $stylesheet;
+			}
+		}
+		$this->other_sites_usage_memo[ $current ] = array(
+			'plugins'     => $plugins,
+			'stylesheets' => array_values( $stylesheets ),
+		);
+		return $this->other_sites_usage_memo[ $current ];
+	}
+
+	/**
+	 * Drops the per-request memo of what the other sites use, so the
+	 * next active_components() walks the network again.
+	 */
+	public function forget_other_sites_usage(): void {
+		$this->other_sites_usage_memo = array();
 	}
 
 	/**

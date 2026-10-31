@@ -11,6 +11,8 @@
  * Attribute read from a form:
  *   data-babilim-autosubmit     Submits the form by itself after a moment (the
  *                               upload progress screen's Continue form).
+ *   data-babilim-autosubmit-delay  Milliseconds to wait before that submit
+ *                               (default 500; longer while the service asks to back off).
  *   data-babilim-poll-url       On the checkout form: after it is submitted (it
  *                               opens in a new tab), asks this address every 5
  *                               seconds for up to 10 minutes and reloads the
@@ -20,16 +22,30 @@
 	'use strict';
 
 	var pollTimer = null;
+	var pollRun = 0;
+
+	function stopLicensePolling() {
+		pollRun++;
+		if ( null !== pollTimer ) {
+			window.clearTimeout( pollTimer );
+			pollTimer = null;
+		}
+	}
 
 	function startLicensePolling( url ) {
-		if ( null !== pollTimer ) {
-			window.clearInterval( pollTimer );
-		}
+		stopLicensePolling();
 		var started = Date.now();
-		pollTimer = window.setInterval( function () {
+		// One request at a time: the next one is scheduled only after the
+		// previous has finished, so a slow answer never piles requests up.
+		var run = pollRun;
+		function schedule() {
+			if ( run === pollRun ) {
+				pollTimer = window.setTimeout( tick, 5000 );
+			}
+		}
+		function tick() {
 			if ( Date.now() - started > 600000 ) {
-				window.clearInterval( pollTimer );
-				pollTimer = null;
+				stopLicensePolling();
 				return;
 			}
 			window.fetch( url, { credentials: 'same-origin' } )
@@ -38,15 +54,16 @@
 				} )
 				.then( function ( json ) {
 					if ( json && json.success && json.data && 'paid' === json.data.kind ) {
-						window.clearInterval( pollTimer );
-						pollTimer = null;
+						stopLicensePolling();
 						window.location.reload();
 					}
 				} )
 				.catch( function () {
 					// Ignored: the next tick tries again.
-				} );
-		}, 5000 );
+				} )
+				.then( schedule );
+		}
+		pollTimer = window.setTimeout( tick, 5000 );
 	}
 
 	document.addEventListener( 'submit',
@@ -117,6 +134,6 @@
 			} else {
 				form.submit();
 			}
-		}, 500 );
+		}, parseInt( form.getAttribute( 'data-babilim-autosubmit-delay' ) || '500', 10 ) );
 	} );
 }() );

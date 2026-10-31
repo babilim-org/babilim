@@ -224,6 +224,33 @@ final class Test_Upload extends TestCase {
 		$this->assertCount( 1, $http->requests );          // not_before has not passed: nothing is sent
 	}
 
+	public function test_a_rate_limited_part_reports_how_long_to_wait(): void {
+		$http = new Babilim_Fake_Http(
+			array(
+				$this->json( 429, array( 'error' => array( 'code' => 'rate_limited', 'message' => 'x', 'hint' => '' ) ), array( 'retry-after' => '60' ) ),
+			)
+		);
+		$u = $this->upload( $http );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		$result = $u->step();
+		$this->assertGreaterThanOrEqual( 59, $result->data()['wait'] );
+		$this->assertLessThanOrEqual( 60, $result->data()['wait'] );
+	}
+
+	public function test_begin_refuses_an_offer_with_a_non_positive_part_size(): void {
+		$u = $this->upload( new Babilim_Fake_Http( array() ) );
+		foreach ( array( 'part_bytes', 'max_parts', 'max_bytes' ) as $field ) {
+			foreach ( array( 0, -5, 'abc' ) as $bad ) {
+				$offer           = $this->offer();
+				$offer[ $field ] = $bad;
+				$result          = $u->begin( $this->component(), 'fr_FR', $offer );
+				$this->assertSame( 'invalid_response', $result->code(), $field . '=' . $bad );
+			}
+		}
+		$this->assertNull( Babilim_Upload::pending() );
+	}
+
 	public function test_complete_answered_upload_incomplete_restarts_only_three_times_then_fails(): void {
 		$responses = array();
 		for ( $round = 0; $round < 4; $round++ ) {

@@ -1,10 +1,10 @@
 === Babilim ===
-Contributors: TODO-OWNER
+Contributors: babilim
 Tags: translation, internationalization, i18n, l10n, language packs
 Requires at least: 6.6
-Tested up to: TODO-OWNER
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ Babilim looks at the plugins and themes you already have installed, finds the on
 * **Check, roll back, report.** Babilim checks every installed file against its recorded checksum automatically, twice a day. A translation can be rolled back to the previous build or removed. If a translation reads wrongly you can report it from the same screen.
 * **Clean removal.** Deleting the plugin removes its options, scheduled events and language files. Your `custom/` overrides are kept unless you choose otherwise.
 
-Babilim only writes inside its own folder, `wp-content/languages/babilim/`. It does not touch your plugins' or themes' own files, nor the language files WordPress itself installs.
+Babilim only writes inside its own folder, `wp-content/languages/babilim/`; the only other write is a temporary zip in the system temp directory, and only for a source upload you confirm (see External services). If `wp-content/languages/` does not exist yet, Babilim creates only that empty folder. It does not touch your plugins' or themes' own files, nor the language files WordPress itself installs.
 
 == How translations are loaded ==
 
@@ -68,6 +68,10 @@ See "How translations are loaded" above: your own `custom/` override first, then
 = Can I keep my own corrected translations? =
 
 Yes. Put your own `.mo`, `.json` or `.l10n.php` file under `wp-content/languages/babilim/custom/plugins/` or `custom/themes/`. It always wins over anything Babilim provides. A setting on the settings screen keeps these files when you purge Babilim's files or uninstall the plugin; it is on by default.
+
+= Is the service free? =
+
+Each site domain can use the service for one theme and two plugins that are listed on WordPress.org at no charge. Components that are not listed on WordPress.org, and anything beyond that allowance, need a paid license (see "How much does a license cost?"). The allowance is set by the service and may change; the plugin contains no limit logic of its own and only shows what the service reports. Translation files that were already downloaded keep working regardless of the license.
 
 = Are there limits on downloads? =
 
@@ -162,9 +166,15 @@ The Translations screen shows the same list before you consent, and your consent
 
 The information described under "External services" is the only information the plugin sends, and only after you consent. The only exception is a source upload you explicitly confirm, described above. It never sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account. The site access token and the private key are stored in your site's database and are never included in a page or script sent to a browser. Deleting the plugin keeps them by default so that a reinstall can reuse the site's identity; ticking "Delete all Babilim data on uninstall" removes them.
 
+== Screenshots ==
+
+1. The Translations screen before you enable Babilim: what will be sent, and the Enable button.
+2. The Translations screen after enabling: each installed plugin and theme with its translation status per language.
+3. Settings: the languages to manage and the uninstall choices.
+
 == Changelog ==
 
-= 0.1.0 =
+= 1.0.0 =
 * First release.
 * Consent-first registration and twice-daily sync with the Babilim translation service.
 * Layered translation loading: your `custom/` overrides, then Babilim, then WordPress.org language packs or bundled translations; WordPress core's own translation first for the `default` text domain.
@@ -174,5 +184,5 @@ The information described under "External services" is the only information the 
 
 == Upgrade Notice ==
 
-= 0.1.0 =
+= 1.0.0 =
 First release.

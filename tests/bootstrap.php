@@ -483,6 +483,11 @@ function update_option( $name, $value, $autoload = null ) {
 		}
 		return true;
 	}
+	// Like core's update_option(): an unchanged value (against get_option()'s
+	// false default for a missing option) is not written.
+	if ( get_option( $name ) === $value ) {
+		return false;
+	}
 	$GLOBALS['babilim_test_options'][ $name ]          = babilim_test_deep_copy( $value );
 	$GLOBALS['babilim_test_options_autoload'][ $name ] = $autoload;
 	return true;
@@ -869,7 +874,10 @@ function is_plugin_active( $plugin_file ) {
 	return ! empty( $GLOBALS['babilim_test_is_plugin_active_return'][ $plugin_file ] );
 }
 
-function wp_get_theme() {
+function wp_get_theme( $stylesheet = '' ) {
+	if ( '' !== $stylesheet && isset( $GLOBALS['babilim_test_wp_get_theme_by_stylesheet'][ $stylesheet ] ) ) {
+		return $GLOBALS['babilim_test_wp_get_theme_by_stylesheet'][ $stylesheet ];
+	}
 	return $GLOBALS['babilim_test_wp_get_theme_return'];
 }
 
@@ -1012,6 +1020,7 @@ function get_blog_option( $blog_id, $option, $default_value = false ) {
  * @return int[]|object[]
  */
 function get_sites( $args = array() ) {
+	$GLOBALS['babilim_test_get_sites_calls'] = ( $GLOBALS['babilim_test_get_sites_calls'] ?? 0 ) + 1;
 	$ids    = $GLOBALS['babilim_test_sites'];
 	$number = array_key_exists( 'number', $args ) ? (int) $args['number'] : 100;
 	if ( $number > 0 ) {
@@ -1057,6 +1066,7 @@ function babilim_test_blank_blog_state() {
 }
 
 function switch_to_blog( $new_blog_id ) {
+	$GLOBALS['babilim_test_switch_calls'] = ( $GLOBALS['babilim_test_switch_calls'] ?? 0 ) + 1;
 	$new_blog_id = (int) $new_blog_id;
 	$current     = $GLOBALS['babilim_test_current_blog_id'];
 
@@ -1273,6 +1283,10 @@ function wp_opcache_invalidate( $filepath, $force = false ) {
 // ---------------------------------------------------------------------
 // Paths
 // ---------------------------------------------------------------------
+
+function wp_is_writable( $path ) {
+	return is_writable( $path );
+}
 
 function wp_normalize_path( $path ) {
 	$path = str_replace( '\\', '/', (string) $path );
@@ -1568,6 +1582,7 @@ function switch_to_locale( $locale ) {
  */
 function babilim_test_reset() {
 	Babilim_Locale_Label::reset_for_tests();
+	Babilim_Loader::reset_messages_cache_for_tests();
 	$GLOBALS['babilim_test_filters']                = $GLOBALS['babilim_test_loaded_filters'];
 	$GLOBALS['babilim_test_actions']                = $GLOBALS['babilim_test_loaded_actions'];
 	$GLOBALS['babilim_test_action_dispatch_counts'] = $GLOBALS['babilim_test_loaded_action_dispatch_counts'];
@@ -1594,6 +1609,7 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_fake_zips']              = array();
 	$GLOBALS['babilim_test_is_plugin_active_return'] = array();
 	$GLOBALS['babilim_test_wp_get_theme_return']     = new Babilim_Test_Default_Theme();
+	$GLOBALS['babilim_test_wp_get_theme_by_stylesheet'] = array();
 	$GLOBALS['babilim_test_cron_scheduled']          = array();
 	$GLOBALS['babilim_test_cron_cleared']            = array();
 	$GLOBALS['babilim_test_single_events_scheduled'] = array();
@@ -1627,6 +1643,8 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_user_id']                 = 1;
 	$GLOBALS['babilim_test_network_admin']           = false;
 	$GLOBALS['babilim_test_sites']                   = array( 1 );
+	$GLOBALS['babilim_test_get_sites_calls']         = 0;
+	$GLOBALS['babilim_test_switch_calls']            = 0;
 	$GLOBALS['babilim_test_current_blog_id']         = 1;
 	$GLOBALS['babilim_test_blog_stack']              = array();
 	$GLOBALS['babilim_test_blog_state']              = array();
@@ -1922,6 +1940,9 @@ function admin_url( $path = '' ) {
 
 /** sanitize_key() (wp-includes/formatting.php): lowercase, [a-z0-9_-] only. */
 function sanitize_key( $key ) {
+	if ( ! is_scalar( $key ) ) {
+		return '';
+	}
 	return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) );
 }
 
