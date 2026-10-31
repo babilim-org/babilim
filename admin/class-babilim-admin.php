@@ -1261,7 +1261,7 @@ final class Babilim_Admin {
 	 * @return bool
 	 */
 	private static function status_allows_request( string $status ): bool {
-		return in_array( $status, array( 'requestable', 'failed', 'wporg' ), true );
+		return in_array( $status, array( 'requestable', 'failed', 'wporg', 'bundled' ), true );
 	}
 
 	/**

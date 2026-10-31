@@ -211,7 +211,7 @@ final class Test_Translations_Table extends TestCase {
 		$this->assertSame( 4, $counts['all'] );
 		$this->assertSame( 1, $counts['available'], 'only a: a download that is not an update' );
 		$this->assertSame( 1, $counts['updates'] );
-		$this->assertSame( 1, $counts['requestable'] );
+		$this->assertSame( 2, $counts['requestable'], 'a requestable cell and a bundled one' );
 		$this->assertSame( 2, $counts['installed'], 'b and c have a manifest record; a is only available' );
 	}
 
@@ -677,18 +677,20 @@ final class Test_Translations_Table extends TestCase {
 		$this->assertSame( array( 'kind' => 'plugin', 'slug' => 'acme', 'version' => '3.5.0', 'locale' => 'de_DE', 'client_caps' => array( 'upload' ) ), json_decode( $http->requests[0]['args']['body'], true ) );
 	}
 
-	public function test_a_wporg_cell_may_be_requested_and_a_bundled_one_may_not(): void {
+	public function test_wporg_and_bundled_cells_may_be_requested_and_a_non_requestable_one_may_not(): void {
 		update_option( 'babilim_consent', true );
 		$GLOBALS['babilim_test_get_plugins_return'] = array( 'acme/acme.php' => array( 'Name' => 'Acme', 'Version' => '1.2.3', 'TextDomain' => 'acme' ) );
-		( new Babilim_State() )->set( array( 'components' => array( self::component( 'acme', array( 'de_DE' => array( 'status' => 'wporg' ), 'fr_FR' => array( 'status' => 'bundled' ) ) ) ) ) );
-		$http = new Babilim_Fake_Http( array( array( 'response' => array( 'code' => 202 ), 'body' => wp_json_encode( array( 'status' => 'queued' ) ), 'headers' => array() ) ) );
+		( new Babilim_State() )->set( array( 'components' => array( self::component( 'acme', array( 'de_DE' => array( 'status' => 'wporg' ), 'fr_FR' => array( 'status' => 'bundled' ), 'ja' => array( 'status' => 'unsupported', 'reason' => 'source_locale' ) ) ) ) ) );
+		$ok = array( 'response' => array( 'code' => 202 ), 'body' => wp_json_encode( array( 'status' => 'queued' ) ), 'headers' => array() );
+		$http = new Babilim_Fake_Http( array( $ok, $ok ) );
 		$admin = $this->admin( $http );
 
 		$this->assertTrue( $admin->do_request( 'plugin', 'acme', '1.2.3', 'de_DE' )->is_ok() );
-		$denied = $admin->do_request( 'plugin', 'acme', '1.2.3', 'fr_FR' );
+		$this->assertTrue( $admin->do_request( 'plugin', 'acme', '1.2.3', 'fr_FR' )->is_ok(), 'bundled is requestable' );
+		$denied = $admin->do_request( 'plugin', 'acme', '1.2.3', 'ja' );
 		$this->assertFalse( $denied->is_ok() );
 		$this->assertSame( 'unknown_locale', $denied->code() );
-		$this->assertCount( 1, $http->requests );
+		$this->assertCount( 2, $http->requests );
 	}
 
 	// -- the bulk action parser ---------------------------------------

@@ -4,7 +4,7 @@ This plugin talks to the Babilim translation service over the plugin's `BABILIM_
 
 If this file and the schemas under `tests/contract/v1/schemas/` ever disagree, the schemas win — update this file to match, don't patch around it.
 
-**Contract version:** 1.7.1
+**Contract version:** 1.8.0
 
 ## Conventions
 
@@ -62,7 +62,7 @@ Sync installed components and locales; get back per-(component, locale) status. 
 Request: `components[]` (each `kind, slug, version, text_domain, extra_domains[], is_wporg, bundled_locales[], installed{<locale>: {build_id, verified_at, integrity}}`), `locales[]`, optional `client_events[]` (max 20, error codes and coordinates only — never string content; disclosed item-by-item on the settings screen).
 Response `200`: `components[]` (each `kind, slug, locales: {<locale>: {status, build_id?, build_no?, built_at?, update_available?, wporg_percent?, built_for_version?, newer_version?: {version, status}, reason?, hardcoded_text_warning?}}}`), `updates[]`, `license`, `quota`, `features: {checkout, upload}`, `contract`.
 
-`status` is one of: `bundled`, `wporg`, `babilim_installed`, `babilim_available`, `requestable`, `queued`, `running`, `failed`, `unsupported`, `quota_exceeded`, `license_required`. There are no quality-grade fields anywhere in the contract — the plugin only ever shows these eleven states. `license_required` means free language packs are for WordPress.org components only and this component is not one; the plugin shows it and, on a free site that is offered an upgrade, puts an "Upgrade this site" button next to it (the Settings screen shows the same button).
+`status` is one of: `bundled`, `wporg`, `babilim_installed`, `babilim_available`, `requestable`, `queued`, `running`, `failed`, `unsupported`, `quota_exceeded`, `license_required`. There are no quality-grade fields anywhere in the contract — the plugin only ever shows these eleven states. (1.8.0) `bundled` is a hint, not a terminal state: the component ships its own translation for that locale, and a Babilim translation can still be requested (the cell gets the same request button as `wporg`). `unsupported` may carry `reason: "source_locale"` when the locale is the component's original language; the plugin shows "Original language" with no action, and any other or missing reason shows "Not supported". `license_required` means free language packs are for WordPress.org components only and this component is not one; the plugin shows it and, on a free site that is offered an upgrade, puts an "Upgrade this site" button next to it (the Settings screen shows the same button).
 
 (1.4.0) A `babilim_installed` entry may also carry `built_for_version` (the component version the installed build was made for) and `newer_version: {version, status}`, present only when that differs from the version this call reported and the reported version has no active build yet (an active build is expressed by `update_available` instead). `newer_version.status` is one of `queued`, `running`, `failed`, `requestable`, `license_required`, `quota_exceeded`. Whether a locale is installed on this site is decided locally from the plugin's own manifest, not from this status.
 

@@ -237,7 +237,7 @@ final class Test_Bulk extends TestCase {
 		$items->setAccessible( true );
 		$rows = $items->invoke( $this->admin( new Babilim_Fake_Http( array() ) ), ( new Babilim_State() )->get() );
 		$this->assertSame( array( array( 'plugin', 'c1', 'de_DE' ) ), Babilim_Bulk::expand( $rows, 'download', array( 'plugin:c1' ), '' ) );
-		$this->assertSame( array( array( 'plugin', 'c1', 'fr_FR' ) ), Babilim_Bulk::expand( $rows, 'request', array( 'plugin:c1' ), '' ) );
+		$this->assertSame( array( array( 'plugin', 'c1', 'fr_FR' ), array( 'plugin', 'c1', 'ja' ) ), Babilim_Bulk::expand( $rows, 'request', array( 'plugin:c1' ), '' ) );
 		$this->assertSame( array(), Babilim_Bulk::expand( $rows, 'update', array( 'plugin:c1' ), '' ) );
 		$this->assertSame( array(), Babilim_Bulk::expand( $rows, 'download', array( 'plugin:c1' ), 'fr_FR' ), 'the language filter narrows the selection' );
 		$this->assertSame( array(), Babilim_Bulk::expand( $rows, 'download', array( 'plugin:other' ), '' ) );

@@ -25,6 +25,7 @@
               "properties": {
                 "status": {
                   "type": "string",
+                  "description": "bundled = the component ships its own translation for this locale; a hint state only (not terminal, 1.8.0): shown when no Babilim build is installed/available and no job exists, and a Babilim translation can still be requested",
                   "enum": ["bundled", "wporg", "babilim_installed", "babilim_available", "requestable", "queued", "running", "failed", "unsupported", "quota_exceeded", "license_required"]
                 },
                 "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
@@ -45,7 +46,7 @@
                 },
                 "hardcoded_text_warning": {"type": "boolean", "description": "1.6.0: present and true only when status is babilim_installed or babilim_available AND the build named by this entry's build_id belongs to a component whose source has a substantial amount of user-visible text that is not passed through translation functions, so a language pack cannot cover it. Absent means no notice -- it does NOT mean the component is fully translatable. Never false"},
                 "upload_pending": {"type": "boolean", "description": "1.5.0: true only when status is queued and THIS site holds an open (not yet completed) source upload for this component version -- the site should offer the same request action again so the upload can be resumed or cancelled"},
-                "reason": {"type": "string", "minLength": 1, "description": "generic reason code only when status is failed or unsupported; also present when status is babilim_installed and the installed build's local integrity check failed (\"integrity_failed\"); 1.5.0: also present when status is requestable because the last source upload was rejected (\"source_rejected\") or expired (\"upload_expired\")"}
+                "reason": {"type": "string", "minLength": 1, "description": "generic reason code only when status is failed or unsupported (1.8.0: unsupported also carries \"source_locale\" when the site locale equals the component's original language); also present when status is babilim_installed and the installed build's local integrity check failed (\"integrity_failed\"); 1.5.0: also present when status is requestable because the last source upload was rejected (\"source_rejected\") or expired (\"upload_expired\")"}
               }
             }
           }

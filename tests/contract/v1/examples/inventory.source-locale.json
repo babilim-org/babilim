@@ -1,0 +1,110 @@
+{
+  "description": "A site whose locale equals the component's original (source) language. The component defaults to en_US as its original language, so en_US is unsupported with reason source_locale (there is nothing to translate); de_DE is requestable as usual. source_locale applies even when the site locale is not in the locale registry, and an explicit exclusion's reason takes precedence.",
+  "http": {
+    "method": "POST",
+    "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
+  },
+  "schema": {
+    "request": "schemas/inventory.request.schema.json",
+    "response": "schemas/inventory.response.schema.json"
+  },
+  "setup": {
+    "sites": [
+      {
+        "id": "st_3f9c2a1b7e4d",
+        "host": "example.org",
+        "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+        "verified": true,
+        "license_kind": "free",
+        "license_status": "active"
+      }
+    ],
+    "wporg_registry": [
+      {
+        "kind": "plugin",
+        "slug": "component-z",
+        "state": "verified_wporg",
+        "versions": [
+          "1.0.0"
+        ],
+        "stable_version": "1.0.0"
+      }
+    ]
+  },
+  "stable_fields": [
+    "/components",
+    "/license"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.4.0; https://example.org"
+    },
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-z",
+          "version": "1.0.0",
+          "text_domain": "component-z",
+          "extra_domains": [],
+          "is_wporg": true,
+          "bundled_locales": [],
+          "installed": {}
+        }
+      ],
+      "locales": [
+        "en_US",
+        "de_DE"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "components": [
+        {
+          "kind": "plugin",
+          "slug": "component-z",
+          "locales": {
+            "en_US": {
+              "status": "unsupported",
+              "reason": "source_locale"
+            },
+            "de_DE": {
+              "status": "requestable"
+            }
+          }
+        }
+      ],
+      "updates": [],
+      "license": {
+        "kind": "free",
+        "status": "active"
+      },
+      "quota": {
+        "free_slots": {
+          "theme": {
+            "used": 0,
+            "limit": 1
+          },
+          "plugin": {
+            "used": 0,
+            "limit": 2
+          }
+        },
+        "downloads": {
+          "used": 0,
+          "limit": 500,
+          "period": "daily"
+        }
+      },
+      "features": {
+        "checkout": false,
+        "upload": true
+      },
+      "contract": "1.4.0"
+    }
+  }
+}

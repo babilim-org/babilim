@@ -38,7 +38,11 @@ final class Babilim_Cell {
 	 *
 	 * On a not-installed `requestable` entry the service's generic
 	 * `reason` code (`source_rejected`, `upload_expired`) turns the cell
-	 * into a failure with a retry; any other reason is ignored.
+	 * into a failure with a retry; any other reason is ignored. On an
+	 * `unsupported` entry the reason `source_locale` shows "Original
+	 * language" (nothing to translate, no action); any other or missing
+	 * reason shows "Not supported". A `bundled` entry can be requested
+	 * like a `wporg` one.
 	 *
 	 * @param array      $entry           Locale entry from the last sync.
 	 * @param string     $locale          Locale code.
@@ -103,7 +107,9 @@ final class Babilim_Cell {
 				$text = 'theme' === ( $entry['kind'] ?? '' )
 					? __( 'Bundled with the theme', 'babilim' )
 					: __( 'Bundled with the plugin', 'babilim' );
-				return self::cell( 'bundled', false, false, null, 'bundled', $text, '' );
+				// Not a dead end: a Babilim translation can still be
+				// requested, exactly as for a wporg cell.
+				return self::cell( 'bundled', false, false, 'babilim_request', null, $text, '' );
 			case 'requestable':
 				// The service marks a rejected or expired source upload with
 				// a generic reason code; show it as a failure with a retry.
@@ -134,6 +140,11 @@ final class Babilim_Cell {
 			case 'license_required':
 				return self::cell( 'none', false, false, null, 'license_required', __( 'Needs a paid license', 'babilim' ), '' );
 			case 'unsupported':
+				// `reason` = `source_locale`: the component's own source
+				// language is this locale, so there is nothing to translate.
+				if ( 'source_locale' === (string) ( $entry['reason'] ?? '' ) ) {
+					return self::cell( 'none', false, false, null, 'source_locale', __( 'Original language', 'babilim' ), '' );
+				}
 				return self::cell( 'none', false, false, null, 'unsupported', __( 'Not supported', 'babilim' ), '' );
 			default:
 				return self::cell( 'unknown', false, false, null, 'unknown', __( 'Status unknown', 'babilim' ), '' );
