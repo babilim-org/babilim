@@ -12,20 +12,24 @@ Fills in missing translations for the plugins and themes already installed on yo
 
 == Description ==
 
+* See your installed plugins and themes with their translation status for each language you manage.
+* Install an available translation with one click, or request one that is not available yet.
+* Use any WordPress language. None is ranked, preferred or left out.
+* Nothing is sent until you agree, not even when you activate the plugin.
+* Your own `custom/` overrides always win over Babilim.
+
 Babilim looks at the plugins and themes you already have installed and finds the ones that have no translation for your site's language.
 It then lets you request a translation from the Babilim translation service.
 
 If a plugin or theme ships its own translation, you can still request a Babilim translation for it.
 The settings screen shows the progress of a request.
 
-What you get:
+More details:
 
-* **A status list.** Your installed plugins and themes, with their translation status for each language you manage.
-* **One-click install** of a translation that is already available, and a request button for one that is not.
-* **Every WordPress language on equal footing.** The list of languages comes from the full WordPress.org locale registry. No language is ranked, preferred or left out.
-* **Nothing happens until you agree.** The plugin makes no request to the service, not even when you activate it, until you press "Enable Babilim" on its Translations screen. The screen lists every item that will be sent right above the button.
+* **Languages.** The list of languages comes from the full WordPress.org locale registry.
+* **Consent first.** The plugin makes no request to the service until you press "Enable Babilim" on its Translations screen. Activating the plugin sends nothing. The screen lists every item that will be sent right above the button.
 * **Translation data only.** Babilim downloads translation files (`.po`, `.mo`, `.json`) and nothing else. It never downloads or runs PHP or JavaScript from anywhere.
-* **Your own overrides always win.** A translation you place under `custom/` beats anything Babilim provides.
+* **Your own overrides.** A translation you place under `custom/` beats anything Babilim provides.
 * **Check, roll back, report.** Babilim checks every installed file against its recorded checksum automatically, twice a day. A translation can be rolled back to the previous build or removed. If a translation reads wrongly you can report it from the same screen.
 * **Clean removal.** Deleting the plugin removes its options, scheduled events and language files. Your `custom/` overrides and your site's identity are kept by default.
 

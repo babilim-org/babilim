@@ -51,19 +51,24 @@ Every WordPress language is supported on equal footing. The language list comes 
 
 ## FAQ
 
-**Does the plugin contact any server before I agree?**
+### Does the plugin contact any server before I agree?
+
 No. Nothing is sent until you press Enable Babilim.
 
-**What is sent?**
-Including your site URL, WordPress, PHP and plugin versions, your locales, a public key generated for your site, a list of installed plugins and themes, and up to 20 pending diagnostic events. The full list is shown above the Enable button and in the plugin's directory page.
+### What is sent?
 
-**Does it change my site's files?**
+The plugin sends your site URL, your WordPress, PHP and plugin versions, your locales, a public key generated for your site, a list of installed plugins and themes, and up to 20 pending diagnostic events. The full list is shown above the Enable button and in the plugin's directory page.
+
+### Does it change my site's files?
+
 No. It writes translation data files into `wp-content/languages/babilim/`, plus a temporary zip only for a source upload you confirm. It does not touch your plugins' or themes' files.
 
-**Which languages can I use?**
+### Which languages can I use?
+
 Every locale WordPress supports.
 
-**What if the service is unreachable?**
+### What if the service is unreachable?
+
 Installed translations keep working because they are ordinary local files. The plugin retries later.
 
 The full FAQ is on the plugin page: https://wordpress.org/plugins/babilim/

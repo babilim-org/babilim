@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 final class Test_Readme extends TestCase {
 
+	/** Matches any link whose host is not on the allow-list (used by the real assertion and its counter-examples). */
+	private const LINK_RULE = '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|$|[\s)]))/im';
+
 	/** @var string */
 	private $readme;
 
@@ -165,7 +168,7 @@ final class Test_Readme extends TestCase {
 
 	public function test_readme_is_english_only_and_names_nothing_internal(): void {
 		$this->assertSame( 0, preg_match( '/[\x{2E80}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{30FF}]/u', $this->readme ), 'no CJK text' );
-		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|$|[\s)]))/im', $this->readme, 'only allow-listed domains may be linked' );
+		$this->assertDoesNotMatchRegularExpression( self::LINK_RULE, $this->readme, 'only allow-listed domains may be linked' );
 	}
 
 	public function test_the_github_readme_links_both_support_channels_and_its_images_exist(): void {
@@ -186,6 +189,17 @@ final class Test_Readme extends TestCase {
 	public function test_readme_txt_links_the_github_issues_page_next_to_the_other_channels(): void {
 		$this->assertStringContainsString( 'https://github.com/babilim-org/babilim/issues', $this->readme );
 		$this->assertStringContainsString( 'https://wordpress.org/support/plugin/babilim/', $this->readme );
+	}
+
+	public function test_the_description_opens_with_a_short_bullet_list(): void {
+		$blocks = explode( "\n\n", trim( $this->section( 'Description' ) ) );
+		$lines  = explode( "\n", $blocks[0] );
+		$this->assertGreaterThanOrEqual( 3, count( $lines ) );
+		$this->assertLessThanOrEqual( 5, count( $lines ) );
+		foreach ( $lines as $line ) {
+			$this->assertStringStartsWith( '* ', $line, 'the Description opens with a bullet list' );
+			$this->assertLessThanOrEqual( 150, strlen( $line ), 'each opening bullet is one short sentence: ' . $line );
+		}
 	}
 
 	public function test_readme_paragraphs_are_short(): void {
@@ -213,7 +227,7 @@ final class Test_Readme extends TestCase {
 	}
 
 	public function test_the_github_allowance_covers_only_this_repository(): void {
-		$re = '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|$|[\s)]))/i';
+		$re = self::LINK_RULE;
 		$this->assertSame( 0, preg_match( $re, 'see https://github.com/babilim-org/babilim/issues now' ) );
 		$this->assertSame( 0, preg_match( $re, 'https://github.com/babilim-org/babilim' ) );
 		$this->assertSame( 1, preg_match( $re, 'https://github.com/babilim-org/babilim-other/issues' ) );
