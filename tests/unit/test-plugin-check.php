@@ -239,7 +239,7 @@ final class Test_Plugin_Check extends TestCase {
 
 	public function test_the_release_zip_leaves_out_development_files(): void {
 		$ignored = (string) file_get_contents( dirname( __DIR__, 2 ) . '/.distignore' );
-		foreach ( array( 'tests/', 'scripts/', 'docs/', 'phpstan-stubs/', 'phpstan.neon', 'Makefile', 'CLAUDE.md', 'task-report.md', '.claude/', '.githooks/', '.wordpress-org/' ) as $entry ) {
+		foreach ( array( 'tests/', 'scripts/', 'docs/', 'phpstan-stubs/', 'phpstan.neon', 'Makefile', 'CLAUDE.md', 'README.md', 'task-report.md', '.claude/', '.githooks/', '.wordpress-org/' ) as $entry ) {
 			$this->assertMatchesRegularExpression( '/^' . preg_quote( $entry, '/' ) . '$/m', $ignored, "{$entry} must not ship in the release zip" );
 		}
 	}
@@ -284,7 +284,7 @@ final class Test_Plugin_Check extends TestCase {
 		unlink( $zip_path );
 
 		$this->assertNotEmpty( $entries, 'the release zip must not be empty' );
-		foreach ( array( 'babilim/task-report.md', 'babilim/CLAUDE.md', 'babilim/Makefile', 'babilim/phpstan.neon' ) as $must_not_ship ) {
+		foreach ( array( 'babilim/task-report.md', 'babilim/CLAUDE.md', 'babilim/README.md', 'babilim/Makefile', 'babilim/phpstan.neon' ) as $must_not_ship ) {
 			$this->assertNotContains( $must_not_ship, $entries, "{$must_not_ship} must not be in the release zip" );
 		}
 		foreach ( $entries as $entry ) {

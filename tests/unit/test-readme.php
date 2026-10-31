@@ -165,7 +165,34 @@ final class Test_Readme extends TestCase {
 
 	public function test_readme_is_english_only_and_names_nothing_internal(): void {
 		$this->assertSame( 0, preg_match( '/[\x{2E80}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{30FF}]/u', $this->readme ), 'no CJK text' );
-		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b)/i', $this->readme, 'only allow-listed domains may be linked' );
+		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|\b))/i', $this->readme, 'only allow-listed domains may be linked' );
+	}
+
+	public function test_the_github_readme_links_both_support_channels_and_its_images_exist(): void {
+		$root   = dirname( __DIR__, 2 );
+		$readme = (string) file_get_contents( $root . '/README.md' );
+		$this->assertNotSame( '', $readme );
+		$this->assertStringContainsString( 'https://github.com/babilim-org/babilim/issues', $readme );
+		$this->assertStringContainsString( 'https://wordpress.org/support/plugin/babilim/', $readme );
+		$this->assertSame( 0, preg_match( '/[\x{2E80}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{30FF}]/u', $readme ), 'no CJK text' );
+		$this->assertDoesNotMatchRegularExpression( '/\b(?:grade[sd]?|grading|verified|verification|quality|accura(?:te|cy)|reviewed|certified|score[sd]?)\b/i', $readme );
+		preg_match_all( '/\]\((\.wordpress-org\/[^)\s]+)\)/', $readme, $m );
+		$this->assertGreaterThanOrEqual( 5, count( $m[1] ), 'banner, icon and three screenshots' );
+		foreach ( $m[1] as $path ) {
+			$this->assertFileExists( $root . '/' . $path );
+		}
+	}
+
+	public function test_readme_txt_links_the_github_issues_page_next_to_the_other_channels(): void {
+		$this->assertStringContainsString( 'https://github.com/babilim-org/babilim/issues', $this->readme );
+		$this->assertStringContainsString( 'https://wordpress.org/support/plugin/babilim/', $this->readme );
+	}
+
+	public function test_readme_paragraphs_are_short(): void {
+		$body = (string) strstr( $this->readme, "\n== " );
+		foreach ( explode( "\n", $body ) as $n => $line ) {
+			$this->assertLessThanOrEqual( 400, strlen( $line ), 'readme.txt body line ' . ( $n + 1 ) . ' is longer than 400 characters: split it into shorter sentences or a list' );
+		}
 	}
 
 	public function test_the_submission_document_asks_the_directory_team_about_each_disclosed_behavior(): void {
