@@ -1,0 +1,43 @@
+name: Something is not working
+description: The plugin shows an error, a button does nothing, or something behaves differently than described.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Before you post, search the existing issues: someone may already have reported the same thing.
+        Please do not paste site addresses, restore codes, API keys or other private details. Everything here is public.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead. Error messages are very helpful.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to Babilim > Translations
+        2. Click ...
+        3. See ...
+  - type: input
+    id: plugin_version
+    attributes:
+      label: Babilim version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: wp_version
+    attributes:
+      label: WordPress and PHP versions
+      placeholder: "WordPress 6.8, PHP 8.3"
+  - type: dropdown
+    id: multisite
+    attributes:
+      label: Is this a multisite network?
+      options:
+        - "No"
+        - "Yes"
