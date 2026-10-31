@@ -1016,16 +1016,14 @@ function get_blog_option( $blog_id, $option, $default_value = false ) {
  * every one of them -- a stub that always returned every registered
  * site regardless of `number` could never catch that regression.
  *
- * @param array{fields?:string,number?:int} $args
+ * @param array{fields?:string,number?:int,offset?:int} $args
  * @return int[]|object[]
  */
 function get_sites( $args = array() ) {
 	$GLOBALS['babilim_test_get_sites_calls'] = ( $GLOBALS['babilim_test_get_sites_calls'] ?? 0 ) + 1;
 	$ids    = $GLOBALS['babilim_test_sites'];
 	$number = array_key_exists( 'number', $args ) ? (int) $args['number'] : 100;
-	if ( $number > 0 ) {
-		$ids = array_slice( $ids, 0, $number );
-	}
+	$ids    = array_slice( $ids, (int) ( $args['offset'] ?? 0 ), $number > 0 ? $number : null );
 	if ( isset( $args['fields'] ) && 'ids' === $args['fields'] ) {
 		return $ids;
 	}
@@ -1035,6 +1033,10 @@ function get_sites( $args = array() ) {
 		},
 		$ids
 	);
+}
+
+function wp_is_large_network( $using = 'sites', $network_id = null ) {
+	return (bool) ( $GLOBALS['babilim_test_large_network'] ?? false );
 }
 
 /**
@@ -1644,6 +1646,7 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_network_admin']           = false;
 	$GLOBALS['babilim_test_sites']                   = array( 1 );
 	$GLOBALS['babilim_test_get_sites_calls']         = 0;
+	$GLOBALS['babilim_test_large_network']           = false;
 	$GLOBALS['babilim_test_switch_calls']            = 0;
 	$GLOBALS['babilim_test_current_blog_id']         = 1;
 	$GLOBALS['babilim_test_blog_stack']              = array();

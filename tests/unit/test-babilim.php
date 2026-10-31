@@ -576,6 +576,49 @@ final class Test_Babilim extends TestCase {
 		$this->set_site_option_on( 3, 'active_plugins', array( 'three/three.php' ) );
 	}
 
+	public function test_other_sites_usage_walks_a_network_in_pages(): void {
+		$GLOBALS['babilim_test_multisite']          = true;
+		$GLOBALS['babilim_test_sites']              = range( 1, 1200 );
+		$GLOBALS['babilim_test_get_plugins_return'] = array( 'far/far.php' => array( 'Version' => '1.0.0' ) );
+		$this->set_site_option_on( 1200, 'active_plugins', array( 'far/far.php' ) );
+		$GLOBALS['babilim_test_get_sites_calls'] = 0;
+
+		$slugs = $this->plugin_slugs( (array) Babilim::instance()->active_components() );
+
+		$this->assertContains( 'far', $slugs, 'a plugin active only on the last site of the last page is still seen' );
+		$this->assertSame( 3, $GLOBALS['babilim_test_get_sites_calls'], '500 + 500 + 200' );
+	}
+
+	public function test_other_sites_usage_stops_after_the_last_page_of_a_thousand_sites(): void {
+		$GLOBALS['babilim_test_multisite']       = true;
+		$GLOBALS['babilim_test_sites']           = range( 1, 1000 );
+		$GLOBALS['babilim_test_get_sites_calls'] = 0;
+
+		Babilim::instance()->active_components();
+
+		$this->assertSame( 3, $GLOBALS['babilim_test_get_sites_calls'], '500 + 500 + an empty page ends the walk' );
+	}
+
+	public function test_other_sites_usage_reads_a_small_network_in_one_page(): void {
+		$GLOBALS['babilim_test_multisite']       = true;
+		$GLOBALS['babilim_test_sites']           = range( 1, 499 );
+		$GLOBALS['babilim_test_get_sites_calls'] = 0;
+
+		Babilim::instance()->active_components();
+
+		$this->assertSame( 1, $GLOBALS['babilim_test_get_sites_calls'] );
+	}
+
+	public function test_active_components_is_unknown_on_a_large_network(): void {
+		$GLOBALS['babilim_test_multisite']       = true;
+		$GLOBALS['babilim_test_sites']           = array( 1, 2 );
+		$GLOBALS['babilim_test_large_network']   = true;
+		$GLOBALS['babilim_test_get_sites_calls'] = 0;
+
+		$this->assertNull( Babilim::instance()->active_components() );
+		$this->assertSame( 0, $GLOBALS['babilim_test_get_sites_calls'], 'a large network is never walked' );
+	}
+
 	public function test_other_sites_usage_is_worked_out_for_the_site_the_request_is_on_now(): void {
 		$this->network_with_plugins_on_sites_two_and_three();
 

@@ -158,6 +158,12 @@ class Babilim {
 	private $other_sites_usage_memo = array();
 
 	/**
+	 * Sites read per get_sites() call when other_sites_usage() walks a
+	 * network.
+	 */
+	private const NETWORK_SITES_PAGE = 500;
+
+	/**
 	 * Whether Babilim itself was deactivated earlier in this request, so
 	 * nothing may schedule a follow-up event for the rest of it.
 	 *
@@ -292,9 +298,28 @@ class Babilim {
 	/**
 	 * `babilim_sync_once` callback: a single sync with the background
 	 * budget, nothing else -- no integrity pass and no downloads.
+	 *
+	 * When the sync is held back by the service's rate limit, the one
+	 * check is queued again for the end of the wait, so it does not
+	 * have to wait for the twice-daily run. WP-Cron takes the running
+	 * event off the queue before it calls this hook (wp-cron.php
+	 * unschedules it first), so wp_next_scheduled() only sees other
+	 * pending events; one already pending is left alone.
 	 */
 	public function run_sync_once(): void {
-		$this->site()->sync( Babilim_Site::CRON_BUDGET_SECONDS );
+		$result = $this->site()->sync( Babilim_Site::CRON_BUDGET_SECONDS );
+		if ( $result->is_ok() || 'no_consent' === $result->code() ) {
+			return;
+		}
+		try {
+			$until = $this->site()->rate_limited_until();
+			if ( null === $until || false !== wp_next_scheduled( self::SYNC_ONCE_HOOK ) ) {
+				return;
+			}
+			wp_schedule_single_event( $until, self::SYNC_ONCE_HOOK );
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
 	}
 
 	/**
@@ -753,7 +778,9 @@ class Babilim {
 	 * returns null instead of an empty array -- Babilim_Default_Index's
 	 * own rebuild() must be able to tell "genuinely nothing active" apart
 	 * from "couldn't find out" and leave the existing index alone for the
-	 * latter (see that class's rebuild()).
+	 * latter (see that class's rebuild()). A large network (see
+	 * wp_is_large_network()) is never walked and counts as "couldn't find
+	 * out" as well.
 	 *
 	 * @return array<int,array{kind:string,slug:string,version:string,alias?:bool}>|null
 	 */
@@ -778,6 +805,9 @@ class Babilim {
 			// a plugin active on any other site counts as active too.
 			// The current site is judged below (overrides first).
 			$other = $this->other_sites_usage();
+			if ( null === $other ) {
+				return null;
+			}
 			foreach ( (array) get_plugins() as $file => $data ) {
 				$file = (string) $file;
 				// on_deactivated_plugin()/on_activated_plugin() override
@@ -893,12 +923,15 @@ class Babilim {
 	 * is_plugin_active() (with the forced overrides) and wp_get_theme(),
 	 * and during a deactivation its `active_plugins` option is still
 	 * stale. Each other site is entered once for both options. Empty on
-	 * a single site, without calling any multisite API. The result is
-	 * memoised for the rest of the request (see $other_sites_usage_memo).
+	 * a single site, without calling any multisite API. The network is
+	 * read NETWORK_SITES_PAGE sites at a time, and null is returned
+	 * (not memoised) for a large network, which is never walked. The
+	 * result is memoised for the rest of the request (see
+	 * $other_sites_usage_memo).
 	 *
-	 * @return array{plugins:array<string,true>,stylesheets:string[]}
+	 * @return array{plugins:array<string,true>,stylesheets:string[]}|null
 	 */
-	private function other_sites_usage(): array {
+	private function other_sites_usage(): ?array {
 		$current = is_multisite() ? get_current_blog_id() : 0;
 		if ( isset( $this->other_sites_usage_memo[ $current ] ) ) {
 			return $this->other_sites_usage_memo[ $current ];
@@ -911,27 +944,41 @@ class Babilim {
 				'stylesheets' => $stylesheets,
 			);
 		}
-		foreach ( (array) get_sites( array( 'fields' => 'ids', 'number' => 0 ) ) as $site_id ) {
-			$site_id = (int) $site_id;
-			if ( $site_id === $current ) {
-				continue;
-			}
-			switch_to_blog( $site_id );
-			try {
-				$active     = get_option( 'active_plugins', array() );
-				$stylesheet = get_option( 'stylesheet', '' );
-			} finally {
-				restore_current_blog();
-			}
-			foreach ( (array) $active as $file ) {
-				if ( is_string( $file ) && '' !== $file ) {
-					$plugins[ $file ] = true;
+		if ( function_exists( 'wp_is_large_network' ) && wp_is_large_network( 'sites' ) ) {
+			return null;
+		}
+		$offset = 0;
+		do {
+			$page = (array) get_sites(
+				array(
+					'fields' => 'ids',
+					'number' => self::NETWORK_SITES_PAGE,
+					'offset' => $offset,
+				)
+			);
+			foreach ( $page as $site_id ) {
+				$site_id = (int) $site_id;
+				if ( $site_id === $current ) {
+					continue;
+				}
+				switch_to_blog( $site_id );
+				try {
+					$active     = get_option( 'active_plugins', array() );
+					$stylesheet = get_option( 'stylesheet', '' );
+				} finally {
+					restore_current_blog();
+				}
+				foreach ( (array) $active as $file ) {
+					if ( is_string( $file ) && '' !== $file ) {
+						$plugins[ $file ] = true;
+					}
+				}
+				if ( is_string( $stylesheet ) && '' !== $stylesheet ) {
+					$stylesheets[ $stylesheet ] = $stylesheet;
 				}
 			}
-			if ( is_string( $stylesheet ) && '' !== $stylesheet ) {
-				$stylesheets[ $stylesheet ] = $stylesheet;
-			}
-		}
+			$offset += count( $page );
+		} while ( count( $page ) === self::NETWORK_SITES_PAGE );
 		$this->other_sites_usage_memo[ $current ] = array(
 			'plugins'     => $plugins,
 			'stylesheets' => array_values( $stylesheets ),

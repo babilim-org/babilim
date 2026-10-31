@@ -33,6 +33,39 @@ final class Test_Sync_On_Component_Change extends TestCase {
 		);
 	}
 
+	public function test_run_sync_once_while_rate_limited_reschedules_itself_for_the_end_of_the_wait(): void {
+		update_option( 'babilim_consent', true );
+		$until = time() + 120;
+		( new Babilim_State() )->set( array( 'rate_limited_until' => $until ) );
+		$GLOBALS['babilim_test_wp_remote_requests'] = array();
+
+		Babilim::instance()->run_sync_once();
+
+		$this->assertCount( 0, $GLOBALS['babilim_test_wp_remote_requests'], 'nothing goes out while the service holds the site' );
+		$events = $this->once_events();
+		$this->assertCount( 1, $events );
+		$this->assertSame( $until, $events[0]['timestamp'] );
+	}
+
+	public function test_run_sync_once_while_rate_limited_does_not_queue_a_second_check(): void {
+		update_option( 'babilim_consent', true );
+		( new Babilim_State() )->set( array( 'rate_limited_until' => time() + 120 ) );
+		$GLOBALS['babilim_test_cron_scheduled'][ Babilim::SYNC_ONCE_HOOK ] = time() + 10;
+
+		Babilim::instance()->run_sync_once();
+
+		$this->assertSame( array(), $this->once_events() );
+	}
+
+	public function test_run_sync_once_without_consent_schedules_nothing(): void {
+		update_option( 'babilim_consent', false );
+		( new Babilim_State() )->set( array( 'rate_limited_until' => time() + 120 ) );
+
+		Babilim::instance()->run_sync_once();
+
+		$this->assertSame( array(), $this->once_events() );
+	}
+
 	private function fire_all_triggers(): void {
 		$b = Babilim::instance();
 		$b->on_activated_plugin( 'acme/acme.php' );
