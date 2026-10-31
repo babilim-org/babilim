@@ -12,27 +12,22 @@ Fills in missing translations for the plugins and themes already installed on yo
 
 == Description ==
 
-What you get:
-
-* A list of your installed plugins and themes with their translation status for each language you manage.
-* One-click install of a translation that is already available, and a request button for one that is not.
-* Your own overrides in `custom/` always win over Babilim.
-* Nothing is sent until you agree, not even when you activate the plugin.
-* Clean removal: deleting the plugin removes its options, scheduled events and language files.
-
 Babilim looks at the plugins and themes you already have installed and finds the ones that have no translation for your site's language.
 It then lets you request a translation from the Babilim translation service.
-A plugin or theme that ships its own translation can still be offered a Babilim translation.
+
+If a plugin or theme ships its own translation, you can still request a Babilim translation for it.
 The settings screen shows the progress of a request.
 
-More details:
+What you get:
 
+* **A status list.** Your installed plugins and themes, with their translation status for each language you manage.
+* **One-click install** of a translation that is already available, and a request button for one that is not.
 * **Every WordPress language on equal footing.** The list of languages comes from the full WordPress.org locale registry. No language is ranked, preferred or left out.
-* **Nothing happens until you agree.** The plugin makes no request to the service until you press "Enable Babilim" on its Translations screen. The screen lists every item that will be sent right above the button.
+* **Nothing happens until you agree.** The plugin makes no request to the service, not even when you activate it, until you press "Enable Babilim" on its Translations screen. The screen lists every item that will be sent right above the button.
 * **Translation data only.** Babilim downloads translation files (`.po`, `.mo`, `.json`) and nothing else. It never downloads or runs PHP or JavaScript from anywhere.
 * **Your own overrides always win.** A translation you place under `custom/` beats anything Babilim provides.
 * **Check, roll back, report.** Babilim checks every installed file against its recorded checksum automatically, twice a day. A translation can be rolled back to the previous build or removed. If a translation reads wrongly you can report it from the same screen.
-* **Clean removal.** Deleting the plugin removes its options, scheduled events and language files. Your `custom/` overrides are kept unless you choose otherwise.
+* **Clean removal.** Deleting the plugin removes its options, scheduled events and language files. Your `custom/` overrides and your site's identity are kept by default.
 
 Where Babilim writes:
 
@@ -49,8 +44,10 @@ The loading order, most specific first:
 * For WordPress core's own `default` text domain: WordPress core's official translation beats any supplementary strings Babilim provides for that domain.
 
 A source only ever fills a gap left by everything ranked above it.
-A site-specific override always wins over Babilim.
-WordPress core's own official `default` translation always wins over Babilim's supplement for that domain.
+
+* A site-specific override always wins over Babilim.
+* WordPress core's own official `default` translation always wins over Babilim's supplement for that domain.
+
 Where two installed components would supply different translations for the same core string, Babilim leaves that string out and WordPress falls back to the original English text.
 
 == Installation ==
@@ -103,6 +100,7 @@ A setting on the settings screen keeps these files when you purge Babilim's file
 
 Each site domain can use the service for one theme and two plugins that are listed on WordPress.org at no charge.
 Components that are not listed on WordPress.org, and anything beyond that allowance, need a paid license (see "How much does a license cost?").
+
 The allowance is set by the service and may change.
 The plugin contains no limit logic of its own and only shows what the service reports.
 Translation files that were already downloaded keep working regardless of the license.
@@ -129,11 +127,14 @@ The plugin retries later.
 
 No, not by default.
 The plugin keeps three things when it is deleted: the site's registration number, its access token and its install key.
+
 If you install the plugin again on the same site, it reuses them. Its license stays attached and you do not pay for it again.
+
 A site that never finished its first setup simply registers again with the same install key.
 
 The settings screen has a checkbox, "Delete all Babilim data on uninstall", which is off by default.
 If you tick it before deleting the plugin, the site's registration number, access token and install key are deleted too.
+
 After that, the site's paid license cannot be restored automatically: you must contact us at hi@babilim.org to get it back.
 Leave the box unticked unless you are sure you will never need this site's license again.
 
@@ -188,8 +189,10 @@ The plugin also retries by itself, with longer and longer pauses.
 
 When you buy a license you receive a restore code.
 If you reinstall the plugin on the same domain, enter the code under Settings → Restore purchase to attach the license to the new installation.
+
 The Settings screen of a licensed site can issue a new code at any time (the previous one stops working).
 The code is not needed for normal use.
+
 Moving a license to a different domain is handled by support (see "How do I contact you?").
 
 = How do I contact you? =
@@ -293,7 +296,9 @@ The Translations screen shows the same list before you consent, and your consent
 
 The information described under "External services" is the only information the plugin sends, and only after you consent.
 The only exception is a source upload you explicitly confirm, described above.
-It never sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
+
+The plugin never sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
+
 The site access token and the private key are stored in your site's database and are never included in a page or script sent to a browser.
 Deleting the plugin keeps them by default so that a reinstall can reuse the site's identity. Ticking "Delete all Babilim data on uninstall" removes them.
 
@@ -311,7 +316,7 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 * Layered translation loading: your `custom/` overrides, then Babilim, then WordPress.org language packs or bundled translations; WordPress core's own translation first for the `default` text domain.
 * Install, check, roll back, remove and report actions for each translation, and automatic installation of newer builds of translations you already installed, during the twice-daily sync.
 * Automatic installation of available translations for the languages you manage during the twice-daily sync, on by default and switchable in Settings. On the free plan only components that already use a free slot are installed this way, and translations you removed yourself are not installed again.
-* A short notice on the Translations screen says how many were installed. "Remove everything Babilim installed" turns it off. A multisite network does not install new translations automatically.
+* A short notice on the Translations screen says how many translations were installed automatically. "Remove everything Babilim installed" turns automatic installation off. A multisite network does not install new translations automatically.
 * Removal of settings, scheduled events and language files on uninstall, with your `custom/` overrides and your site's identity kept by default.
 
 == Upgrade Notice ==

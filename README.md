@@ -19,7 +19,7 @@ Requires WordPress 6.6 or later and PHP 7.4 or later.
 
 * Before you agree, the plugin makes no request at all, not even on activation.
 * After you enable it, it lists your installed plugins and themes and the languages in use on the site.
-* The Translations screen shows each component's status per language. A translation that exists can be installed with one click. One that does not exist yet can be requested. A component that ships its own translation can still be offered a Babilim translation.
+* The Translations screen shows each component's status per language. A translation that exists can be installed with one click. One that does not exist yet can be requested. If a component ships its own translation, you can still request a Babilim translation for it.
 * Loading order for a plugin's or theme's own text domain: your override in `custom/` first, then a translation Babilim provides, then an official WordPress.org language pack or the component's own bundled translation.
 * For WordPress core's `default` text domain, core's official translation always comes first, and Babilim only supplies strings core does not have.
 * Babilim downloads translation data only (`.po`, `.mo`, `.json`). It never downloads or runs remote PHP or JavaScript.
@@ -55,10 +55,10 @@ Every WordPress language is supported on equal footing. The language list comes 
 No. Nothing is sent until you press Enable Babilim.
 
 **What is sent?**
-Your site URL, WordPress, PHP and plugin versions, your locales, and a list of installed plugins and themes. The full list is shown above the Enable button and in the plugin's directory page.
+Including your site URL, WordPress, PHP and plugin versions, your locales, a public key generated for your site, a list of installed plugins and themes, and up to 20 pending diagnostic events. The full list is shown above the Enable button and in the plugin's directory page.
 
 **Does it change my site's files?**
-No. It writes translation data files into `wp-content/languages/babilim/` only.
+No. It writes translation data files into `wp-content/languages/babilim/`, plus a temporary zip only for a source upload you confirm. It does not touch your plugins' or themes' files.
 
 **Which languages can I use?**
 Every locale WordPress supports.

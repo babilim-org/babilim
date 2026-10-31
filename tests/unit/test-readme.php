@@ -165,7 +165,7 @@ final class Test_Readme extends TestCase {
 
 	public function test_readme_is_english_only_and_names_nothing_internal(): void {
 		$this->assertSame( 0, preg_match( '/[\x{2E80}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{30FF}]/u', $this->readme ), 'no CJK text' );
-		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|\b))/i', $this->readme, 'only allow-listed domains may be linked' );
+		$this->assertDoesNotMatchRegularExpression( '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|$|[\s)]))/im', $this->readme, 'only allow-listed domains may be linked' );
 	}
 
 	public function test_the_github_readme_links_both_support_channels_and_its_images_exist(): void {
@@ -189,10 +189,35 @@ final class Test_Readme extends TestCase {
 	}
 
 	public function test_readme_paragraphs_are_short(): void {
-		$body = (string) strstr( $this->readme, "\n== " );
-		foreach ( explode( "\n", $body ) as $n => $line ) {
-			$this->assertLessThanOrEqual( 400, strlen( $line ), 'readme.txt body line ' . ( $n + 1 ) . ' is longer than 400 characters: split it into shorter sentences or a list' );
+		// The directory page renders Markdown, where single newlines join
+		// into one paragraph. Measure rendered paragraphs: blank lines
+		// separate them and every list item counts as its own.
+		$body       = (string) strstr( $this->readme, "\n== " );
+		$paragraphs = array();
+		$current    = '';
+		foreach ( explode( "\n", $body ) as $line ) {
+			if ( '' === trim( $line ) ) {
+				$paragraphs[] = $current;
+				$current      = '';
+			} elseif ( 1 === preg_match( '/^(?:\* |\d+\. )/', $line ) ) {
+				$paragraphs[] = $current;
+				$current      = $line;
+			} else {
+				$current .= ( '' === $current ? '' : ' ' ) . $line;
+			}
 		}
+		$paragraphs[] = $current;
+		foreach ( $paragraphs as $paragraph ) {
+			$this->assertLessThanOrEqual( 400, strlen( $paragraph ), 'readme.txt paragraph is longer than 400 characters: split it with a blank line or make it a list: ' . substr( $paragraph, 0, 60 ) );
+		}
+	}
+
+	public function test_the_github_allowance_covers_only_this_repository(): void {
+		$re = '/https?:\/\/(?!(?:www\.gnu\.org|wordpress\.org|api\.babilim\.org|babilim\.org|www\.paddle\.com)\b|github\.com\/babilim-org\/babilim(?:\/|$|[\s)]))/i';
+		$this->assertSame( 0, preg_match( $re, 'see https://github.com/babilim-org/babilim/issues now' ) );
+		$this->assertSame( 0, preg_match( $re, 'https://github.com/babilim-org/babilim' ) );
+		$this->assertSame( 1, preg_match( $re, 'https://github.com/babilim-org/babilim-other/issues' ) );
+		$this->assertSame( 1, preg_match( $re, 'https://github.com/other/babilim' ) );
 	}
 
 	public function test_the_submission_document_asks_the_directory_team_about_each_disclosed_behavior(): void {
