@@ -41,7 +41,11 @@
  * - $list_dir($dir)        -- optional; lists a directory's entries (see
  *                             default_list_dir()). Injected so
  *                             components() never touches a real
- *                             filesystem in tests.
+ *                             filesystem in tests. It also receives
+ *                             WP_LANG_DIR/plugins and WP_LANG_DIR/themes
+ *                             (once each per instance), so a language
+ *                             pack pushed there for a non-wp.org
+ *                             component counts as bundled.
  * - $function_exists($name) -- optional; checks whether a function is
  *                             callable (used for a multilingual plugin's
  *                             own function). Defaults to PHP's own
@@ -133,6 +137,16 @@ final class Babilim_Inventory {
 	private const LOCALE_FILENAME_PATTERN = '/^(?:(.+)-)?([a-z]{2,3}(?:_[A-Z]{2})?(?:_[a-z0-9]+)?)\.(?:mo|l10n\.php)$/D';
 
 	/**
+	 * Extra directories, relative to a plugin's own directory, scanned
+	 * for bundled translation files when the plugin declares no
+	 * Domain Path header (plugins commonly ship them in one of these
+	 * without declaring it).
+	 *
+	 * @var string[]
+	 */
+	private const PLUGIN_FALLBACK_DOMAIN_PATHS = array( '/languages', '/locale', '/lang', '/i18n/languages' );
+
+	/**
 	 * @var callable
 	 */
 	private $get_plugins;
@@ -156,6 +170,13 @@ final class Babilim_Inventory {
 	 * @var callable
 	 */
 	private $list_dir;
+
+	/**
+	 * Memo of parsed WP_LANG_DIR subdirectory listings, keyed by subdirectory.
+	 *
+	 * @var array<string, array>
+	 */
+	private $lang_dir_listing = array();
 
 	/**
 	 * @var callable
@@ -651,12 +672,31 @@ final class Babilim_Inventory {
 			}
 			list( $slug, $text_domain ) = $identity;
 
-			$scan_dir = $plugin_root ? ( self::plugin_dir() . $domain_path ) : ( self::plugin_dir() . '/' . $dir_name . $domain_path );
-			$scan     = $this->scan_domain( $scan_dir, $text_domain, false );
+			if ( $plugin_root ) {
+				// A root-file plugin shares WP_PLUGIN_DIR with every
+				// other plugin: no fallback directories for it.
+				$scan_dirs = array( self::plugin_dir() . $domain_path );
+			} else {
+				$base      = self::plugin_dir() . '/' . $dir_name;
+				$scan_dirs = array( $base . $domain_path );
+				if ( '' === $domain_path ) {
+					foreach ( self::PLUGIN_FALLBACK_DOMAIN_PATHS as $fallback ) {
+						$scan_dirs[] = $base . $fallback;
+					}
+				}
+			}
+			$scan = $this->scan_dirs( $scan_dirs, array( $text_domain ), false );
 
 			$is_wporg = self::has_third_party_update_uri( $data )
 				? false
 				: $this->is_wporg_from_transient( $update, $file, 'id', 'w.org/plugins/', false );
+
+			if ( ! $is_wporg ) {
+				$scan['bundled_locales'] = self::merge_locales(
+					$scan['bundled_locales'],
+					$this->lang_dir_bundled_locales( 'plugins', array_merge( array( $text_domain, $slug ), $scan['extra_domains'] ) )
+				);
+			}
 
 			$out[] = array(
 				'kind'            => 'plugin',
@@ -707,7 +747,15 @@ final class Babilim_Inventory {
 			}
 
 			$dir  = $this->theme_dir( $theme );
-			$scan = $this->scan_domain( $dir . $domain_path, $text_domain, true );
+			$scan = $this->scan_dirs( array( $dir . $domain_path ), array( $text_domain ), true );
+
+			$is_wporg = $this->is_wporg_from_transient( $update, $stylesheet, 'url', 'wordpress.org/themes/', true );
+			if ( ! $is_wporg ) {
+				$scan['bundled_locales'] = self::merge_locales(
+					$scan['bundled_locales'],
+					$this->lang_dir_bundled_locales( 'themes', array_merge( array( $text_domain, $stylesheet ), $scan['extra_domains'] ) )
+				);
+			}
 
 			$out[] = array(
 				'kind'            => 'theme',
@@ -716,7 +764,7 @@ final class Babilim_Inventory {
 				'version'         => (string) $this->theme_field( $theme, 'Version', '' ),
 				'text_domain'     => $text_domain,
 				'domain_path'     => $domain_path,
-				'is_wporg'        => $this->is_wporg_from_transient( $update, $stylesheet, 'url', 'wordpress.org/themes/', true ),
+				'is_wporg'        => $is_wporg,
 				'stylesheet'      => $stylesheet,
 				'extra_domains'   => $scan['extra_domains'],
 				'bundled_locales' => $scan['bundled_locales'],
@@ -985,70 +1033,127 @@ final class Babilim_Inventory {
 	}
 
 	/**
-	 * Lists $dir and reverse-engineers, from filenames alone, every
-	 * extra text domain and every locale this component's own
-	 * ($own_domain) bundled translation files cover. When
-	 * $allow_domainless is true (themes only -- WordPress core never
-	 * loads a plugin's translation file this way), a domainless
-	 * filename (e.g. "zh_TW.mo") counts as $own_domain's own file;
-	 * otherwise it's ignored entirely (neither a bundled locale nor an
-	 * extra domain -- there's no domain to attribute it to).
-	 * Every locale is checked against Babilim_Paths::is_safe_locale()
-	 * and every extra domain against Babilim_Paths::is_safe_name() --
-	 * anything that fails is dropped rather than surfaced. Both results
-	 * are deduped and string-sorted for a deterministic, comparable
-	 * output.
+	 * Lists every directory in $dirs and reverse-engineers, from
+	 * filenames alone, every extra text domain and every locale this
+	 * component's bundled translation files cover. A file whose domain
+	 * is one of $own_domains contributes its locale to the bundled
+	 * list; a file for any other safe domain contributes that domain
+	 * to the extra domains AND its locale to the bundled list (a
+	 * component counts as bundled when any of its domains has a file
+	 * for the locale). When $allow_domainless is true (themes only --
+	 * WordPress core never loads a plugin's translation file this
+	 * way), a domainless filename (e.g. "zh_TW.mo") counts as an own
+	 * file; otherwise it's ignored entirely. Every locale is checked
+	 * against Babilim_Paths::is_safe_locale() and every extra domain
+	 * against Babilim_Paths::is_safe_name() -- anything that fails is
+	 * dropped. Both results are deduped and string-sorted.
 	 *
-	 * @param string $dir              Absolute directory to list.
-	 * @param string $own_domain       This component's own text domain.
-	 * @param bool   $allow_domainless Whether a domainless filename counts as $own_domain's own file.
+	 * @param string[] $dirs             Absolute directories to list.
+	 * @param string[] $own_domains      This component's own text domain(s).
+	 * @param bool     $allow_domainless Whether a domainless filename counts as an own file.
 	 * @return array{extra_domains: string[], bundled_locales: string[]}
 	 */
-	private function scan_domain( string $dir, string $own_domain, bool $allow_domainless ): array {
+	private function scan_dirs( array $dirs, array $own_domains, bool $allow_domainless ): array {
 		$extra_domains   = array();
 		$bundled_locales = array();
 
-		foreach ( call_user_func( $this->list_dir, $dir ) as $filename ) {
-			if ( 1 !== preg_match( self::LOCALE_FILENAME_PATTERN, (string) $filename, $matches ) ) {
-				continue;
-			}
+		foreach ( $dirs as $dir ) {
+			foreach ( self::parse_locale_files( call_user_func( $this->list_dir, $dir ) ) as $file ) {
+				$domain = $file['domain'];
+				$locale = $file['locale'];
 
-			// A successful match always fills all three offsets -- the
-			// locale group (2) can never be empty (it requires at least
-			// two letters); only the optional domain group (1) can be.
-			$domain = $matches[1];
-			$locale = $matches[2];
+				if ( '' === $domain ) {
+					if ( $allow_domainless ) {
+						$bundled_locales[] = $locale;
+					}
+					continue;
+				}
 
-			if ( ! Babilim_Paths::is_safe_locale( $locale ) ) {
-				continue;
-			}
+				if ( in_array( $domain, $own_domains, true ) ) {
+					$bundled_locales[] = $locale;
+					continue;
+				}
 
-			if ( '' === $domain ) {
-				if ( $allow_domainless ) {
+				if ( Babilim_Paths::is_safe_name( $domain ) ) {
+					$extra_domains[]   = $domain;
 					$bundled_locales[] = $locale;
 				}
-				continue;
-			}
-
-			if ( $domain === $own_domain ) {
-				$bundled_locales[] = $locale;
-				continue;
-			}
-
-			if ( Babilim_Paths::is_safe_name( $domain ) ) {
-				$extra_domains[] = $domain;
 			}
 		}
 
-		$extra_domains   = array_values( array_unique( $extra_domains ) );
-		$bundled_locales = array_values( array_unique( $bundled_locales ) );
+		$extra_domains = array_values( array_unique( $extra_domains ) );
 		sort( $extra_domains, SORT_STRING );
-		sort( $bundled_locales, SORT_STRING );
 
 		return array(
 			'extra_domains'   => $extra_domains,
-			'bundled_locales' => $bundled_locales,
+			'bundled_locales' => self::merge_locales( $bundled_locales, array() ),
 		);
+	}
+
+	/**
+	 * Locales of the language packs sitting in WP_LANG_DIR/$sub whose
+	 * filename domain is one of $domains. Domainless files are
+	 * ignored. The directory is listed at most once per instance.
+	 *
+	 * @param string   $sub     'plugins' or 'themes'.
+	 * @param string[] $domains Domains of the component.
+	 * @return string[]
+	 */
+	private function lang_dir_bundled_locales( string $sub, array $domains ): array {
+		if ( ! defined( 'WP_LANG_DIR' ) ) {
+			return array();
+		}
+		if ( ! isset( $this->lang_dir_listing[ $sub ] ) ) {
+			$this->lang_dir_listing[ $sub ] = self::parse_locale_files(
+				call_user_func( $this->list_dir, rtrim( (string) WP_LANG_DIR, '/' ) . '/' . $sub )
+			);
+		}
+
+		$locales = array();
+		foreach ( $this->lang_dir_listing[ $sub ] as $file ) {
+			if ( '' !== $file['domain'] && in_array( $file['domain'], $domains, true ) ) {
+				$locales[] = $file['locale'];
+			}
+		}
+		return $locales;
+	}
+
+	/**
+	 * Parses a directory listing into domain/locale pairs, dropping
+	 * names that don't match the locale filename pattern or whose
+	 * locale fails Babilim_Paths::is_safe_locale().
+	 *
+	 * @param mixed $filenames Result of the list_dir callable.
+	 * @return array<int, array{domain: string, locale: string}>
+	 */
+	private static function parse_locale_files( $filenames ): array {
+		$out = array();
+		foreach ( (array) $filenames as $filename ) {
+			if ( 1 !== preg_match( self::LOCALE_FILENAME_PATTERN, (string) $filename, $matches ) ) {
+				continue;
+			}
+			if ( ! Babilim_Paths::is_safe_locale( $matches[2] ) ) {
+				continue;
+			}
+			$out[] = array(
+				'domain' => $matches[1],
+				'locale' => $matches[2],
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * Union of two locale lists, deduped and string-sorted.
+	 *
+	 * @param string[] $a First list.
+	 * @param string[] $b Second list.
+	 * @return string[]
+	 */
+	private static function merge_locales( array $a, array $b ): array {
+		$merged = array_values( array_unique( array_merge( $a, $b ) ) );
+		sort( $merged, SORT_STRING );
+		return $merged;
 	}
 
 	/**

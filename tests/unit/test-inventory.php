@@ -826,6 +826,150 @@ final class Test_Inventory extends TestCase {
 		$this->assertSame( array(), $components[0]['extra_domains'] );
 	}
 
+	public function test_bundled_locales_are_found_under_locale_when_no_domain_path_is_declared(): void {
+		$inventory = $this->make_inventory(
+			array( 'sitepress-multilingual-cms/sitepress.php' => array( 'Name' => 'WPML', 'Version' => '4.6', 'TextDomain' => 'sitepress' ) ),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) {
+				return WP_PLUGIN_DIR . '/sitepress-multilingual-cms/locale' === $dir ? array( 'sitepress-zh_TW.mo' ) : array();
+			}
+		);
+
+		$this->assertSame( array( 'zh_TW' ), $inventory->components()[0]['bundled_locales'] );
+	}
+
+	public static function fallback_domain_paths(): array {
+		return array(
+			'plugin root'     => array( '' ),
+			'/languages'      => array( '/languages' ),
+			'/locale'         => array( '/locale' ),
+			'/lang'           => array( '/lang' ),
+			'/i18n/languages' => array( '/i18n/languages' ),
+		);
+	}
+
+	/**
+	 * @dataProvider fallback_domain_paths
+	 */
+	public function test_every_fallback_directory_is_scanned_when_no_domain_path_is_declared( string $path ): void {
+		$inventory = $this->make_inventory(
+			array( 'acme/acme.php' => array( 'Name' => 'Acme', 'Version' => '1.0', 'TextDomain' => 'acme' ) ),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) use ( $path ) {
+				return WP_PLUGIN_DIR . '/acme' . $path === $dir ? array( 'acme-de_DE.mo' ) : array();
+			}
+		);
+
+		$this->assertSame( array( 'de_DE' ), $inventory->components()[0]['bundled_locales'] );
+	}
+
+	public function test_fallback_directories_are_not_scanned_when_a_domain_path_is_declared(): void {
+		$inventory = $this->make_inventory(
+			array( 'acme/acme.php' => array( 'Name' => 'Acme', 'Version' => '1.0', 'TextDomain' => 'acme', 'DomainPath' => '/languages' ) ),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) {
+				return WP_PLUGIN_DIR . '/acme/locale' === $dir ? array( 'acme-de_DE.mo', 'other-de_DE.mo' ) : array();
+			}
+		);
+
+		$component = $inventory->components()[0];
+		$this->assertSame( array(), $component['bundled_locales'] );
+		$this->assertSame( array(), $component['extra_domains'] );
+	}
+
+	public function test_a_file_for_another_domain_in_the_component_directory_counts_as_bundled(): void {
+		$inventory = $this->make_inventory(
+			array( 'wpml-media/plugin.php' => array( 'Name' => 'WPML Media', 'Version' => '2.0', 'TextDomain' => 'sitepress' ) ),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) {
+				return WP_PLUGIN_DIR . '/wpml-media/locale' === $dir ? array( 'wpml-media-zh_TW.mo' ) : array();
+			}
+		);
+
+		$component = $inventory->components()[0];
+		$this->assertSame( array( 'wpml-media' ), $component['extra_domains'] );
+		$this->assertSame( array( 'zh_TW' ), $component['bundled_locales'] );
+	}
+
+	public function test_a_language_pack_in_wp_lang_dir_counts_as_bundled_for_a_non_wporg_plugin(): void {
+		$lang      = rtrim( WP_LANG_DIR, '/' );
+		$inventory = $this->make_inventory(
+			array( 'woocommerce-bookings/woocommerce-bookings.php' => array( 'Name' => 'Bookings', 'Version' => '2.0', 'TextDomain' => 'woocommerce-bookings' ) ),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) use ( $lang ) {
+				return $lang . '/plugins' === $dir ? array( 'woocommerce-bookings-zh_TW.mo', 'other-plugin-zh_TW.mo', 'ja.mo' ) : array();
+			}
+		);
+
+		$component = $inventory->components()[0];
+		$this->assertSame( array( 'zh_TW' ), $component['bundled_locales'] );
+		$this->assertSame( array(), $component['extra_domains'] );
+	}
+
+	public function test_a_language_pack_in_wp_lang_dir_is_ignored_for_a_wporg_plugin(): void {
+		$lang      = rtrim( WP_LANG_DIR, '/' );
+		$inventory = $this->make_inventory(
+			array( 'woocommerce-bookings/woocommerce-bookings.php' => array( 'Name' => 'Bookings', 'Version' => '2.0', 'TextDomain' => 'woocommerce-bookings' ) ),
+			array(),
+			array( 'update_plugins' => array( 'response' => array( 'woocommerce-bookings/woocommerce-bookings.php' => array( 'id' => 'w.org/plugins/woocommerce-bookings' ) ) ) ),
+			array(),
+			static function ( $dir ) use ( $lang ) {
+				return $lang . '/plugins' === $dir ? array( 'woocommerce-bookings-zh_TW.mo' ) : array();
+			}
+		);
+
+		$this->assertSame( array(), $inventory->components()[0]['bundled_locales'] );
+	}
+
+	public function test_a_language_pack_in_wp_lang_dir_themes_counts_as_bundled_for_a_non_wporg_theme(): void {
+		$lang      = rtrim( WP_LANG_DIR, '/' );
+		$theme     = new Babilim_Test_Theme( 'acme-theme', array( 'Name' => 'Acme', 'Version' => '1.0', 'TextDomain' => 'acme-theme' ), '/fake-wp-content/themes/acme-theme' );
+		$inventory = $this->make_inventory(
+			array(),
+			array( 'acme-theme' => $theme ),
+			false,
+			array(),
+			static function ( $dir ) use ( $lang ) {
+				return $lang . '/themes' === $dir ? array( 'acme-theme-zh_TW.mo', 'other-theme-zh_TW.mo' ) : array();
+			}
+		);
+
+		$this->assertSame( array( 'zh_TW' ), $inventory->components()[0]['bundled_locales'] );
+	}
+
+	public function test_the_lang_dir_is_listed_once_per_inventory(): void {
+		$lang  = rtrim( WP_LANG_DIR, '/' );
+		$count = 0;
+		$inventory = $this->make_inventory(
+			array(
+				'one/one.php' => array( 'Name' => 'One', 'Version' => '1.0', 'TextDomain' => 'one' ),
+				'two/two.php' => array( 'Name' => 'Two', 'Version' => '1.0', 'TextDomain' => 'two' ),
+			),
+			array(),
+			false,
+			array(),
+			static function ( $dir ) use ( $lang, &$count ) {
+				if ( $lang . '/plugins' === $dir ) {
+					++$count;
+				}
+				return array();
+			}
+		);
+
+		$inventory->components();
+		$this->assertSame( 1, $count );
+	}
+
 	// -----------------------------------------------------------------
 	// request_components()
 	// -----------------------------------------------------------------
