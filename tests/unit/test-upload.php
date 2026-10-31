@@ -224,7 +224,7 @@ final class Test_Upload extends TestCase {
 		$this->assertCount( 1, $http->requests );          // not_before has not passed: nothing is sent
 	}
 
-	public function test_a_rate_limited_part_reports_how_long_to_wait(): void {
+	public function test_step_reports_done_next_and_parts_only(): void {
 		$http = new Babilim_Fake_Http(
 			array(
 				$this->json( 429, array( 'error' => array( 'code' => 'rate_limited', 'message' => 'x', 'hint' => '' ) ), array( 'retry-after' => '60' ) ),
@@ -234,8 +234,8 @@ final class Test_Upload extends TestCase {
 		$u->begin( $this->component(), 'fr_FR', $this->offer() );
 		$u->confirm();
 		$result = $u->step();
-		$this->assertGreaterThanOrEqual( 59, $result->data()['wait'] );
-		$this->assertLessThanOrEqual( 60, $result->data()['wait'] );
+		$this->assertTrue( $result->is_ok() );
+		$this->assertSame( array( 'done', 'next', 'parts' ), array_keys( $result->data() ) );
 	}
 
 	public function test_begin_refuses_an_offer_with_a_non_positive_part_size(): void {

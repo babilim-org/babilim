@@ -18,6 +18,14 @@ final class Test_Installer extends TestCase {
 
 	protected function setUp(): void {
 		babilim_test_reset();
+		if ( ! is_dir( Babilim_Paths::root() ) ) {
+			mkdir( Babilim_Paths::root(), 0777, true );
+		}
+		@unlink( Babilim_Paths::root() . '/.install.lock' );
+	}
+
+	protected function tearDown(): void {
+		@unlink( Babilim_Paths::root() . '/.install.lock' );
 	}
 
 	// -- Fakes ------------------------------------------------------------
