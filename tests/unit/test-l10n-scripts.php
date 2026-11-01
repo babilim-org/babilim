@@ -333,7 +333,7 @@ final class Test_L10n_Scripts extends TestCase {
 	public function test_l10n_check_reports_a_header_that_carries_a_build_id(): void {
 		$locales = $this->build_fixture_locale();
 		$po      = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
-		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.0.1\n"', '"Project-Id-Version: Babilim 1.0.0\n"' . "\n" . '"X-Babilim-Build: b1\n"' );
+		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.0.1\n"', '"Project-Id-Version: Babilim 1.0.1\n"' . "\n" . '"X-Babilim-Build: b1\n"' );
 		$res = $this->run_check( $locales );
 		$this->assertSame( 1, $res['rc'], $res['stdout'] );
 		$this->assertStringContainsString( 'HEADER zz_ZZ', $res['stdout'] );

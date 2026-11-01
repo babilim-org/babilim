@@ -315,7 +315,7 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 == Changelog ==
 
 = 1.0.1 =
-* The language list shows "Original language" for a language your site's content is already written in, instead of "Not supported".
+* The Translations screen shows "Original language" for a language a plugin or theme is originally written in, instead of "Not supported".
 * A language that a plugin or theme already ships a translation for can now also be requested from Babilim.
 * Bundled translations are now also detected in a plugin's `languages/`, `locale/`, `lang/` and `i18n/languages/` folders when it declares no Domain Path, for every text domain the component ships, and in language packs a vendor installed under `wp-content/languages/`.
 * When the service asks the site to wait, the follow-up check is scheduled for the end of the wait instead of being dropped.
