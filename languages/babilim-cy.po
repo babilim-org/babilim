@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.0.0\n"
+"Project-Id-Version: Babilim 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:53:02+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:53:02+00:00\n"
+"POT-Creation-Date: 2026-11-01T01:08:42+00:00\n"
+"PO-Revision-Date: 2026-11-01T01:08:42+00:00\n"
 "Language: cy\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;\n"
 "X-Generator: Babilim\n"
@@ -110,7 +110,7 @@ msgstr "Gofynnwyd am gyfieithiad."
 
 #: admin/class-babilim-admin.php:1177
 msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "Cafodd y gydran hon ei huwchlwytho eisoes. Mae Babilim yn ei gwirio nawr."
+msgstr "Uwchlwythwyd y gydran hon eisoes. Mae Babilim yn ei gwirio nawr."
 
 #: admin/class-babilim-admin.php:1217
 msgid "Upload cancelled."
@@ -128,7 +128,7 @@ msgstr "Nid yw'r gydran hon yn datgan rhif fersiwn, felly ni ellir gofyn am gyfi
 #: admin/class-babilim-admin.php:1313
 #, php-format
 msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "Mae rhif fersiwn y gydran hon yn hirach na %d nod, na all Babilim ei drin, felly ni ellir gofyn am gyfieithiad ar ei chyfer."
+msgstr "Mae rhif fersiwn y gydran hon yn hirach na %d o nodau, ac ni all Babilim ymdrin â hynny, felly ni ellir gofyn am gyfieithiad ar ei chyfer."
 
 #: admin/class-babilim-admin.php:1319
 msgid "A translation cannot be requested for that locale on this site right now."
@@ -148,11 +148,11 @@ msgstr "Dewiswch Categori ar gyfer yr adroddiad hwn."
 
 #: admin/class-babilim-admin.php:1386
 msgid "This report is missing a valid build to report against."
-msgstr "Mae'r adroddiad hwn yn brin o adeiladwaith dilys i adrodd yn ei erbyn."
+msgstr "Mae'r adroddiad hwn heb fersiwn adeiladu dilys i adrodd yn ei erbyn."
 
 #: admin/class-babilim-admin.php:1389
 msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "Nid yw'r wefan hon yn adnabod yr adeiladwaith hwn ar hyn o bryd ar gyfer y cydran/locale hwn."
+msgstr "Nid yw'r adeiladwaith hwn yn un y mae'r wefan hon yn ei adnabod ar hyn o bryd ar gyfer y gydran/locale hwn."
 
 #. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
 #: admin/class-babilim-admin.php:1441
@@ -176,7 +176,7 @@ msgstr "Cyfieithiad cyfredol"
 #: admin/class-babilim-admin.php:1478
 #: admin/class-babilim-admin.php:4069
 msgid "Suggested translation"
-msgstr "Cyfieithiad awgrymedig"
+msgstr "Cyfieithiad a awgrymir"
 
 #: admin/class-babilim-admin.php:1482
 #: admin/class-babilim-admin.php:4071
@@ -196,7 +196,7 @@ msgstr "Mae cysoni Babilim wedi'i oedi dros dro gan y gwasanaeth (cyfyngu cyfrad
 
 #: admin/class-babilim-admin.php:1583
 msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "Nid yw hwn yn god locale WordPress dilys. Ni chadwyd dim."
+msgstr "Nid yw hwnnw'n god locale WordPress dilys. Ni chadwyd dim."
 
 #: admin/class-babilim-admin.php:1616
 msgid "Settings saved."
@@ -206,23 +206,33 @@ msgstr "Cadwyd y gosodiadau."
 #: admin/class-babilim-admin.php:1678
 #, php-format
 msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "Os yw hyn ymlaen, bydd dadosod hefyd yn dileu hunaniaeth y wefan hon. Ni ellir adfer y drwydded dalu sydd ynghlwm wrth y wefan hon yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â chymorth Babilim yn %s i'w chael yn ôl."
+msgstr "Os yw hwn ymlaen, bydd dadosod hefyd yn dileu hunaniaeth y wefan hon. Ni ellir adfer y trwydded â thâl sydd ynghlwm wrth y wefan hon yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %s i'w chael yn ôl."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
 #: admin/class-babilim-admin.php:1694
 #, php-format
 msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Mae Babilim wedi'i osod i ddileu hunaniaeth y wefan hon pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y drwydded dalu sydd ynghlwm wrth y wefan hon yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â chymorth Babilim yn %s. I gadw'r hunaniaeth, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim, a dadactifadu eto. Dadactifadu beth bynnag?"
+msgstr "Mae Babilim wedi'i osod i ddileu hunaniaeth y wefan hon pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth y wefan hon yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %s. I gadw'r hunaniaeth, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng Ngosodiadau Babilim, a dadactifadu eto. Dadactifadu beth bynnag?"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1719
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "Mae %1$d safle ar y rhwydwaith hwn wedi'i osod i ddileu ei hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth y safle hwnnw yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %2$s. I gadw'r hunaniaeth, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim y safle hwnnw, a dadactifadu eto. Dadactifadu beth bynnag?"
+msgstr[1] "Mae %1$d safle ar y rhwydwaith hwn wedi'u gosod i ddileu eu hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth y safleoedd hynny yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %2$s. I gadw'r hunaniaethau, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim pob safle, a dadactifadu eto. Dadactifadu beth bynnag?"
+msgstr[2] "Mae %1$d safle ar y rhwydwaith hwn wedi'u gosod i ddileu eu hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth y safleoedd hynny yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %2$s. I gadw'r hunaniaethau, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim pob safle, a dadactifadu eto. Dadactifadu beth bynnag?"
+msgstr[3] "Mae %1$d safle ar y rhwydwaith hwn wedi'u gosod i ddileu eu hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth y safleoedd hynny yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %2$s. I gadw'r hunaniaethau, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim pob safle, a dadactifadu eto. Dadactifadu beth bynnag?"
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
 #: admin/class-babilim-admin.php:1738
 #, php-format
 msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Mae gan y rhwydwaith hwn ormod o wefannau i'w gwirio fesul un, ac efallai bod rhai ohonynt wedi'u gosod i ddileu eu hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y drwydded dalu sydd ynghlwm wrth wefan o'r fath yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â chymorth Babilim yn %s. I gadw'r hunaniaethau, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim pob gwefan, a dadactifadu eto. Dadactifadu beth bynnag?"
+msgstr "Mae gan y rhwydwaith hwn ormod o safleoedd i'w gwirio fesul un, ac efallai bod rhai ohonynt wedi'u gosod i ddileu eu hunaniaeth Babilim pan fydd yr ategyn yn cael ei ddileu. Ni ellid adfer y trwydded â thâl sydd ynghlwm wrth safle o'r fath yn awtomatig wedyn; byddai'n rhaid i chi gysylltu â Cymorth Babilim yn %s. I gadw'r hunaniaethau, pwyswch Diddymu, dad-diciwch \"Dileu holl ddata Babilim wrth ddadosod\" yng ngosodiadau Babilim pob safle, a dadactifadu eto. Dadactifadu beth bynnag?"
 
 #: admin/class-babilim-admin.php:1827
 msgid "Open Babilim settings"
-msgstr "Agor gosodiadau Babilim"
+msgstr "Agor Gosodiadau Babilim"
 
 #: admin/class-babilim-admin.php:1832
 msgid "Babilim could not verify this site, so nothing is downloaded or installed."
@@ -230,7 +240,7 @@ msgstr "Ni allai Babilim wirio'r wefan hon, felly ni chaiff dim ei lawrlwytho na
 
 #: admin/class-babilim-admin.php:1844
 msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "Nid oedd modd i'r gwasanaeth gyrraedd eich gwefan. Mae'n debyg bod mur gwarchod, ategyn diogelwch neu reol gwesteiwr yn rhwystro'r cais; caniatewch geisiadau i /wp-json/babilim/v1/challenge."
+msgstr "Methodd y gwasanaeth â chyrraedd eich gwefan. Mae'n debyg bod mur gwarchod, ategyn diogelwch neu reol gwesteiwr yn rhwystro'r cais; caniatewch geisiadau i /wp-json/babilim/v1/challenge."
 
 #: admin/class-babilim-admin.php:1846
 msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
@@ -238,7 +248,7 @@ msgstr "Cymerodd eich gwefan ormod o amser i ymateb. Rhowch gynnig arall arni ne
 
 #: admin/class-babilim-admin.php:1848
 msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "Atebodd eich gwefan, ond nid gyda'r hyn a ddisgwylid. Efallai bod y REST API wedi'i ailysgrifennu gan ategyn arall, neu fod y pwynt terfyn hwnnw wedi'i storio mewn storfa dros dro; eithriwch /wp-json/babilim/v1/challenge rhag storio dros dro ac ailysgrifennu."
+msgstr "Atebodd eich gwefan, ond nid gyda'r hyn a ddisgwylid. Efallai bod y REST API yn cael ei ailysgrifennu gan ategyn arall, neu fod y pwynt terfyn hwnnw wedi'i storio yn y storfa dros dro; eithriwch /wp-json/babilim/v1/challenge rhag storio dros dro ac ailysgrifennu."
 
 #: admin/class-babilim-admin.php:1850
 msgid "Please check that your site can be reached from the internet, then try again."
@@ -252,7 +262,7 @@ msgstr "Ailwirio"
 #: admin/class-babilim-admin.php:1894
 #, php-format
 msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "Mae'r wefan hon dros y maint y mae'r gwasanaeth yn ei dderbyn mewn un cysoni, felly gadawyd rhai eitemau allan: %1$d cydran a %2$d iaith."
+msgstr "Mae'r wefan hon yn fwy na'r maint y mae'r gwasanaeth yn ei dderbyn mewn un gweithrediad cysoni, felly gadawyd rhai eitemau allan: %1$d cydran a %2$d locale."
 
 #: admin/class-babilim-admin.php:1923
 msgid "This site is verified."
@@ -260,12 +270,12 @@ msgstr "Mae'r wefan hon wedi'i gwirio."
 
 #: admin/class-babilim-admin.php:1936
 msgid "Registration restarted."
-msgstr "Cofrestru wedi ailddechrau."
+msgstr "Ailgychwynnwyd y cofrestru."
 
 #: admin/class-babilim-admin.php:1957
 #: admin/class-babilim-admin.php:2031
 msgid "Sync complete."
-msgstr "Cysoni wedi'i gwblhau."
+msgstr "Cydweddu wedi'i gwblhau."
 
 #: admin/class-babilim-admin.php:1992
 msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
@@ -281,6 +291,16 @@ msgstr "Ni allai Babilim orffen galluogi (%1$s): %2$s"
 msgid "A host that serves only one PHP request at a time cannot complete this step."
 msgstr "Ni all gwesteiwr sydd ond yn gwasanaethu un cais PHP ar y tro gwblhau'r cam hwn."
 
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2023
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Mae Babilim wedi'i alluogi: mae'r wefan hon wedi'i gwirio a daethpwyd o hyd i %d cydran."
+msgstr[1] "Mae Babilim wedi'i alluogi: mae'r wefan hon wedi'i gwirio a daethpwyd o hyd i %d gydran."
+msgstr[2] "Mae Babilim wedi'i alluogi: mae'r wefan hon wedi'i gwirio a daethpwyd o hyd i %d cydran."
+msgstr[3] "Mae Babilim wedi'i alluogi: mae'r wefan hon wedi'i gwirio a daethpwyd o hyd i %d cydran."
+
 #: admin/class-babilim-admin.php:2107
 msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
 msgstr "Mae Babilim wedi'i analluogi. Ni chaiff dim mwy ei anfon; mae cyfieithiadau sydd eisoes wedi'u gosod yn parhau i weithio."
@@ -289,9 +309,29 @@ msgstr "Mae Babilim wedi'i analluogi. Ni chaiff dim mwy ei anfon; mae cyfieithia
 msgid "Supplementary translation index rebuilt."
 msgstr "Ailadeiladwyd y mynegai cyfieithiadau atodol."
 
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2147
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "Sgubo wedi'i gwblhau: %d ffeil wedi'i dileu."
+msgstr[1] "Sgubo wedi'i gwblhau: %d ffeil wedi'u dileu."
+msgstr[2] "Sgubo wedi'i gwblhau: %d ffeil wedi'u dileu."
+msgstr[3] "Sgubo wedi'i gwblhau: %d ffeil wedi'u dileu."
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2179
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "Tynnwyd %d cydran a osodwyd."
+msgstr[1] "Tynnwyd %d gydran a osodwyd."
+msgstr[2] "Tynnwyd %d cydran a osodwyd."
+msgstr[3] "Tynnwyd %d cydran a osodwyd."
+
 #: admin/class-babilim-admin.php:2181
 msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "Mae gosodiadau awtomatig bellach i ffwrdd; trowch nhw ymlaen eto yn y gosodiadau os ydych eu heisiau."
+msgstr "Mae gosodiadau awtomatig bellach wedi'u diffodd; trowch nhw ymlaen eto yn y gosodiadau os ydych eu heisiau."
 
 #: admin/class-babilim-admin.php:2502
 msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
@@ -305,11 +345,11 @@ msgstr "Ieithoedd a ganfuwyd ar y wefan hon: %s."
 
 #: admin/class-babilim-admin.php:2515
 msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
-msgstr "Gellir gosod cyfieithiadau sydd ar gael gydag un clic, a gellir gofyn am rai coll. Ar ôl hynny, caiff cyfieithiadau newydd a diweddariadau eu gosod yn awtomatig (ar y cynllun rhad ac am ddim, dim ond ar gyfer ategion a themâu sydd eisoes yn defnyddio slot rhad ac am ddim)."
+msgstr "Gellir gosod cyfieithiadau sydd ar gael gydag un clic, a gellir gofyn am rai coll. Ar ôl hynny, caiff cyfieithiadau a diweddariadau newydd eu gosod yn awtomatig (ar y cynllun rhad ac am ddim, dim ond ar gyfer ategion a themâu sydd eisoes yn defnyddio slot rhad ac am ddim)."
 
 #: admin/class-babilim-admin.php:2516
 msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "Mae'r cynllun rhad ac am ddim yn cwmpasu nifer cyfyngedig o ategion a themâu; dangosir eich cwota union yn Gosodiadau ar ôl i chi alluogi Babilim."
+msgstr "Mae'r cynllun rhad ac am ddim yn cwmpasu nifer cyfyngedig o ategion a themâu; dangosir eich cwota union yn y Gosodiadau ar ôl i chi alluogi Babilim."
 
 #: admin/class-babilim-admin.php:2517
 msgid "What is sent when you enable Babilim"
@@ -333,6 +373,16 @@ msgstr "Drwy glicio Galluogi, rydych yn cytuno i anfon yr wybodaeth a restrir uc
 msgid "Check again now"
 msgstr "Gwirio eto nawr"
 
+#. translators: %d: how many translations were installed automatically.
+#: admin/class-babilim-admin.php:2571
+#, php-format
+msgid "Babilim installed %d translation automatically since your last visit."
+msgid_plural "Babilim installed %d translations automatically since your last visit."
+msgstr[0] "Gosododd Babilim %d cyfieithiad yn awtomatig ers eich ymweliad diwethaf."
+msgstr[1] "Gosododd Babilim %d gyfieithiad yn awtomatig ers eich ymweliad diwethaf."
+msgstr[2] "Gosododd Babilim %d cyfieithiad yn awtomatig ers eich ymweliad diwethaf."
+msgstr[3] "Gosododd Babilim %d cyfieithiad yn awtomatig ers eich ymweliad diwethaf."
+
 #. translators: %s: when the last attempt happened.
 #: admin/class-babilim-admin.php:2597
 #, php-format
@@ -346,6 +396,46 @@ msgstr "Gwirio eto"
 #: admin/class-babilim-admin.php:2614
 msgid "No components synced yet."
 msgstr "Dim cydrannau wedi'u cysoni eto."
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:2635
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d wedi llwyddo"
+msgstr[1] "%d wedi llwyddo"
+msgstr[2] "%d wedi llwyddo"
+msgstr[3] "%d wedi llwyddo"
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:2639
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d wedi'i hepgor"
+msgstr[1] "%d wedi'u hepgor"
+msgstr[2] "%d wedi'u hepgor"
+msgstr[3] "%d wedi'u hepgor"
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:2643
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d wedi methu"
+msgstr[1] "%d wedi methu"
+msgstr[2] "%d wedi methu"
+msgstr[3] "%d wedi methu"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:2647
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d heb ei brofi eto"
+msgstr[1] "%d heb eu profi eto"
+msgstr[2] "%d heb eu profi eto"
+msgstr[3] "%d heb eu profi eto"
 
 #. translators: 1: the "Bulk <action>:" lead-in.
 #: admin/class-babilim-admin.php:2652
@@ -385,7 +475,7 @@ msgstr "Term anghywir"
 
 #: admin/class-babilim-admin.php:2702
 msgid "Broken placeholder"
-msgstr "Dalfan toredig"
+msgstr "Dalfan wedi torri"
 
 #: admin/class-babilim-admin.php:2704
 msgid "Wrong for this context"
@@ -397,7 +487,7 @@ msgstr "Ffurf luosog anghywir"
 
 #: admin/class-babilim-admin.php:2708
 msgid "Negation reversed"
-msgstr "Negyddu wedi'i wrthdroi"
+msgstr "Negyddiad wedi'i wrthdroi"
 
 #: admin/class-babilim-admin.php:2710
 msgid "Translation does not load"
@@ -417,7 +507,7 @@ msgstr "%1$s (%2$s): %3$s"
 
 #: admin/class-babilim-admin.php:2785
 msgid "Continuing…"
-msgstr "Parhau…"
+msgstr "Yn parhau…"
 
 #. translators: %d: how many operations are left.
 #: admin/class-babilim-admin.php:2788
@@ -477,7 +567,7 @@ msgstr "Bydd y testun gwreiddiol a'r cyfieithiadau a wneir ohono yn cael eu darp
 
 #: admin/class-babilim-admin.php:2877
 msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "Drwy barhau rydych yn cadarnhau bod gennych yr hawl i uwchlwytho'r cydran hwn."
+msgstr "Drwy barhau, rydych yn cadarnhau bod gennych yr hawl i uwchlwytho'r gydran hon."
 
 #: admin/class-babilim-admin.php:2878
 msgid "Upload and request"
@@ -507,7 +597,7 @@ msgstr "Nid oes uwchlwytho ar y gweill."
 #: admin/class-babilim-admin.php:2896
 #, php-format
 msgid "Uploading part %1$d of %2$d…"
-msgstr "Uwchlwytho rhan %1$d o %2$d…"
+msgstr "Yn uwchlwytho rhan %1$d o %2$d…"
 
 #: admin/class-babilim-admin.php:2897
 msgid "Continue"
@@ -540,7 +630,7 @@ msgstr "Dewiswch iaith"
 #: admin/class-babilim-admin.php:3005
 #: admin/class-babilim-translations-table.php:692
 msgid "Roll back and report"
-msgstr "Rholio'n ôl a rhoi gwybod"
+msgstr "Rholio'n ôl ac adrodd"
 
 #: admin/class-babilim-admin.php:3006
 #: admin/class-babilim-admin.php:4028
@@ -595,7 +685,7 @@ msgstr "Ydy"
 
 #: admin/class-babilim-admin.php:3189
 msgid "No — component inactive"
-msgstr "Nac ydy — cydran anweithredol"
+msgstr "Na — cydran anweithredol"
 
 #: admin/class-babilim-admin.php:3191
 msgid "No — installed version differs from the active one"
@@ -603,7 +693,7 @@ msgstr "Nac ydy — mae'r fersiwn sydd wedi'i gosod yn wahanol i'r un gweithredo
 
 #: admin/class-babilim-admin.php:3193
 msgid "No — component removed"
-msgstr "Nac ydy — cydran wedi'i thynnu"
+msgstr "Na — cydran wedi'i thynnu"
 
 #: admin/class-babilim-admin.php:3195
 msgid "No"
@@ -611,7 +701,7 @@ msgstr "Na"
 
 #: admin/class-babilim-admin.php:3217
 msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "Dim ond gweinyddwr rhwydwaith all wneud hyn, oherwydd mae'n newid ffeiliau cyfieithu a rennir gan bob gwefan ar y rhwydwaith hwn."
+msgstr "Dim ond gweinyddwr y rhwydwaith all wneud hyn, oherwydd mae'n newid ffeiliau cyfieithu a rennir gan bob gwefan ar y rhwydwaith hwn."
 
 #: admin/class-babilim-admin.php:3233
 msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
@@ -702,7 +792,7 @@ msgstr "Cedwir y cyfieithiadau sydd wedi'u gosod, ond ni fydd unrhyw wiriadau na
 
 #: admin/class-babilim-admin.php:3336
 msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Analluogi Babilim? Cedwir y cyfieithiadau a osodwyd, ond ni fydd unrhyw wiriadau na lawrlwythiadau pellach yn rhedeg."
+msgstr "Analluogi Babilim? Cedwir y cyfieithiadau sydd wedi'u gosod, ond ni fydd unrhyw wiriadau na lawrlwythiadau pellach yn rhedeg."
 
 #: admin/class-babilim-admin.php:3392
 #: admin/class-babilim-admin.php:3626
@@ -719,13 +809,13 @@ msgstr "Mae'r wefan hon eisoes wedi'i thrwyddedu. Ail-lwythwch y dudalen."
 #: admin/class-babilim-admin.php:3402
 #: admin/class-babilim-admin.php:3413
 msgid "Checkout is not available for this site right now."
-msgstr "Nid yw'r man talu ar gael ar gyfer y wefan hon ar hyn o bryd."
+msgstr "Nid yw'r dudalen dalu ar gael ar gyfer y wefan hon ar hyn o bryd."
 
 #. translators: %s: the reason the service or the connection gave.
 #: admin/class-babilim-admin.php:3405
 #, php-format
 msgid "Could not start checkout: %s"
-msgstr "Methu cychwyn y man talu: %s"
+msgstr "Methu cychwyn y dudalen dalu: %s"
 
 #: admin/class-babilim-admin.php:3488
 msgid "Babilim is not enabled."
@@ -866,7 +956,7 @@ msgstr "Dewiswch iaith…"
 
 #: admin/class-babilim-admin.php:3749
 msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "Methu llwytho'r rhestr lawn o locales WordPress.org o'r gwasanaeth, felly ni ellir ychwanegu iaith arall ar hyn o bryd."
+msgstr "Methu llwytho rhestr lawn locales WordPress.org o'r gwasanaeth, felly ni ellir ychwanegu iaith arall ar hyn o bryd."
 
 #: admin/class-babilim-admin.php:3807
 msgid "Theme"
@@ -918,17 +1008,17 @@ msgstr "Nid yw statws cynnal a chadw ar gael ar hyn o bryd."
 #: admin/class-babilim-admin.php:3890
 #, php-format
 msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "Cafodd gwaith glanhau ei oedi ar %1$s: %2$s. Ni ddilëwyd dim."
+msgstr "Cafodd gwaith glanhau ei oedi ar %1$s: %2$s. Ni chafodd dim ei ddileu."
 
 #. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
 #: admin/class-babilim-admin.php:3904
 #, php-format
 msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "Glanhau diwethaf ar %1$s: %2$d wedi'u marcio'n newydd, %3$d ffeil wedi'u dileu, %4$d cofnod wedi'u tynnu."
+msgstr "Y gwaith glanhau diwethaf ar %1$s: %2$d newydd eu marcio, %3$d ffeil wedi'u dileu, %4$d cofnod wedi'u tynnu."
 
 #: admin/class-babilim-admin.php:3911
 msgid "No cleanup has run yet."
-msgstr "Nid oes unrhyw waith glanhau wedi rhedeg eto."
+msgstr "Nid oes gwaith glanhau wedi rhedeg eto."
 
 #. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
 #: admin/class-babilim-admin.php:3922
@@ -990,218 +1080,213 @@ msgstr "Rholio'n ôl ac anfon adroddiad"
 msgid "Send report"
 msgstr "Anfon adroddiad"
 
-#: admin/class-babilim-cell.php:61
+#: admin/class-babilim-cell.php:65
 msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "Mae rhywfaint o Testun y gydran hon wedi'i godio'n galed gan ei hawdur ac ni ellir ei gyfieithu gan becyn iaith."
+msgstr "Mae peth o'r testun yn y gydran hon wedi'i godio'n galed gan ei hawdur ac ni ellir ei gyfieithu gan becyn iaith."
 
-#: admin/class-babilim-cell.php:101
+#: admin/class-babilim-cell.php:105
 msgid "WordPress.org"
 msgstr "WordPress.org"
 
-#: admin/class-babilim-cell.php:104
+#: admin/class-babilim-cell.php:108
 msgid "Bundled with the theme"
 msgstr "Wedi'i gynnwys gyda'r thema"
 
-#: admin/class-babilim-cell.php:105
+#: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "Wedi'i gynnwys gyda'r ategyn"
 
-#: admin/class-babilim-cell.php:112
+#: admin/class-babilim-cell.php:118
 msgid "Upload was not accepted"
 msgstr "Ni chafodd yr uwchlwythiad ei dderbyn"
 
-#: admin/class-babilim-cell.php:115
+#: admin/class-babilim-cell.php:121
 msgid "Upload expired before it finished"
-msgstr "Uwchlwytho wedi dod i ben cyn iddo orffen"
+msgstr "Daeth yr uwchlwythiad i ben cyn iddo orffen"
 
-#: admin/class-babilim-cell.php:117
+#: admin/class-babilim-cell.php:123
 msgid "No translation"
 msgstr "Dim cyfieithiad"
 
-#: admin/class-babilim-cell.php:123
-#: admin/class-babilim-cell.php:125
-#: admin/class-babilim-cell.php:254
-#: admin/class-babilim-cell.php:256
+#: admin/class-babilim-cell.php:129
+#: admin/class-babilim-cell.php:131
+#: admin/class-babilim-cell.php:265
+#: admin/class-babilim-cell.php:267
 msgid "Upload in progress — continue or cancel"
 msgstr "Uwchlwythiad ar y gweill — parhewch neu canslwch"
 
-#: admin/class-babilim-cell.php:127
+#: admin/class-babilim-cell.php:133
 msgid "Scheduled, waiting to be processed"
 msgstr "Amserlenwyd, yn aros i gael ei brosesu"
 
-#: admin/class-babilim-cell.php:129
+#: admin/class-babilim-cell.php:135
 msgid "Translating…"
 msgstr "Yn cyfieithu…"
 
-#: admin/class-babilim-cell.php:131
+#: admin/class-babilim-cell.php:137
 msgid "Translation failed"
 msgstr "Methodd y cyfieithiad"
 
-#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:139
 msgid "Free quota used"
 msgstr "Cwota rhad ac am ddim wedi'i ddefnyddio"
 
-#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:141
 msgid "Needs a paid license"
-msgstr "Angen trwydded dalu"
+msgstr "Angen trwydded â thâl"
 
-#: admin/class-babilim-cell.php:137
+#: admin/class-babilim-cell.php:148
 msgid "Not supported"
 msgstr "Heb ei gefnogi"
 
-#: admin/class-babilim-cell.php:139
+#: admin/class-babilim-cell.php:150
 msgid "Status unknown"
 msgstr "Statws anhysbys"
 
-#: admin/class-babilim-cell.php:159
-#: admin/class-babilim-cell.php:186
-#: admin/class-babilim-cell.php:304
+#: admin/class-babilim-cell.php:170
+#: admin/class-babilim-cell.php:197
+#: admin/class-babilim-cell.php:315
 msgctxt "translation status"
 msgid "Installed"
 msgstr "Wedi'i osod"
 
-#: admin/class-babilim-cell.php:172
-#: admin/class-babilim-cell.php:174
-msgid "Update available"
-msgstr "Diweddaru ar gael"
-
-#: admin/class-babilim-cell.php:199
+#: admin/class-babilim-cell.php:210
 msgid "Removed after a failed integrity check"
-msgstr "Wedi'i dynnu ar ôl gwiriad cywirdeb a fethodd"
+msgstr "Wedi'i dynnu ar ôl gwiriad cyfanrwydd a fethodd"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:259
+#: admin/class-babilim-cell.php:270
 #, php-format
 msgid "Installed · built for %s, new version scheduled"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %s, fersiwn newydd wedi'i amserlennu"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:259
+#: admin/class-babilim-cell.php:270
 msgid "Installed · built for a different version, new version scheduled"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn wahanol, fersiwn newydd wedi'i amserlennu"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:263
+#: admin/class-babilim-cell.php:274
 #, php-format
 msgid "Installed · built for %s, translating the new version…"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %s, yn cyfieithu'r fersiwn newydd…"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:263
+#: admin/class-babilim-cell.php:274
 msgid "Installed · built for a different version, translating the new version…"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn wahanol, yn cyfieithu'r fersiwn newydd…"
 
 #. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:268
+#: admin/class-babilim-cell.php:279
 #, php-format
 msgid "Installed · built for %1$s, this site has %2$s"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %1$s, mae gan y wefan hon %2$s"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:272
-#: admin/class-babilim-cell.php:288
+#: admin/class-babilim-cell.php:283
+#: admin/class-babilim-cell.php:299
 #, php-format
 msgid "Installed · built for %s"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %s"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:272
-#: admin/class-babilim-cell.php:288
+#: admin/class-babilim-cell.php:283
+#: admin/class-babilim-cell.php:299
 msgid "Installed · built for a different version"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn wahanol"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:276
+#: admin/class-babilim-cell.php:287
 #, php-format
 msgid "Installed · built for %s, new version failed"
 msgstr "Wedi'i osod · adeiladwyd ar gyfer %s, methodd y fersiwn newydd"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:276
+#: admin/class-babilim-cell.php:287
 msgid "Installed · built for a different version, new version failed"
 msgstr "Wedi'i osod · adeiladwyd ar gyfer fersiwn wahanol, methodd y fersiwn newydd"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:280
+#: admin/class-babilim-cell.php:291
 #, php-format
 msgid "Installed · built for %s, new version needs a paid license"
-msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %s, mae'r fersiwn newydd angen trwydded dalu"
+msgstr "Wedi'i osod · adeiladwyd ar gyfer %s, mae angen trwydded â thâl ar y fersiwn newydd"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:280
+#: admin/class-babilim-cell.php:291
 msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn gwahanol, mae'r fersiwn newydd angen trwydded dalu"
+msgstr "Wedi'i osod · adeiladwyd ar gyfer fersiwn wahanol, mae angen trwydded â thâl ar y fersiwn newydd"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:284
+#: admin/class-babilim-cell.php:295
 #, php-format
 msgid "Installed · built for %s, free quota used"
 msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer %s, cwota rhad ac am ddim wedi'i ddefnyddio"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:284
+#: admin/class-babilim-cell.php:295
 msgid "Installed · built for a different version, free quota used"
-msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn gwahanol, cwota rhad ac am ddim wedi'i ddefnyddio"
+msgstr "Wedi'i osod · wedi'i adeiladu ar gyfer fersiwn wahanol, cwota rhad ac am ddim wedi'i ddefnyddio"
 
-#: admin/class-babilim-cell.php:304
+#: admin/class-babilim-cell.php:315
 msgctxt "translation status"
 msgid "Available"
 msgstr "Ar gael"
 
 #. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:308
+#: admin/class-babilim-cell.php:319
 #, php-format
 msgid "Installed · %s"
 msgstr "Wedi'i osod · %s"
 
 #. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:311
+#: admin/class-babilim-cell.php:322
 #, php-format
 msgid "Available · %s"
 msgstr "Ar gael · %s"
 
-#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-cell.php:361
 #: admin/class-babilim-translations-table.php:412
 msgid "Update"
 msgstr "Diweddaru"
 
-#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-cell.php:361
 #: admin/class-babilim-translations-table.php:411
 msgid "Download"
 msgstr "Lawrlwytho"
 
-#: admin/class-babilim-cell.php:351
+#: admin/class-babilim-cell.php:362
 msgid "Updating…"
 msgstr "Yn diweddaru…"
 
-#: admin/class-babilim-cell.php:351
+#: admin/class-babilim-cell.php:362
 msgid "Downloading…"
 msgstr "Yn lawrlwytho…"
 
-#: admin/class-babilim-cell.php:354
+#: admin/class-babilim-cell.php:365
 msgid "Retry request"
 msgstr "Ailgynnig y cais"
 
-#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-cell.php:367
 msgid "Request newer translation"
 msgstr "Gofyn am gyfieithiad mwy newydd"
 
-#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-cell.php:367
 #: admin/class-babilim-translations-table.php:413
 msgid "Request translation"
 msgstr "Gofyn am gyfieithiad"
 
-#: admin/class-babilim-cell.php:358
+#: admin/class-babilim-cell.php:369
 msgid "Requesting…"
 msgstr "Yn gofyn…"
 
 #: admin/class-babilim-translations-table.php:35
 msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "Mae gofyn am gyfieithiad yn defnyddio un o'ch slotiau rhad ac am ddim, oni bai bod y cydran hwn eisoes yn defnyddio un. Nid yw cyfieithiad a fethodd yn rhoi'r slot yn ôl."
+msgstr "Mae gofyn am gyfieithiad yn defnyddio un o'ch slotiau rhad ac am ddim, oni bai bod y gydran hon eisoes yn defnyddio un. Nid yw cyfieithiad a fethodd yn rhoi'r slot yn ôl."
 
 #: admin/class-babilim-translations-table.php:42
 msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "Os nad yw'r cydran hwn yn defnyddio un o'ch slotiau rhad ac am ddim eto, mae gofyn am gyfieithiad yn defnyddio un. Nid yw cyfieithiad a fethodd yn rhoi'r slot yn ôl. Parhau?"
+msgstr "Os nad yw'r gydran hon yn defnyddio un o'ch slotiau rhad ac am ddim eto, mae gofyn am gyfieithiad yn defnyddio un. Nid yw cyfieithiad a fethodd yn rhoi'r slot yn ôl. Parhau?"
 
 #: admin/class-babilim-translations-table.php:382
 msgid "No plugins or themes found."
@@ -1254,17 +1339,27 @@ msgstr "Themâu"
 msgid "All languages"
 msgstr "Pob iaith"
 
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:502
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "%d i'w osod"
+msgstr[1] "%d i'w gosod"
+msgstr[2] "%d i'w gosod"
+msgstr[3] "%d i'w gosod"
+
 #: admin/class-babilim-translations-table.php:511
 msgid "Language:"
 msgstr "Iaith:"
 
 #: admin/class-babilim-translations-table.php:547
 msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "Mae gweithredoedd swmp yn berthnasol i bob iaith sy'n cyfateb ym mhob cydran a ddewiswyd."
+msgstr "Mae gweithredoedd swmp yn berthnasol i bob iaith gyfatebol o bob cydran a ddewiswyd."
 
 #: admin/class-babilim-translations-table.php:548
 msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "Mae gweithredoedd swmp yn berthnasol i'r iaith a ddewiswyd yn unig ym mhob cydran a ddewiswyd."
+msgstr "Mae gweithredoedd swmp yn berthnasol i'r iaith a ddewiswyd yn unig o bob cydran a ddewiswyd."
 
 #. translators: %s: the component's version number.
 #: admin/class-babilim-translations-table.php:572
@@ -1294,7 +1389,7 @@ msgstr "Tynnu cyfieithiad %2$s o %1$s oddi ar y wefan hon?"
 #: admin/class-babilim-translations-table.php:638
 #, php-format
 msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "Dychwelyd cyfieithiad %2$s o %1$s i'r fersiwn adeiladu flaenorol?"
+msgstr "Rholio cyfieithiad %2$s o %1$s yn ôl i'r adeiladwaith blaenorol?"
 
 #. translators: 1: action name such as Remove, 2: component name.
 #: admin/class-babilim-translations-table.php:731
@@ -1318,7 +1413,7 @@ msgstr "Nid yw hwnnw'n ddynodydd adeiladu dilys."
 
 #: includes/class-babilim-api-client.php:309
 msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Yn gwrthod ysgrifennu y tu allan i gyfeiriadur ffeiliau iaith Babilim."
+msgstr "Gwrthod ysgrifennu y tu allan i gyfeiriadur ffeiliau iaith Babilim."
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
@@ -1348,11 +1443,11 @@ msgstr "Fersiwn y ategyn hwn ei hun, fel y gall y gwasanaeth eich hysbysu i'w dd
 
 #: includes/class-babilim-consent.php:92
 msgid "This site's configured locale."
-msgstr "Y locale sydd wedi'i ffurfweddu ar gyfer y wefan hon."
+msgstr "Locale ffurfweddeledig y wefan hon."
 
 #: includes/class-babilim-consent.php:97
 msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "Pob locale sydd ar waith ar y wefan hon (locale'r wefan, pecynnau iaith wedi'u gosod, locales defnyddwyr, ac unrhyw rai a ychwanegwch â llaw). Ni chaiff unrhyw locale ei drin yn wahanol i un arall."
+msgstr "Pob locale a ddefnyddir ar y wefan hon (locale'r wefan, pecynnau iaith wedi'u gosod, locales defnyddwyr, ac unrhyw rai rydych chi'n eu hychwanegu â llaw). Ni chaiff unrhyw locale ei drin yn wahanol i'r lleill."
 
 #: includes/class-babilim-consent.php:101
 msgid "(a public key generated for this site)"
@@ -1368,7 +1463,7 @@ msgstr "Pob ategyn/thema a osodwyd: ei slug, ei fersiwn, ei barth(parthau) testu
 
 #: includes/class-babilim-consent.php:112
 msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
-msgstr "Dim ond pan fyddwch yn cadarnhau uwchlwytho ategyn neu thema nad yw ar WordPress.org: cyfeiriadur cyfan y cydran hwnnw, fel zip."
+msgstr "Dim ond pan fyddwch yn cadarnhau uwchlwytho ar gyfer ategyn neu thema nad yw ar WordPress.org: cyfeiriadur cyfan y gydran honno, fel zip."
 
 #: includes/class-babilim-consent.php:116
 msgid "(generic codes and coordinates only)"
@@ -1394,7 +1489,7 @@ msgstr "Locale anniogel: %s"
 #: includes/class-babilim-installer.php:1054
 #, php-format
 msgid "Manifest unavailable: %s"
-msgstr "Manifest ddim ar gael: %s"
+msgstr "Maniffest ddim ar gael: %s"
 
 #: includes/class-babilim-default-index.php:134
 msgid "Could not determine active components; the existing merged index was left unchanged."
@@ -1402,17 +1497,17 @@ msgstr "Methwyd pennu'r cydrannau gweithredol; gadawyd y mynegai cyfun presennol
 
 #: includes/class-babilim-default-index.php:400
 msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "Methwyd penderfynu pa ategion/themâu sydd wedi'u gosod; hepgorwyd y sgubo, ni ddilëwyd dim."
+msgstr "Methwyd penderfynu pa ategion/themâu sydd wedi'u gosod; hepgorwyd y sgubo, ni chafodd dim ei ddileu."
 
 #. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
 #: includes/class-babilim-default-index.php:532
 #, php-format
 msgid "Sweep aborted without orphaning anything: %s."
-msgstr "Rhoddwyd y gorau i'r sgubo heb wneud dim yn amddifad: %s."
+msgstr "Terfynwyd y sgubo heb wneud dim yn amddifad: %s."
 
 #: includes/class-babilim-default-index.php:624
 msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "Rhedodd y glanhau, ond methwyd cofnodi rhai o'i newidiadau yn y mynegai cyfieithiadau; bydd y glanhau nesaf yn ceisio eto."
+msgstr "Rhedodd y gwaith glanhau, ond ni ellid cofnodi rhai o'i newidiadau yn y mynegai cyfieithiadau; bydd y gwaith glanhau nesaf yn ceisio eto."
 
 #. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
 #: includes/class-babilim-default-index.php:746
@@ -1442,7 +1537,7 @@ msgstr "byddai'n gwneud %1$d o %2$d cydran a reolir yn amddifad (mwy na hanner)"
 #: includes/class-babilim-default-index.php:874
 #, php-format
 msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "Ailadeiladwyd y mynegai cyfun ar gyfer '%s', ond methodd y mynegai cyfieithiadau ei gofnodi; bydd yr ailadeiladu nesaf yn ceisio eto."
+msgstr "Ailadeiladwyd y mynegai cyfun ar gyfer '%s', ond ni allai'r mynegai cyfieithiadau ei gofnodi; bydd yr ailadeiladu nesaf yn ceisio eto."
 
 #: includes/class-babilim-default-index.php:950
 msgid "Could not write the staged merged index."
@@ -1456,7 +1551,7 @@ msgstr "Nid oedd nifer y cofnodion a ddosrannwyd eto yn cyfateb i'r mynegai a ad
 #: includes/class-babilim-default-index.php:989
 #, php-format
 msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "Methwyd symud y mynegai cyfun ar gyfer '%s' i'w le; tynnwyd y mynegai a gyflwynid yn flaenorol (os oedd un) yn hytrach na'i adael wedi'i ddiweddaru'n rhannol. Ni chyflwynir atodiad parth rhagosodedig ar gyfer y locale hwn tan yr ailadeiladu llwyddiannus nesaf."
+msgstr "Methwyd symud y mynegai cyfun ar gyfer '%s' i'w le; cafodd y mynegai blaenorol a wasanaethwyd (os oedd un) ei dynnu yn hytrach na'i adael hanner wedi'i ddiweddaru. Ni fydd atodiad parth rhagosodedig yn cael ei wasanaethu ar gyfer y locale hwn tan yr ailadeiladu llwyddiannus nesaf."
 
 #. translators: %s: the zip file path that could not be opened.
 #: includes/class-babilim-installer.php:147
@@ -1476,7 +1571,7 @@ msgstr "Nid yw manifest.json yn y zip yn JSON dilys."
 #: includes/class-babilim-installer.php:165
 #, php-format
 msgid "manifest.json's '%s' does not match the expected value."
-msgstr "Nid yw '%s' manifest.json yn cyfateb â'r gwerth disgwyliedig."
+msgstr "Nid yw '%s' manifest.json yn cyfateb i'r gwerth disgwyliedig."
 
 #: includes/class-babilim-installer.php:249
 #: includes/class-babilim-installer.php:254
@@ -1493,19 +1588,19 @@ msgstr "Nid yw'n server_build_id dilys: %s"
 #: includes/class-babilim-installer.php:311
 #, php-format
 msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "Nid yw math '%1$s' manifest y pecyn yn cyfateb â'r math y gofynnwyd amdano '%2$s'."
+msgstr "Nid yw kind '%1$s' maniffest y pecyn yn cyfateb i'r kind y gofynnwyd amdano '%2$s'."
 
 #. translators: 1: the package's text domain. 2: this site's text domain for the component.
 #: includes/class-babilim-installer.php:346
 #, php-format
 msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "Nid yw parth testun y pecyn '%1$s' yn cyfateb i gopi'r wefan hon o'r cydran ('%2$s'), felly ni chafodd ei osod."
+msgstr "Nid yw parth testun y pecyn '%1$s' yn cyfateb i gopi'r wefan hon o'r gydran ('%2$s'), felly ni chafodd ei osod."
 
 #. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
 #: includes/class-babilim-installer.php:364
 #, php-format
 msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "Nid yw'r parth a roddwyd '%1$s' yn cyfateb i slug manifest y pecyn ei hun '%2$s' nac i'w text_domain '%3$s'."
+msgstr "Nid yw'r parth a roddwyd '%1$s' yn cyfateb i slug maniffest y pecyn '%2$s' na'i text_domain '%3$s'."
 
 #. translators: %s: the invalid slug.
 #: includes/class-babilim-installer.php:372
@@ -1529,23 +1624,23 @@ msgstr "Nid oes %s yn y pecyn ar gyfer ei barth testun ei hun."
 #: includes/class-babilim-installer.php:470
 #, php-format
 msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "Mae manifest.json ar goll neu mae ganddo '%s' annilys."
+msgstr "Mae '%s' ar goll neu'n annilys yn manifest.json."
 
 #: includes/class-babilim-installer.php:474
 msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "Mae manifest.json ar goll neu mae ganddo 'entries' annilys."
+msgstr "Mae 'entries' ar goll neu'n annilys yn manifest.json."
 
 #: includes/class-babilim-installer.php:477
 msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "Mae manifest.json ar goll neu mae ganddo 'files' annilys."
+msgstr "Mae 'files' ar goll neu'n annilys yn manifest.json."
 
 #: includes/class-babilim-installer.php:480
 msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "Mae manifest.json ar goll neu mae ganddo 'extra_domains' annilys."
+msgstr "Mae 'extra_domains' ar goll neu'n annilys yn manifest.json."
 
 #: includes/class-babilim-installer.php:483
 msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "Mae manifest.json ar goll neu mae ganddo 'build_no' annilys."
+msgstr "Mae 'build_no' ar goll neu'n annilys yn manifest.json."
 
 #: includes/class-babilim-installer.php:486
 msgid "manifest.json's 'server_build_id' is not a valid build id."
@@ -1557,11 +1652,11 @@ msgstr "Nid yw 'contract' manifest.json yn llinyn fersiwn dilys."
 
 #: includes/class-babilim-installer.php:492
 msgid "manifest.json's 'status' must be 'published'."
-msgstr "Rhaid i faes 'status' manifest.json fod yn 'published'."
+msgstr "Rhaid i 'status' manifest.json (Statws) fod yn 'published'."
 
 #: includes/class-babilim-installer.php:495
 msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "Rhaid i werth 'kind' yn manifest.json fod yn 'plugin' neu 'theme'."
+msgstr "Rhaid i 'kind' manifest.json fod yn 'plugin' neu'n 'theme' (Thema)."
 
 #: includes/class-babilim-installer.php:498
 msgid "manifest.json has an invalid 'default_domain_entries'."
@@ -1575,7 +1670,7 @@ msgstr "Mae gan manifest.json 'default_domain_files' annilys."
 #: includes/class-babilim-installer.php:524
 #, php-format
 msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "Mae expected_manifest ar goll neu mae ganddo '%s' annilys."
+msgstr "Mae '%s' ar goll neu'n annilys yn expected_manifest."
 
 #: includes/class-babilim-installer.php:528
 msgid "expected_manifest's 'server_build_id' is not a valid build id."
@@ -1592,15 +1687,15 @@ msgstr "Dim cofnod ar gyfer %s"
 
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
-msgstr "Nid yw un neu fwy o ffeiliau a gyflwynwyd bellach yn cyfateb i'r manifest."
+msgstr "Nid yw un neu fwy o ffeiliau a wasanaethir bellach yn cyfateb i'r maniffest."
 
 #: includes/class-babilim-installer.php:705
 msgid "No previous build to roll back to."
-msgstr "Dim adeiladu blaenorol i ddychwelyd iddo."
+msgstr "Dim adeiladwaith blaenorol i ddychwelyd iddo."
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
-msgstr "Nid oedd modd cofnodi'r newid yn y mynegai cyfieithiadau; rhowch gynnig arall arni."
+msgstr "Methwyd cofnodi'r newid yn y mynegai cyfieithiadau; rhowch gynnig arall arni."
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1618,13 +1713,13 @@ msgstr "Parth anniogel: %s"
 #: includes/class-babilim-installer.php:1022
 #, php-format
 msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "Mae'r parth testun '%1$s' (%2$s) eisoes yn cael ei weini ar gyfer cydran arall a osodwyd (%3$s); ni osodwyd dim."
+msgstr "Mae'r parth testun '%1$s' (%2$s) eisoes yn cael ei wasanaethu ar gyfer cydran arall a osodwyd (%3$s); ni osodwyd dim."
 
 #. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
 #: includes/class-babilim-installer.php:1075
 #, php-format
 msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "Byddai rholio'n ôl yn trosysgrifo '%1$s' (%2$s), sydd bellach yn cael ei weini ar gyfer cydran arall a osodwyd (%3$s); ni newidiwyd dim."
+msgstr "Byddai dychwelyd i fersiwn blaenorol yn trosysgrifo '%1$s' (%2$s), sydd bellach yn cael ei wasanaethu ar gyfer cydran arall a osodwyd (%3$s); ni newidiwyd dim."
 
 #. translators: %s: the filename missing from the zip.
 #: includes/class-babilim-installer.php:1167
@@ -1636,7 +1731,7 @@ msgstr "Mae ffeil ddisgwyliedig ar goll o'r zip: %s"
 #: includes/class-babilim-installer.php:1171
 #, php-format
 msgid "sha256 mismatch for %s"
-msgstr "Diffyg cyfatebiaeth sha256 ar gyfer %s"
+msgstr "Anghydweddiad sha256 ar gyfer %s"
 
 #: includes/class-babilim-installer.php:1181
 msgid "The package declares no main translation file."
@@ -1652,7 +1747,7 @@ msgstr "Mae ffeil ddiofyn ddisgwyliedig ar goll o'r zip: %s"
 #: includes/class-babilim-installer.php:1191
 #, php-format
 msgid "sha256 mismatch for default/%s"
-msgstr "Diffyg cyfatebiaeth sha256 ar gyfer default/%s"
+msgstr "Anghydweddiad sha256 ar gyfer default/%s"
 
 #. translators: %s: the filename that failed to stage.
 #: includes/class-babilim-installer.php:1214
@@ -1684,7 +1779,7 @@ msgstr "Nid oedd modd gwirio nifer y cofnodion ar gyfer %s"
 #: includes/class-babilim-installer.php:1293
 #, php-format
 msgid "l10n.php entry count mismatch for %s"
-msgstr "Diffyg cyfatebiaeth cyfrif cofnodion l10n.php ar gyfer %s"
+msgstr "Anghydweddiad nifer cofnodion l10n.php ar gyfer %s"
 
 #: includes/class-babilim-installer.php:1324
 msgid "Default supplement entry count mismatch."
@@ -1698,7 +1793,7 @@ msgstr "Ni chynhyrchodd y pecyn unrhyw brif ffeil gyfieithu y gellir ei gweini."
 #: includes/class-babilim-installer.php:1628
 #, php-format
 msgid "Could not prepare %s for rollback."
-msgstr "Nid oedd modd paratoi %s ar gyfer dychwelyd."
+msgstr "Methwyd paratoi %s ar gyfer dychwelyd i fersiwn blaenorol."
 
 #. translators: %s: the filename that could not be backed up.
 #: includes/class-babilim-installer.php:1644
@@ -1716,7 +1811,7 @@ msgstr "Nid oedd modd symud %s i'w le."
 #: includes/class-babilim-installer.php:1656
 #, php-format
 msgid "Could not read %s back after moving it into place."
-msgstr "Nid oedd modd darllen %s yn ôl ar ôl ei symud i'w le."
+msgstr "Methwyd darllen %s yn ôl ar ôl ei symud i'w le."
 
 #: includes/class-babilim-locale-label.php:53
 msgid "English (United States)"
@@ -1756,7 +1851,7 @@ msgstr "Nid oes cyfeiriadur dros dro ysgrifennadwy ar gael ar gyfer pecynnu."
 
 #: includes/class-babilim-packager.php:99
 msgid "A file in the component could not be read, so it was not packaged."
-msgstr "Nid oedd modd darllen ffeil yn y cydran, felly ni chafodd ei phecynnu."
+msgstr "Methwyd darllen ffeil yn y gydran, felly ni chafodd ei phecynnu."
 
 #: includes/class-babilim-packager.php:139
 msgid "Only plugins and themes can be packaged."
@@ -1765,11 +1860,11 @@ msgstr "Dim ond ategion a themâu y gellir eu pecynnu."
 #: includes/class-babilim-packager.php:144
 #: includes/class-babilim-packager.php:153
 msgid "The component's main file was not found."
-msgstr "Ni chafwyd hyd i brif ffeil y cydran."
+msgstr "Ni chanfuwyd prif ffeil y gydran."
 
 #: includes/class-babilim-packager.php:149
 msgid "The component is not inside the plugins or themes directory."
-msgstr "Nid yw'r cydran y tu mewn i'r cyfeiriadur ategion na themâu."
+msgstr "Nid yw'r gydran y tu mewn i'r cyfeiriadur ategion na themâu."
 
 #: includes/class-babilim-site.php:348
 #: includes/class-babilim-site.php:939
@@ -1798,11 +1893,11 @@ msgstr "Roedd site_token ar goll yn yr ymateb dilysu."
 
 #: includes/class-babilim-site.php:735
 msgid "No site id is on file to rotate a token for."
-msgstr "Nid oes ID gwefan wedi'i gofnodi i gylchdroi tocyn ar ei gyfer."
+msgstr "Nid oes ID gwefan wedi'i gadw yn y ffeil i gylchdroi tocyn ar ei gyfer."
 
 #: includes/class-babilim-site.php:744
 msgid "Rotate-token response was missing site_token."
-msgstr "Roedd site_token ar goll yn ymateb cylchdroi'r tocyn."
+msgstr "Roedd site_token ar goll yn yr ymateb cylchdroi tocyn."
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
@@ -1811,7 +1906,7 @@ msgstr "Rhaid i nonce fod yn llinyn hecsadegol."
 
 #: includes/class-babilim-site.php:805
 msgid "No pending challenge for this nonce."
-msgstr "Dim her yn aros ar gyfer y nonce hwn."
+msgstr "Dim her ar y gweill ar gyfer y nonce hwn."
 
 #: includes/class-babilim-site.php:808
 msgid "Too many requests."
@@ -1819,13 +1914,13 @@ msgstr "Gormod o geisiadau."
 
 #: includes/class-babilim-site.php:847
 msgid "The service asked this site to wait before syncing again."
-msgstr "Gofynnodd y gwasanaeth i'r wefan hon aros cyn cydamseru eto."
+msgstr "Gofynnodd y gwasanaeth i'r wefan hon aros cyn cysoni eto."
 
 #. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
 #: includes/class-babilim-site.php:911
 #, php-format
 msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "Mae gan y wefan hon %1$d cydran ar draws %2$d iaith, sy'n gofyn am %3$d swp gwirio; gall Babilim drin %4$d ar y mwyaf ym mhob rhediad. Lleihewch yr ieithoedd a reolir yn Gosodiadau neu dadactifadwch ategion a themâu nas defnyddir, yna pwyswch Gwirio eto nawr."
+msgstr "Mae gan y wefan hon %1$d o gydrannau ar draws %2$d o ieithoedd, sydd angen %3$d swp gwirio; gall Babilim ymdrin â %4$d ar y mwyaf ym mhob rhediad. Lleihewch yr ieithoedd a reolir yn Gosodiadau neu dadactifadwch ategion a themâu nas defnyddir, yna pwyswch Gwirio eto nawr."
 
 #: includes/class-babilim-site.php:986
 msgid "Babilim could not finish checking this site."
@@ -1850,11 +1945,11 @@ msgstr "Roedd cynnig llwytho i fyny'r gwasanaeth yn anghyflawn."
 
 #: includes/class-babilim-upload.php:109
 msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "Mae'r cydran hwn yn fwy nag y mae'r gwasanaeth yn ei dderbyn, felly ni ellir ei uwchlwytho."
+msgstr "Mae'r gydran hon yn fwy nag y mae'r gwasanaeth yn ei derbyn, felly ni ellir ei huwchlwytho."
 
 #: includes/class-babilim-upload.php:153
 msgid "The packaged component could not be read."
-msgstr "Doedd dim modd darllen y cydran wedi'i becynnu."
+msgstr "Nid oedd modd darllen y gydran becynnog."
 
 #: includes/class-babilim-upload.php:264
 msgid "A part of the upload kept failing, so the upload was cancelled."
@@ -1866,106 +1961,15 @@ msgstr "Methodd rhan o'r uwchlwythiad dro ar ôl tro, felly cafodd yr uwchlwythi
 msgid "Could not read: %s"
 msgstr "Methwyd darllen: %s"
 
+#: admin/class-babilim-cell.php:183
+#: admin/class-babilim-cell.php:185
+msgid "Update available"
+msgstr "Diweddaru ar gael"
+
 #: includes/class-babilim-consent.php:117
 msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
 msgstr "Hyd at 20 digwyddiad diagnostig sy'n aros (e.e. ffeil a fethodd ei gwiriad cywirdeb), pob un yn god, cydran a locale yn unig, a byth unrhyw gynnwys llinynnau na thestun wedi'i gyfieithu."
 
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1719
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2023
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2147
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2179
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2571
-#, php-format
-msgid "Babilim installed %d translation automatically since your last visit."
-msgid_plural "Babilim installed %d translations automatically since your last visit."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2635
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2639
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2643
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2647
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
-#, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+#: admin/class-babilim-cell.php:146
+msgid "Original language"
+msgstr "Iaith wreiddiol"

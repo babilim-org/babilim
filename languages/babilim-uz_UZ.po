@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.0.0\n"
+"Project-Id-Version: Babilim 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: uz\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:53:37+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:53:37+00:00\n"
+"POT-Creation-Date: 2026-11-01T01:09:17+00:00\n"
+"PO-Revision-Date: 2026-11-01T01:09:17+00:00\n"
 "Language: uz_UZ\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Babilim\n"
@@ -59,7 +59,7 @@ msgstr "Kamroq komponent tanlang: har bir ishga ko'pi bilan %1$d ta amal (siz %2
 #: admin/class-babilim-admin.php:1132
 #: admin/class-babilim-admin.php:1303
 msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "Bu komponent ushbu saytda o‘rnatilmagan, shuning uchun u uchun tarjima so‘rab bo‘lmaydi."
+msgstr "Bu komponent ushbu saytda o'rnatilmagan, shuning uchun u uchun tarjima so'rab bo'lmaydi."
 
 #: admin/class-babilim-admin.php:933
 msgid "Already installed."
@@ -84,11 +84,11 @@ msgstr "Babilim bu sayt uchun hali yoqilmagan."
 
 #: admin/class-babilim-admin.php:975
 msgid "No build is available to download for this locale."
-msgstr "Ushbu til uchun yuklab olish mumkin bo‘lgan build mavjud emas."
+msgstr "Bu til uchun yuklab olish mumkin bo'lgan yig'ilma yo'q."
 
 #: admin/class-babilim-admin.php:1030
 msgid "Rolled back to the previous build."
-msgstr "Oldingi build’ga qaytarildi."
+msgstr "Oldingi buildga qaytarildi."
 
 #: admin/class-babilim-admin.php:1089
 msgid "Rolled back and reported."
@@ -106,7 +106,7 @@ msgstr "Olib tashlandi."
 
 #: admin/class-babilim-admin.php:1155
 msgid "Translation requested."
-msgstr "Tarjima so‘ralди."
+msgstr "Tarjima so'raldi."
 
 #: admin/class-babilim-admin.php:1177
 msgid "This component was already uploaded. Babilim is checking it now."
@@ -118,17 +118,17 @@ msgstr "Yuklash bekor qilindi."
 
 #: admin/class-babilim-admin.php:1228
 msgid "Upload complete — translation requested."
-msgstr "Yuklash yakunlandi — tarjima so‘raldi."
+msgstr "Yuklash yakunlandi — tarjima so'raldi."
 
 #: admin/class-babilim-admin.php:1306
 msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "Bu komponent versiya raqamini e’lon qilmagan, shuning uchun u uchun tarjima so‘rab bo‘lmaydi."
+msgstr "Bu komponent versiya raqamini ko'rsatmagan, shuning uchun u uchun tarjima so'rab bo'lmaydi."
 
 #. translators: %d: the most characters a version number may have.
 #: admin/class-babilim-admin.php:1313
 #, php-format
 msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "Bu komponent versiya raqami %d belgidan uzun, Babilim buni qayta ishlay olmaydi, shuning uchun u uchun tarjima so‘rab bo‘lmaydi."
+msgstr "Bu komponentning versiya raqami %d belgidan uzun, Babilim buni qayta ishlay olmaydi, shuning uchun u uchun tarjima so'rab bo'lmaydi."
 
 #: admin/class-babilim-admin.php:1319
 msgid "A translation cannot be requested for that locale on this site right now."
@@ -148,11 +148,11 @@ msgstr "Iltimos, bu xabar uchun turkumni tanlang."
 
 #: admin/class-babilim-admin.php:1386
 msgid "This report is missing a valid build to report against."
-msgstr "Ushbu hisobotda hisobot berish uchun yaroqli build yo‘q."
+msgstr "Bu hisobotda hisobot berish uchun yaroqli build yo'q."
 
 #: admin/class-babilim-admin.php:1389
 msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "Bu build ushbu saytga hozirda shu komponent va til uchun ma’lum bo‘lgan buildlar qatoriga kirmaydi."
+msgstr "Bu build ushbu sayt uchun ushbu komponent/mahalliy til bo'yicha hozir ma'lum emas."
 
 #. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
 #: admin/class-babilim-admin.php:1441
@@ -196,7 +196,7 @@ msgstr "Babilim sinxronlash jarayoni xizmat tomonidan vaqtincha kechiktirildi (s
 
 #: admin/class-babilim-admin.php:1583
 msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "Bu yaroqli WordPress til kodi emas. Hech narsa saqlanmadi."
+msgstr "Bu yaroqli WordPress mahalliy til kodi emas. Hech narsa saqlanmadi."
 
 #: admin/class-babilim-admin.php:1616
 msgid "Settings saved."
@@ -206,19 +206,26 @@ msgstr "Sozlamalar saqlandi."
 #: admin/class-babilim-admin.php:1678
 #, php-format
 msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "Agar bu yoqilgan bo‘lsa, o‘chirishda ushbu saytning identifikatori ham o‘chiriladi. Keyin ushbu saytga biriktirilgan pullik litsenziyani avtomatik tiklab bo‘lmaydi; uni qaytarish uchun %s manzili orqali Babilim yordam xizmatiga murojaat qilishingiz kerak bo‘ladi."
+msgstr "Agar bu yoqilgan bo'lsa, o'chirishda ushbu saytning identifikatori ham o'chiriladi. Ushbu saytga biriktirilgan pullik litsenziyani keyin avtomatik tiklab bo'lmaydi; uni qaytarish uchun %s manzilida Babilim yordami bilan bog'lanishingiz kerak bo'ladi."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
 #: admin/class-babilim-admin.php:1694
 #, php-format
 msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Babilim plagin o‘chirilganda ushbu saytning identifikatorini o‘chirishga sozlangan. Shundan so‘ng ushbu saytga biriktirilgan pullik litsenziyani avtomatik tiklab bo‘lmaydi; %s manzili orqali Babilim yordam xizmatiga murojaat qilishingiz kerak bo‘ladi. Identifikatorni saqlab qolish uchun “Bekor qilish” tugmasini bosing, Babilim sozlamalarida “O‘chirishda barcha Babilim ma’lumotlarini o‘chirish” belgisini olib tashlang va plaginni yana faolsizlantiring. Baribir faolsizlantirilsinmi?"
+msgstr "Babilim plagin o'chirilganda ushbu saytning identifikatorini o'chirishga sozlangan. Ushbu saytga biriktirilgan pullik litsenziyani keyin avtomatik tiklab bo'lmaydi; %s manzilida Babilim yordami bilan bog'lanishingiz kerak bo'ladi. Identifikatorni saqlab qolish uchun Bekor qilish tugmasini bosing, Babilim sozlamalarida \"O'chirishda Babilimning barcha ma'lumotlarini o'chirish\" belgisini olib tashlang va plaginni yana faolsizlantiring. Baribir faolsizlantirilsinmi?"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1719
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "Ushbu tarmoqdagi %1$d ta sayt plagin o'chirilganda o'z Babilim identifikatorini o'chirishga sozlangan. Bunday saytlarga biriktirilgan pullik litsenziyani keyin avtomatik tiklab bo'lmaydi; %2$s manzilida Babilim yordami bilan bog'lanishingiz kerak bo'ladi. Identifikatorlarni saqlab qolish uchun Bekor qilish tugmasini bosing, tegishli har bir saytning Babilim sozlamalarida \"O'chirishda Babilimning barcha ma'lumotlarini o'chirish\" belgisini olib tashlang va plaginni yana faolsizlantiring. Baribir faolsizlantirilsinmi?"
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
 #: admin/class-babilim-admin.php:1738
 #, php-format
 msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Bu tarmoqda saytlar juda ko‘p, ularni birma-bir tekshirib bo‘lmaydi va ba’zilari plagin o‘chirilganda Babilim identifikatorini o‘chirishga sozlangan bo‘lishi mumkin. Shundan so‘ng bunday saytga biriktirilgan pullik litsenziyani avtomatik tiklab bo‘lmaydi; %s manzili orqali Babilim yordam xizmatiga murojaat qilishingiz kerak bo‘ladi. Identifikatorlarni saqlab qolish uchun “Bekor qilish” tugmasini bosing, har bir saytning Babilim sozlamalarida “O‘chirishda barcha Babilim ma’lumotlarini o‘chirish” belgisini olib tashlang va plaginni yana faolsizlantiring. Baribir faolsizlantirilsinmi?"
+msgstr "Bu tarmoqda saytlar juda ko'p, ularni birma-bir tekshirib bo'lmaydi va ba'zilari plagin o'chirilganda Babilim identifikatorini o'chirishga sozlangan bo'lishi mumkin. Bunday saytga biriktirilgan pullik litsenziyani keyin avtomatik tiklab bo'lmaydi; %s manzilida Babilim yordami bilan bog'lanishingiz kerak bo'ladi. Identifikatorlarni saqlab qolish uchun Bekor qilish tugmasini bosing, har bir saytning Babilim sozlamalarida \"O'chirishda Babilimning barcha ma'lumotlarini o'chirish\" belgisini olib tashlang va plaginni yana faolsizlantiring. Baribir faolsizlantirilsinmi?"
 
 #: admin/class-babilim-admin.php:1827
 msgid "Open Babilim settings"
@@ -238,7 +245,7 @@ msgstr "Saytingizning javob berishi juda uzoq vaqt oldi. Iltimos, keyinroq qayta
 
 #: admin/class-babilim-admin.php:1848
 msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "Saytingiz javob berdi, lekin kutilgan javob emas. REST API boshqa plagin tomonidan o‘zgartirilgan bo‘lishi yoki bu endpoint keshlangan bo‘lishi mumkin; iltimos, /wp-json/babilim/v1/challenge manzilini keshlash va qayta yozishdan chiqarib qo‘ying."
+msgstr "Saytingiz javob berdi, lekin kutilgan javob bilan emas. REST API boshqa plagin tomonidan o'zgartirilgan bo'lishi yoki bu endpoint keshlangan bo'lishi mumkin; iltimos, /wp-json/babilim/v1/challenge manzilini keshlash va qayta yozishdan chiqarib qo'ying."
 
 #: admin/class-babilim-admin.php:1850
 msgid "Please check that your site can be reached from the internet, then try again."
@@ -260,7 +267,7 @@ msgstr "Bu sayt tasdiqlangan."
 
 #: admin/class-babilim-admin.php:1936
 msgid "Registration restarted."
-msgstr "Ro‘yxatdan o‘tish qayta boshlandi."
+msgstr "Ro'yxatdan o'tish qayta boshlandi."
 
 #: admin/class-babilim-admin.php:1957
 #: admin/class-babilim-admin.php:2031
@@ -281,17 +288,38 @@ msgstr "Babilim yoqishni yakunlay olmadi (%1$s): %2$s"
 msgid "A host that serves only one PHP request at a time cannot complete this step."
 msgstr "Bir vaqtning o'zida faqat bitta PHP so'rovini bajaradigan hosting bu bosqichni yakunlay olmaydi."
 
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2023
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim yoqilgan: bu sayt tasdiqlangan va %d ta komponent topildi."
+
 #: admin/class-babilim-admin.php:2107
 msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
 msgstr "Babilim o'chirilgan. Boshqa hech narsa yuborilmaydi; allaqachon o'rnatilgan tarjimalar ishlashda davom etadi."
 
 #: admin/class-babilim-admin.php:2129
 msgid "Supplementary translation index rebuilt."
-msgstr "Qo‘shimcha tarjimalar indeksi qayta qurildi."
+msgstr "Qo'shimcha tarjimalar indeksi qayta qurildi."
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2147
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "Skanerlash yakunlandi: %d ta fayl o'chirildi."
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2179
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "%d ta o'rnatilgan komponent olib tashlandi."
 
 #: admin/class-babilim-admin.php:2181
 msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "Avtomatik o‘rnatish endi o‘chirilgan; xohlasangiz, sozlamalarda uni qayta yoqing."
+msgstr "Avtomatik o'rnatish endi o'chirilgan; xohlasangiz, sozlamalarda uni qayta yoqing."
 
 #: admin/class-babilim-admin.php:2502
 msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
@@ -305,15 +333,15 @@ msgstr "Bu saytda topilgan tillar: %s."
 
 #: admin/class-babilim-admin.php:2515
 msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
-msgstr "Mavjud tarjimalarni bir bosishda o‘rnatish, yetishmayotganlarini esa so‘rash mumkin. Shundan keyin yangi tarjimalar va yangilanishlar avtomatik o‘rnatiladi (bepul tarifda faqat bepul o‘rinni allaqachon band qilgan plagin va mavzular uchun)."
+msgstr "Mavjud tarjimalarni bir bosishda o'rnatish, yo'qlarini esa so'rash mumkin. Shundan keyin yangi tarjimalar va yangilanishlar avtomatik o'rnatiladi (bepul tarifda faqat ajratilgan bepul o'rinlardan allaqachon foydalanayotgan plaginlar va mavzular uchun)."
 
 #: admin/class-babilim-admin.php:2516
 msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "Bepul tarif cheklangan miqdordagi plagin va mavzularni qamrab oladi; aniq kvotangiz Babilim yoqilgandan keyin Sozlamalarda ko‘rsatiladi."
+msgstr "Bepul tarif cheklangan miqdordagi plagin va mavzularni qamrab oladi; aniq kvotangiz Babilim'ni yoqqaningizdan keyin Sozlamalarda ko'rsatiladi."
 
 #: admin/class-babilim-admin.php:2517
 msgid "What is sent when you enable Babilim"
-msgstr "Babilim yoqilganda nima yuboriladi"
+msgstr "Babilim'ni yoqqaningizda nima yuboriladi"
 
 #: admin/class-babilim-admin.php:2521
 msgid "Enabling…"
@@ -321,7 +349,7 @@ msgstr "Yoqilmoqda…"
 
 #: admin/class-babilim-admin.php:2521
 msgid "Enable Babilim"
-msgstr "Babilim’ni yoqish"
+msgstr "Babilim'ni yoqish"
 
 #: admin/class-babilim-admin.php:2522
 msgid "By clicking Enable, you agree to send the information listed above to Babilim."
@@ -332,6 +360,13 @@ msgstr "Yoqish tugmasini bosish orqali yuqorida sanab o'tilgan ma'lumotlarni Bab
 #: admin/class-babilim-admin.php:3953
 msgid "Check again now"
 msgstr "Hozir qayta tekshirish"
+
+#. translators: %d: how many translations were installed automatically.
+#: admin/class-babilim-admin.php:2571
+#, php-format
+msgid "Babilim installed %d translation automatically since your last visit."
+msgid_plural "Babilim installed %d translations automatically since your last visit."
+msgstr[0] "Oxirgi tashrifingizdan beri Babilim %d ta tarjimani avtomatik o'rnatdi."
 
 #. translators: %s: when the last attempt happened.
 #: admin/class-babilim-admin.php:2597
@@ -346,6 +381,34 @@ msgstr "Qayta tekshirish"
 #: admin/class-babilim-admin.php:2614
 msgid "No components synced yet."
 msgstr "Hali hech qanday komponent sinxronlanmagan."
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:2635
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d ta muvaffaqiyatli"
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:2639
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d ta o'tkazib yuborildi"
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:2643
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d ta muvaffaqiyatsiz"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:2647
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d ta hali urinilmagan"
 
 #. translators: 1: the "Bulk <action>:" lead-in.
 #: admin/class-babilim-admin.php:2652
@@ -369,7 +432,7 @@ msgstr "Ommaviy yangilash:"
 
 #: admin/class-babilim-admin.php:2671
 msgid "Bulk request:"
-msgstr "Ommaviy so‘rov:"
+msgstr "Ommaviy so'rov:"
 
 #: admin/class-babilim-admin.php:2684
 msgid "per day"
@@ -377,27 +440,27 @@ msgstr "kuniga"
 
 #: admin/class-babilim-admin.php:2698
 msgid "Wrong meaning"
-msgstr "Noto‘g‘ri ma’no"
+msgstr "Noto'g'ri ma'no"
 
 #: admin/class-babilim-admin.php:2700
 msgid "Wrong term"
-msgstr "Noto‘g‘ri atama"
+msgstr "Noto'g'ri atama"
 
 #: admin/class-babilim-admin.php:2702
 msgid "Broken placeholder"
-msgstr "Buzilgan joy belgisi"
+msgstr "Buzilgan o'rin belgisi"
 
 #: admin/class-babilim-admin.php:2704
 msgid "Wrong for this context"
-msgstr "Ushbu kontekst uchun noto‘g‘ri"
+msgstr "Bu kontekst uchun noto'g'ri"
 
 #: admin/class-babilim-admin.php:2706
 msgid "Wrong plural form"
-msgstr "Noto‘g‘ri ko‘plik shakli"
+msgstr "Noto'g'ri ko'plik shakli"
 
 #: admin/class-babilim-admin.php:2708
 msgid "Negation reversed"
-msgstr "Inkor teskari qilingan"
+msgstr "Inkor ma'nosi teskari bo'lgan"
 
 #: admin/class-babilim-admin.php:2710
 msgid "Translation does not load"
@@ -451,7 +514,7 @@ msgstr "Orqaga"
 
 #: admin/class-babilim-admin.php:2870
 msgid "To translate this component, Babilim needs its source."
-msgstr "Ushbu komponentni tarjima qilish uchun Babilim uning manbasiga muhtoj."
+msgstr "Ushbu komponentni tarjima qilish uchun Babilim uning manba kodiga muhtoj."
 
 #. translators: 1: plugin or theme name, 2: its version number.
 #: admin/class-babilim-admin.php:2872
@@ -477,7 +540,7 @@ msgstr "Asl matn va undan yaratilgan tarjimalar xuddi shu versiyani o‘rnatadig
 
 #: admin/class-babilim-admin.php:2877
 msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "Davom etish orqali ushbu komponentni yuklash huquqingiz borligini tasdiqlaysiz."
+msgstr "Davom etish orqali ushbu komponentni yuklash huquqiga ega ekanligingizni tasdiqlaysiz."
 
 #: admin/class-babilim-admin.php:2878
 msgid "Upload and request"
@@ -560,11 +623,11 @@ msgstr "%1$s: %2$s. Tilni tanlang."
 
 #: admin/class-babilim-admin.php:3162
 msgid "Supplementary translations"
-msgstr "Qo‘shimcha tarjimalar"
+msgstr "Qo'shimcha tarjimalar"
 
 #: admin/class-babilim-admin.php:3163
 msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "Har bir komponentning har bir tilning umumiy standart domen qo‘shimchasiga qo‘shgan o‘z hissasi."
+msgstr "Har bir komponentning har bir tilning umumiy standart domen qo'shimchasiga qo'shgan o'z hissasi."
 
 #: admin/class-babilim-admin.php:3165
 #: admin/class-babilim-translations-table.php:399
@@ -595,7 +658,7 @@ msgstr "Ha"
 
 #: admin/class-babilim-admin.php:3189
 msgid "No — component inactive"
-msgstr "Yo‘q — komponent faol emas"
+msgstr "Yo'q — komponent nofaol"
 
 #: admin/class-babilim-admin.php:3191
 msgid "No — installed version differs from the active one"
@@ -603,7 +666,7 @@ msgstr "Yo'q — o'rnatilgan versiya faol versiyadan farq qiladi"
 
 #: admin/class-babilim-admin.php:3193
 msgid "No — component removed"
-msgstr "Yo‘q — komponent olib tashlangan"
+msgstr "Yo'q — komponent olib tashlangan"
 
 #: admin/class-babilim-admin.php:3195
 msgid "No"
@@ -611,7 +674,7 @@ msgstr "Yo'q"
 
 #: admin/class-babilim-admin.php:3217
 msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "Buni faqat tarmoq administratori bajara oladi, chunki bu ushbu tarmoqdagi barcha saytlar uchun umumiy tarjima fayllarini o'zgartiradi."
+msgstr "Buni faqat tarmoq administratori bajara oladi, chunki bu ushbu tarmoqdagi barcha saytlar uchun umumiy bo'lgan tarjima fayllarini o'zgartiradi."
 
 #: admin/class-babilim-admin.php:3233
 msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
@@ -643,15 +706,15 @@ msgstr "Tillar"
 
 #: admin/class-babilim-admin.php:3303
 msgid "Automatic installs"
-msgstr "Avtomatik o‘rnatishlar"
+msgstr "Avtomatik o'rnatishlar"
 
 #: admin/class-babilim-admin.php:3305
 msgid "Install available translations automatically"
-msgstr "Mavjud tarjimalarni avtomatik o‘rnatish"
+msgstr "Mavjud tarjimalarni avtomatik o'rnatish"
 
 #: admin/class-babilim-admin.php:3306
 msgid "On the free plan, only components that already use one of your free slots are installed automatically, so no new slot is taken."
-msgstr "Bepul tarifda faqat bepul o‘rinlaringizdan birini allaqachon ishlatayotgan komponentlar avtomatik o‘rnatiladi, shuning uchun yangi o‘rin band qilinmaydi."
+msgstr "Bepul tarifda faqat bo'sh o'rinlaringizdan birini allaqachon ishlatayotgan komponentlar avtomatik o'rnatiladi, shuning uchun yangi o'rin band qilinmaydi."
 
 #: admin/class-babilim-admin.php:3307
 msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
@@ -659,17 +722,17 @@ msgstr "Bu sayt ko'p saytli tarmoqning bir qismi bo'lib, yangi tarjimalarni avto
 
 #: admin/class-babilim-admin.php:3310
 msgid "Custom overrides"
-msgstr "Maxsus almashtirishlar"
+msgstr "Maxsus o'zgartirishlar"
 
 #: admin/class-babilim-admin.php:3312
 msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "Hammasini tozalashda yoki ushbu plaginni o'chirishda o'zimning tarjima almashtirishlarimni saqlab qolish."
+msgstr "Hammasini tozalashda yoki ushbu plaginni o'chirishda mening tarjima o'zgartirishlarimni saqlash."
 
 #. translators: %s: folder path, shown as code.
 #: admin/class-babilim-admin.php:3315
 #, php-format
 msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "%s papkasiga qo'ygan tarjima fayllaringiz doim Babilim fayllaridan ustun turadi. Bu belgini olib tashlamasangiz, ular saqlanadi."
+msgstr "%s papkasiga joylagan tarjima fayllaringiz doim Babilim fayllaridan ustun turadi. Ular siz belgini olib tashlamaguningizcha saqlanadi."
 
 #: admin/class-babilim-admin.php:3319
 msgid "Uninstall"
@@ -677,11 +740,11 @@ msgstr "O'chirish"
 
 #: admin/class-babilim-admin.php:3321
 msgid "Delete all Babilim data on uninstall"
-msgstr "O‘chirishda barcha Babilim ma’lumotlarini o‘chirish"
+msgstr "O'chirishda Babilimning barcha ma'lumotlarini o'chirish"
 
 #: admin/class-babilim-admin.php:3322
 msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "Odatda o‘chiq: plaginni o‘chirib tashlash ushbu saytning identifikatorini saqlab qoladi, shuning uchun qayta o‘rnatishda undan foydalanish mumkin."
+msgstr "Odatda o'chirilgan: plaginni o'chirish bu saytning identifikatorini saqlab qoladi, shuning uchun qayta o'rnatishda undan foydalanish mumkin."
 
 #: admin/class-babilim-admin.php:3325
 msgid "Account"
@@ -694,7 +757,7 @@ msgstr "O'zgarishlarni saqlash"
 #: admin/class-babilim-admin.php:3331
 #: admin/class-babilim-admin.php:3336
 msgid "Disable Babilim"
-msgstr "Babilim’ni o‘chirib qo‘yish"
+msgstr "Babilim'ni o'chirish"
 
 #: admin/class-babilim-admin.php:3332
 msgid "Installed translations are kept, but no further checks or downloads will run."
@@ -702,7 +765,7 @@ msgstr "O'rnatilgan tarjimalar saqlanadi, lekin boshqa tekshiruvlar va yuklab ol
 
 #: admin/class-babilim-admin.php:3336
 msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Babilim o‘chirib qo‘yilsinmi? O‘rnatilgan tarjimalar saqlanadi, lekin boshqa tekshiruvlar yoki yuklab olishlar bajarilmaydi."
+msgstr "Babilim'ni o'chirasizmi? O'rnatilgan tarjimalar saqlanadi, lekin boshqa tekshiruvlar va yuklab olishlar bajarilmaydi."
 
 #: admin/class-babilim-admin.php:3392
 #: admin/class-babilim-admin.php:3626
@@ -719,13 +782,13 @@ msgstr "Bu saytga allaqachon litsenziya berilgan. Sahifani qayta yuklang."
 #: admin/class-babilim-admin.php:3402
 #: admin/class-babilim-admin.php:3413
 msgid "Checkout is not available for this site right now."
-msgstr "Hozirda ushbu sayt uchun to‘lov mavjud emas."
+msgstr "Hozirda bu sayt uchun to'lov mavjud emas."
 
 #. translators: %s: the reason the service or the connection gave.
 #: admin/class-babilim-admin.php:3405
 #, php-format
 msgid "Could not start checkout: %s"
-msgstr "To‘lovni boshlab bo‘lmadi: %s"
+msgstr "To'lovni boshlab bo'lmadi: %s"
 
 #: admin/class-babilim-admin.php:3488
 msgid "Babilim is not enabled."
@@ -733,7 +796,7 @@ msgstr "Babilim yoqilmagan."
 
 #: admin/class-babilim-admin.php:3491
 msgid "Not registered yet"
-msgstr "Hali ro‘yxatdan o‘tmagan"
+msgstr "Hali ro'yxatdan o'tmagan"
 
 #: admin/class-babilim-admin.php:3493
 msgid "Not verified"
@@ -776,11 +839,11 @@ msgstr "Ushbu sayt uchun bir martalik xarid: %1$s %2$s. Barcha kelgusi tarjima y
 
 #: admin/class-babilim-admin.php:3580
 msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "Bu yangi tiklash kodini beradi va avvalgisi ishlamay qoladi. Davom etilsinmi?"
+msgstr "Bu yangi tiklash kodini beradi va avvalgisi ishlamay qoladi. Davom etasizmi?"
 
 #: admin/class-babilim-admin.php:3580
 msgid "Show a new restore code"
-msgstr "Yangi tiklash kodini ko‘rsatish"
+msgstr "Yangi tiklash kodini ko'rsatish"
 
 #: admin/class-babilim-admin.php:3582
 msgid "rc_…"
@@ -796,11 +859,11 @@ msgstr "Xaridni tiklash"
 
 #: admin/class-babilim-admin.php:3584
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
-msgstr "Bu domen uchun avval litsenziya sotib olganmisiz? To‘lov paytida olgan tiklash kodingizni kiriting."
+msgstr "Bu domen uchun avval litsenziya sotib olganmisiz? To'lov vaqtida olgan tiklash kodingizni kiriting."
 
 #: admin/class-babilim-admin.php:3620
 msgid "That does not look like a restore code."
-msgstr "Bu tiklash kodiga o‘xshamaydi."
+msgstr "Bu tiklash kodiga o'xshamaydi."
 
 #: admin/class-babilim-admin.php:3634
 msgid "This restore code was not recognised for this site."
@@ -832,7 +895,7 @@ msgstr "Bu saytda kod ko'rsatiladigan xarid yo'q."
 #: admin/class-babilim-admin.php:3677
 #, php-format
 msgid "Could not show a new restore code: %s"
-msgstr "Yangi tiklash kodini ko‘rsatib bo‘lmadi: %s"
+msgstr "Yangi tiklash kodini ko'rsatib bo'lmadi: %s"
 
 #. translators: %s: the restore code.
 #: admin/class-babilim-admin.php:3688
@@ -888,7 +951,7 @@ msgstr "Yuklab olishlar: %1$d/%2$d (%3$s)"
 
 #: admin/class-babilim-admin.php:3853
 msgid "Supplementary translation index"
-msgstr "Qo‘shimcha tarjimalar indeksi"
+msgstr "Qo'shimcha tarjimalar indeksi"
 
 #: admin/class-babilim-admin.php:3856
 msgid "Built"
@@ -918,17 +981,17 @@ msgstr "Xizmat ko'rsatish holati hozir mavjud emas."
 #: admin/class-babilim-admin.php:3890
 #, php-format
 msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "%1$s da tozalash to‘xtatildi: %2$s. Hech narsa o‘chirilmadi."
+msgstr "Tozalash %1$s da to'xtatildi: %2$s. Hech narsa o'chirilmadi."
 
 #. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
 #: admin/class-babilim-admin.php:3904
 #, php-format
 msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "So‘nggi tozalash %1$s: %2$d ta yangi belgilandi, %3$d ta fayl o‘chirildi, %4$d ta yozuv olib tashlandi."
+msgstr "So'nggi tozalash %1$s da: %2$d yangi belgilandi, %3$d fayl o'chirildi, %4$d yozuv olib tashlandi."
 
 #: admin/class-babilim-admin.php:3911
 msgid "No cleanup has run yet."
-msgstr "Hozircha tozalash bajarilmagan."
+msgstr "Hali tozalash bajarilmagan."
 
 #. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
 #: admin/class-babilim-admin.php:3922
@@ -984,224 +1047,224 @@ msgstr "Toifani tanlang…"
 
 #: admin/class-babilim-admin.php:4076
 msgid "Roll back and send report"
-msgstr "Qaytarish va hisobot yuborish"
+msgstr "Orqaga qaytarish va hisobot yuborish"
 
 #: admin/class-babilim-admin.php:4076
 msgid "Send report"
 msgstr "Hisobot yuborish"
 
-#: admin/class-babilim-cell.php:61
+#: admin/class-babilim-cell.php:65
 msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "Ushbu komponent matnining bir qismi muallif tomonidan qattiq kodlangan va til paketi orqali tarjima qilib bo‘lmaydi."
+msgstr "Ushbu komponent matnining bir qismi muallifi tomonidan bevosita kodga yozilgan va uni til paketi orqali tarjima qilib bo'lmaydi."
 
-#: admin/class-babilim-cell.php:101
+#: admin/class-babilim-cell.php:105
 msgid "WordPress.org"
 msgstr "WordPress.org"
 
-#: admin/class-babilim-cell.php:104
+#: admin/class-babilim-cell.php:108
 msgid "Bundled with the theme"
 msgstr "Mavzu bilan birga keladi"
 
-#: admin/class-babilim-cell.php:105
+#: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "Plagin bilan birga keladi"
 
-#: admin/class-babilim-cell.php:112
+#: admin/class-babilim-cell.php:118
 msgid "Upload was not accepted"
 msgstr "Yuklash qabul qilinmadi"
 
-#: admin/class-babilim-cell.php:115
+#: admin/class-babilim-cell.php:121
 msgid "Upload expired before it finished"
 msgstr "Yuklash tugamasdan muddati tugadi"
 
-#: admin/class-babilim-cell.php:117
+#: admin/class-babilim-cell.php:123
 msgid "No translation"
 msgstr "Tarjima yo'q"
 
-#: admin/class-babilim-cell.php:123
-#: admin/class-babilim-cell.php:125
-#: admin/class-babilim-cell.php:254
-#: admin/class-babilim-cell.php:256
+#: admin/class-babilim-cell.php:129
+#: admin/class-babilim-cell.php:131
+#: admin/class-babilim-cell.php:265
+#: admin/class-babilim-cell.php:267
 msgid "Upload in progress — continue or cancel"
 msgstr "Yuklash davom etmoqda — davom ettiring yoki bekor qiling"
 
-#: admin/class-babilim-cell.php:127
+#: admin/class-babilim-cell.php:133
 msgid "Scheduled, waiting to be processed"
 msgstr "Rejalashtirilgan, qayta ishlashni kutmoqda"
 
-#: admin/class-babilim-cell.php:129
+#: admin/class-babilim-cell.php:135
 msgid "Translating…"
 msgstr "Tarjima qilinmoqda…"
 
-#: admin/class-babilim-cell.php:131
+#: admin/class-babilim-cell.php:137
 msgid "Translation failed"
 msgstr "Tarjima muvaffaqiyatsiz tugadi"
 
-#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:139
 msgid "Free quota used"
 msgstr "Bepul kvota ishlatilgan"
 
-#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:141
 msgid "Needs a paid license"
 msgstr "Pullik litsenziya kerak"
 
-#: admin/class-babilim-cell.php:137
+#: admin/class-babilim-cell.php:148
 msgid "Not supported"
 msgstr "Qo'llab-quvvatlanmaydi"
 
-#: admin/class-babilim-cell.php:139
+#: admin/class-babilim-cell.php:150
 msgid "Status unknown"
-msgstr "Holati noma’lum"
+msgstr "Holat noma'lum"
 
-#: admin/class-babilim-cell.php:159
-#: admin/class-babilim-cell.php:186
-#: admin/class-babilim-cell.php:304
+#: admin/class-babilim-cell.php:170
+#: admin/class-babilim-cell.php:197
+#: admin/class-babilim-cell.php:315
 msgctxt "translation status"
 msgid "Installed"
 msgstr "O'rnatilgan"
 
-#: admin/class-babilim-cell.php:172
-#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:183
+#: admin/class-babilim-cell.php:185
 msgid "Update available"
 msgstr "Yangilanish mavjud"
 
-#: admin/class-babilim-cell.php:199
+#: admin/class-babilim-cell.php:210
 msgid "Removed after a failed integrity check"
 msgstr "Yaxlitlikni tekshirish muvaffaqiyatsiz tugagani sababli olib tashlandi"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:259
+#: admin/class-babilim-cell.php:270
 #, php-format
 msgid "Installed · built for %s, new version scheduled"
 msgstr "O'rnatilgan · %s uchun yaratilgan, yangi versiya rejalashtirilgan"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:259
+#: admin/class-babilim-cell.php:270
 msgid "Installed · built for a different version, new version scheduled"
 msgstr "O'rnatilgan · boshqa versiya uchun yaratilgan, yangi versiya rejalashtirilgan"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:263
+#: admin/class-babilim-cell.php:274
 #, php-format
 msgid "Installed · built for %s, translating the new version…"
 msgstr "O'rnatilgan · %s uchun yaratilgan, yangi versiya tarjima qilinmoqda…"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:263
+#: admin/class-babilim-cell.php:274
 msgid "Installed · built for a different version, translating the new version…"
 msgstr "O'rnatilgan · boshqa versiya uchun yaratilgan, yangi versiya tarjima qilinmoqda…"
 
 #. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:268
+#: admin/class-babilim-cell.php:279
 #, php-format
 msgid "Installed · built for %1$s, this site has %2$s"
 msgstr "O'rnatilgan · %1$s uchun yaratilgan, bu saytda %2$s mavjud"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:272
-#: admin/class-babilim-cell.php:288
+#: admin/class-babilim-cell.php:283
+#: admin/class-babilim-cell.php:299
 #, php-format
 msgid "Installed · built for %s"
 msgstr "O'rnatilgan · %s uchun yaratilgan"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:272
-#: admin/class-babilim-cell.php:288
+#: admin/class-babilim-cell.php:283
+#: admin/class-babilim-cell.php:299
 msgid "Installed · built for a different version"
 msgstr "O'rnatilgan · boshqa versiya uchun yaratilgan"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:276
+#: admin/class-babilim-cell.php:287
 #, php-format
 msgid "Installed · built for %s, new version failed"
 msgstr "O'rnatilgan · %s uchun tuzilgan, yangi versiya muvaffaqiyatsiz"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:276
+#: admin/class-babilim-cell.php:287
 msgid "Installed · built for a different version, new version failed"
 msgstr "O'rnatilgan · boshqa versiya uchun tuzilgan, yangi versiya muvaffaqiyatsiz"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:280
+#: admin/class-babilim-cell.php:291
 #, php-format
 msgid "Installed · built for %s, new version needs a paid license"
-msgstr "O‘rnatilgan · %s uchun yaratilgan, yangi versiya pullik litsenziyani talab qiladi"
+msgstr "O'rnatilgan · %s uchun tayyorlangan, yangi versiya pullik litsenziyani talab qiladi"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:280
+#: admin/class-babilim-cell.php:291
 msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "O‘rnatilgan · boshqa versiya uchun yaratilgan, yangi versiya pullik litsenziyani talab qiladi"
+msgstr "O'rnatilgan · boshqa versiya uchun tayyorlangan, yangi versiya pullik litsenziyani talab qiladi"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:284
+#: admin/class-babilim-cell.php:295
 #, php-format
 msgid "Installed · built for %s, free quota used"
-msgstr "O‘rnatilgan · %s uchun yaratilgan, bepul kvota ishlatilgan"
+msgstr "O'rnatilgan · %s uchun tayyorlangan, bepul kvota ishlatib bo'lingan"
 
 #. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:284
+#: admin/class-babilim-cell.php:295
 msgid "Installed · built for a different version, free quota used"
-msgstr "O‘rnatilgan · boshqa versiya uchun yaratilgan, bepul kvota ishlatilgan"
+msgstr "O'rnatilgan · boshqa versiya uchun tayyorlangan, bepul kvota ishlatib bo'lingan"
 
-#: admin/class-babilim-cell.php:304
+#: admin/class-babilim-cell.php:315
 msgctxt "translation status"
 msgid "Available"
 msgstr "Mavjud"
 
 #. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:308
+#: admin/class-babilim-cell.php:319
 #, php-format
 msgid "Installed · %s"
 msgstr "O'rnatilgan · %s"
 
 #. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:311
+#: admin/class-babilim-cell.php:322
 #, php-format
 msgid "Available · %s"
 msgstr "Mavjud · %s"
 
-#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-cell.php:361
 #: admin/class-babilim-translations-table.php:412
 msgid "Update"
 msgstr "Yangilash"
 
-#: admin/class-babilim-cell.php:350
+#: admin/class-babilim-cell.php:361
 #: admin/class-babilim-translations-table.php:411
 msgid "Download"
 msgstr "Yuklab olish"
 
-#: admin/class-babilim-cell.php:351
+#: admin/class-babilim-cell.php:362
 msgid "Updating…"
 msgstr "Yangilanmoqda…"
 
-#: admin/class-babilim-cell.php:351
+#: admin/class-babilim-cell.php:362
 msgid "Downloading…"
 msgstr "Yuklab olinmoqda…"
 
-#: admin/class-babilim-cell.php:354
+#: admin/class-babilim-cell.php:365
 msgid "Retry request"
-msgstr "So‘rovni qayta yuborish"
+msgstr "So'rovni qayta yuborish"
 
-#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-cell.php:367
 msgid "Request newer translation"
 msgstr "Yangiroq tarjimani so'rash"
 
-#: admin/class-babilim-cell.php:356
+#: admin/class-babilim-cell.php:367
 #: admin/class-babilim-translations-table.php:413
 msgid "Request translation"
-msgstr "Tarjima so‘rash"
+msgstr "Tarjimani so'rash"
 
-#: admin/class-babilim-cell.php:358
+#: admin/class-babilim-cell.php:369
 msgid "Requesting…"
 msgstr "So'ralmoqda…"
 
 #: admin/class-babilim-translations-table.php:35
 msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "Tarjima so‘rash bepul o‘rinlaringizdan birini sarflaydi, agar bu komponent allaqachon birini ishlatmayotgan bo‘lsa. Muvaffaqiyatsiz tarjima o‘rinni qaytarmaydi."
+msgstr "Tarjima so'rash bo'sh o'rinlaringizdan birini sarflaydi, agar bu komponent allaqachon birini ishlatmayotgan bo'lsa. Muvaffaqiyatsiz tarjima o'rinni qaytarmaydi."
 
 #: admin/class-babilim-translations-table.php:42
 msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "Agar bu komponent hali bepul o‘rinlaringizdan birini ishlatmayotgan bo‘lsa, tarjima so‘rash birini sarflaydi. Muvaffaqiyatsiz tarjima o‘rinni qaytarmaydi. Davom etasizmi?"
+msgstr "Agar bu komponent hali bo'sh o'rinlaringizdan birini ishlatmagan bo'lsa, tarjima so'rash birini sarflaydi. Muvaffaqiyatsiz tarjima o'rinni qaytarmaydi. Davom etilsinmi?"
 
 #: admin/class-babilim-translations-table.php:382
 msgid "No plugins or themes found."
@@ -1236,7 +1299,7 @@ msgstr "Yangilanishlar"
 
 #: admin/class-babilim-translations-table.php:427
 msgid "Requestable"
-msgstr "So‘rash mumkin"
+msgstr "So'rash mumkin"
 
 #: admin/class-babilim-translations-table.php:428
 msgid "Installed"
@@ -1254,17 +1317,24 @@ msgstr "Mavzular"
 msgid "All languages"
 msgstr "Barcha tillar"
 
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:502
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "%d ta o'rnatishga tayyor"
+
 #: admin/class-babilim-translations-table.php:511
 msgid "Language:"
 msgstr "Til:"
 
 #: admin/class-babilim-translations-table.php:547
 msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "Ommaviy amallar tanlangan har bir komponentning barcha mos tillariga qo‘llanadi."
+msgstr "Ommaviy amallar tanlangan har bir komponentning mos keladigan barcha tillariga qo'llaniladi."
 
 #: admin/class-babilim-translations-table.php:548
 msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "Ommaviy amallar tanlangan har bir komponentning faqat tanlangan tiliga qo‘llanadi."
+msgstr "Ommaviy amallar tanlangan har bir komponentning faqat tanlangan tiliga qo'llaniladi."
 
 #. translators: %s: the component's version number.
 #: admin/class-babilim-translations-table.php:572
@@ -1294,7 +1364,7 @@ msgstr "%1$s komponentining %2$s tilidagi tarjimasi bu saytdan olib tashlansinmi
 #: admin/class-babilim-translations-table.php:638
 #, php-format
 msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "%1$s komponentining %2$s tilidagi tarjimasi oldingi yig‘maga qaytarilsinmi?"
+msgstr "%1$s komponentining %2$s tilidagi tarjimasi oldingi buildga qaytarilsinmi?"
 
 #. translators: 1: action name such as Remove, 2: component name.
 #: admin/class-babilim-translations-table.php:731
@@ -1314,11 +1384,11 @@ msgstr "Ro'yxatdan o'tish uchun tekshiruv topshirig'i kutilgan shaklda emas."
 
 #: includes/class-babilim-api-client.php:212
 msgid "That is not a valid build identifier."
-msgstr "Bu yaroqli yig‘ma identifikatori emas."
+msgstr "Bu yaroqli build identifikatori emas."
 
 #: includes/class-babilim-api-client.php:309
 msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Babilim til fayllari katalogidan tashqariga yozish rad etildi."
+msgstr "Babilim til fayllari katalogidan tashqariga yozishni rad etdim."
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
@@ -1336,7 +1406,7 @@ msgstr "Ushbu saytning URL manzili, shunda xizmat sizga tegishli ekanini tekshir
 
 #: includes/class-babilim-consent.php:77
 msgid "Your WordPress version, to serve compatible translation files."
-msgstr "WordPress versiyangiz, mos tarjima fayllarini taqdim etish uchun."
+msgstr "Mos tarjima fayllarini yetkazib berish uchun WordPress versiyangiz."
 
 #: includes/class-babilim-consent.php:82
 msgid "Your PHP version, for compatibility."
@@ -1364,11 +1434,11 @@ msgstr "Ushbu saytning o'rnatish ochiq kaliti, so'rovlar haqiqatan ham shu saytd
 
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
-msgstr "Har bir o‘rnatilgan plagin/mavzu: uning slugi, versiyasi, matn domen(lar)i, wp.org ro‘yxatida ekanligi, o‘zining kiritilgan lokallari va siz uchun Babilim tarjimasi allaqachon o‘rnatilgan lokallar."
+msgstr "O'rnatilgan har bir plagin/mavzu: uning slugi, versiyasi, matn domen(lar)i, wp.org ro'yxatida bor-yo'qligi, o'zi bilan kelgan tillar va qaysi tillar uchun Babilim tarjimasini allaqachon o'rnatganingiz."
 
 #: includes/class-babilim-consent.php:112
 msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
-msgstr "Faqat WordPress.org’da bo‘lmagan plagin yoki mavzu uchun yuklashni tasdiqlaganingizda: shu komponentning butun katalogi zip ko‘rinishida."
+msgstr "Faqat WordPress.org'da bo'lmagan plagin yoki mavzu uchun yuklashni tasdiqlaganingizdagina: shu komponentning butun katalogi zip ko'rinishida."
 
 #: includes/class-babilim-consent.php:116
 msgid "(generic codes and coordinates only)"
@@ -1376,7 +1446,7 @@ msgstr "(faqat umumiy kodlar va koordinatalar)"
 
 #: includes/class-babilim-consent.php:117
 msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "Kutilayotgan 20 tagacha diagnostika hodisalari (masalan, yaxlitlikni tekshirishdan o‘tmagan fayl), har biri faqat kod, komponent va lokaldan iborat, hech qachon matn mazmuni yoki tarjima qilingan matnni o‘z ichiga olmaydi."
+msgstr "Kutilayotgan 20 tagacha diagnostika hodisasi (masalan, yaxlitlikni tekshirishdan o'tmagan fayl haqidagi hodisa). Har biri faqat kod, komponent va lokaldan iborat bo'lib, hech qachon satrlar mazmuni yoki tarjima matnini o'z ichiga olmaydi."
 
 #. translators: %s: the invalid locale code.
 #: includes/class-babilim-default-index.php:109
@@ -1412,11 +1482,11 @@ msgstr "O'rnatilgan plagin/mavzularni aniqlab bo'lmadi; tozalash o'tkazib yubori
 #: includes/class-babilim-default-index.php:532
 #, php-format
 msgid "Sweep aborted without orphaning anything: %s."
-msgstr "Skanerlash hech narsani yetim qoldirmasdan to‘xtatildi: %s."
+msgstr "Tozalash hech narsani egasiz qoldirmasdan bekor qilindi: %s."
 
 #: includes/class-babilim-default-index.php:624
 msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "Tozalash bajarildi, ammo uning ba’zi o‘zgarishlarini tarjimalar indeksiga yozib bo‘lmadi; keyingi tozalash ularni qayta urinib ko‘radi."
+msgstr "Tozalash bajarildi, lekin ba'zi o'zgarishlarni tarjimalar indeksida qayd etib bo'lmadi; keyingi tozalashda ularni qayd etishga yana uriniladi."
 
 #. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
 #: includes/class-babilim-default-index.php:746
@@ -1434,23 +1504,23 @@ msgstr "plagin"
 #: includes/class-babilim-default-index.php:755
 #, php-format
 msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "u boshqariladigan barcha %1$s komponentlarini yetim qoldiradi (%2$d tadan %2$d tasi)"
+msgstr "u boshqariladigan barcha %1$s komponentlarini egasiz qoldiradi (%2$d tadan %2$d tasi)"
 
 #. translators: 1: components that would be orphaned, 2: components managed in total.
 #: includes/class-babilim-default-index.php:762
 #, php-format
 msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "u boshqariladigan komponentlarning %2$d tasidan %1$d tasini yetim qoldiradi (yarmidan ko‘pi)"
+msgstr "u boshqariladigan %2$d ta komponentdan %1$d tasini egasiz qoldiradi (yarmidan ko'proq)"
 
 #. translators: %s: the locale code the merged index was built for.
 #: includes/class-babilim-default-index.php:874
 #, php-format
 msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "'%s' uchun birlashtirilgan indeks qayta qurildi, ammo tarjimalar indeksi uni qayd eta olmadi; keyingi qayta qurishda yana urinib ko‘riladi."
+msgstr "'%s' uchun birlashtirilgan indeks qayta qurildi, lekin tarjimalar indeksi uni qayd eta olmadi; keyingi qayta qurish yana urinadi."
 
 #: includes/class-babilim-default-index.php:950
 msgid "Could not write the staged merged index."
-msgstr "Bosqichma-bosqich birlashtirilgan indeksni yozib bo‘lmadi."
+msgstr "Bosqichma-bosqich birlashtirilgan indeksni yozib bo'lmadi."
 
 #: includes/class-babilim-default-index.php:958
 msgid "Re-parsed entry count did not match the built index."
@@ -1460,21 +1530,21 @@ msgstr "Qayta tahlil qilingan yozuvlar soni tuzilgan indeksga mos kelmadi."
 #: includes/class-babilim-default-index.php:989
 #, php-format
 msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "'%s' uchun birlashtirilgan indeksni joyiga ko‘chirib bo‘lmadi; oldingi taqdim etilgan indeks (agar bo‘lsa) yarim yangilangan holda qoldirilmasdan o‘chirildi. Keyingi muvaffaqiyatli qayta qurishgacha bu til uchun standart domen qo‘shimchasi taqdim etilmaydi."
+msgstr "'%s' uchun birlashtirilgan indeksni joyiga ko'chirib bo'lmadi; oldingi xizmat ko'rsatilgan indeks (agar bo'lsa) yarim yangilangan holda qoldirilmay, o'chirildi. Keyingi muvaffaqiyatli qayta qurishgacha bu til uchun standart domen qo'shimchasi taqdim etilmaydi."
 
 #. translators: %s: the zip file path that could not be opened.
 #: includes/class-babilim-installer.php:147
 #, php-format
 msgid "Could not open zip: %s"
-msgstr "Zip faylni ochib bo'lmadi: %s"
+msgstr "zip faylni ochib bo'lmadi: %s"
 
 #: includes/class-babilim-installer.php:150
 msgid "Zip has no manifest.json."
-msgstr "Zip ichida manifest.json yo‘q."
+msgstr "Zip ichida manifest.json yo'q."
 
 #: includes/class-babilim-installer.php:161
 msgid "manifest.json in the zip is not valid JSON."
-msgstr "Zip ichidagi manifest.json yaroqli JSON emas."
+msgstr "zip ichidagi manifest.json yaroqli JSON emas."
 
 #. translators: %s: the manifest.json field that did not match.
 #: includes/class-babilim-installer.php:165
@@ -1497,19 +1567,19 @@ msgstr "Yaroqli server_build_id emas: %s"
 #: includes/class-babilim-installer.php:311
 #, php-format
 msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "Paket manifestidagi '%1$s' turi so‘ralgan '%2$s' turiga mos kelmaydi."
+msgstr "Paket manifestidagi '%1$s' turi so'ralgan '%2$s' turiga mos kelmaydi."
 
 #. translators: 1: the package's text domain. 2: this site's text domain for the component.
 #: includes/class-babilim-installer.php:346
 #, php-format
 msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "Paketning matn domeni '%1$s' ushbu saytdagi komponent nusxasining ('%2$s') matn domeniga mos kelmaydi, shuning uchun o‘rnatilmadi."
+msgstr "Paketning matn domeni '%1$s' ushbu saytdagi komponent nusxasining ('%2$s') matn domeniga mos kelmaydi, shuning uchun o'rnatilmadi."
 
 #. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
 #: includes/class-babilim-installer.php:364
 #, php-format
 msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "Berilgan '%1$s' domeni paket manifestining o‘z slug'i '%2$s' ga ham, text_domain '%3$s' ga ham mos kelmaydi."
+msgstr "Berilgan '%1$s' domeni paket manifestidagi '%2$s' slugiga ham, '%3$s' text_domain qiymatiga ham mos kelmaydi."
 
 #. translators: %s: the invalid slug.
 #: includes/class-babilim-installer.php:372
@@ -1527,63 +1597,63 @@ msgstr "Xavfli text_domain: %s"
 #: includes/class-babilim-installer.php:413
 #, php-format
 msgid "The package has no %s for its own text domain."
-msgstr "Paketda o‘zining matn domeni uchun %s yo‘q."
+msgstr "Paketda o'zining matn domeni uchun %s yo'q."
 
 #. translators: %s: the manifest.json field that is missing or invalid.
 #: includes/class-babilim-installer.php:470
 #, php-format
 msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json da '%s' yo‘q yoki yaroqsiz."
+msgstr "manifest.json da '%s' yo'q yoki yaroqsiz."
 
 #: includes/class-babilim-installer.php:474
 msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json da 'entries' yo‘q yoki yaroqsiz."
+msgstr "manifest.json da 'entries' yo'q yoki yaroqsiz."
 
 #: includes/class-babilim-installer.php:477
 msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json da 'files' yo‘q yoki yaroqsiz."
+msgstr "manifest.json da 'files' yo'q yoki yaroqsiz."
 
 #: includes/class-babilim-installer.php:480
 msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json da 'extra_domains' yo‘q yoki yaroqsiz."
+msgstr "manifest.json mavjud emas yoki 'extra_domains' yaroqsiz."
 
 #: includes/class-babilim-installer.php:483
 msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json da 'build_no' yo‘q yoki yaroqsiz."
+msgstr "manifest.json mavjud emas yoki 'build_no' yaroqsiz."
 
 #: includes/class-babilim-installer.php:486
 msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "manifest.json dagi 'server_build_id' yaroqli build id emas."
+msgstr "manifest.json faylidagi 'server_build_id' yaroqli build identifikatori emas."
 
 #: includes/class-babilim-installer.php:489
 msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "manifest.json dagi 'contract' yaroqli versiya qatori emas."
+msgstr "manifest.json faylidagi 'contract' yaroqli versiya qatori emas."
 
 #: includes/class-babilim-installer.php:492
 msgid "manifest.json's 'status' must be 'published'."
-msgstr "manifest.json dagi 'status' 'published' bo‘lishi kerak."
+msgstr "manifest.json faylidagi 'status' qiymati 'published' bo'lishi kerak."
 
 #: includes/class-babilim-installer.php:495
 msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "manifest.json dagi 'kind' 'plugin' yoki 'theme' bo‘lishi kerak."
+msgstr "manifest.json faylidagi 'kind' qiymati 'plugin' yoki 'theme' bo'lishi kerak."
 
 #: includes/class-babilim-installer.php:498
 msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json da yaroqsiz 'default_domain_entries' bor."
+msgstr "manifest.json faylida yaroqsiz 'default_domain_entries' bor."
 
 #: includes/class-babilim-installer.php:501
 msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json da yaroqsiz 'default_domain_files' bor."
+msgstr "manifest.json faylida yaroqsiz 'default_domain_files' bor."
 
 #. translators: %s: the expected-manifest field that is missing or invalid.
 #: includes/class-babilim-installer.php:524
 #, php-format
 msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest da '%s' yo‘q yoki yaroqsiz."
+msgstr "expected_manifest mavjud emas yoki '%s' yaroqsiz."
 
 #: includes/class-babilim-installer.php:528
 msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "expected_manifest dagi 'server_build_id' yaroqli build id emas."
+msgstr "expected_manifest ichidagi 'server_build_id' yaroqli build identifikatori emas."
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1596,15 +1666,15 @@ msgstr "%s uchun yozuv yo‘q"
 
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
-msgstr "Taqdim etilgan bir yoki bir nechta fayl endi manifestga mos kelmaydi."
+msgstr "Bir yoki bir nechta berilgan fayl endi manifest bilan mos kelmaydi."
 
 #: includes/class-babilim-installer.php:705
 msgid "No previous build to roll back to."
-msgstr "Orqaga qaytariladigan oldingi build yo‘q."
+msgstr "Orqaga qaytariladigan oldingi build yo'q."
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
-msgstr "O‘zgarishni tarjimalar indeksiga yozib bo‘lmadi; qayta urinib ko‘ring."
+msgstr "O'zgarish tarjimalar indeksiga yozilmadi; qayta urinib ko'ring."
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1622,13 +1692,13 @@ msgstr "Xavfli domen: %s"
 #: includes/class-babilim-installer.php:1022
 #, php-format
 msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "'%1$s' matn domeni (%2$s) boshqa o‘rnatilgan komponent (%3$s) uchun allaqachon taqdim etilgan; hech narsa o‘rnatilmadi."
+msgstr "'%1$s' matn domeni (%2$s) boshqa o'rnatilgan komponent (%3$s) uchun allaqachon taqdim etilgan; hech narsa o'rnatilmadi."
 
 #. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
 #: includes/class-babilim-installer.php:1075
 #, php-format
 msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "Orqaga qaytarish '%1$s' (%2$s) faylini ustiga yozadi, u hozir boshqa o‘rnatilgan komponent (%3$s) uchun taqdim etilgan; hech narsa o‘zgartirilmadi."
+msgstr "Orqaga qaytarish '%1$s' (%2$s) faylini ustidan yozadi, u hozir boshqa o‘rnatilgan komponent (%3$s) uchun xizmat qilmoqda; hech narsa o‘zgartirilmadi."
 
 #. translators: %s: the filename missing from the zip.
 #: includes/class-babilim-installer.php:1167
@@ -1696,13 +1766,13 @@ msgstr "Standart qo‘shimchadagi yozuvlar soni mos kelmadi."
 
 #: includes/class-babilim-installer.php:1336
 msgid "The package produced no servable main translation file."
-msgstr "Paket foydalanish uchun taqdim etishga yaroqli asosiy tarjima faylini yaratmadi."
+msgstr "Paket xizmat ko‘rsatish mumkin bo‘lgan asosiy tarjima faylini yaratmadi."
 
 #. translators: %s: the filename that could not be prepared for rollback.
 #: includes/class-babilim-installer.php:1628
 #, php-format
 msgid "Could not prepare %s for rollback."
-msgstr "%s ni orqaga qaytarish uchun tayyorlab bo‘lmadi."
+msgstr "%s ni orqaga qaytarishga tayyorlab bo'lmadi."
 
 #. translators: %s: the filename that could not be backed up.
 #: includes/class-babilim-installer.php:1644
@@ -1720,7 +1790,7 @@ msgstr "%s faylini joyiga ko‘chirib bo‘lmadi."
 #: includes/class-babilim-installer.php:1656
 #, php-format
 msgid "Could not read %s back after moving it into place."
-msgstr "%s joyiga ko‘chirilgandan keyin uni qayta o‘qib bo‘lmadi."
+msgstr "%s joyiga ko'chirilgandan so'ng uni qayta o'qib bo'lmadi."
 
 #: includes/class-babilim-locale-label.php:53
 msgid "English (United States)"
@@ -1760,7 +1830,7 @@ msgstr "Paketlash uchun yozish mumkin bo‘lgan vaqtinchalik katalog mavjud emas
 
 #: includes/class-babilim-packager.php:99
 msgid "A file in the component could not be read, so it was not packaged."
-msgstr "Komponentdagi bitta fayl o‘qib bo‘lmadi, shuning uchun u paketga kiritilmadi."
+msgstr "Komponentdagi bitta faylni o‘qib bo‘lmadi, shuning uchun u paketga kiritilmadi."
 
 #: includes/class-babilim-packager.php:139
 msgid "Only plugins and themes can be packaged."
@@ -1800,10 +1870,6 @@ msgstr "Tasdiqlash uchun kutilayotgan chaqiriq yo‘q."
 msgid "Verify response was missing site_token."
 msgstr "Tasdiqlash javobida site_token yetishmadi."
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "Tokenni almashtirish uchun fayllarda saqlangan sayt identifikatori yo‘q."
-
 #: includes/class-babilim-site.php:744
 msgid "Rotate-token response was missing site_token."
 msgstr "Tokenni almashtirish javobida site_token yetishmadi."
@@ -1811,11 +1877,11 @@ msgstr "Tokenni almashtirish javobida site_token yetishmadi."
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
-msgstr "nonce o‘n oltilik satr bo‘lishi kerak."
+msgstr "nonce o'n oltilik satr bo'lishi kerak."
 
 #: includes/class-babilim-site.php:805
 msgid "No pending challenge for this nonce."
-msgstr "Bu nonce uchun kutilayotgan so‘rov yo‘q."
+msgstr "Bu nonce uchun kutilayotgan so'rov yo'q."
 
 #: includes/class-babilim-site.php:808
 msgid "Too many requests."
@@ -1823,13 +1889,13 @@ msgstr "Juda ko‘p so‘rovlar."
 
 #: includes/class-babilim-site.php:847
 msgid "The service asked this site to wait before syncing again."
-msgstr "Xizmat bu saytdan qayta sinxronlashdan oldin kutishni so‘radi."
+msgstr "Xizmat bu saytdan qayta sinxronlashdan oldin kutishni so'radi."
 
 #. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
 #: includes/class-babilim-site.php:911
 #, php-format
 msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "Bu saytda %2$d ta tilda %1$d ta komponent bor, buning uchun %3$d ta tekshiruv guruhi kerak; Babilim har bir ishga tushirishda ko‘pi bilan %4$d tasini bajara oladi. Sozlamalarda boshqariladigan tillarni kamaytiring yoki foydalanilmayotgan plagin va mavzularni faolsizlantiring, so‘ng hozir Qayta tekshirish tugmasini bosing."
+msgstr "Bu saytda %2$d ta tilda %1$d ta komponent bor, buning uchun %3$d ta tekshiruv to‘plami kerak; Babilim har bir ishga tushirishda ko‘pi bilan %4$d tasini bajara oladi. Sozlamalarda boshqariladigan tillarni kamaytiring yoki ishlatilmayotgan plaginlar va mavzularni faolsizlantiring, so‘ng Hozir qayta tekshirish tugmasini bosing."
 
 #: includes/class-babilim-site.php:986
 msgid "Babilim could not finish checking this site."
@@ -1841,7 +1907,7 @@ msgstr "Bu saytning manzili Babilim ro‘yxatdan o‘tkazishi uchun juda uzun."
 
 #: includes/class-babilim-site.php:1484
 msgid "This site's locale code is not one Babilim can register."
-msgstr "Bu saytning til kodini Babilim ro‘yxatdan o‘tkaza olmaydi."
+msgstr "Bu saytning mahalliy til kodi Babilim ro'yxatdan o'tkaza oladigan kod emas."
 
 #: includes/class-babilim-sync-installer.php:330
 msgid "The download response was missing a usable location."
@@ -1870,72 +1936,10 @@ msgstr "Yuklashning bir qismi qayta-qayta muvaffaqiyatsiz bo‘ldi, shuning uchu
 msgid "Could not read: %s"
 msgstr "O‘qib bo‘lmadi: %s"
 
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1719
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] ""
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "Tokenni almashtirish uchun fayllarda saqlangan sayt identifikatori yo‘q."
 
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2023
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] ""
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2147
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] ""
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2179
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] ""
-
-#. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2571
-#, php-format
-msgid "Babilim installed %d translation automatically since your last visit."
-msgid_plural "Babilim installed %d translations automatically since your last visit."
-msgstr[0] ""
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2635
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] ""
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2639
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] ""
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2643
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] ""
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2647
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] ""
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
-#, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] ""
+#: admin/class-babilim-cell.php:146
+msgid "Original language"
+msgstr "Asl til"
