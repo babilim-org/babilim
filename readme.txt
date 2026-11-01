@@ -4,7 +4,7 @@ Tags: translation, internationalization, i18n, l10n, language packs
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,14 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 
 == Changelog ==
 
+= 1.0.1 =
+* The language list shows "Original language" for a language your site's content is already written in, instead of "Not supported".
+* A language that a plugin or theme already ships a translation for can now also be requested from Babilim.
+* Bundled translations are now also detected in a plugin's `languages/`, `locale/`, `lang/` and `i18n/languages/` folders when it declares no Domain Path, for every text domain the component ships, and in language packs a vendor installed under `wp-content/languages/`.
+* When the service asks the site to wait, the follow-up check is scheduled for the end of the wait instead of being dropped.
+* Networks are scanned in pages, and very large networks are left out of the shared index rebuild.
+* The readme was rewritten in shorter sentences and lists.
+
 = 1.0.0 =
 * First release.
 * Consent-first registration and twice-daily sync with the Babilim translation service.
@@ -324,6 +332,9 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 * Removal of settings, scheduled events and language files on uninstall, with your `custom/` overrides and your site's identity kept by default.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Better detection of translations your plugins already ship; no action needed.
 
 = 1.0.0 =
 First release.
