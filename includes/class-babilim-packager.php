@@ -3,9 +3,10 @@
  * Packs an installed plugin's or theme's own directory into a zip, in a
  * private staging directory outside the site, so it can be uploaded to
  * the Babilim service for translation (components not listed on
- * WordPress.org). The plugin only moves bytes: nothing here filters
- * files, hashes anything or decides whether an upload is needed -- the
- * service does all of that.
+ * WordPress.org). It packs only the listed code and description files
+ * (see wanted()), applying the same sensitive-name rule as the service
+ * before anything leaves the site. Whether an upload is needed is
+ * decided by the service.
  *
  * This class is the one place in the plugin that writes outside
  * `WP_LANG_DIR/babilim/` (its single, narrow exception): only the
@@ -23,10 +24,21 @@ final class Babilim_Packager {
 
 	private const PREFIX = 'babilim-upload-';
 
+	/** Packaging policy version; a pending upload built under another one is not reused. */
+	public const POLICY = 2;
+
+	private const ALLOWED_EXTENSIONS      = array( 'php', 'js' );
+	private const ALLOWED_NAMES_ANY_DEPTH = array( 'block.json' );
+	private const ALLOWED_NAMES_ROOT_ONLY = array( 'readme.txt', 'readme.md', 'style.css', 'theme.json' );
+	private const EXCLUDED_DIRS           = array( 'uploads', 'cache', 'caches', 'logs', 'log', 'backup', 'backups', 'tmp', 'temp', 'data', 'vendor', 'node_modules', 'languages' );
+	// Identical to the service's sensitive-file rule; a test pins the list.
+	private const SENSITIVE_NAME_PATTERNS = array( 'wp-config*', '.env*', '*.sql', '*.log', '*.pem', '*.key', '*.p12', 'id_rsa*' );
+	private const EXCLUDED_NAME_PATTERNS  = array( '*.l10n.php', '*.bak' );
+
 	/** @var callable */
 	private $sys_temp_dir;
 	/** @var callable */
-	private $wp_temp_dir;
+	private $host_temp_dir;
 	/** @var callable */
 	private $random_hex;
 	private string $plugin_root;
@@ -35,15 +47,25 @@ final class Babilim_Packager {
 	private $theme_dir;
 	/** @var callable */
 	private $zip_factory;
+	/** @var callable */
+	private $site_roots;
 
 	/**
-	 * @param callable|null $theme_dir   fn( string $stylesheet ): ?array{dir:string,root:string} -- where WordPress says the theme lives and which theme root it belongs to; null when WordPress does not know it.
-	 * @param callable|null $zip_factory fn(): ?ZipArchive -- null when the zip extension is missing.
+	 * @param callable|null $sys_temp_dir  fn(): string -- the system temporary directory.
+	 * @param callable|null $host_temp_dir fn(): string -- the folder the host names in BABILIM_TEMP_DIR; '' when none.
+	 * @param callable|null $theme_dir     fn( string $stylesheet ): ?array{dir:string,root:string} -- where WordPress says the theme lives and which theme root it belongs to; null when WordPress does not know it.
+	 * @param callable|null $zip_factory   fn(): ?ZipArchive -- null when the zip extension is missing.
+	 * @param callable|null $site_roots    fn(): array -- the ABSPATH and WP_CONTENT_DIR paths a staging folder must lie outside of (test-only; defaults to the two constants).
 	 */
-	public function __construct( ?callable $sys_temp_dir = null, ?callable $wp_temp_dir = null, ?callable $random_hex = null, ?string $plugin_root = null, ?string $theme_root = null, ?callable $theme_dir = null, ?callable $zip_factory = null ) {
-		$this->sys_temp_dir = $sys_temp_dir ?? 'sys_get_temp_dir';
-		$this->wp_temp_dir  = $wp_temp_dir ?? 'get_temp_dir';
-		$this->random_hex   = $random_hex ?? static function (): string {
+	public function __construct( ?callable $sys_temp_dir = null, ?callable $host_temp_dir = null, ?callable $random_hex = null, ?string $plugin_root = null, ?string $theme_root = null, ?callable $theme_dir = null, ?callable $zip_factory = null, ?callable $site_roots = null ) {
+		$this->sys_temp_dir  = $sys_temp_dir ?? 'sys_get_temp_dir';
+		$this->host_temp_dir = $host_temp_dir ?? static function (): string {
+			return defined( 'BABILIM_TEMP_DIR' ) ? (string) BABILIM_TEMP_DIR : '';
+		};
+		$this->site_roots    = $site_roots ?? static function (): array {
+			return array( defined( 'ABSPATH' ) ? ABSPATH : '', defined( 'WP_CONTENT_DIR' ) ? WP_CONTENT_DIR : '' );
+		};
+		$this->random_hex    = $random_hex ?? static function (): string {
 			return bin2hex( random_bytes( 16 ) );
 		};
 		$this->plugin_root = rtrim( $plugin_root ?? ( defined( 'WP_PLUGIN_DIR' ) ? (string) WP_PLUGIN_DIR : '' ), '/' );
@@ -85,18 +107,29 @@ final class Babilim_Packager {
 		}
 		$dir = $this->staging_dir();
 		if ( null === $dir ) {
-			return Babilim_Result::error( 'packager_no_temp_dir', __( 'No writable temporary directory is available for packaging.', 'babilim' ) );
+			return Babilim_Result::error( 'packager_no_temp_dir', __( 'Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site\'s public directory), or ask your host for one.', 'babilim' ) );
 		}
 		$zip_path = $dir . '/package.zip';
 		if ( true !== $zip->open( $zip_path, \ZipArchive::CREATE | \ZipArchive::OVERWRITE ) ) {
 			$this->discard( $dir );
 			return Babilim_Result::error( 'packager_zip_failed', __( 'Could not create the package archive.', 'babilim' ) );
 		}
-		$added = is_dir( $source ) ? $this->add_tree( $zip, $source, $prefix ) : $this->add_file( $zip, $source, $prefix );
+		if ( is_dir( $source ) ) {
+			$added = $this->add_tree( $zip, $source, $prefix );
+		} else {
+			$added = ! self::wanted( basename( $source ), false, true ) || $this->add_file( $zip, $source, $prefix );
+		}
 		if ( ! $added ) {
 			$zip->close();
 			$this->discard( $dir );
 			return Babilim_Result::error( 'packager_read_failed', __( 'A file in the component could not be read, so it was not packaged.', 'babilim' ) );
+		}
+		// An empty archive is never written to disk by close(), so there
+		// would be nothing to hash or upload.
+		if ( 0 === $zip->numFiles ) {
+			$zip->close();
+			$this->discard( $dir );
+			return Babilim_Result::error( 'packager_nothing_to_pack', __( 'The component has no files that can be uploaded.', 'babilim' ) );
 		}
 		// ZipArchive reads the files only now, so a file that vanished or a
 		// full disk shows up here. close() is called exactly once.
@@ -104,7 +137,15 @@ final class Babilim_Packager {
 			$this->discard( $dir );
 			return Babilim_Result::error( 'packager_zip_failed', __( 'Could not create the package archive.', 'babilim' ) );
 		}
-		return Babilim_Result::ok( array( 'zip' => $zip_path, 'size' => (int) filesize( $zip_path ), 'dir' => $dir ) );
+		return Babilim_Result::ok(
+			array(
+				'zip'    => $zip_path,
+				'size'   => (int) filesize( $zip_path ),
+				'dir'    => $dir,
+				'policy' => self::POLICY,
+				'sha256' => (string) hash_file( 'sha256', $zip_path ),
+			)
+		);
 	}
 
 	private function locate( array $component ): Babilim_Result {
@@ -155,7 +196,33 @@ final class Babilim_Packager {
 		return Babilim_Result::ok( array( 'path' => $real_target, 'prefix' => $prefix ) );
 	}
 
-	private function add_tree( \ZipArchive $zip, string $dir, string $prefix ): bool {
+	/**
+	 * Whether an entry is packed. Judged on the entry's own name only, in
+	 * lower case, like the service's sensitive-file rule.
+	 */
+	private static function wanted( string $name, bool $is_dir, bool $at_root ): bool {
+		$lower = strtolower( $name );
+		if ( '' === $lower || '.' === $lower[0] ) {
+			return false;
+		}
+		if ( $is_dir ) {
+			return ! in_array( $lower, self::EXCLUDED_DIRS, true );
+		}
+		foreach ( array_merge( self::SENSITIVE_NAME_PATTERNS, self::EXCLUDED_NAME_PATTERNS ) as $pattern ) {
+			if ( fnmatch( $pattern, $lower, FNM_CASEFOLD ) ) {
+				return false;
+			}
+		}
+		if ( in_array( pathinfo( $lower, PATHINFO_EXTENSION ), self::ALLOWED_EXTENSIONS, true ) ) {
+			return true;
+		}
+		if ( in_array( $lower, self::ALLOWED_NAMES_ANY_DEPTH, true ) ) {
+			return true;
+		}
+		return $at_root && in_array( $lower, self::ALLOWED_NAMES_ROOT_ONLY, true );
+	}
+
+	private function add_tree( \ZipArchive $zip, string $dir, string $prefix, bool $at_root = true ): bool {
 		$entries = scandir( $dir );
 		if ( false === $entries ) {
 			return false;
@@ -169,10 +236,10 @@ final class Babilim_Packager {
 				continue;                          // never followed, never included
 			}
 			if ( is_dir( $path ) ) {
-				if ( ! $this->add_tree( $zip, $path, $prefix . '/' . $name ) ) {
+				if ( self::wanted( $name, true, $at_root ) && ! $this->add_tree( $zip, $path, $prefix . '/' . $name, false ) ) {
 					return false;
 				}
-			} elseif ( ! $this->add_file( $zip, $path, $prefix . '/' . $name ) ) {
+			} elseif ( self::wanted( $name, false, $at_root ) && ! $this->add_file( $zip, $path, $prefix . '/' . $name ) ) {
 				return false;
 			}
 		}
@@ -183,38 +250,78 @@ final class Babilim_Packager {
 		return is_readable( $path ) && $zip->addFile( $path, $name );
 	}
 
-	private function staging_dir(): ?string {
-		foreach ( array( $this->candidate( (string) call_user_func( $this->sys_temp_dir ), true ), $this->candidate( (string) call_user_func( $this->wp_temp_dir ), false ) ) as $base ) {
-			if ( null === $base ) {
-				continue;
-			}
-			$dir = $base . '/' . self::PREFIX . call_user_func( $this->random_hex );
-			if ( ! @mkdir( $dir, 0700, true ) && ! is_dir( $dir ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_operations_mkdir -- source packaging staging dir, the one write outside the language directory
-				continue;
-			}
-			file_put_contents( $dir . '/.htaccess', "Deny from all\nRequire all denied\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- source packaging staging dir, the one write outside the language directory
-			file_put_contents( $dir . '/index.php', "<?php\n// Silence is golden.\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- source packaging staging dir, the one write outside the language directory
-			return $dir;
-		}
-		return null;
+	/**
+	 * The base a new staging directory would be created in right now, or
+	 * null when none can be proven to lie outside the website.
+	 */
+	public function staging_base(): ?string {
+		$base = $this->private_base( (string) call_user_func( $this->sys_temp_dir ), true );
+		return $base ?? $this->private_base( (string) call_user_func( $this->host_temp_dir ), false );
 	}
 
-	/** A usable temp base: writable, and (for the system temp dir) not under ABSPATH or WP_CONTENT_DIR. */
-	private function candidate( string $base, bool $must_be_outside_site ): ?string {
-		$base = rtrim( $base, '/' );
+	/** Whether a base chosen earlier still lies outside ABSPATH, WP_CONTENT_DIR and (when it resolves) DOCUMENT_ROOT. */
+	public function base_still_private( string $base ): bool {
+		return null !== $this->private_base( $base, false );
+	}
+
+	private function staging_dir(): ?string {
+		$base = $this->staging_base();
+		if ( null === $base ) {
+			return null;
+		}
+		$dir = $base . '/' . self::PREFIX . call_user_func( $this->random_hex );
+		if ( ! @mkdir( $dir, 0700, true ) && ! is_dir( $dir ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_operations_mkdir -- source packaging staging dir, the one write outside the language directory
+			return null;
+		}
+		return $dir;
+	}
+
+	/**
+	 * The real path of $base when it is a writable directory outside
+	 * ABSPATH and WP_CONTENT_DIR and, when DOCUMENT_ROOT is known, outside
+	 * it too. With $require_document_root, an unknown DOCUMENT_ROOT means
+	 * "cannot prove it" and the base is refused.
+	 */
+	private function private_base( ?string $base, bool $require_document_root ): ?string {
+		$base = rtrim( (string) $base, '/' );
+		if ( '' === $base ) {
+			return null;
+		}
 		$real = realpath( $base );
 		if ( false === $real || ! is_dir( $real ) || ! wp_is_writable( $real ) ) {
 			return null;
 		}
-		if ( $must_be_outside_site ) {
-			foreach ( array( defined( 'ABSPATH' ) ? ABSPATH : '', defined( 'WP_CONTENT_DIR' ) ? WP_CONTENT_DIR : '' ) as $site ) {
-				$site_real = '' !== $site ? realpath( $site ) : false;
-				if ( false !== $site_real && ( $real === $site_real || 0 === strpos( $real, rtrim( $site_real, '/' ) . '/' ) ) ) {
-					return null;
-				}
+		$doc    = $this->document_root();
+		$guards = (array) call_user_func( $this->site_roots );
+		if ( null !== $doc ) {
+			$guards[] = $doc;
+		} elseif ( $require_document_root ) {
+			return null;
+		}
+		foreach ( $guards as $guard ) {
+			$guard_real = '' !== (string) $guard ? realpath( (string) $guard ) : false;
+			if ( false !== $guard_real && ( $real === $guard_real || 0 === strpos( $real, rtrim( $guard_real, '/' ) . '/' ) ) ) {
+				return null;
 			}
 		}
 		return $real;
+	}
+
+	/**
+	 * DOCUMENT_ROOT as a real path, or null when it is missing, not a
+	 * string, empty, does not resolve, or sanitizing would change it (a
+	 * rewritten value can name a different directory).
+	 */
+	private function document_root(): ?string {
+		if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) || ! is_string( $_SERVER['DOCUMENT_ROOT'] ) ) {
+			return null;
+		}
+		$clean = sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) );
+		if ( (string) filter_var( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ), FILTER_UNSAFE_RAW ) !== $clean || '' === $clean ) {
+			return null;
+		}
+		$real = realpath( $clean );
+		return false !== $real && is_dir( $real ) ? $real : null;
 	}
 
 	public static function owns( string $path ): bool {
@@ -233,20 +340,69 @@ final class Babilim_Packager {
 		@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- source packaging staging dir, the one write outside the language directory
 	}
 
-	/** Removes staging directories older than $max_age_seconds under both temp bases. Returns how many. */
-	public function sweep( int $max_age_seconds = 86400 ): int {
-		$removed = 0;
-		foreach ( array( $this->candidate( (string) call_user_func( $this->sys_temp_dir ), true ), $this->candidate( (string) call_user_func( $this->wp_temp_dir ), false ) ) as $base ) {
-			if ( null === $base ) {
-				continue;
-			}
-			foreach ( glob( $base . '/' . self::PREFIX . '*', GLOB_ONLYDIR ) ?: array() as $dir ) {
-				if ( self::owns( $dir ) && ! is_link( $dir ) && filemtime( $dir ) < time() - $max_age_seconds ) {
-					$this->discard( $dir );
-					++$removed;
-				}
+	/**
+	 * The real path of the staging directory this site's own pending
+	 * upload record points at, or null when the record does not name one
+	 * this plugin created (no directory, a symlink, not a babilim-upload-
+	 * folder, or gone).
+	 *
+	 * @param array<string,mixed>|null $pending
+	 */
+	private function traceable_dir( ?array $pending ): ?string {
+		$dir = $pending['dir'] ?? null;
+		if ( ! is_string( $dir ) || '' === $dir || is_link( $dir ) ) {
+			return null;
+		}
+		$real = realpath( $dir );
+		return false !== $real && self::owns( $real ) && is_dir( $real ) ? $real : null;
+	}
+
+	/**
+	 * One-time clean-up after an upgrade: removes this site's own pending
+	 * upload directory when that upload was packaged by an older version
+	 * (the record carries no package_policy). Nothing is scanned: a
+	 * directory the record does not point at may belong to another site
+	 * still running an older version, so it is never touched.
+	 *
+	 * @param array<string,mixed>|null $pending The pending upload record.
+	 * @return int Directories removed (0 or 1).
+	 */
+	public function sweep_legacy( ?array $pending ): int {
+		if ( null === $pending || isset( $pending['package_policy'] ) ) {
+			return 0;
+		}
+		$real = $this->traceable_dir( $pending );
+		if ( null === $real ) {
+			return 0;
+		}
+		$this->discard( $real );
+		return is_dir( $real ) ? 0 : 1;
+	}
+
+	/**
+	 * Daily clean-up, limited to this site's own pending upload directory:
+	 * removed when the upload was packaged by an older version or the
+	 * service's offer has expired. A sealed, unexpired upload is live and
+	 * left alone, as is every other directory in a temp base.
+	 *
+	 * @param array<string,mixed>|null $pending The pending upload record.
+	 * @return int Directories removed (0 or 1).
+	 */
+	public function sweep( ?array $pending ): int {
+		if ( null === $pending ) {
+			return 0;
+		}
+		if ( isset( $pending['package_policy'] ) ) {
+			$expires = strtotime( (string) ( $pending['expires_at'] ?? '' ) );
+			if ( false === $expires || $expires >= time() ) {
+				return 0; // Live (or not provably dead): keep.
 			}
 		}
-		return $removed;
+		$real = $this->traceable_dir( $pending );
+		if ( null === $real ) {
+			return 0;
+		}
+		$this->discard( $real );
+		return is_dir( $real ) ? 0 : 1;
 	}
 }

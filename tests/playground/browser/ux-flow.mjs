@@ -38,6 +38,20 @@
 //                 again now" once more. Needs BABILIM_SEAM_UPGRADE_CMD and
 //                 BABILIM_SEAM_RUN_DUE_CMD (shell commands) and BABILIM_SEAM_SLUG,
 //                 BABILIM_SEAM_OLD_VERSION, BABILIM_SEAM_NEW_VERSION
+//               "report": the 1.1 toolbar report panel (run by run-ux-flow.sh with
+//                 the mock's default profile and a pack for the
+//                 report-demo fixture): toolbar entry on admin pages only, focus
+//                 and Tab trap and Esc, search, four reports (201, 429, 422, 201),
+//                 and every body the mock received checked against the pinned
+//                 schema. With --no-js only the toolbar entry is checked.
+//               "errconsent": the 1.1 error report consent (mock reset with
+//                 {"profile":"errors"}; fixture errors-demo): an install failure
+//                 queues an event, the notice shows the fields, nothing is sent
+//                 before agreeing, "Always share" sends one schema-valid body equal
+//                 to what the notice showed, and unchecking share-errors in
+//                 Settings stops it. Takes about 70 seconds per run.
+//               Both read the mock's state through BABILIM_UX_MOCK and save
+//               screenshots into BABILIM_UX_SHOTS.
 //   --no-js       the plugin's admin script is blocked, so every form must
 //                 work as a plain form post
 //
@@ -47,9 +61,11 @@
 // "FAIL infra playwright missing" to the results file and exits 1. Playwright itself is resolved
 // from NODE_PATH. Exit code: 0 when every check passed, 1 otherwise.
 
-import { appendFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
+import { appendFileSync, mkdirSync } from 'node:fs';
+import { execSync, execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire( import.meta.url );
 let chromium;
@@ -121,7 +137,7 @@ async function enableScenario( page, state ) {
 	report( ( await page.locator( 'details summary' ).count() ) >= 1, 'welcome block lists what is sent' );
 	report( ( await page.locator( 'input[name="consent"]' ).count() ) === 0, 'no consent checkbox' );
 	const welcomeText = await bodyText( page );
-	report( /Available translations can be installed with one click, and missing ones can be requested\. After that, new translations and updates are installed automatically \(on the free plan, only for plugins and themes that already use a free slot\)\./.test( welcomeText ), 'welcome block explains installs, requests and the free plan' );
+	report( /Available translations can be installed with one click, and missing ones can be requested\. After that, new translations and updates are installed automatically\. The Babilim service decides which available translations may be installed automatically\. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot\./.test( welcomeText ), 'welcome block explains installs, requests and the free plan' );
 	report( /The free plan covers a limited number of plugins and themes/.test( welcomeText ), 'welcome block mentions the free plan limit' );
 	if ( ( await enable.count() ) !== 1 ) {
 		console.log( `  url: ${ page.url() } title: ${ await page.title() }` );
@@ -770,7 +786,7 @@ async function listScenario( page, state ) {
 // plugin's own manifest while the mock keeps answering "available".
 async function listDownload( page ) {
 	await openList( page, '&s=woo' );
-	const cell = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="de_DE"]' ) } ).first();
+	const cell = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="en_US"]' ) } ).first();
 	const button = cell.locator( 'button', { hasText: 'Download' } );
 	report( ( await button.count() ) === 1, 'the WooCommerce de_DE line has a Download button' );
 	if ( ( await button.count() ) !== 1 ) {
@@ -784,7 +800,7 @@ async function listDownload( page ) {
 	}
 	report( new URL( page.url() ).searchParams.get( 's' ) === 'woo', 'the redirect keeps the search' );
 	await openList( page, '&s=woo' );
-	const after = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="de_DE"]' ) } ).first();
+	const after = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="en_US"]' ) } ).first();
 	const done = after.locator( '.babilim-cell-status', { hasText: 'Installed' } );
 	report( ( await done.count() ) === 1 && ( await after.locator( 'button', { hasText: 'Download' } ).count() ) === 0, 'after a reload the line says Installed and offers no Download button' );
 	report( /^Installed( · \w+ \d+, \d{4})?$/.test( ( await after.locator( '.babilim-cell-status' ).innerText() ).trim() ), 'the line says Installed' );
@@ -1102,6 +1118,353 @@ async function seamScenario( page ) {
 	report( /new version scheduled/.test( after ), `after the scheduled run the line says new version scheduled (${ after })` );
 }
 
+// -- 1.1: the toolbar report panel and the error report consent -----------
+
+const shotsDir = process.env.BABILIM_UX_SHOTS || '';
+async function shot( page, name ) {
+	if ( ! shotsDir ) {
+		return;
+	}
+	mkdirSync( shotsDir, { recursive: true } );
+	await page.screenshot( { path: `${ shotsDir }/${ name }${ noJs ? '-nojs' : '' }.png` } );
+}
+
+async function mockState() {
+	return ( await fetch( `${ mockBase }/_control/state` ) ).json();
+}
+
+// Everything the mock received on one path, bodies decoded, in order.
+async function mockReceived( path ) {
+	const state = await mockState();
+	return ( state.received || [] )
+		.filter( ( entry ) => entry.path === path )
+		.map( ( entry ) => ( { auth: entry.auth, status: entry.status, raw: entry.raw, body: JSON.parse( entry.raw ) } ) );
+}
+
+async function mockPost( path, payload ) {
+	await fetch( `${ mockBase }${ path }`, { method: 'POST', body: JSON.stringify( payload ) } );
+}
+
+// Runs a body through the pinned contract schema; returns the violations.
+function schemaViolations( schemaName, raw ) {
+	const validator = fileURLToPath( new URL( '../mock-server/validate-body.php', import.meta.url ) );
+	try {
+		execFileSync( 'php', [ validator, schemaName ], { input: raw, stdio: [ 'pipe', 'pipe', 'pipe' ] } );
+		return [];
+	} catch ( error ) {
+		return String( error.stdout || error.stderr || error.message ).trim().split( '\n' );
+	}
+}
+
+// What must never be in a body that leaves the site: the site token, the
+// site address, a user or path.
+function leaks( raw, tokens, extra = [] ) {
+	const found = [];
+	for ( const token of tokens ) {
+		if ( raw.includes( token ) ) {
+			found.push( 'a site token' );
+		}
+	}
+	for ( const pattern of [ /tok_/, /127\.0\.0\.1/, /localhost/, /https?:\/\//, /\/wordpress/, /@/, ...extra ] ) {
+		if ( pattern.test( raw ) ) {
+			found.push( String( pattern ) );
+		}
+	}
+	return found;
+}
+
+const REPORT_BUILD = 'bd_' + createHash( 'md5' ).update( 'report-demoen_US' ).digest( 'hex' ).slice( 0, 12 );
+const REPORT_LABEL = 'Report Demo';
+const TOOLBAR = '#wp-admin-bar-babilim-report > a';
+
+async function focusInfo( page ) {
+	return page.evaluate( () => {
+		const active = document.activeElement;
+		return {
+			inside: !! ( active && active.closest( '#babilim-report-panel' ) ),
+			desc: active ? `${ active.tagName.toLowerCase() }#${ active.id }.${ ( active.textContent || '' ).trim().slice( 0, 20 ) }` : '',
+		};
+	} );
+}
+
+async function openReportPanel( page ) {
+	await page.locator( TOOLBAR ).click();
+	await page.locator( '#babilim-report-panel' ).waitFor( { state: 'visible', timeout: 10000 } );
+}
+
+// Types a query, presses Search and waits for the answer; returns the text of the results area.
+async function reportSearch( page, query ) {
+	await page.fill( '#babilim-report-q', query );
+	await page.locator( '#babilim-report-panel form button[type="submit"]' ).click();
+	await page.waitForFunction( () => {
+		const form = document.querySelector( '#babilim-report-panel form' );
+		return !! ( form && form.nextElementSibling && form.nextElementSibling.children.length > 0 );
+	}, null, { timeout: 20000 } );
+	return ( await page.locator( '#babilim-report-panel form + div' ).innerText() ).replace( /\s+/g, ' ' ).trim();
+}
+
+// The whole panel path for one string; returns the last message the panel shows.
+async function reportOne( page, { query, msgid, category, suggested, note, shotPrefix } ) {
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	await openReportPanel( page );
+	await reportSearch( page, query );
+	if ( shotPrefix ) {
+		await shot( page, `${ shotPrefix }-2-results` );
+	}
+	await page.locator( '.babilim-report-candidate' ).filter( { hasText: msgid } ).locator( 'button' ).click();
+	await page.selectOption( '#babilim-report-category', category );
+	await page.fill( '#babilim-report-suggested', suggested );
+	await page.fill( '#babilim-report-note', note );
+	if ( shotPrefix ) {
+		await shot( page, `${ shotPrefix }-3-form` );
+	}
+	await page.locator( '#babilim-report-panel button', { hasText: 'Preview' } ).click();
+	const preview = ( await page.locator( '#babilim-report-panel' ).innerText() ).replace( /\s+/g, ' ' );
+	if ( shotPrefix ) {
+		await shot( page, `${ shotPrefix }-4-preview` );
+	}
+	await page.locator( '#babilim-report-panel button', { hasText: 'Send report' } ).click();
+	await page.waitForFunction( () => ! document.querySelector( '#babilim-report-panel button.button-primary' ), null, { timeout: 30000 } );
+	const result = ( await page.locator( '#babilim-report-panel' ).innerText() ).replace( /\s+/g, ' ' );
+	if ( shotPrefix ) {
+		await shot( page, `${ shotPrefix }-5-result` );
+	}
+	return { preview, result };
+}
+
+async function reportScenario( page ) {
+	// 1. Enable, then (with the script) install a mock-built pack so the manifest has a record.
+	const listed = await enableOnly( page );
+	report( listed, 'the translations list shows after enabling' );
+	if ( ! listed ) {
+		console.log( `  url: ${ page.url() } page text: ${ ( await bodyText( page ) ).slice( 0, 500 ) }` );
+		return;
+	}
+	const state0 = await mockState();
+	const tokens = state0.tokens || [];
+	report( tokens.length === 1, 'the site registered and was verified (one token issued by the mock)' );
+
+	// 2. The toolbar entry: on admin pages, not on the front end.
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	const entry = page.locator( TOOLBAR );
+	report( ( await entry.count() ) === 1 && ( await entry.innerText() ).trim() === 'Report translation', 'the admin toolbar shows "Report translation"' );
+	await page.goto( `${ baseUrl }/`, { waitUntil: 'load' } );
+	report( ( await page.locator( '#wpadminbar' ).count() ) === 1, `the front end shows the toolbar (control) (url ${ page.url() }, title "${ await page.title() }")` );
+	report( ( await page.locator( '#wp-admin-bar-babilim-report' ).count() ) === 0 && ! ( await page.content() ).includes( 'babilim-report' ), 'the front end has no "Report translation" entry and no report script' );
+	if ( noJs ) {
+		// The admin script is blocked; the toolbar entry must not break the page.
+		await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+		report( ( await page.locator( TOOLBAR ).count() ) === 1 && ( await page.locator( '#wpbody-content' ).count() ) === 1, `without the admin script the toolbar entry is there and the page is intact (url ${ page.url() }, toolbar ${ await page.locator( TOOLBAR ).count() }, body ${ ( await page.locator( 'body' ).innerText() ).replace( /\s+/g, ' ' ).slice( 0, 200 ) })` );
+		return;
+	}
+
+	// 3. Install the pack through the list's Download button.
+	await openList( page, '&s=report' );
+	const line = page.locator( 'table.wp-list-table tbody#the-list tr' ).filter( { hasText: REPORT_LABEL } );
+	const download = line.locator( '.babilim-cell-line' ).filter( { has: page.locator( '.babilim-cell-lang[title="en_US"]' ) } ).locator( 'button:not([disabled])', { hasText: 'Download' } ).first();
+	report( ( await download.count() ) === 1, `${ REPORT_LABEL } offers Download for en_US` );
+	if ( ( await download.count() ) !== 1 ) {
+		console.log( `  line: ${ ( await line.first().innerText().catch( () => '' ) ).replace( /\s+/g, ' ' ) }` );
+		console.log( `  url ${ page.url() } body: ${ ( await page.locator( 'body' ).innerText().catch( () => '' ) ).replace( /\s+/g, ' ' ).slice( 0, 700 ) }` );
+		await shot( page, 'report-debug' );
+		return;
+	}
+	await submitAndSettle( page, download );
+	const afterDownload = ( await page.locator( '#wpbody-content .notice' ).allInnerTexts() ).join( ' ' ).replace( /\s+/g, ' ' );
+	await openList( page, '&s=report' );
+	const installedOk = ( await line.locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) >= 1;
+	report( installedOk, `the pack is installed (the line says Installed)${ installedOk ? '' : ': after Download the page said "' + afterDownload + '"' }` );
+
+	// 4. Open the panel: focus, trap, Esc.
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	const cfg = await page.evaluate( () => JSON.stringify( window.babilimReport || {} ) );
+	report( cfg !== '{}' && ! tokens.some( ( t ) => cfg.includes( t ) ) && ! /tok_/.test( cfg ), 'the report script settings (window.babilimReport) carry no site token' );
+	const pageSource = await page.content();
+	report( tokens.length > 0 && ! tokens.some( ( t ) => pageSource.includes( t ) ), 'the admin page source does not contain the site token' );
+	await openReportPanel( page );
+	await shot( page, 'report-1-panel-open' );
+	const first = await focusInfo( page );
+	report( first.inside && first.desc.startsWith( 'input#babilim-report-q' ), `opening moves focus into the dialog (${ first.desc })` );
+	report( ( await page.locator( '#babilim-report-panel' ).getAttribute( 'role' ) ) === 'dialog', 'the panel has role=dialog' );
+	const count = await page.evaluate( () => document.querySelectorAll( '#babilim-report-panel a[href], #babilim-report-panel button:not([disabled]), #babilim-report-panel input:not([disabled]), #babilim-report-panel select:not([disabled]), #babilim-report-panel textarea:not([disabled])' ).length );
+	let allInside = true;
+	const forward = [];
+	for ( let i = 0; i < count + 2; i++ ) {
+		await page.keyboard.press( 'Tab' );
+		const info = await focusInfo( page );
+		allInside = allInside && info.inside;
+		forward.push( info.desc );
+	}
+	report( allInside, `Tab stays inside the dialog for ${ count + 2 } presses (${ forward.join( ' > ' ) })` );
+	report( forward[ count - 1 ] === first.desc, 'Tab cycles back to the starting element after one lap' );
+	let backInside = true;
+	const backward = [];
+	for ( let i = 0; i < count + 2; i++ ) {
+		await page.keyboard.press( 'Shift+Tab' );
+		const info = await focusInfo( page );
+		backInside = backInside && info.inside;
+		backward.push( info.desc );
+	}
+	report( backInside, `Shift+Tab stays inside the dialog for ${ count + 2 } presses (${ backward.join( ' > ' ) })` );
+	report( backward[ count - 1 ] === forward[ count + 1 ], 'Shift+Tab cycles back after one lap' );
+	await page.keyboard.press( 'Escape' );
+	report( ( await page.locator( '#babilim-report-panel' ).count() ) === 0, 'Esc closes the dialog' );
+	report( await page.evaluate( ( sel ) => document.activeElement === document.querySelector( sel ), TOOLBAR ), 'after Esc the focus is back on the toolbar entry' );
+
+	// 5. Search.
+	await openReportPanel( page );
+	const hit = await reportSearch( page, 'cart' );
+	report( hit.includes( REPORT_LABEL ) && hit.includes( 'Add to cart' ) && hit.includes( 'Warenkorb: Hinzufügen' ), `searching "cart" lists the original and its translation (${ hit })` );
+	await shot( page, 'report-2-search-results' );
+	const hitUpper = await reportSearch( page, 'ADD TO' );
+	report( hitUpper.includes( 'Add to cart' ), 'the search ignores case' );
+	const none = await reportSearch( page, 'zzzz-not-in-any-pack' );
+	report( none === 'No installed translation matches.', `a string that is not installed shows the no-results message (${ none })` );
+	await shot( page, 'report-2b-search-no-results' );
+	const one = await reportSearch( page, 'a' );
+	report( one.length > 0, `OBSERVED: a 1-character search shows: "${ one }"` );
+	const empty = await reportSearch( page, '' );
+	report( empty.length > 0, `OBSERVED: an empty search shows: "${ empty }"` );
+	await page.keyboard.press( 'Escape' );
+
+	// 6. Four reports: a success, a 429, a 422 and a second success.
+	await mockPost( '/_mock/feedback-script', [] );
+	const r1 = await reportOne( page, { query: 'cart', msgid: 'Add to cart', category: 'terminology', suggested: 'Zum Warenkorb', note: 'Prefer the verb form.', shotPrefix: 'report-6a' } );
+	report( r1.result.includes( 'Thank you. Your report was sent.' ), `report 1 shows success (${ r1.result })` );
+	report( /Type: plugin/.test( r1.preview ) && /Component: report-demo/.test( r1.preview ) && /Language: en_US/.test( r1.preview ) && r1.preview.includes( `Build: ${ REPORT_BUILD }` ) && /Original string: Add to cart/.test( r1.preview ), 'the preview lists type, component, language, build and original before sending' );
+
+	await mockPost( '/_mock/feedback-script', [ 429 ] );
+	const r2 = await reportOne( page, { query: 'save', msgid: 'Save changes', category: 'context', suggested: 'Änderungen speichern', note: 'Second try.', shotPrefix: 'report-6b' } );
+	report( r2.result.includes( 'Too many reports today. Try again tomorrow.' ) && ! r2.result.includes( 'Thank you' ), `a 429 shows the rate-limit message and not success (${ r2.result })` );
+	report( /String context: button/.test( r2.preview ), 'the preview shows the string context' );
+
+	await mockPost( '/_mock/feedback-script', [ 422 ] );
+	const r3 = await reportOne( page, { query: 'save', msgid: 'Save changes', category: 'context', suggested: 'Änderungen speichern', note: 'Third try.', shotPrefix: 'report-6c' } );
+	report( r3.result.includes( "This string can't be reported from this site." ) && ! r3.result.includes( 'Thank you' ), `a 422 shows the unprocessable message and not success (${ r3.result })` );
+
+	const r4 = await reportOne( page, { query: 'save', msgid: 'Save changes', category: 'context', suggested: 'Änderungen speichern', note: 'Fourth try, <b>not markup</b> & "quotes".' } );
+	report( r4.result.includes( 'Thank you. Your report was sent.' ), `report 4 shows success (${ r4.result })` );
+
+	// 7. What the mock received.
+	const received = await mockReceived( '/v1/feedback' );
+	report( received.length === 4 && received.map( ( r ) => r.status ).join( ',' ) === '201,429,422,201', `the mock received four feedback requests with statuses ${ received.map( ( r ) => r.status ).join( ',' ) }` );
+	report( received.every( ( r ) => r.auth === 'ok' ), 'every feedback request carried the bearer token issued at registration' );
+	for ( const [ index, entryReceived ] of received.entries() ) {
+		const violations = schemaViolations( 'feedback.request.schema.json', entryReceived.raw );
+		report( violations.length === 0, `body ${ index + 1 } matches feedback.request.schema.json${ violations.length ? ': ' + violations.join( '; ' ) : '' }` );
+		const found = leaks( entryReceived.raw, tokens );
+		report( found.length === 0 && ! ( 'screen_path' in entryReceived.body ), `body ${ index + 1 } carries no token, address, user or path${ found.length ? ': ' + found.join( ', ' ) : '' }` );
+	}
+	const [ b1, , , b4 ] = received.map( ( r ) => r.body );
+	report( b1.kind === 'plugin' && b1.slug === 'report-demo' && b1.locale === 'en_US' && b1.build_id === REPORT_BUILD && b1.category === 'terminology' && b1.msgid === 'Add to cart' && ! ( 'msgctxt' in b1 ) && b1.current_msgstr === 'Warenkorb: Hinzufügen' && b1.suggested === 'Zum Warenkorb' && b1.note === 'Prefer the verb form.', `body 1 has kind, slug, locale, build_id, category, msgid, current_msgstr, suggested and note as chosen (${ JSON.stringify( b1 ) })` );
+	report( b4.msgid === 'Save changes' && b4.msgctxt === 'button' && b4.category === 'context' && b4.current_msgstr === 'Änderungen sichern' && b4.suggested === 'Änderungen speichern', `body 4 keeps msgid and msgctxt exactly (${ JSON.stringify( b4 ) })` );
+	console.log( `  note in body 4: ${ JSON.stringify( b4.note ) }` );
+	report( b4.note === 'Fourth try, not markup & "quotes".' || b4.note === 'Fourth try, <b>not markup</b> & "quotes".', `OBSERVED: note typed with markup is sent as ${ JSON.stringify( b4.note ) }` );
+}
+
+// A fixture plugin whose update the mock lists but cannot deliver makes the
+// plugin's own install step fail on the sync run, which queues an error event.
+async function errconsentScenario( page ) {
+	const reports = async () => mockReceived( '/v1/error-reports' );
+	const listed = await enableOnly( page );
+	report( listed, 'the translations list shows after enabling' );
+	if ( ! listed ) {
+		return;
+	}
+	const tokens = ( await mockState() ).tokens || [];
+	const noticeLocator = page.locator( '.notice-warning', { hasText: 'Babilim hit an error. Share an error report?' } );
+	// Runs the plugin's own scheduled sync event once (see run-ux-flow.sh: a
+	// stand-in for WP-Cron, which does not reach the event in this setup).
+	const runCron = async () => {
+		await page.goto( `${ baseUrl }/wp-admin/index.php?e2e_run_sync=1`, { waitUntil: 'load' } );
+		const st = await mockState();
+		console.log( `  sync event run; mock has ${ ( st.inventory_log || [] ).length } inventory request(s), downloads ${ JSON.stringify( st.download_log || [] ) }` );
+	};
+	const waitForNotice = async () => {
+		for ( let i = 0; i < 3; i++ ) {
+			await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+			if ( ( await noticeLocator.count() ) > 0 ) {
+				return true;
+			}
+			await page.waitForTimeout( 2000 );
+		}
+		return false;
+	};
+	const checkAgain = async () => {
+		await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=advanced`, { waitUntil: 'load' } );
+		await submitAndSettle( page, page.locator( 'button', { hasText: 'Check again now' } ) );
+	};
+
+	// 1. Nothing is asked and nothing is sent before an error has happened.
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) === 0, 'no consent notice before any error' );
+	report( ( await reports() ).length === 0, 'the mock has received no error report yet' );
+
+	// 2. The error: the sync run's install step fails on the update the mock
+	// cannot deliver (a 500 for that build).
+	await runCron();
+	const shown = await waitForNotice();
+	report( shown, 'the consent notice appears after the install failed' );
+	if ( ! shown ) {
+		console.log( `  page text: ${ ( await bodyText( page ) ).slice( 0, 400 ) }` );
+		return;
+	}
+	await shot( page, 'errconsent-1-notice' );
+	const noticeText = ( await noticeLocator.first().innerText() ).replace( /\s+/g, ' ' );
+	report( /Always share/.test( noticeText ) && /Share this report/.test( noticeText ) && /Don't share/.test( noticeText ), 'the notice offers Share this report, Always share and Don\'t share' );
+	const shownFields = {};
+	for ( const text of await noticeLocator.first().locator( 'li' ).allInnerTexts() ) {
+		const at = text.indexOf( ': ' );
+		shownFields[ text.slice( 0, at ) ] = text.slice( at + 2 );
+	}
+	report( [ 'plugin_version', 'wp_version', 'php_version', 'locale', 'event_id', 'error_code', 'action', 'origin_id', 'at' ].every( ( k ) => k in shownFields ) && Object.keys( shownFields ).length === 9, `the notice lists exactly the nine fields to be sent (${ Object.keys( shownFields ).join( ', ' ) })` );
+	report( ( await reports() ).length === 0, 'the mock has received nothing while the notice is open' );
+
+	// 3. Before consent, further syncs send nothing either.
+	await checkAgain();
+	await checkAgain();
+	report( ( await reports() ).length === 0, 'two more syncs before consent: still nothing received' );
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) > 0, 'the notice is still waiting for an answer' );
+
+	// 4. Agree for good; the next sync sends.
+	await submitAndSettle( page, noticeLocator.first().locator( 'button', { hasText: 'Always share' } ) );
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) === 0, 'after "Always share" the notice is gone' );
+	report( ( await reports() ).length === 0, 'agreeing alone sends nothing yet' );
+	await checkAgain();
+	const sent = await reports();
+	report( sent.length === 1 && sent[ 0 ].status === 202 && sent[ 0 ].auth === 'ok', `the next sync sends one report (${ sent.length } received, status ${ sent[ 0 ] ? sent[ 0 ].status : 'n/a' })` );
+	if ( sent.length !== 1 ) {
+		return;
+	}
+	const body = sent[ 0 ].body;
+	const violations = schemaViolations( 'error-reports.request.schema.json', sent[ 0 ].raw );
+	report( violations.length === 0, `the body matches error-reports.request.schema.json${ violations.length ? ': ' + violations.join( '; ' ) : '' }` );
+	const actual = { ...Object.fromEntries( Object.entries( body ).filter( ( [ k ] ) => k !== 'events' ) ), ...( body.events[ 0 ] || {} ) };
+	report( body.events.length === 1 && JSON.stringify( Object.entries( actual ).sort() ) === JSON.stringify( Object.entries( shownFields ).sort() ), `the body equals what the notice showed (${ JSON.stringify( shownFields ) })` );
+	const found = leaks( sent[ 0 ].raw, tokens, [ /admin/i, /report-demo/i, /\/home\//, /wp-content/ ] );
+	report( found.length === 0, `the body has no address, token, user, plugin name or absolute path${ found.length ? ': ' + found.join( ', ' ) : '' }` );
+	console.log( `  body: ${ sent[ 0 ].raw }` );
+
+	// 5. Stop sharing in Settings; a later error is asked about again and never sent.
+	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=general`, { waitUntil: 'load' } );
+	const box = page.locator( 'input[name="share_errors"]' );
+	report( await box.isChecked(), 'Settings shows the share-errors box checked after "Always share"' );
+	await shot( page, 'errconsent-2-settings-checked' );
+	await box.uncheck();
+	await submitAndSettle( page, page.locator( 'form#babilim-settings-form button.button-primary' ) );
+	report( ! ( await page.locator( 'input[name="share_errors"]' ).isChecked() ), 'after saving, the box stays unchecked' );
+	// The next scheduled run tries the undeliverable update again and fails the same way.
+	await runCron();
+	const again = await waitForNotice();
+	report( again, 'with sharing off, a new error asks for consent again' );
+	await shot( page, 'errconsent-3-notice-after-opt-out' );
+	await checkAgain();
+	await checkAgain();
+	report( ( await reports() ).length === 1, `after opting out nothing more is sent (${ ( await reports() ).length } report(s) in total)` );
+}
+
 const browser = await chromium.launch();
 let exitCode = 1;
 try {
@@ -1138,6 +1501,10 @@ try {
 		await rowactionsScenario( page, state );
 	} else if ( 'screenshots' === scenario ) {
 		await screenshotsScenario( page );
+	} else if ( 'report' === scenario ) {
+		await reportScenario( page );
+	} else if ( 'errconsent' === scenario ) {
+		await errconsentScenario( page );
 	} else {
 		report( false, `unknown scenario "${ scenario }"` );
 	}

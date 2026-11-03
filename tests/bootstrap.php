@@ -274,8 +274,25 @@ function __return_true() {
 }
 
 function sanitize_text_field( $str ) {
+	// Real core returns '' for an array or object, and strips tags.
+	if ( is_array( $str ) || is_object( $str ) ) {
+		return '';
+	}
+	$str = strip_tags( (string) $str );
 	$str = preg_replace( '/[\r\n\t ]+/', ' ', (string) $str );
 	return trim( (string) $str );
+}
+
+/** wp_check_invalid_utf8() (wp-includes/formatting.php): a string that is
+ * not valid UTF-8 comes back empty, or, with $strip, with the invalid
+ * bytes removed (core does that with iconv's //IGNORE).
+ */
+function wp_check_invalid_utf8( $text, $strip = false ) {
+	$text = (string) $text;
+	if ( '' === $text || 1 === preg_match( '//u', $text ) ) {
+		return $text;
+	}
+	return $strip ? (string) iconv( 'UTF-8', 'UTF-8//IGNORE', $text ) : '';
 }
 
 /** sanitize_textarea_field() (wp-includes/formatting.php): same idea as
@@ -283,7 +300,11 @@ function sanitize_text_field( $str ) {
  * runs of tabs/spaces, and normalizes CRLF/CR to a bare LF.
  */
 function sanitize_textarea_field( $str ) {
-	$str = (string) $str;
+	// Core's _sanitize_text_fields() starts with wp_check_invalid_utf8(): invalid UTF-8 becomes ''.
+	$str = wp_check_invalid_utf8( (string) $str );
+	// Like core's wp_strip_all_tags(): drop script/style blocks, then tags.
+	$str = preg_replace( '@<(script|style)[^>]*?>.*?</\1>@si', '', $str );
+	$str = strip_tags( $str );
 	$str = preg_replace( '/\r\n|\r/', "\n", $str );
 	$str = preg_replace( '/[\t ]+/', ' ', $str );
 	return trim( $str );
@@ -1584,11 +1605,13 @@ function switch_to_locale( $locale ) {
  */
 function babilim_test_reset() {
 	Babilim_Locale_Label::reset_for_tests();
+	Babilim_Admin::reset_label_cache_for_tests();
 	Babilim_Loader::reset_messages_cache_for_tests();
 	$GLOBALS['babilim_test_filters']                = $GLOBALS['babilim_test_loaded_filters'];
 	$GLOBALS['babilim_test_actions']                = $GLOBALS['babilim_test_loaded_actions'];
 	$GLOBALS['babilim_test_action_dispatch_counts'] = $GLOBALS['babilim_test_loaded_action_dispatch_counts'];
 	$GLOBALS['babilim_test_options']                = array();
+	$GLOBALS['babilim_test_referer']                = false;
 	$GLOBALS['babilim_test_load_textdomain_calls']     = array();
 	$GLOBALS['babilim_test_load_plugin_textdomain_calls'] = array();
 	$GLOBALS['babilim_test_determine_locale_calls']    = 0;
@@ -1656,6 +1679,7 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_inline_styles']           = array();
 	$GLOBALS['babilim_test_registered_scripts']      = array();
 	$GLOBALS['babilim_test_enqueued_scripts']        = array();
+	$GLOBALS['babilim_test_localized_scripts']       = array();
 	$GLOBALS['babilim_test_spawn_cron_calls']        = 0;
 	$_REQUEST                                        = array();
 }
@@ -1941,6 +1965,12 @@ function admin_url( $path = '' ) {
 	return rtrim( (string) $GLOBALS['babilim_test_admin_url'], '/' ) . '/' . ltrim( (string) $path, '/' );
 }
 
+/** wp_get_referer() (wp-includes/functions.php): the test sets the referer in a global. */
+function wp_get_referer() {
+	$referer = $GLOBALS['babilim_test_referer'] ?? false;
+	return is_string( $referer ) && '' !== $referer ? $referer : false;
+}
+
 /** sanitize_key() (wp-includes/formatting.php): lowercase, [a-z0-9_-] only. */
 function sanitize_key( $key ) {
 	if ( ! is_scalar( $key ) ) {
@@ -2181,6 +2211,7 @@ function wp_add_inline_style( $handle, $data ) {
 
 $GLOBALS['babilim_test_registered_scripts'] = array();
 $GLOBALS['babilim_test_enqueued_scripts']   = array();
+$GLOBALS['babilim_test_localized_scripts']  = array();
 $GLOBALS['babilim_test_spawn_cron_calls']   = 0;
 
 /** wp_register_script() (wp-includes/functions.wp-scripts.php). */
@@ -2195,6 +2226,12 @@ function wp_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $
 		wp_register_script( $handle, $src, $deps, $ver, $args );
 	}
 	$GLOBALS['babilim_test_enqueued_scripts'][ $handle ] = true;
+}
+
+/** wp_localize_script() (wp-includes/functions.wp-scripts.php) -- records the data per handle. */
+function wp_localize_script( $handle, $object_name, $l10n ) {
+	$GLOBALS['babilim_test_localized_scripts'][ $handle ][ $object_name ] = $l10n;
+	return true;
 }
 
 /** wp_add_inline_script() (wp-includes/functions.wp-scripts.php) -- records the code per handle. */

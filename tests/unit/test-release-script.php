@@ -10,6 +10,49 @@ use PHPUnit\Framework\TestCase;
 
 final class Test_Release_Script extends TestCase {
 
+	/** @var array{path:string,mtime:int,sha:string}|null State of the real release zip before the class ran. */
+	private static $release_zip = null;
+
+	public static function setUpBeforeClass(): void {
+		$root = dirname( __DIR__, 2 );
+		$text = (string) file_get_contents( $root . '/readme.txt' );
+		if ( 1 !== preg_match( '/^Stable tag:\s*(\S+)/m', $text, $m ) ) {
+			return;
+		}
+		$path = $root . '/build/babilim-' . $m[1] . '.zip';
+		if ( is_file( $path ) ) {
+			// Pin an old mtime so any rebuild is visible.
+			touch( $path, 1000000000 );
+			clearstatcache();
+			self::$release_zip = array(
+				'path'  => $path,
+				'mtime' => (int) filemtime( $path ),
+				'sha'   => (string) sha1_file( $path ),
+			);
+		} else {
+			self::$release_zip = array(
+				'path'  => $path,
+				'mtime' => 0,
+				'sha'   => '',
+			);
+		}
+	}
+
+	public static function tearDownAfterClass(): void {
+		if ( null === self::$release_zip ) {
+			return;
+		}
+		$was = self::$release_zip;
+		clearstatcache();
+		if ( '' === $was['sha'] ) {
+			self::assertFileDoesNotExist( $was['path'], 'the release script test must not create the release zip' );
+			return;
+		}
+		self::assertFileExists( $was['path'], 'the release script test must not delete the release zip' );
+		self::assertSame( $was['mtime'], (int) filemtime( $was['path'] ), 'the release script test must not rebuild the release zip' );
+		self::assertSame( $was['sha'], (string) sha1_file( $was['path'] ), 'the release zip content must be unchanged' );
+	}
+
 	private function root(): string {
 		return dirname( __DIR__, 2 );
 	}
@@ -51,15 +94,18 @@ SH;
 		mkdir( $work, 0777, true );
 		$this->stub_svn( $stub, $existing_tag );
 
+		// Build to a scratch zip so the real build/babilim-<ver>.zip is never touched.
+		$zip = "$base/scratch.zip";
 		$out = array();
-		exec( 'cd ' . escapeshellarg( $this->root() ) . ' && php scripts/build-zip.php 2>&1', $out, $zip_rc );
+		exec( 'cd ' . escapeshellarg( $this->root() ) . ' && BABILIM_ZIP_OUT=' . escapeshellarg( $zip ) . ' php scripts/build-zip.php 2>&1', $out, $zip_rc );
 		$this->assertSame( 0, $zip_rc, implode( "\n", $out ) );
 
 		$out = array();
 		$cmd = 'cd ' . escapeshellarg( $this->root() )
-			. ' && PATH=' . escapeshellarg( $stub ) . ':$PATH BABILIM_RELEASE_WORK=' . escapeshellarg( $work )
+			. ' && BABILIM_ZIP_OUT=' . escapeshellarg( $zip ) . ' PATH=' . escapeshellarg( $stub ) . ':$PATH BABILIM_RELEASE_WORK=' . escapeshellarg( $work )
 			. ' bash scripts/release.sh --dry-run --skip-checks 2>&1';
 		exec( $cmd, $out, $rc );
+		unlink( $zip );
 		$log = is_file( "$stub/svn.log" ) ? file( "$stub/svn.log", FILE_IGNORE_NEW_LINES ) : array();
 		return array( $rc, implode( "\n", $out ), (array) $log, $stub, $work );
 	}

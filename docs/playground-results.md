@@ -880,3 +880,54 @@ been corrected and was re-run on 6.6 only);
 the multisite checks `b10` and `b10b-multisite-lock` and the bundled
 translation check `b12-bundled-l10n` PASS. This is the evidence behind
 `Tested up to: 7.1`.
+
+## 1.1 browser scenarios: the report panel and the error consent
+
+Two scenarios in `tests/playground/browser/ux-flow.mjs`, run by
+`run-ux-flow.sh` like the others (`BABILIM_UX_SCENARIOS="report errconsent"`).
+Screenshots go to `BABILIM_UX_SHOTS` (default `<out-dir>/shots-<wp>-<mode>`).
+The mock now also answers `POST /v1/feedback` (201, or a queued 429/422 via
+`POST /_mock/feedback-script`) and `POST /v1/error-reports` (202). Both need
+the bearer token the mock issued at verification (401 otherwise), and every
+request is recorded in the mock's state (`/_control/state`, key `received`)
+and in `ux-mock-received-<wp>-<mode>.jsonl` in the out-dir. The token itself
+is never written down, only whether it matched. Bodies are checked with
+`tests/playground/mock-server/validate-body.php`, which runs a body through
+the pinned contract schema with the unit suite's own validator.
+
+- `report`: the admin toolbar shows "Report translation" and the front end
+  does not; the panel moves focus into the dialog, Tab and Shift+Tab stay
+  inside it, Esc closes it and returns focus to the toolbar entry; search
+  finds an installed string (case-insensitively), says so when nothing
+  matches; four reports are sent (201, 429, 422, 201) and the panel shows
+  success, the rate-limit text, the unprocessable text and success; each
+  body is checked against `feedback.request.schema.json` and for leaks. With
+  `--no-js` only the toolbar entry and an intact page are checked. The pack
+  it searches is a `report-demo` fixture built by `build-package.php`
+  for the site language.
+- `errconsent`: the mock lists an update for `errors-demo` whose build it
+  answers with a 500, so the plugin's install step fails and queues an error
+  event. The consent notice appears; nothing reaches the mock before the
+  owner agrees; after "Always share" the next sync sends one body that equals
+  the fields the notice showed, matches `error-reports.request.schema.json`
+  and carries no address, token, user, plugin name or path; clearing
+  "share errors" in Settings stops further sending and the next error asks
+  again.
+
+How these two are run, and what is different from the other scenarios:
+
+- Use `BABILIM_UX_PG_ARGS="--workers=1"` (see above): with the default
+  three workers Playground intermittently fails with `Cannot escape data
+  without an active database connection`, which is not the plugin.
+- The `errconsent` scenario needs the plugin's scheduled sync to run on
+  demand. In this Playground setup a request to `wp-cron.php` took the cron
+  lock without reaching the plugin's `babilim_sync` event (cause not
+  determined), so the runner mounts a small must-use plugin that runs that
+  same event from an administrator-only URL. It replaces WP-Cron only;
+  everything after the event is the plugin's own code.
+- `callback` mode against Playground fails at the enable step, as described
+  under "Where `callback` stops" above; use `noverify` here. Both scenarios
+  pass on WordPress 6.6 and the current release in `noverify` mode.
+
+The neutral runner (`run-neutral-ux-flow.sh <out-dir> 1 "report errconsent"`) supports both scenarios too and is the
+reference for them: with the mock in real `callback` mode both pass (89 PASS, 0 FAIL, with and without the script).

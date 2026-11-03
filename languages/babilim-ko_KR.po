@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.0.1\n"
+"Project-Id-Version: Babilim 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: ko\n"
@@ -16,10 +16,10 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:319
-#: admin/class-babilim-admin.php:320
-#: admin/class-babilim-admin.php:2500
-#: admin/class-babilim-admin.php:2554
+#: admin/class-babilim-admin.php:338
+#: admin/class-babilim-admin.php:339
+#: admin/class-babilim-admin.php:2614
+#: admin/class-babilim-admin.php:2668
 msgid "Babilim"
 msgstr "Babilim"
 
@@ -28,53 +28,53 @@ msgstr "Babilim"
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
 msgstr "사이트에 이미 설치된 플러그인과 테마에서 누락된 번역을 채워 줍니다."
 
-#: admin/class-babilim-admin.php:335
-#: admin/class-babilim-admin.php:336
+#: admin/class-babilim-admin.php:354
+#: admin/class-babilim-admin.php:355
 #: admin/class-babilim-translations-table.php:400
 msgid "Translations"
 msgstr "번역"
 
-#: admin/class-babilim-admin.php:343
+#: admin/class-babilim-admin.php:362
 msgid "Babilim Settings"
 msgstr "Babilim 설정"
 
-#: admin/class-babilim-admin.php:344
-#: admin/class-babilim-admin.php:2557
-#: admin/class-babilim-admin.php:2846
+#: admin/class-babilim-admin.php:363
+#: admin/class-babilim-admin.php:2671
+#: admin/class-babilim-admin.php:2960
 msgid "Settings"
 msgstr "설정"
 
-#: admin/class-babilim-admin.php:371
-#: admin/class-babilim-admin.php:779
+#: admin/class-babilim-admin.php:390
+#: admin/class-babilim-admin.php:789
 msgid "You are not allowed to do this."
 msgstr "이 작업을 수행할 권한이 없습니다."
 
 #. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:400
+#: admin/class-babilim-admin.php:419
 #, php-format
 msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
 msgstr "구성 요소를 더 적게 선택하세요. 한 번에 최대 %1$d개의 작업을 실행할 수 있습니다(선택한 개수: %2$d)."
 
-#: admin/class-babilim-admin.php:413
-#: admin/class-babilim-admin.php:1132
-#: admin/class-babilim-admin.php:1303
+#: admin/class-babilim-admin.php:432
+#: admin/class-babilim-admin.php:1110
+#: admin/class-babilim-admin.php:1281
 msgid "That component is not installed on this site, so a translation cannot be requested for it."
 msgstr "해당 구성 요소는 이 사이트에 설치되어 있지 않아 번역을 요청할 수 없습니다."
 
-#: admin/class-babilim-admin.php:933
+#: admin/class-babilim-admin.php:911
 msgid "Already installed."
 msgstr "이미 설치되어 있습니다."
 
-#: admin/class-babilim-admin.php:933
+#: admin/class-babilim-admin.php:911
 msgid "Downloaded and installed."
 msgstr "다운로드 및 설치했습니다."
 
-#: admin/class-babilim-admin.php:956
-#: admin/class-babilim-admin.php:1297
-#: admin/class-babilim-admin.php:1373
-#: admin/class-babilim-admin.php:1951
-#: admin/class-babilim-admin.php:2115
-#: includes/class-babilim-api-client.php:520
+#: admin/class-babilim-admin.php:934
+#: admin/class-babilim-admin.php:1275
+#: admin/class-babilim-admin.php:1353
+#: admin/class-babilim-admin.php:1954
+#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
 #: includes/class-babilim-site.php:705
@@ -82,974 +82,961 @@ msgstr "다운로드 및 설치했습니다."
 msgid "Babilim has not been enabled for this site yet."
 msgstr "이 사이트에서 Babilim이 아직 활성화되지 않았습니다."
 
-#: admin/class-babilim-admin.php:975
+#: admin/class-babilim-admin.php:953
 msgid "No build is available to download for this locale."
 msgstr "이 로캘에 다운로드할 수 있는 빌드가 없습니다."
 
-#: admin/class-babilim-admin.php:1030
+#: admin/class-babilim-admin.php:1008
 msgid "Rolled back to the previous build."
 msgstr "이전 빌드로 롤백했습니다."
 
-#: admin/class-babilim-admin.php:1089
+#: admin/class-babilim-admin.php:1067
 msgid "Rolled back and reported."
 msgstr "롤백하고 신고했습니다."
 
 #. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1095
+#: admin/class-babilim-admin.php:1073
 #, php-format
 msgid "Rolled back, but the report could not be sent: %s"
 msgstr "롤백했지만 신고를 보내지 못했습니다: %s"
 
-#: admin/class-babilim-admin.php:1119
+#: admin/class-babilim-admin.php:1097
 msgid "Removed."
 msgstr "제거했습니다."
 
-#: admin/class-babilim-admin.php:1155
+#: admin/class-babilim-admin.php:1133
 msgid "Translation requested."
 msgstr "번역을 요청했습니다."
 
-#: admin/class-babilim-admin.php:1177
+#: admin/class-babilim-admin.php:1155
 msgid "This component was already uploaded. Babilim is checking it now."
 msgstr "이 구성 요소는 이미 업로드되었습니다. Babilim이 지금 확인하고 있습니다."
 
-#: admin/class-babilim-admin.php:1217
+#: admin/class-babilim-admin.php:1195
 msgid "Upload cancelled."
 msgstr "업로드가 취소되었습니다."
 
-#: admin/class-babilim-admin.php:1228
+#: admin/class-babilim-admin.php:1206
 msgid "Upload complete — translation requested."
 msgstr "업로드 완료 — 번역을 요청했습니다."
 
-#: admin/class-babilim-admin.php:1306
+#: admin/class-babilim-admin.php:1284
 msgid "This component does not declare a version number, so a translation cannot be requested for it."
 msgstr "이 구성 요소에 버전 번호가 선언되어 있지 않아 번역을 요청할 수 없습니다."
 
 #. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1313
+#: admin/class-babilim-admin.php:1291
 #, php-format
 msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
 msgstr "이 구성 요소의 버전 번호가 %d자를 초과하여 Babilim이 처리할 수 없으므로 번역을 요청할 수 없습니다."
 
-#: admin/class-babilim-admin.php:1319
+#: admin/class-babilim-admin.php:1297
 msgid "A translation cannot be requested for that locale on this site right now."
 msgstr "현재 이 사이트에서는 해당 로캘의 번역을 요청할 수 없습니다."
 
-#: admin/class-babilim-admin.php:1345
+#: admin/class-babilim-admin.php:1323
+#: admin/class-babilim-admin.php:3688
 msgid "Thank you. Your report was sent."
 msgstr "감사합니다. 신고가 전송되었습니다."
 
-#: admin/class-babilim-admin.php:1378
+#: admin/class-babilim-admin.php:1358
 msgid "This report does not name a valid plugin or theme and locale."
 msgstr "이 신고에 유효한 플러그인 또는 테마와 로캘이 지정되어 있지 않습니다."
 
-#: admin/class-babilim-admin.php:1382
+#: admin/class-babilim-admin.php:1365
 msgid "Please choose a category for this report."
 msgstr "이 신고의 카테고리를 선택해 주세요."
 
-#: admin/class-babilim-admin.php:1386
+#: admin/class-babilim-admin.php:1369
 msgid "This report is missing a valid build to report against."
 msgstr "이 보고서에는 보고 대상으로 사용할 유효한 빌드가 없습니다."
 
-#: admin/class-babilim-admin.php:1389
+#: admin/class-babilim-admin.php:1372
 msgid "This build is not one this site currently knows about for this component/locale."
 msgstr "이 빌드는 이 사이트가 현재 이 구성 요소/로캘에 대해 알고 있는 빌드가 아닙니다."
 
 #. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1441
+#: admin/class-babilim-admin.php:1442
 #, php-format
 msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
 msgstr "\"%1$s\" 필드가 너무 깁니다. 현재 %2$d자이며 제한은 %3$d자입니다. 아무것도 전송되지 않았으니 내용을 줄인 후 다시 시도해 주세요."
 
-#: admin/class-babilim-admin.php:1466
+#: admin/class-babilim-admin.php:3666
 msgid "Original string"
 msgstr "원본 문자열"
 
-#: admin/class-babilim-admin.php:1470
+#: admin/class-babilim-admin.php:3681
 msgid "String context"
 msgstr "문자열 컨텍스트"
 
-#: admin/class-babilim-admin.php:1474
-#: admin/class-babilim-admin.php:4067
+#: admin/class-babilim-admin.php:1467
+#: admin/class-babilim-admin.php:3667
+#: admin/class-babilim-admin.php:4406
 msgid "Current translation"
 msgstr "현재 번역"
 
-#: admin/class-babilim-admin.php:1478
-#: admin/class-babilim-admin.php:4069
+#: admin/class-babilim-admin.php:1471
+#: admin/class-babilim-admin.php:3671
+#: admin/class-babilim-admin.php:4408
 msgid "Suggested translation"
 msgstr "추천 번역"
 
-#: admin/class-babilim-admin.php:1482
-#: admin/class-babilim-admin.php:4071
+#: admin/class-babilim-admin.php:1475
+#: admin/class-babilim-admin.php:3672
+#: admin/class-babilim-admin.php:4410
 msgid "Note (optional)"
 msgstr "메모(선택 사항)"
 
-#: admin/class-babilim-admin.php:1486
-#: admin/class-babilim-admin.php:4073
+#: admin/class-babilim-admin.php:1479
+#: admin/class-babilim-admin.php:4412
 msgid "Where you saw this (optional)"
 msgstr "발견한 위치(선택 사항)"
 
 #. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1549
+#: admin/class-babilim-admin.php:1542
 #, php-format
 msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
 msgstr "서비스의 요청 제한으로 Babilim 동기화가 일시적으로 지연되고 있습니다. %s 이후에 다시 시도합니다."
 
-#: admin/class-babilim-admin.php:1583
+#: admin/class-babilim-admin.php:1576
 msgid "That is not a valid WordPress locale code. Nothing was saved."
 msgstr "올바른 WordPress 로캘 코드가 아닙니다. 아무것도 저장되지 않았습니다."
 
-#: admin/class-babilim-admin.php:1616
+#: admin/class-babilim-admin.php:1619
 msgid "Settings saved."
 msgstr "설정을 저장했습니다."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1678
+#: admin/class-babilim-admin.php:1681
 #, php-format
 msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
 msgstr "이 옵션을 켜면 제거 시 이 사이트의 ID도 함께 삭제됩니다. 이후에는 이 사이트에 연결된 유료 라이선스를 자동으로 복구할 수 없으며, 되찾으려면 %s에서 Babilim 지원팀에 문의해야 합니다."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1694
+#: admin/class-babilim-admin.php:1697
 #, php-format
 msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
 msgstr "플러그인을 삭제하면 Babilim이 이 사이트의 ID를 삭제하도록 설정되어 있습니다. 이 경우 이 사이트에 연결된 유료 라이선스를 자동으로 복구할 수 없으며, %s에서 Babilim 지원팀에 문의해야 합니다. ID를 유지하려면 취소를 누르고 Babilim 설정에서 \"제거 시 모든 Babilim 데이터 삭제\"를 선택 해제한 다음 다시 비활성화하세요. 그래도 비활성화하시겠습니까?"
 
 #. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1719
+#: admin/class-babilim-admin.php:1722
 #, php-format
 msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgstr[0] "이 네트워크의 사이트 %1$d개가 플러그인 삭제 시 Babilim ID를 삭제하도록 설정되어 있습니다. 이 경우 해당 사이트에 연결된 유료 라이선스를 자동으로 복구할 수 없으며, %2$s에서 Babilim 지원팀에 문의해야 합니다. ID를 유지하려면 취소를 누르고 해당 사이트의 Babilim 설정에서 \"제거 시 모든 Babilim 데이터 삭제\"를 선택 해제한 다음 다시 비활성화하세요. 그래도 비활성화하시겠습니까?"
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1738
+#: admin/class-babilim-admin.php:1741
 #, php-format
 msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgstr "이 네트워크는 사이트가 너무 많아 하나씩 확인할 수 없으며, 일부 사이트는 플러그인 삭제 시 Babilim ID를 삭제하도록 설정되어 있을 수 있습니다. 이 경우 해당 사이트에 연결된 유료 라이선스를 자동으로 복구할 수 없으며, %s에서 Babilim 지원팀에 문의해야 합니다. ID를 유지하려면 취소를 누르고 각 사이트의 Babilim 설정에서 \"제거 시 모든 Babilim 데이터 삭제\"를 선택 해제한 다음 다시 비활성화하세요. 그래도 비활성화하시겠습니까?"
 
-#: admin/class-babilim-admin.php:1827
+#: admin/class-babilim-admin.php:1830
 msgid "Open Babilim settings"
 msgstr "Babilim 설정 열기"
 
-#: admin/class-babilim-admin.php:1832
+#: admin/class-babilim-admin.php:1835
 msgid "Babilim could not verify this site, so nothing is downloaded or installed."
 msgstr "Babilim이 이 사이트를 확인하지 못했으므로 아무것도 다운로드되거나 설치되지 않습니다."
 
-#: admin/class-babilim-admin.php:1844
+#: admin/class-babilim-admin.php:1847
 msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
 msgstr "서비스가 사이트에 연결할 수 없었습니다. 방화벽, 보안 플러그인 또는 호스트 규칙이 요청을 차단하고 있을 가능성이 높습니다. /wp-json/babilim/v1/challenge에 대한 요청을 허용해 주세요."
 
-#: admin/class-babilim-admin.php:1846
+#: admin/class-babilim-admin.php:1849
 msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
 msgstr "사이트의 응답 시간이 너무 오래 걸렸습니다. 나중에 다시 시도하고, 호스트가 너무 느리거나 과부하 상태가 아닌지 확인해 주세요."
 
-#: admin/class-babilim-admin.php:1848
+#: admin/class-babilim-admin.php:1851
 msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
 msgstr "사이트가 응답했지만 예상한 내용이 아니었습니다. 다른 플러그인이 REST API를 변경했거나 해당 엔드포인트가 캐시되었을 수 있습니다. /wp-json/babilim/v1/challenge를 캐싱 및 재작성 대상에서 제외해 주세요."
 
-#: admin/class-babilim-admin.php:1850
+#: admin/class-babilim-admin.php:1853
 msgid "Please check that your site can be reached from the internet, then try again."
 msgstr "사이트가 인터넷에서 접근 가능한지 확인한 다음 다시 시도해 주세요."
 
-#: admin/class-babilim-admin.php:1873
+#: admin/class-babilim-admin.php:1876
 msgid "Re-verify"
 msgstr "다시 확인"
 
 #. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1894
+#: admin/class-babilim-admin.php:1897
 #, php-format
 msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
 msgstr "이 사이트는 한 번의 동기화에서 서비스가 허용하는 크기를 초과하여 일부 항목이 제외되었습니다: 구성 요소 %1$d개, 로캘 %2$d개."
 
-#: admin/class-babilim-admin.php:1923
+#: admin/class-babilim-admin.php:1926
 msgid "This site is verified."
 msgstr "이 사이트는 인증되었습니다."
 
-#: admin/class-babilim-admin.php:1936
+#: admin/class-babilim-admin.php:1939
 msgid "Registration restarted."
 msgstr "등록을 다시 시작했습니다."
 
-#: admin/class-babilim-admin.php:1957
-#: admin/class-babilim-admin.php:2031
+#: admin/class-babilim-admin.php:1960
+#: admin/class-babilim-admin.php:2034
 msgid "Sync complete."
 msgstr "동기화가 완료되었습니다."
 
-#: admin/class-babilim-admin.php:1992
+#: admin/class-babilim-admin.php:1995
 msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
 msgstr "Babilim이 이 사이트를 활성화하고 확인하는 중입니다… 이 페이지를 새로고침하거나 예약된 확인이 끝날 때까지 기다려 주세요."
 
 #. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:1997
+#: admin/class-babilim-admin.php:2000
 #, php-format
 msgid "Babilim could not finish enabling (%1$s): %2$s"
 msgstr "Babilim이 활성화를 완료하지 못했습니다(%1$s): %2$s"
 
-#: admin/class-babilim-admin.php:2002
+#: admin/class-babilim-admin.php:2005
 msgid "A host that serves only one PHP request at a time cannot complete this step."
 msgstr "한 번에 하나의 PHP 요청만 처리하는 호스트에서는 이 단계를 완료할 수 없습니다."
 
 #. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2023
+#: admin/class-babilim-admin.php:2026
 #, php-format
 msgid "Babilim is enabled: this site is verified and %d component was found."
 msgid_plural "Babilim is enabled: this site is verified and %d components were found."
 msgstr[0] "Babilim이 활성화되었습니다. 이 사이트는 인증되었으며 구성 요소 %d개를 찾았습니다."
 
-#: admin/class-babilim-admin.php:2107
+#: admin/class-babilim-admin.php:2111
 msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
 msgstr "Babilim이 비활성화되었습니다. 더 이상 아무것도 전송되지 않으며, 이미 설치된 번역은 계속 작동합니다."
 
-#: admin/class-babilim-admin.php:2129
+#: admin/class-babilim-admin.php:2243
 msgid "Supplementary translation index rebuilt."
 msgstr "보충 번역 인덱스를 다시 빌드했습니다."
 
 #. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2147
+#: admin/class-babilim-admin.php:2261
 #, php-format
 msgid "Sweep complete: %d file deleted."
 msgid_plural "Sweep complete: %d files deleted."
 msgstr[0] "검사 완료: 파일 %d개를 삭제했습니다."
 
 #. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2179
+#: admin/class-babilim-admin.php:2293
 #, php-format
 msgid "Removed %d installed component."
 msgid_plural "Removed %d installed components."
 msgstr[0] "설치된 구성 요소 %d개를 제거했습니다."
 
-#: admin/class-babilim-admin.php:2181
+#: admin/class-babilim-admin.php:2295
 msgid "Automatic installs are now off; turn them on again in the settings if you want them."
 msgstr "자동 설치가 꺼졌습니다. 필요하면 설정에서 다시 켤 수 있습니다."
 
-#: admin/class-babilim-admin.php:2502
+#: admin/class-babilim-admin.php:2616
 msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
 msgstr "Babilim은 이 사이트에서 사용 중인 언어의 번역이 없는 플러그인과 테마를 찾아 각각 번역을 설치합니다."
 
 #. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2510
+#: admin/class-babilim-admin.php:2624
 #, php-format
 msgid "Languages found on this site: %s."
 msgstr "이 사이트에서 발견된 언어: %s."
 
-#: admin/class-babilim-admin.php:2515
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
-msgstr "사용 가능한 번역은 한 번의 클릭으로 설치할 수 있고, 없는 번역은 요청할 수 있습니다. 이후 새 번역과 업데이트는 자동으로 설치됩니다(무료 플랜에서는 이미 무료 슬롯을 사용 중인 플러그인과 테마에 한함)."
-
-#: admin/class-babilim-admin.php:2516
+#: admin/class-babilim-admin.php:2630
 msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
 msgstr "무료 플랜은 제한된 수의 플러그인과 테마를 지원하며, 정확한 할당량은 Babilim을 활성화한 후 설정에서 확인할 수 있습니다."
 
-#: admin/class-babilim-admin.php:2517
+#: admin/class-babilim-admin.php:2631
 msgid "What is sent when you enable Babilim"
 msgstr "Babilim을 활성화할 때 전송되는 정보"
 
-#: admin/class-babilim-admin.php:2521
+#: admin/class-babilim-admin.php:2635
 msgid "Enabling…"
 msgstr "활성화하는 중…"
 
-#: admin/class-babilim-admin.php:2521
+#: admin/class-babilim-admin.php:2635
 msgid "Enable Babilim"
 msgstr "Babilim 활성화"
 
-#: admin/class-babilim-admin.php:2522
+#: admin/class-babilim-admin.php:2636
 msgid "By clicking Enable, you agree to send the information listed above to Babilim."
 msgstr "활성화를 클릭하면 위에 나열된 정보를 Babilim으로 전송하는 데 동의하게 됩니다."
 
-#: admin/class-babilim-admin.php:2556
-#: admin/class-babilim-admin.php:2604
-#: admin/class-babilim-admin.php:3953
+#: admin/class-babilim-admin.php:2670
+#: admin/class-babilim-admin.php:2718
+#: admin/class-babilim-admin.php:4313
 msgid "Check again now"
 msgstr "지금 다시 확인"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2571
+#: admin/class-babilim-admin.php:2685
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
 msgstr[0] "마지막 방문 이후 Babilim이 번역 %d개를 자동으로 설치했습니다."
 
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2597
+#: admin/class-babilim-admin.php:2711
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim이 이 사이트를 활성화하고 확인하는 중입니다… (마지막 시도: %s)"
 
-#: admin/class-babilim-admin.php:2601
+#: admin/class-babilim-admin.php:2715
 msgid "Check again"
 msgstr "다시 확인"
 
-#: admin/class-babilim-admin.php:2614
+#: admin/class-babilim-admin.php:2728
 msgid "No components synced yet."
 msgstr "아직 동기화된 구성 요소가 없습니다."
 
 #. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2635
+#: admin/class-babilim-admin.php:2749
 #, php-format
 msgid "%d succeeded"
 msgid_plural "%d succeeded"
 msgstr[0] "%d개 성공"
 
 #. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2639
+#: admin/class-babilim-admin.php:2753
 #, php-format
 msgid "%d skipped"
 msgid_plural "%d skipped"
 msgstr[0] "%d개 건너뜀"
 
 #. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2643
+#: admin/class-babilim-admin.php:2757
 #, php-format
 msgid "%d failed"
 msgid_plural "%d failed"
 msgstr[0] "%d개 실패"
 
 #. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2647
+#: admin/class-babilim-admin.php:2761
 #, php-format
 msgid "%d not yet tried"
 msgid_plural "%d not yet tried"
 msgstr[0] "%d개 아직 시도하지 않음"
 
 #. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2652
+#: admin/class-babilim-admin.php:2766
 #, php-format
 msgid "%1$s nothing to do."
 msgstr "%1$s 할 작업이 없습니다."
 
 #. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2655
+#: admin/class-babilim-admin.php:2769
 #, php-format
 msgid "%1$s %2$s."
 msgstr "%1$s %2$s."
 
-#: admin/class-babilim-admin.php:2667
+#: admin/class-babilim-admin.php:2781
 msgid "Bulk download:"
 msgstr "일괄 다운로드:"
 
-#: admin/class-babilim-admin.php:2669
+#: admin/class-babilim-admin.php:2783
 msgid "Bulk update:"
 msgstr "일괄 업데이트:"
 
-#: admin/class-babilim-admin.php:2671
+#: admin/class-babilim-admin.php:2785
 msgid "Bulk request:"
 msgstr "일괄 요청:"
 
-#: admin/class-babilim-admin.php:2684
+#: admin/class-babilim-admin.php:2798
 msgid "per day"
 msgstr "하루당"
 
-#: admin/class-babilim-admin.php:2698
+#: admin/class-babilim-admin.php:2812
 msgid "Wrong meaning"
 msgstr "잘못된 의미"
 
-#: admin/class-babilim-admin.php:2700
+#: admin/class-babilim-admin.php:2814
 msgid "Wrong term"
 msgstr "잘못된 용어"
 
-#: admin/class-babilim-admin.php:2702
+#: admin/class-babilim-admin.php:2816
 msgid "Broken placeholder"
 msgstr "깨진 플레이스홀더"
 
-#: admin/class-babilim-admin.php:2704
+#: admin/class-babilim-admin.php:2818
 msgid "Wrong for this context"
 msgstr "이 컨텍스트에는 맞지 않음"
 
-#: admin/class-babilim-admin.php:2706
+#: admin/class-babilim-admin.php:2820
 msgid "Wrong plural form"
 msgstr "잘못된 복수형"
 
-#: admin/class-babilim-admin.php:2708
+#: admin/class-babilim-admin.php:2822
 msgid "Negation reversed"
 msgstr "부정이 반대로 번역됨"
 
-#: admin/class-babilim-admin.php:2710
+#: admin/class-babilim-admin.php:2824
 msgid "Translation does not load"
 msgstr "번역이 로드되지 않음"
 
 #. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2713
+#: admin/class-babilim-admin.php:2827
 msgctxt "problem report category"
 msgid "Other"
 msgstr "기타"
 
 #. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2750
+#: admin/class-babilim-admin.php:2864
 #, php-format
 msgid "%1$s (%2$s): %3$s"
 msgstr "%1$s(%2$s): %3$s"
 
-#: admin/class-babilim-admin.php:2785
+#: admin/class-babilim-admin.php:2899
 msgid "Continuing…"
 msgstr "계속하는 중…"
 
 #. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2788
+#: admin/class-babilim-admin.php:2902
 #, php-format
 msgid "Continue next batch (%d left)"
 msgstr "다음 배치 계속하기(%d개 남음)"
 
-#: admin/class-babilim-admin.php:2838
+#: admin/class-babilim-admin.php:2952
 msgid "Search components"
 msgstr "구성 요소 검색"
 
 #. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2845
+#: admin/class-babilim-admin.php:2959
 #, php-format
 msgid "These are the languages this site uses. You can change them in %s."
 msgstr "이 사이트에서 사용하는 언어입니다. %s에서 변경할 수 있습니다."
 
-#: admin/class-babilim-admin.php:2864
+#: admin/class-babilim-admin.php:2978
 msgid "Upload this component?"
 msgstr "이 구성 요소를 업로드하시겠습니까?"
 
-#: admin/class-babilim-admin.php:2866
+#: admin/class-babilim-admin.php:2980
 #: includes/class-babilim-upload.php:96
 msgid "There is no upload waiting for confirmation."
 msgstr "확인을 기다리는 업로드가 없습니다."
 
-#: admin/class-babilim-admin.php:2866
-#: admin/class-babilim-admin.php:2893
+#: admin/class-babilim-admin.php:2980
+#: admin/class-babilim-admin.php:3007
+#: admin/class-babilim-admin.php:3685
 msgid "Back"
 msgstr "뒤로"
 
-#: admin/class-babilim-admin.php:2870
+#: admin/class-babilim-admin.php:2984
 msgid "To translate this component, Babilim needs its source."
 msgstr "이 구성 요소를 번역하려면 Babilim에 해당 소스가 필요합니다."
 
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2872
-#, php-format
-msgid "The entire plugin or theme directory of %1$s (version %2$s) will be uploaded to Babilim."
-msgstr "%1$s(버전 %2$s)의 플러그인 또는 테마 디렉터리 전체가 Babilim에 업로드됩니다."
-
-#: admin/class-babilim-admin.php:2873
-msgid "If that directory contains keys, logs or customer data, they will be uploaded too. The service removes common sensitive files (configuration, environment, database dumps, logs, keys) but cannot guarantee it finds everything."
-msgstr "해당 디렉터리에 키, 로그 또는 고객 데이터가 있으면 함께 업로드됩니다. 서비스가 일반적인 민감 파일(구성, 환경, 데이터베이스 덤프, 로그, 키)을 제거하지만 모든 파일을 찾아낸다고 보장할 수는 없습니다."
-
-#: admin/class-babilim-admin.php:2874
+#: admin/class-babilim-admin.php:2988
 msgid "The upload is kept until you ask Babilim to delete it."
 msgstr "업로드된 파일은 Babilim에 삭제를 요청할 때까지 보관됩니다."
 
-#: admin/class-babilim-admin.php:2875
+#: admin/class-babilim-admin.php:2989
 msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
 msgstr "서비스의 호스팅 제공업체가 이를 저장하며, 번역을 생성하기 위해 AI 모델이 처리합니다."
 
-#: admin/class-babilim-admin.php:2876
+#: admin/class-babilim-admin.php:2990
 msgid "The original text and the translations made from it will be provided to other sites that install the same version."
 msgstr "원문과 이를 바탕으로 만든 번역은 같은 버전을 설치한 다른 사이트에 제공됩니다."
 
-#: admin/class-babilim-admin.php:2877
+#: admin/class-babilim-admin.php:2991
 msgid "By continuing you confirm that you have the right to upload this component."
 msgstr "계속하면 이 구성 요소를 업로드할 권한이 있음을 확인하는 것으로 간주됩니다."
 
-#: admin/class-babilim-admin.php:2878
+#: admin/class-babilim-admin.php:2992
 msgid "Upload and request"
 msgstr "업로드 및 요청"
 
-#: admin/class-babilim-admin.php:2878
+#: admin/class-babilim-admin.php:2992
 msgid "Uploading…"
 msgstr "업로드하는 중…"
 
-#: admin/class-babilim-admin.php:2879
-#: admin/class-babilim-admin.php:2898
-#: admin/class-babilim-admin.php:2935
-#: admin/class-babilim-admin.php:2992
+#: admin/class-babilim-admin.php:2993
+#: admin/class-babilim-admin.php:3012
+#: admin/class-babilim-admin.php:3049
+#: admin/class-babilim-admin.php:3106
 msgid "Cancel"
 msgstr "취소"
 
-#: admin/class-babilim-admin.php:2891
+#: admin/class-babilim-admin.php:3005
 msgid "Uploading"
 msgstr "업로드하는 중"
 
-#: admin/class-babilim-admin.php:2893
-#: includes/class-babilim-upload.php:138
+#: admin/class-babilim-admin.php:3007
+#: includes/class-babilim-upload.php:145
 msgid "There is no upload in progress."
 msgstr "진행 중인 업로드가 없습니다."
 
 #. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:2896
+#: admin/class-babilim-admin.php:3010
 #, php-format
 msgid "Uploading part %1$d of %2$d…"
 msgstr "파트 업로드 중(%1$d/%2$d)…"
 
-#: admin/class-babilim-admin.php:2897
+#: admin/class-babilim-admin.php:3011
 msgid "Continue"
 msgstr "계속"
 
-#: admin/class-babilim-admin.php:2937
+#: admin/class-babilim-admin.php:3051
 msgid "Confirm"
 msgstr "확인"
 
-#: admin/class-babilim-admin.php:2940
-#: admin/class-babilim-admin.php:3004
+#: admin/class-babilim-admin.php:3054
+#: admin/class-babilim-admin.php:3118
 #: admin/class-babilim-translations-table.php:691
 msgid "Remove"
 msgstr "제거"
 
-#: admin/class-babilim-admin.php:2944
-#: admin/class-babilim-admin.php:3003
+#: admin/class-babilim-admin.php:3058
+#: admin/class-babilim-admin.php:3117
 #: admin/class-babilim-translations-table.php:690
 msgid "Roll back"
 msgstr "롤백"
 
-#: admin/class-babilim-admin.php:2947
+#: admin/class-babilim-admin.php:3061
 msgid "Nothing to confirm."
 msgstr "확인할 항목이 없습니다."
 
-#: admin/class-babilim-admin.php:2993
+#: admin/class-babilim-admin.php:3107
 msgid "Choose a language"
 msgstr "언어 선택"
 
-#: admin/class-babilim-admin.php:3005
+#: admin/class-babilim-admin.php:3119
 #: admin/class-babilim-translations-table.php:692
 msgid "Roll back and report"
 msgstr "롤백 및 신고"
 
-#: admin/class-babilim-admin.php:3006
-#: admin/class-babilim-admin.php:4028
+#: admin/class-babilim-admin.php:3120
+#: admin/class-babilim-admin.php:4374
 #: admin/class-babilim-translations-table.php:693
 msgid "Report a problem"
 msgstr "문제 신고"
 
-#: admin/class-babilim-admin.php:3010
+#: admin/class-babilim-admin.php:3124
 msgid "Nothing to choose."
 msgstr "선택할 항목이 없습니다."
 
 #. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3016
+#: admin/class-babilim-admin.php:3130
 #, php-format
 msgid "%1$s: %2$s. Choose the language."
 msgstr "%1$s: %2$s. 언어를 선택하세요."
 
-#: admin/class-babilim-admin.php:3162
+#: admin/class-babilim-admin.php:3276
 msgid "Supplementary translations"
 msgstr "보충 번역"
 
-#: admin/class-babilim-admin.php:3163
+#: admin/class-babilim-admin.php:3277
 msgid "Each component's own contribution to each locale's shared default-domain supplement."
 msgstr "각 로케일의 공유 기본 도메인 보충 번역에 대한 각 구성 요소의 개별 기여분입니다."
 
-#: admin/class-babilim-admin.php:3165
+#: admin/class-babilim-admin.php:3279
+#: admin/class-babilim-admin.php:3677
 #: admin/class-babilim-translations-table.php:399
 msgid "Component"
 msgstr "구성 요소"
 
-#: admin/class-babilim-admin.php:3166
-#: admin/class-babilim-admin.php:3855
+#: admin/class-babilim-admin.php:3280
+#: admin/class-babilim-admin.php:3678
+#: admin/class-babilim-admin.php:4215
 msgid "Language"
 msgstr "언어"
 
-#: admin/class-babilim-admin.php:3167
+#: admin/class-babilim-admin.php:3281
 msgid "Included in index"
 msgstr "인덱스에 포함됨"
 
-#: admin/class-babilim-admin.php:3168
+#: admin/class-babilim-admin.php:3282
 msgid "Entries"
 msgstr "항목"
 
-#: admin/class-babilim-admin.php:3169
-#: admin/class-babilim-admin.php:3859
+#: admin/class-babilim-admin.php:3283
+#: admin/class-babilim-admin.php:4219
 msgid "Conflicting keys"
 msgstr "충돌하는 키"
 
-#: admin/class-babilim-admin.php:3172
+#: admin/class-babilim-admin.php:3286
 msgid "Yes"
 msgstr "예"
 
-#: admin/class-babilim-admin.php:3189
+#: admin/class-babilim-admin.php:3303
 msgid "No — component inactive"
 msgstr "아니요 — 구성 요소가 비활성 상태입니다"
 
-#: admin/class-babilim-admin.php:3191
+#: admin/class-babilim-admin.php:3305
 msgid "No — installed version differs from the active one"
 msgstr "아니요 — 설치된 버전이 활성 버전과 다릅니다"
 
-#: admin/class-babilim-admin.php:3193
+#: admin/class-babilim-admin.php:3307
 msgid "No — component removed"
 msgstr "아니요 — 구성 요소가 제거되었습니다"
 
-#: admin/class-babilim-admin.php:3195
+#: admin/class-babilim-admin.php:3309
 msgid "No"
 msgstr "아니요"
 
-#: admin/class-babilim-admin.php:3217
+#: admin/class-babilim-admin.php:3331
 msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
 msgstr "이 네트워크의 모든 사이트가 공유하는 번역 파일을 변경하므로 네트워크 관리자만 이 작업을 수행할 수 있습니다."
 
-#: admin/class-babilim-admin.php:3233
+#: admin/class-babilim-admin.php:3347
 msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
 msgstr "Babilim이 이 사이트 확인을 완료하지 못했습니다(서비스가 이 사이트에 다시 연결할 수 없었습니다). 등록이 일시 중지되었습니다."
 
-#: admin/class-babilim-admin.php:3234
+#: admin/class-babilim-admin.php:3348
 msgid "This site already has an active registration that can no longer be recovered automatically."
 msgstr "이 사이트에는 더 이상 자동으로 복구할 수 없는 활성 등록이 이미 있습니다."
 
-#: admin/class-babilim-admin.php:3241
+#: admin/class-babilim-admin.php:3355
 msgid "Restart registration"
 msgstr "등록 다시 시작"
 
-#: admin/class-babilim-admin.php:3268
+#: admin/class-babilim-admin.php:3382
 msgid "Babilim settings"
 msgstr "Babilim 설정"
 
-#: admin/class-babilim-admin.php:3275
+#: admin/class-babilim-admin.php:3389
 msgid "General"
 msgstr "일반"
 
-#: admin/class-babilim-admin.php:3276
+#: admin/class-babilim-admin.php:3390
 msgid "Advanced"
 msgstr "고급"
 
-#: admin/class-babilim-admin.php:3301
+#: admin/class-babilim-admin.php:3415
 msgid "Languages"
 msgstr "언어"
 
-#: admin/class-babilim-admin.php:3303
+#: admin/class-babilim-admin.php:3417
 msgid "Automatic installs"
 msgstr "자동 설치"
 
-#: admin/class-babilim-admin.php:3305
+#: admin/class-babilim-admin.php:3419
 msgid "Install available translations automatically"
 msgstr "사용 가능한 번역 자동 설치"
 
-#: admin/class-babilim-admin.php:3306
-msgid "On the free plan, only components that already use one of your free slots are installed automatically, so no new slot is taken."
-msgstr "무료 요금제에서는 이미 무료 슬롯을 사용 중인 구성 요소만 자동으로 설치되므로 새 슬롯이 사용되지 않습니다."
-
-#: admin/class-babilim-admin.php:3307
+#: admin/class-babilim-admin.php:3421
 msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
 msgstr "이 사이트는 새 번역을 자동으로 설치하지 않는 멀티사이트 네트워크에 속해 있습니다. 이미 설치된 번역은 계속 업데이트됩니다."
 
-#: admin/class-babilim-admin.php:3310
+#: admin/class-babilim-admin.php:3429
 msgid "Custom overrides"
 msgstr "사용자 지정 재정의"
 
-#: admin/class-babilim-admin.php:3312
+#: admin/class-babilim-admin.php:3431
 msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
 msgstr "모두 삭제하거나 이 플러그인을 제거할 때 내 번역 재정의를 유지합니다."
 
 #. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3315
+#: admin/class-babilim-admin.php:3434
 #, php-format
 msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
 msgstr "%s에 넣은 번역 파일은 항상 Babilim의 번역보다 우선합니다. 이 항목을 선택 해제하지 않는 한 유지됩니다."
 
-#: admin/class-babilim-admin.php:3319
+#: admin/class-babilim-admin.php:3438
 msgid "Uninstall"
 msgstr "제거"
 
-#: admin/class-babilim-admin.php:3321
+#: admin/class-babilim-admin.php:3440
 msgid "Delete all Babilim data on uninstall"
 msgstr "제거 시 모든 Babilim 데이터 삭제"
 
-#: admin/class-babilim-admin.php:3322
+#: admin/class-babilim-admin.php:3441
 msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
 msgstr "default로 꺼져 있음: 플러그인을 삭제해도 이 사이트의 식별 정보가 유지되므로 다시 설치할 때 재사용할 수 있습니다."
 
-#: admin/class-babilim-admin.php:3325
+#: admin/class-babilim-admin.php:3444
 msgid "Account"
 msgstr "계정"
 
-#: admin/class-babilim-admin.php:3328
+#: admin/class-babilim-admin.php:3447
 msgid "Save changes"
 msgstr "변경 사항 저장"
 
-#: admin/class-babilim-admin.php:3331
-#: admin/class-babilim-admin.php:3336
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:3455
 msgid "Disable Babilim"
 msgstr "Babilim 비활성화"
 
-#: admin/class-babilim-admin.php:3332
+#: admin/class-babilim-admin.php:3451
 msgid "Installed translations are kept, but no further checks or downloads will run."
 msgstr "설치된 번역은 유지되지만 더 이상 확인이나 다운로드가 실행되지 않습니다."
 
-#: admin/class-babilim-admin.php:3336
+#: admin/class-babilim-admin.php:3455
 msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
 msgstr "Babilim을 비활성화하시겠습니까? 설치된 번역은 유지되지만 더 이상 확인이나 다운로드가 실행되지 않습니다."
 
-#: admin/class-babilim-admin.php:3392
-#: admin/class-babilim-admin.php:3626
-#: admin/class-babilim-admin.php:3666
+#: admin/class-babilim-admin.php:3511
+#: admin/class-babilim-admin.php:3986
+#: admin/class-babilim-admin.php:4026
 #: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:320
+#: includes/class-babilim-sync-installer.php:319
 msgid "This site is not registered with Babilim yet."
 msgstr "이 사이트는 아직 Babilim에 등록되지 않았습니다."
 
-#: admin/class-babilim-admin.php:3400
+#: admin/class-babilim-admin.php:3519
 msgid "This site is already licensed. Reload the page."
 msgstr "이 사이트는 이미 라이선스가 있습니다. 페이지를 새로 고치세요."
 
-#: admin/class-babilim-admin.php:3402
-#: admin/class-babilim-admin.php:3413
+#: admin/class-babilim-admin.php:3521
+#: admin/class-babilim-admin.php:3532
 msgid "Checkout is not available for this site right now."
 msgstr "현재 이 사이트에서는 결제를 사용할 수 없습니다."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3405
+#: admin/class-babilim-admin.php:3524
 #, php-format
 msgid "Could not start checkout: %s"
 msgstr "결제를 시작할 수 없습니다: %s"
 
-#: admin/class-babilim-admin.php:3488
+#: admin/class-babilim-admin.php:3848
 msgid "Babilim is not enabled."
 msgstr "Babilim이 활성화되어 있지 않습니다."
 
-#: admin/class-babilim-admin.php:3491
+#: admin/class-babilim-admin.php:3851
 msgid "Not registered yet"
 msgstr "아직 등록되지 않음"
 
-#: admin/class-babilim-admin.php:3493
+#: admin/class-babilim-admin.php:3853
 msgid "Not verified"
 msgstr "확인되지 않음"
 
-#: admin/class-babilim-admin.php:3495
+#: admin/class-babilim-admin.php:3855
 msgid "Verified"
 msgstr "확인됨"
 
-#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3863
 msgid "Status"
 msgstr "상태"
 
-#: admin/class-babilim-admin.php:3508
+#: admin/class-babilim-admin.php:3868
 msgid "Licensed"
 msgstr "라이선스 보유"
 
-#: admin/class-babilim-admin.php:3510
+#: admin/class-babilim-admin.php:3870
 msgid "Partner"
 msgstr "파트너"
 
-#: admin/class-babilim-admin.php:3512
+#: admin/class-babilim-admin.php:3872
 msgid "Free"
 msgstr "무료"
 
-#: admin/class-babilim-admin.php:3516
+#: admin/class-babilim-admin.php:3876
 msgid "License"
 msgstr "라이선스"
 
-#: admin/class-babilim-admin.php:3519
+#: admin/class-babilim-admin.php:3879
 #: admin/class-babilim-translations-table.php:865
 msgid "Upgrade this site"
 msgstr "이 사이트 업그레이드"
 
 #. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3523
+#: admin/class-babilim-admin.php:3883
 #, php-format
 msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
 msgstr "이 사이트에 대한 일회성 구매: %1$s %2$s. 향후 모든 번역 업데이트가 포함됩니다. 결제는 새 탭에서 Paddle이 처리합니다."
 
-#: admin/class-babilim-admin.php:3580
+#: admin/class-babilim-admin.php:3940
 msgid "This issues a new restore code and the previous one stops working. Continue?"
 msgstr "새 복원 코드가 발급되며 이전 코드는 더 이상 작동하지 않습니다. 계속하시겠습니까?"
 
-#: admin/class-babilim-admin.php:3580
+#: admin/class-babilim-admin.php:3940
 msgid "Show a new restore code"
 msgstr "새 복원 코드 표시"
 
-#: admin/class-babilim-admin.php:3582
+#: admin/class-babilim-admin.php:3942
 msgid "rc_…"
 msgstr "rc_…"
 
-#: admin/class-babilim-admin.php:3582
+#: admin/class-babilim-admin.php:3942
 msgid "Restore code"
 msgstr "복원 코드"
 
-#: admin/class-babilim-admin.php:3583
+#: admin/class-babilim-admin.php:3943
 msgid "Restore purchase"
 msgstr "구매 복원"
 
-#: admin/class-babilim-admin.php:3584
+#: admin/class-babilim-admin.php:3944
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "이전에 이 도메인의 라이선스를 구매하셨나요? 결제 시 받은 복원 코드를 입력하세요."
 
-#: admin/class-babilim-admin.php:3620
+#: admin/class-babilim-admin.php:3980
 msgid "That does not look like a restore code."
 msgstr "복원 코드 형식이 올바르지 않습니다."
 
-#: admin/class-babilim-admin.php:3634
+#: admin/class-babilim-admin.php:3994
 msgid "This restore code was not recognised for this site."
 msgstr "이 복원 코드는 이 사이트에서 인식되지 않았습니다."
 
-#: admin/class-babilim-admin.php:3636
+#: admin/class-babilim-admin.php:3996
 msgid "Too many attempts. Try again tomorrow."
 msgstr "시도 횟수가 너무 많습니다. 내일 다시 시도해 주세요."
 
-#: admin/class-babilim-admin.php:3638
+#: admin/class-babilim-admin.php:3998
 msgid "This site must be verified first."
 msgstr "먼저 이 사이트를 확인해야 합니다."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3641
+#: admin/class-babilim-admin.php:4001
 #, php-format
 msgid "Could not restore the purchase: %s"
 msgstr "구매를 복원할 수 없습니다: %s"
 
-#: admin/class-babilim-admin.php:3651
+#: admin/class-babilim-admin.php:4011
 msgid "Purchase restored. This site is now licensed."
 msgstr "구매가 복원되었습니다. 이제 이 사이트에 라이선스가 적용됩니다."
 
-#: admin/class-babilim-admin.php:3674
+#: admin/class-babilim-admin.php:4034
 msgid "This site has no purchase to show a code for."
 msgstr "이 사이트에는 코드를 표시할 구매 내역이 없습니다."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3677
+#: admin/class-babilim-admin.php:4037
 #, php-format
 msgid "Could not show a new restore code: %s"
 msgstr "새 복원 코드를 표시할 수 없습니다: %s"
 
 #. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:3688
+#: admin/class-babilim-admin.php:4048
 #, php-format
 msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
 msgstr "새 복원 코드: %s. 안전한 곳에 보관하세요. 이전 코드는 더 이상 작동하지 않습니다."
 
-#: admin/class-babilim-admin.php:3703
+#: admin/class-babilim-admin.php:4063
 msgid "What is sent when Babilim checks this site"
 msgstr "Babilim이 이 사이트를 확인할 때 전송되는 정보"
 
-#: admin/class-babilim-admin.php:3732
+#: admin/class-babilim-admin.php:4092
 msgid "(detected)"
 msgstr "(감지됨)"
 
-#: admin/class-babilim-admin.php:3735
+#: admin/class-babilim-admin.php:4095
 msgid "No language is managed yet."
 msgstr "아직 관리 중인 언어가 없습니다."
 
-#: admin/class-babilim-admin.php:3737
+#: admin/class-babilim-admin.php:4097
 msgid "Babilim adds translations for every language checked here."
 msgstr "Babilim은 여기에서 선택된 모든 언어의 번역을 추가합니다."
 
-#: admin/class-babilim-admin.php:3742
+#: admin/class-babilim-admin.php:4102
 msgid "Add another language"
 msgstr "다른 언어 추가"
 
-#: admin/class-babilim-admin.php:3743
+#: admin/class-babilim-admin.php:4103
 msgid "Choose a language…"
 msgstr "언어 선택…"
 
-#: admin/class-babilim-admin.php:3749
+#: admin/class-babilim-admin.php:4109
 msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
 msgstr "서비스에서 WordPress.org 전체 로캘 목록을 불러올 수 없어 지금은 다른 언어를 추가할 수 없습니다."
 
-#: admin/class-babilim-admin.php:3807
+#: admin/class-babilim-admin.php:4167
 msgid "Theme"
 msgstr "테마"
 
-#: admin/class-babilim-admin.php:3807
+#: admin/class-babilim-admin.php:4167
 msgid "Plugin"
 msgstr "플러그인"
 
-#: admin/class-babilim-admin.php:3814
+#: admin/class-babilim-admin.php:4174
 msgid "Free quota"
 msgstr "무료 할당량"
 
 #. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:3821
+#: admin/class-babilim-admin.php:4181
 #, php-format
 msgid "Downloads: %1$d/%2$d (%3$s)"
 msgstr "다운로드: %1$d/%2$d (%3$s)"
 
-#: admin/class-babilim-admin.php:3853
+#: admin/class-babilim-admin.php:4213
 msgid "Supplementary translation index"
 msgstr "보충 번역 인덱스"
 
-#: admin/class-babilim-admin.php:3856
+#: admin/class-babilim-admin.php:4216
 msgid "Built"
 msgstr "빌드됨"
 
-#: admin/class-babilim-admin.php:3857
+#: admin/class-babilim-admin.php:4217
 msgid "Included"
 msgstr "포함됨"
 
-#: admin/class-babilim-admin.php:3858
+#: admin/class-babilim-admin.php:4218
 msgid "Excluded"
 msgstr "제외됨"
 
-#: admin/class-babilim-admin.php:3860
+#: admin/class-babilim-admin.php:4220
 msgid "Already in WordPress core"
 msgstr "이미 WordPress 코어에 포함됨"
 
-#: admin/class-babilim-admin.php:3879
+#: admin/class-babilim-admin.php:4239
 msgid "Supplementary translation maintenance"
 msgstr "보조 번역 유지 관리"
 
-#: admin/class-babilim-admin.php:3882
+#: admin/class-babilim-admin.php:4242
 msgid "Maintenance status is not available right now."
 msgstr "지금은 유지 관리 상태를 사용할 수 없습니다."
 
 #. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:3890
+#: admin/class-babilim-admin.php:4250
 #, php-format
 msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
 msgstr "%1$s에 정리 작업이 일시 중지되었습니다: %2$s. 삭제된 항목은 없습니다."
 
 #. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:4264
 #, php-format
 msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
 msgstr "%1$s의 마지막 정리: 새로 표시됨 %2$d개, 파일 %3$d개 삭제됨, 레코드 %4$d개 제거됨."
 
-#: admin/class-babilim-admin.php:3911
+#: admin/class-babilim-admin.php:4271
 msgid "No cleanup has run yet."
 msgstr "아직 실행된 정리 작업이 없습니다."
 
 #. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:3922
+#: admin/class-babilim-admin.php:4282
 #, php-format
 msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
 msgstr "번역 인덱스 쓰기가 %1$s에 다른 요청과 충돌하여(%2$s) 적용되지 않았으며, 가장 최근 버전이 유지되었습니다."
 
 #. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:3935
+#: admin/class-babilim-admin.php:4295
 #, php-format
 msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
 msgstr "%1$s의 번역 인덱스 쓰기(%2$s)를 완료할 수 없어 적용되지 않았습니다(%3$s)."
 
-#: admin/class-babilim-admin.php:3951
+#: admin/class-babilim-admin.php:4311
 msgid "Maintenance"
 msgstr "유지 관리"
 
-#: admin/class-babilim-admin.php:3962
+#: admin/class-babilim-admin.php:4322
 msgid "Rebuild index now"
 msgstr "지금 인덱스 다시 빌드"
 
-#: admin/class-babilim-admin.php:3968
+#: admin/class-babilim-admin.php:4328
 msgid "Sweep now"
 msgstr "지금 검사 실행"
 
-#: admin/class-babilim-admin.php:3984
+#: admin/class-babilim-admin.php:4344
 msgid "Danger zone"
 msgstr "위험 구역"
 
-#: admin/class-babilim-admin.php:3992
+#: admin/class-babilim-admin.php:4352
 msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
 msgstr "이 사이트의 모든 플러그인과 테마에 대해 Babilim이 설치한 모든 언어 파일을 제거합니다."
 
-#: admin/class-babilim-admin.php:3993
+#: admin/class-babilim-admin.php:4353
 msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
 msgstr "Babilim이 설치한 모든 항목을 제거하시겠습니까? 이 사이트의 모든 플러그인과 테마에 대해 Babilim이 설치한 모든 언어 파일이 삭제됩니다."
 
-#: admin/class-babilim-admin.php:3993
+#: admin/class-babilim-admin.php:4353
 msgid "Remove everything Babilim installed"
 msgstr "Babilim이 설치한 모든 항목 제거"
 
-#: admin/class-babilim-admin.php:4032
-msgid "This string is too long to be sent as a report, so no report form is offered for it."
-msgstr "이 문자열은 너무 길어 보고서로 전송할 수 없으므로 보고서 양식이 제공되지 않습니다."
-
-#: admin/class-babilim-admin.php:4059
+#: admin/class-babilim-admin.php:3670
+#: admin/class-babilim-admin.php:4398
 msgid "Category"
 msgstr "카테고리"
 
-#: admin/class-babilim-admin.php:4061
+#: admin/class-babilim-admin.php:4400
 msgid "Choose a category…"
 msgstr "카테고리 선택…"
 
-#: admin/class-babilim-admin.php:4076
+#: admin/class-babilim-admin.php:4415
 msgid "Roll back and send report"
 msgstr "롤백 및 보고서 전송"
 
-#: admin/class-babilim-admin.php:4076
+#: admin/class-babilim-admin.php:3684
+#: admin/class-babilim-admin.php:4415
 msgid "Send report"
 msgstr "보고서 전송"
 
@@ -1395,7 +1382,7 @@ msgid "Could not write the downloaded package to disk."
 msgstr "다운로드한 패키지를 디스크에 쓸 수 없습니다."
 
 #. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:593
+#: includes/class-babilim-api-client.php:605
 #, php-format
 msgid "Unexpected HTTP %d response."
 msgstr "예기치 않은 HTTP %d 응답입니다."
@@ -1435,10 +1422,6 @@ msgstr "요청이 실제로 이 사이트에서 온 것임을 증명하는 데 �
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "설치된 모든 플러그인/테마의 슬러그, 버전, 텍스트 도메인, WordPress.org 등록 여부, 자체 포함된 로캘, 그리고 Babilim 번역을 이미 설치한 로캘입니다."
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
-msgstr "WordPress.org에 없는 플러그인 또는 테마의 업로드를 확인한 경우에만: 해당 구성 요소의 전체 디렉터리가 zip 파일로 전송됩니다."
 
 #: includes/class-babilim-consent.php:116
 msgid "(generic codes and coordinates only)"
@@ -1818,41 +1801,37 @@ msgstr "_manifest.json을(를) 파싱하지 못했습니다: %s"
 msgid "_manifest.json has an unexpected structure"
 msgstr "_manifest.json의 구조가 예상과 다릅니다."
 
-#: includes/class-babilim-packager.php:84
-#: includes/class-babilim-packager.php:93
-#: includes/class-babilim-packager.php:105
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
 msgid "Could not create the package archive."
 msgstr "패키지 아카이브를 만들 수 없습니다."
 
-#: includes/class-babilim-packager.php:88
-msgid "No writable temporary directory is available for packaging."
-msgstr "패키징에 사용할 수 있는 쓰기 가능한 임시 디렉터리가 없습니다."
-
-#: includes/class-babilim-packager.php:99
+#: includes/class-babilim-packager.php:125
 msgid "A file in the component could not be read, so it was not packaged."
 msgstr "구성 요소의 파일을 읽을 수 없어 패키징하지 않았습니다."
 
-#: includes/class-babilim-packager.php:139
+#: includes/class-babilim-packager.php:180
 msgid "Only plugins and themes can be packaged."
 msgstr "플러그인과 테마만 패키징할 수 있습니다."
 
-#: includes/class-babilim-packager.php:144
-#: includes/class-babilim-packager.php:153
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
 msgid "The component's main file was not found."
 msgstr "구성 요소의 메인 파일을 찾을 수 없습니다."
 
-#: includes/class-babilim-packager.php:149
+#: includes/class-babilim-packager.php:190
 msgid "The component is not inside the plugins or themes directory."
 msgstr "구성 요소가 플러그인 또는 테마 디렉터리 안에 있지 않습니다."
 
 #: includes/class-babilim-site.php:348
 #: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1270
+#: includes/class-babilim-site.php:1271
 msgid "Babilim ran out of time for this step and will continue on the next check."
 msgstr "Babilim이 이 단계에서 시간 초과되었으며 다음 점검 때 계속합니다."
 
 #: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:316
+#: includes/class-babilim-sync-installer.php:315
 msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
 msgstr "Babilim이 이 사이트를 확인하지 못했으므로 확인이 완료될 때까지 아무것도 다운로드하거나 설치하지 않습니다."
 
@@ -1901,19 +1880,19 @@ msgstr "서비스에서 이 사이트에 다시 동기화하기 전에 기다리
 msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
 msgstr "이 사이트에는 %2$d개 언어에 걸쳐 %1$d개의 구성 요소가 있어 %3$d개의 확인 배치가 필요하지만, Babilim은 한 번에 최대 %4$d개까지 처리할 수 있습니다. 설정에서 관리 언어를 줄이거나 사용하지 않는 플러그인과 테마를 비활성화한 다음 지금 다시 확인을 누르세요."
 
-#: includes/class-babilim-site.php:986
+#: includes/class-babilim-site.php:987
 msgid "Babilim could not finish checking this site."
 msgstr "Babilim이 이 사이트 점검을 완료하지 못했습니다."
 
-#: includes/class-babilim-site.php:1481
+#: includes/class-babilim-site.php:1483
 msgid "This site's address is too long for Babilim to register."
 msgstr "이 사이트의 주소가 너무 길어 Babilim에 등록할 수 없습니다."
 
-#: includes/class-babilim-site.php:1484
+#: includes/class-babilim-site.php:1486
 msgid "This site's locale code is not one Babilim can register."
 msgstr "이 사이트의 로캘 코드는 Babilim에서 등록할 수 없는 코드입니다."
 
-#: includes/class-babilim-sync-installer.php:330
+#: includes/class-babilim-sync-installer.php:329
 msgid "The download response was missing a usable location."
 msgstr "다운로드 응답에 사용할 수 있는 위치가 없습니다."
 
@@ -1922,15 +1901,15 @@ msgstr "다운로드 응답에 사용할 수 있는 위치가 없습니다."
 msgid "The service's upload offer was incomplete."
 msgstr "서비스의 업로드 제안이 불완전합니다."
 
-#: includes/class-babilim-upload.php:109
+#: includes/class-babilim-upload.php:112
 msgid "This component is larger than the service accepts, so it cannot be uploaded."
 msgstr "이 구성 요소는 서비스에서 허용하는 크기보다 커서 업로드할 수 없습니다."
 
-#: includes/class-babilim-upload.php:153
+#: includes/class-babilim-upload.php:163
 msgid "The packaged component could not be read."
 msgstr "패키징된 구성 요소를 읽을 수 없습니다."
 
-#: includes/class-babilim-upload.php:264
+#: includes/class-babilim-upload.php:293
 msgid "A part of the upload kept failing, so the upload was cancelled."
 msgstr "업로드의 일부가 계속 실패하여 업로드가 취소되었습니다."
 
@@ -1943,3 +1922,164 @@ msgstr "읽을 수 없음: %s"
 #: admin/class-babilim-cell.php:146
 msgid "Original language"
 msgstr "원본 언어"
+
+#: admin/class-babilim-admin.php:2156
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "이 보고서는 GitHub에 공개적으로 게시되며 제3자가 보관할 수 있습니다."
+
+#: admin/class-babilim-admin.php:2157
+msgid "Share this report"
+msgstr "이 보고서 공유"
+
+#: admin/class-babilim-admin.php:2158
+msgid "Always share"
+msgstr "항상 공유"
+
+#: admin/class-babilim-admin.php:2159
+msgid "Don't share"
+msgstr "공유하지 않음"
+
+#: admin/class-babilim-admin.php:3424
+msgid "Error reports"
+msgstr "오류 보고서"
+
+#: admin/class-babilim-admin.php:3426
+msgid "Share error reports"
+msgstr "오류 보고서 공유"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2136
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "%d개의 보고서가 대기 중입니다. \"항상 공유\"와 \"공유하지 않음\"은 모든 보고서에 적용됩니다."
+
+#: admin/class-babilim-admin.php:3621
+#: admin/class-babilim-admin.php:3657
+msgid "Report translation"
+msgstr "번역 신고"
+
+#: admin/class-babilim-admin.php:3658
+msgid "Search the installed translations"
+msgstr "설치된 번역 검색"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:3660
+msgid "Search"
+msgstr "검색"
+
+#: admin/class-babilim-admin.php:3661
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim이 이 언어에 설치한 번역이 없습니다."
+
+#: admin/class-babilim-admin.php:3662
+msgid "No installed translation matches."
+msgstr "일치하는 설치된 번역이 없습니다."
+
+#: admin/class-babilim-admin.php:3665
+msgid "The search could not be completed."
+msgstr "검색을 완료할 수 없습니다."
+
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:3669
+msgid "Choose"
+msgstr "선택"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:3674
+msgid "Preview"
+msgstr "미리보기"
+
+#: admin/class-babilim-admin.php:3682
+msgid "These fields will be sent:"
+msgstr "다음 필드가 전송됩니다:"
+
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:3687
+msgid "Close"
+msgstr "닫기"
+
+#: admin/class-babilim-admin.php:3689
+msgid "This string can't be reported from this site."
+msgstr "이 사이트에서는 이 문자열을 신고할 수 없습니다."
+
+#: admin/class-babilim-admin.php:3690
+msgid "Too many reports today. Try again tomorrow."
+msgstr "오늘 신고 횟수가 너무 많습니다. 내일 다시 시도해 주세요."
+
+#: admin/class-babilim-admin.php:3691
+msgid "The report could not be sent."
+msgstr "보고서를 전송할 수 없습니다."
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:3676
+msgid "Type"
+msgstr "유형"
+
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:3680
+msgid "Build"
+msgstr "빌드"
+
+#: admin/class-babilim-admin.php:2131
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim에서 오류가 발생했습니다. 오류 보고서를 공유하시겠습니까?"
+
+#: admin/class-babilim-admin.php:3427
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "Babilim 내부에서 문제가 발생하면 Babilim 서비스로 오류 보고서를 보내 GitHub에 공개 이슈로 published 될 수 있도록 합니다. 보고서는 이 사이트에서 보낸 것으로 전송되며, Babilim 서비스에 대한 다른 모든 요청과 동일한 인증을 사용합니다. 서비스는 오류 코드와 버전만 GitHub에 공개 이슈로 published 하며, 공개 이슈에는 사이트 주소, 콘텐츠 또는 파일 경로가 포함되지 않습니다. 기본적으로 꺼져 있습니다."
+
+#: admin/class-babilim-admin.php:3683
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "보고서는 AI 모델이 자동으로 처리하며 다른 사이트의 이 번역을 개선하는 데 사용될 수 있습니다."
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:3664
+msgid "Type at least 2 characters to search."
+msgstr "검색하려면 2자 이상 입력하세요."
+
+#: admin/class-babilim-admin.php:2629
+msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
+msgstr "사용 가능한 번역은 한 번의 클릭으로 설치할 수 있으며, 누락된 번역은 요청할 수 있습니다. 그 이후에는 새 번역과 업데이트가 자동으로 설치됩니다. 사용 가능한 번역 중 어떤 것을 자동으로 설치할 수 있는지는 Babilim 서비스가 결정합니다. 무료 요금제에서는 자동 설치가 새 무료 슬롯을 차지하지 않도록, 보통 이 사이트에 Babilim 번역이 이미 설치된 플러그인과 테마만 허용합니다."
+
+#: admin/class-babilim-admin.php:3420
+msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
+msgstr "사용 가능한 번역 중 어떤 것을 자동으로 설치할 수 있는지는 Babilim 서비스가 결정합니다. 무료 요금제에서는 자동 설치가 새 무료 슬롯을 차지하지 않도록, 보통 이 사이트에 Babilim 번역이 이미 설치된 플러그인과 테마만 허용합니다."
+
+#: admin/class-babilim-admin.php:1387
+msgid "This report does not name an installed string."
+msgstr "이 보고서에는 설치된 문자열이 지정되어 있지 않습니다."
+
+#: admin/class-babilim-admin.php:1395
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "이 문자열은 이 사이트에 설치된 번역에 포함되어 있지 않습니다. 다시 검색한 후 목록에서 선택해 주세요."
+
+#: admin/class-babilim-admin.php:1398
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "검색한 이후 이 번역이 업데이트되었습니다. 다시 검색한 후 새 목록에서 문자열을 선택해 주세요."
+
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:2986
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim은 %1$s(버전 %2$s)에서 다음 파일을 업로드합니다. 모든 .php 및 .js 파일, 모든 block.json 파일, 그리고 기본 폴더에 있는 readme.txt, readme.md, style.css, theme.json입니다. 이 파일들은 번역이 필요한 텍스트를 찾고 플러그인 또는 테마를 식별하는 데 사용됩니다."
+
+#: admin/class-babilim-admin.php:2987
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "다른 이름이나 확장자를 가진 파일은 포함되지 않으며, uploads, cache, logs, backup, data, vendor, node_modules, languages 폴더, 숨김 파일, 일반적인 비밀 정보와 이름이 일치하는 파일(wp-config*, .env*, *.sql, *.log, *.pem, *.key)도 포함되지 않습니다. 코드 파일에도 공유하고 싶지 않은 텍스트나 데이터가 들어 있을 수 있으니, 확실하지 않다면 확인해 보세요. 서비스는 도착 시 같은 종류의 파일을 다시 한 번 제거합니다."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "WordPress.org에 없는 플러그인 또는 테마의 업로드를 확인한 경우에만, 일반적인 비밀 정보 파일명 패턴에 해당하는 파일을 제외한 뒤 해당 구성 요소의 모든 .php 및 .js 파일, 모든 block.json 파일과 기본 폴더에 있는 readme.txt, readme.md, style.css, theme.json을 zip으로 업로드합니다."
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "이 구성 요소에는 업로드할 수 있는 파일이 없습니다."
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim이 웹사이트 외부의 임시 폴더를 확인할 수 없어 구성 요소를 패키징하지 않았고 아무것도 업로드되지 않았습니다. wp-config.php에서 BABILIM_TEMP_DIR을 웹 루트 외부의 쓰기 가능한 폴더로 정의하거나(예: 사이트의 공개 디렉터리 안이 아니라 그 옆에 있는 폴더), 호스팅 업체에 요청하세요."
+
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "이 업로드가 대기하는 동안 Babilim이 업데이트되었습니다. 이전 패키지는 폐기되었으니 업로드를 다시 확인해 주세요."

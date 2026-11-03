@@ -12,11 +12,25 @@ use PHPUnit\Framework\TestCase;
 
 final class Test_Packager extends TestCase {
 
+	private const ACME_PACKED = array( 'acme/README.md', 'acme/acme.php', 'acme/blocks/foo/block.json', 'acme/inc/a.php', 'acme/js/app.js', 'acme/readme.txt', 'acme/style.css', 'acme/tests.php' );
+
 	private string $root;
+
+	/** @var array{set:bool,value:mixed} */
+	private array $saved_document_root = array(
+		'set'   => false,
+		'value' => null,
+	);
 
 	protected function setUp(): void {
 		babilim_test_reset();
+		$this->saved_document_root = array(
+			'set'   => array_key_exists( 'DOCUMENT_ROOT', $_SERVER ),
+			'value' => $_SERVER['DOCUMENT_ROOT'] ?? null,
+		);
 		$this->root = BABILIM_TEST_TMP_ROOT . '/packager-' . bin2hex( random_bytes( 4 ) );
+		mkdir( $this->root . '/public', 0777, true );
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/public';
 		mkdir( $this->root . '/plugins/acme/inc', 0777, true );
 		mkdir( $this->root . '/themes/avada/inc', 0777, true );
 		mkdir( $this->root . '/outside', 0777, true );
@@ -26,26 +40,73 @@ final class Test_Packager extends TestCase {
 		file_put_contents( $this->root . '/themes/avada/style.css', "/*\nTheme Name: Avada\n*/" );
 		file_put_contents( $this->root . '/themes/avada/inc/t.php', '<?php' );
 		file_put_contents( $this->root . '/outside/secret.txt', 'nope' );
+		$acme_files = array(
+			'js/app.js', 'blocks/foo/block.json', 'readme.txt', 'README.md', 'style.css', 'tests.php',
+			'uploads/customer.php', 'cache/data.php', 'wp-config.php', 'wp-config-local.php',
+			'inc/wp-config-sample.php', 'languages/x.l10n.php', 'inc/x.l10n.php', 'data/export.sql',
+			'.env', '.env.local', '.git/config', 'backup/site.bak', 'inc/debug.log', 'sub/readme.txt',
+			'sub/style.css', 'assets/logo.png', 'inc/key.pem', 'inc/id_rsa.pub', 'vendor/lib/x.php',
+			'node_modules/m/i.js', 'src/app.tsx', 'inc/nested/uploads/x.php',
+		);
+		foreach ( $acme_files as $rel ) {
+			$this->put( $this->root . '/plugins/acme/' . $rel );
+		}
+		foreach ( array( 'theme.json', 'screenshot.png', 'styles/dark.json', 'sub/style.css' ) as $rel ) {
+			$this->put( $this->root . '/themes/avada/' . $rel );
+		}
+	}
+
+	private function put( string $path ): void {
+		if ( ! is_dir( dirname( $path ) ) ) {
+			mkdir( dirname( $path ), 0777, true );
+		}
+		file_put_contents( $path, 'x' );
+	}
+
+	private function pack_acme(): array {
+		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		return $this->names( $r->get( 'zip' ) );
 	}
 
 	protected function tearDown(): void {
+		if ( $this->saved_document_root['set'] ) {
+			$_SERVER['DOCUMENT_ROOT'] = $this->saved_document_root['value'];
+		} else {
+			unset( $_SERVER['DOCUMENT_ROOT'] );
+		}
 		babilim_test_rmtree( $this->root );
 	}
 
-	private function packager( ?string $sys_tmp = null, ?string $wp_tmp = null, ?callable $theme_dir = null, ?callable $zip_factory = null ): Babilim_Packager {
+	/**
+	 * @param string|null $host_tmp  The host-named folder (BABILIM_TEMP_DIR); null for none.
+	 * @param array|null  $site_roots ABSPATH / WP_CONTENT_DIR stand-ins; null for the constructor default.
+	 */
+	private function packager( ?string $sys_tmp = null, ?string $host_tmp = null, ?callable $theme_dir = null, ?callable $zip_factory = null, ?array $site_roots = null ): Babilim_Packager {
 		$sys_tmp = $sys_tmp ?? $this->root . '/systmp';
-		$wp_tmp  = $wp_tmp ?? $this->root . '/wptmp';
 		@mkdir( $sys_tmp, 0777, true );
-		@mkdir( $wp_tmp, 0777, true );
+		if ( null !== $host_tmp ) {
+			@mkdir( $host_tmp, 0777, true );
+		}
 		return new Babilim_Packager(
 			static function () use ( $sys_tmp ) { return $sys_tmp; },
-			static function () use ( $wp_tmp ) { return trailingslashit( $wp_tmp ); },
+			static function () use ( $host_tmp ) { return null === $host_tmp ? '' : $host_tmp; },
 			static function () { return str_repeat( 'ab', 16 ); },
 			$this->root . '/plugins',
 			$this->root . '/themes',
 			$theme_dir ?? static function () { return null; },
-			$zip_factory
+			$zip_factory,
+			null === $site_roots ? null : static function () use ( $site_roots ) { return $site_roots; }
 		);
+	}
+
+	private function acme(): array {
+		return array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' );
+	}
+
+	/** Every babilim-upload-* directory directly under $dir or one level below it. */
+	private function staging_under( string $dir ): array {
+		return array_merge( glob( $dir . '/babilim-upload-*' ) ?: array(), glob( $dir . '/*/babilim-upload-*' ) ?: array() );
 	}
 
 	private function names( string $zip ): array {
@@ -63,11 +124,15 @@ final class Test_Packager extends TestCase {
 	public function test_packs_a_plugin_directory_with_its_dir_name_as_prefix(): void {
 		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) );
 		$this->assertTrue( $r->is_ok(), $r->message() );
-		$this->assertSame( array( 'acme/acme.php', 'acme/inc/a.php' ), $this->names( $r->get( 'zip' ) ) );
+		$this->assertSame( self::ACME_PACKED, $this->names( $r->get( 'zip' ) ) );
 		$this->assertSame( filesize( $r->get( 'zip' ) ), $r->get( 'size' ) );
 		$this->assertStringStartsWith( $this->root . '/systmp/babilim-upload-abababab', $r->get( 'zip' ) );
-		$this->assertFileExists( dirname( $r->get( 'zip' ) ) . '/.htaccess' );
-		$this->assertFileExists( dirname( $r->get( 'zip' ) ) . '/index.php' );
+	}
+
+	public function test_no_guard_files_are_written_into_the_staging_directory(): void {
+		$r = $this->packager()->pack( $this->acme() );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertSame( array( 'package.zip' ), array_values( array_diff( scandir( dirname( $r->get( 'zip' ) ) ), array( '.', '..' ) ) ) );
 	}
 
 	public function test_single_file_plugin_packs_only_that_file(): void {
@@ -79,7 +144,7 @@ final class Test_Packager extends TestCase {
 	public function test_packs_a_theme_by_stylesheet(): void {
 		$r = $this->packager()->pack( array( 'kind' => 'theme', 'slug' => 'avada', 'stylesheet' => 'avada' ) );
 		$this->assertTrue( $r->is_ok() );
-		$this->assertSame( array( 'avada/inc/t.php', 'avada/style.css' ), $this->names( $r->get( 'zip' ) ) );
+		$this->assertSame( array( 'avada/inc/t.php', 'avada/style.css', 'avada/theme.json' ), $this->names( $r->get( 'zip' ) ) );
 	}
 
 	public function test_symlinks_are_neither_followed_nor_included(): void {
@@ -87,7 +152,7 @@ final class Test_Packager extends TestCase {
 		symlink( $this->root . '/outside/secret.txt', $this->root . '/plugins/acme/link.txt' );
 		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) );
 		$this->assertTrue( $r->is_ok() );
-		$this->assertSame( array( 'acme/acme.php', 'acme/inc/a.php' ), $this->names( $r->get( 'zip' ) ) );
+		$this->assertSame( self::ACME_PACKED, $this->names( $r->get( 'zip' ) ) );
 		$this->assertStringNotContainsString( 'nope', (string) file_get_contents( $r->get( 'zip' ) ) );
 	}
 
@@ -115,12 +180,139 @@ final class Test_Packager extends TestCase {
 		$this->assertSame( array(), glob( $this->root . '/systmp/babilim-upload-*' ) );
 	}
 
-	public function test_system_temp_under_abspath_or_content_dir_falls_back_to_wp_temp(): void {
+	public function test_system_temp_under_abspath_falls_back_to_the_host_dir(): void {
 		$under_abspath = rtrim( ABSPATH, '/' ) . '/tmp-' . bin2hex( random_bytes( 2 ) );
-		$r = $this->packager( $under_abspath )->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) );
-		$this->assertTrue( $r->is_ok() );
-		$this->assertStringStartsWith( $this->root . '/wptmp/babilim-upload-', $r->get( 'zip' ) );
+		$r = $this->packager( $under_abspath, $this->root . '/hosttmp' )->pack( $this->acme() );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertStringStartsWith( $this->root . '/hosttmp/babilim-upload-', $r->get( 'zip' ) );
 		babilim_test_rmtree( $under_abspath );
+	}
+
+	// -- Where the zip may be staged (system temp with a resolvable,
+	// unmodified DOCUMENT_ROOT, or BABILIM_TEMP_DIR; nothing else). -------
+
+	private function www_layout(): array {
+		mkdir( $this->root . '/srv/www/wp/wp-content', 0777, true );
+		mkdir( $this->root . '/srv/www/tmp', 0777, true );
+		mkdir( $this->root . '/srv/private', 0777, true );
+		return array( $this->root . '/srv/www/wp', $this->root . '/srv/www/wp/wp-content' );
+	}
+
+	public function test_system_temp_is_used_when_document_root_resolves_and_it_lies_outside_all_three_roots(): void {
+		mkdir( $this->root . '/public/wp', 0777, true );
+		$roots = array( $this->root . '/public/wp', $this->root . '/public/wp/wp-content' );
+		$r     = $this->packager( $this->root . '/private/tmp', null, null, null, $roots )->pack( $this->acme() );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertStringStartsWith( $this->root . '/private/tmp/babilim-upload-', $r->get( 'zip' ) );
+	}
+
+	public function test_sibling_of_the_site_under_the_public_root_is_refused_when_document_root_is_missing(): void {
+		$roots = $this->www_layout();
+		unset( $_SERVER['DOCUMENT_ROOT'] );
+		$r = $this->packager( $this->root . '/srv/www/tmp', null, null, null, $roots )->pack( $this->acme() );
+		$this->assertSame( 'packager_no_temp_dir', $r->code() );
+		$this->assertStringContainsString( 'BABILIM_TEMP_DIR', $r->message() );
+		$this->assertSame( array(), $this->staging_under( $this->root . '/srv/www' ) );
+	}
+
+	public function test_sibling_under_a_resolvable_public_root_is_refused(): void {
+		$roots = $this->www_layout();
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/srv/www';
+		$r = $this->packager( $this->root . '/srv/www/tmp', null, null, null, $roots )->pack( $this->acme() );
+		$this->assertSame( 'packager_no_temp_dir', $r->code() );
+		$this->assertSame( array(), $this->staging_under( $this->root . '/srv/www' ) );
+	}
+
+	public function test_host_dir_outside_the_roots_is_used_when_document_root_is_missing(): void {
+		$roots = $this->www_layout();
+		unset( $_SERVER['DOCUMENT_ROOT'] );
+		$r = $this->packager( $this->root . '/srv/www/tmp', $this->root . '/srv/private', null, null, $roots )->pack( $this->acme() );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertStringStartsWith( $this->root . '/srv/private/babilim-upload-', $r->get( 'zip' ) );
+	}
+
+	public function test_host_dir_inside_wp_content_is_refused_even_without_document_root(): void {
+		$roots = $this->www_layout();
+		mkdir( $this->root . '/srv/www/wp/wp-content/tmp', 0777, true );
+		unset( $_SERVER['DOCUMENT_ROOT'] );
+		$r = $this->packager( $this->root . '/srv/www/tmp', $this->root . '/srv/www/wp/wp-content/tmp', null, null, $roots )->pack( $this->acme() );
+		$this->assertSame( 'packager_no_temp_dir', $r->code() );
+		$this->assertSame( array(), $this->staging_under( $this->root . '/srv/www/wp/wp-content' ) );
+	}
+
+	public function test_unresolvable_document_root_refuses_the_system_temp_even_when_it_is_outside(): void {
+		foreach ( array( array( 'x' ), $this->root . '/nonexistent-dir', '' ) as $bad ) {
+			$_SERVER['DOCUMENT_ROOT'] = $bad;
+			$refused                  = $this->packager( $this->root . '/private/tmp' )->pack( $this->acme() );
+			$this->assertSame( 'packager_no_temp_dir', $refused->code() );
+			$used = $this->packager( $this->root . '/private/tmp', $this->root . '/hosttmp' )->pack( $this->acme() );
+			$this->assertTrue( $used->is_ok(), $used->message() );
+			$this->assertStringStartsWith( $this->root . '/hosttmp/babilim-upload-', $used->get( 'zip' ) );
+			$this->assertSame( array(), $this->staging_under( $this->root . '/private/tmp' ) );
+			( new Babilim_Packager() )->discard( $used->get( 'dir' ) );
+		}
+	}
+
+	public function test_an_unwritable_system_temp_falls_through_to_the_host_dir(): void {
+		mkdir( $this->root . '/ro', 0500, true );
+		if ( is_writable( $this->root . '/ro' ) ) {
+			chmod( $this->root . '/ro', 0700 );
+			$this->markTestSkipped( 'running as root; chmod 0500 is still writable' );
+		}
+		$r = $this->packager( $this->root . '/ro', $this->root . '/hosttmp' )->pack( $this->acme() );
+		chmod( $this->root . '/ro', 0700 );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertStringStartsWith( $this->root . '/hosttmp/babilim-upload-', $r->get( 'zip' ) );
+	}
+
+	public function test_wordpress_temp_dir_is_not_consulted(): void {
+		$under_abspath = rtrim( ABSPATH, '/' ) . '/tmp-' . bin2hex( random_bytes( 2 ) );
+		// The bootstrap's get_temp_dir() points outside the site; it must not matter.
+		$r = $this->packager( $under_abspath )->pack( $this->acme() );
+		$this->assertSame( 'packager_no_temp_dir', $r->code() );
+		$this->assertSame( array(), glob( rtrim( get_temp_dir(), '/' ) . '/babilim-upload-*' ) ?: array() );
+		babilim_test_rmtree( $under_abspath );
+	}
+
+	public function test_staging_base_is_reported_and_base_still_private_rechecks_without_document_root(): void {
+		$packager = $this->packager( $this->root . '/private/tmp' );
+		$this->assertSame( realpath( $this->root . '/private/tmp' ), $packager->staging_base() );
+		unset( $_SERVER['DOCUMENT_ROOT'] );
+		$this->assertTrue( $packager->base_still_private( (string) realpath( $this->root . '/private/tmp' ) ) );
+		$this->assertNull( $packager->staging_base(), 'without DOCUMENT_ROOT the system temp is not provable' );
+		$under_abspath = rtrim( ABSPATH, '/' ) . '/tmp-' . bin2hex( random_bytes( 2 ) );
+		mkdir( $under_abspath, 0777, true );
+		$this->assertFalse( $packager->base_still_private( $under_abspath ) );
+		babilim_test_rmtree( $under_abspath );
+	}
+
+	public function test_a_document_root_that_sanitizing_would_rewrite_is_treated_as_unknown(): void {
+		mkdir( $this->root . '/srv/www/site  root/wp/wp-content', 0777, true );
+		mkdir( $this->root . '/srv/www/site  root/tmp', 0777, true );
+		mkdir( $this->root . '/srv/www/site root', 0777, true );
+		mkdir( $this->root . '/srv/private', 0777, true );
+		$roots = array( $this->root . '/srv/www/site  root/wp', $this->root . '/srv/www/site  root/wp/wp-content' );
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/srv/www/site  root';
+		$r = $this->packager( $this->root . '/srv/www/site  root/tmp', null, null, null, $roots )->pack( $this->acme() );
+		$this->assertSame( 'packager_no_temp_dir', $r->code() );
+		$this->assertSame( array(), $this->staging_under( $this->root . '/srv/www/site  root' ) );
+		$this->assertSame( array(), $this->staging_under( $this->root . '/srv/www/site root' ) );
+		$used = $this->packager( $this->root . '/srv/www/site  root/tmp', $this->root . '/srv/private', null, null, $roots )->pack( $this->acme() );
+		$this->assertTrue( $used->is_ok(), $used->message() );
+		$this->assertStringStartsWith( $this->root . '/srv/private/babilim-upload-', $used->get( 'zip' ) );
+	}
+
+	public function test_a_document_root_with_trailing_whitespace_or_a_tab_is_treated_as_unknown(): void {
+		mkdir( $this->root . '/public ', 0777, true );
+		mkdir( $this->root . "/pub	lic", 0777, true );
+		foreach ( array( $this->root . '/public ', $this->root . "/pub	lic" ) as $odd ) {
+			$_SERVER['DOCUMENT_ROOT'] = $odd;
+			$refused                  = $this->packager( $this->root . '/private/tmp' )->pack( $this->acme() );
+			$this->assertSame( 'packager_no_temp_dir', $refused->code(), $odd );
+			$used = $this->packager( $this->root . '/private/tmp', $this->root . '/hosttmp' )->pack( $this->acme() );
+			$this->assertTrue( $used->is_ok(), $used->message() );
+			( new Babilim_Packager() )->discard( $used->get( 'dir' ) );
+		}
 	}
 
 	public function test_discard_removes_only_an_owned_directory(): void {
@@ -133,15 +325,76 @@ final class Test_Packager extends TestCase {
 		$this->assertFileExists( $this->root . '/outside/secret.txt' );
 	}
 
-	public function test_sweep_removes_stale_staging_dirs_only(): void {
+	/** Makes a babilim-upload-<hex> directory under the scratch base with the given files. */
+	private function staging_dir_with( string $hex_unit, array $files ): string {
+		$dir = $this->root . '/systmp/babilim-upload-' . str_repeat( $hex_unit, 16 );
+		mkdir( $dir, 0700, true );
+		foreach ( $files as $name => $bytes ) {
+			file_put_contents( $dir . '/' . $name, $bytes );
+		}
+		return $dir;
+	}
+
+	public function test_sweep_legacy_removes_only_this_sites_unsealed_pending_dir(): void {
 		$p = $this->packager();
-		$old = $this->root . '/wptmp/babilim-upload-' . str_repeat( 'cd', 16 );
-		mkdir( $old );
-		touch( $old, time() - 90000 );
-		$fresh = $p->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) )->get( 'dir' );
-		$this->assertSame( 1, $p->sweep() );
+		$a = $this->staging_dir_with( 'aa', array( 'package.zip' => 'A', '.htaccess' => 'h', 'index.php' => '<?php' ) );
+		$b = $this->staging_dir_with( 'bb', array( 'package.zip' => 'known bytes of B', '.htaccess' => 'h', 'index.php' => '<?php' ) );
+		$c = $this->staging_dir_with( 'cc', array( 'package.zip' => 'C' ) );
+		$this->assertSame( 1, $p->sweep_legacy( array( 'dir' => $a ) ) );
+		$this->assertDirectoryDoesNotExist( $a );
+		$this->assertSame( hash( 'sha256', 'known bytes of B' ), hash_file( 'sha256', $b . '/package.zip' ) );
+		$this->assertFileExists( $b . '/.htaccess' );
+		$this->assertFileExists( $b . '/index.php' );
+		$this->assertDirectoryExists( $c );
+	}
+
+	public function test_sweep_legacy_does_nothing_without_a_traceable_unsealed_pending(): void {
+		$p    = $this->packager();
+		$dir  = $this->staging_dir_with( 'aa', array( 'package.zip' => 'A' ) );
+		$link = $this->root . '/systmp/babilim-upload-' . str_repeat( 'dd', 16 );
+		symlink( $dir, $link );
+		$plain = $this->root . '/outside';
+		$cases = array(
+			'null pending'       => null,
+			'symlinked dir'      => array( 'dir' => $link ),
+			'not an owned name'  => array( 'dir' => $plain ),
+			'no dir'             => array( 'upload_id' => 'x' ),
+			'sealed pending'     => array( 'dir' => $dir, 'package_policy' => 2 ),
+		);
+		foreach ( $cases as $label => $pending ) {
+			$this->assertSame( 0, $p->sweep_legacy( $pending ), $label );
+		}
+		$this->assertFileExists( $dir . '/package.zip' );
+		$this->assertFileExists( $plain . '/secret.txt' );
+		unlink( $link );
+	}
+
+	public function test_daily_sweep_touches_only_this_sites_pending_and_never_a_live_one(): void {
+		$p      = $this->packager();
+		$future = gmdate( 'Y-m-d\TH:i:s\Z', time() + 3600 );
+		$past   = gmdate( 'Y-m-d\TH:i:s\Z', time() - 3600 );
+
+		$live = $this->staging_dir_with( 'aa', array( 'package.zip' => 'A' ) );
+		$this->assertSame( 0, $p->sweep( array( 'dir' => $live, 'package_policy' => 2, 'expires_at' => $future ) ), 'sealed + unexpired is live' );
+		$this->assertDirectoryExists( $live );
+		$this->assertSame( 1, $p->sweep( array( 'dir' => $live, 'package_policy' => 2, 'expires_at' => $past ) ), 'sealed + expired' );
+		$this->assertDirectoryDoesNotExist( $live );
+
+		$old = $this->staging_dir_with( 'bb', array( 'package.zip' => 'B' ) );
+		$this->assertSame( 1, $p->sweep( array( 'dir' => $old, 'expires_at' => $future ) ), 'unsealed' );
 		$this->assertDirectoryDoesNotExist( $old );
-		$this->assertDirectoryExists( $fresh );
+
+		$stray_old = $this->staging_dir_with( 'cc', array( 'package.zip' => 'C', '.htaccess' => 'h' ) );
+		$stray_new = $this->staging_dir_with( 'dd', array( 'package.zip' => 'D' ) );
+		touch( $stray_old, time() - 2 * 86400 );
+		touch( $stray_new, time() - 2 * 86400 );
+		$mine = $this->staging_dir_with( 'ee', array( 'package.zip' => 'E' ) );
+		$p->sweep( array( 'dir' => $mine, 'expires_at' => $past ) );
+		$this->assertDirectoryExists( $stray_old );
+		$this->assertDirectoryExists( $stray_new );
+		$this->assertSame( 0, $p->sweep( null ) );
+		$this->assertDirectoryExists( $stray_old );
+		$this->assertDirectoryExists( $stray_new );
 	}
 
 	public function test_a_file_vanishing_before_the_archive_is_closed_fails_cleanly_and_leaves_no_staging(): void {
@@ -214,12 +467,15 @@ final class Test_Packager extends TestCase {
 				return $this->root;
 			}
 		};
-		$tmp = $this->root . '/systmp';
+		$tmp  = $this->root . '/systmp';
+		$host = $this->root . '/hosttmp';
 		mkdir( $tmp, 0777, true );
+		mkdir( $host, 0777, true );
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/public'; // Explicit: the system temp is only usable with a resolvable public root.
 		// No theme lookup and no zip factory injected: the constructor's own defaults.
 		$packager = new Babilim_Packager(
 			static function () use ( $tmp ) { return $tmp; },
-			static function () use ( $tmp ) { return $tmp; },
+			static function () use ( $host ) { return $host; },
 			static function () { return str_repeat( 'cd', 16 ); },
 			$this->root . '/plugins',
 			$this->root . '/themes'
@@ -231,18 +487,90 @@ final class Test_Packager extends TestCase {
 
 	public function test_a_theme_wordpress_does_not_know_falls_back_to_the_theme_root(): void {
 		// The bootstrap's default theme double reports exists() === false.
-		$tmp = $this->root . '/systmp';
+		$tmp  = $this->root . '/systmp';
+		$host = $this->root . '/hosttmp';
 		mkdir( $tmp, 0777, true );
+		mkdir( $host, 0777, true );
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/public'; // Explicit: the system temp is only usable with a resolvable public root.
 		$packager = new Babilim_Packager(
 			static function () use ( $tmp ) { return $tmp; },
-			static function () use ( $tmp ) { return $tmp; },
+			static function () use ( $host ) { return $host; },
 			static function () { return str_repeat( 'cd', 16 ); },
 			$this->root . '/plugins',
 			$this->root . '/themes'
 		);
 		$r = $packager->pack( array( 'kind' => 'theme', 'slug' => 'avada', 'stylesheet' => 'avada' ) );
 		$this->assertTrue( $r->is_ok(), $r->message() );
-		$this->assertSame( array( 'avada/inc/t.php', 'avada/style.css' ), $this->names( $r->get( 'zip' ) ) );
+		$this->assertSame( array( 'avada/inc/t.php', 'avada/style.css', 'avada/theme.json' ), $this->names( $r->get( 'zip' ) ) );
+	}
+
+	public function test_only_listed_code_and_description_files_are_packed(): void {
+		$this->assertSame( self::ACME_PACKED, $this->pack_acme() );
+	}
+
+	public function test_counterexamples_are_excluded(): void {
+		$names = $this->pack_acme();
+		foreach ( array(
+			'uploads/customer.php', 'cache/data.php', 'wp-config.php', 'wp-config-local.php', 'inc/wp-config-sample.php',
+			'languages/x.l10n.php', 'inc/x.l10n.php', 'data/export.sql', '.env', '.env.local', '.git/config',
+			'backup/site.bak', 'inc/debug.log', 'sub/readme.txt', 'sub/style.css', 'assets/logo.png', 'inc/key.pem',
+			'inc/id_rsa.pub', 'vendor/lib/x.php', 'node_modules/m/i.js', 'src/app.tsx', 'inc/nested/uploads/x.php',
+		) as $p ) {
+			$this->assertNotContains( 'acme/' . $p, $names, $p );
+		}
+	}
+
+	public function test_sensitive_patterns_match_the_service_rule(): void {
+		$c = new ReflectionClassConstant( Babilim_Packager::class, 'SENSITIVE_NAME_PATTERNS' );
+		$this->assertSame( array( 'wp-config*', '.env*', '*.sql', '*.log', '*.pem', '*.key', '*.p12', 'id_rsa*' ), $c->getValue() );
+	}
+
+	public function test_a_theme_packs_root_style_css_theme_json_and_php_only(): void {
+		$r = $this->packager()->pack( array( 'kind' => 'theme', 'slug' => 'avada', 'stylesheet' => 'avada' ) );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertSame( array( 'avada/inc/t.php', 'avada/style.css', 'avada/theme.json' ), $this->names( $r->get( 'zip' ) ) );
+	}
+
+	public function test_root_only_names_are_not_taken_from_subfolders(): void {
+		$r     = $this->packager()->pack( array( 'kind' => 'theme', 'slug' => 'avada', 'stylesheet' => 'avada' ) );
+		$names = $this->names( $r->get( 'zip' ) );
+		$this->assertNotContains( 'avada/sub/style.css', $names );
+		$this->assertNotContains( 'avada/styles/dark.json', $names );
+	}
+
+	public function test_single_file_plugin_goes_through_the_same_name_rule(): void {
+		file_put_contents( $this->root . '/plugins/wp-config-x.php', "<?php\n/**\n * Plugin Name: Sensitive named\n */\n" );
+		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'wp-config-x', 'main_file' => 'wp-config-x.php' ) );
+		$this->assertSame( 'packager_nothing_to_pack', $r->code() );
+		$this->assertSame( array(), glob( $this->root . '/systmp/babilim-upload-*' ) );
+	}
+
+	public function test_a_folder_with_no_packable_file_is_refused_without_a_warning(): void {
+		mkdir( $this->root . '/plugins/bare', 0777, true );
+		file_put_contents( $this->root . '/plugins/bare/notes.txt', 'x' );
+		file_put_contents( $this->root . '/plugins/bare/.hidden.php', '<?php' );
+		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'bare', 'main_file' => 'bare/notes.txt' ) );
+		$this->assertSame( 'packager_nothing_to_pack', $r->code() );
+		$this->assertSame( array(), glob( $this->root . '/systmp/babilim-upload-*' ) );
+	}
+
+	public function test_matching_is_case_insensitive(): void {
+		foreach ( array( 'Widget.PHP', 'Readme.TXT', 'Uploads/x.php', 'WP-CONFIG.PHP', 'WP-Config-Prod.php' ) as $rel ) {
+			$this->put( $this->root . '/plugins/acme/' . $rel );
+		}
+		$names = $this->pack_acme();
+		$this->assertContains( 'acme/Widget.PHP', $names );
+		$this->assertContains( 'acme/Readme.TXT', $names );
+		$this->assertNotContains( 'acme/Uploads/x.php', $names );
+		$this->assertNotContains( 'acme/WP-CONFIG.PHP', $names );
+		$this->assertNotContains( 'acme/WP-Config-Prod.php', $names );
+	}
+
+	public function test_pack_result_carries_policy_and_the_zip_sha256(): void {
+		$r = $this->packager()->pack( array( 'kind' => 'plugin', 'slug' => 'acme', 'main_file' => 'acme/acme.php' ) );
+		$this->assertTrue( $r->is_ok(), $r->message() );
+		$this->assertSame( 2, $r->get( 'policy' ) );
+		$this->assertSame( hash_file( 'sha256', $r->get( 'zip' ) ), $r->get( 'sha256' ) );
 	}
 
 	/**

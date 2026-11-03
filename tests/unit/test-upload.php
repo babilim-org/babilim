@@ -14,15 +14,28 @@ final class Test_Upload extends TestCase {
 
 	private string $root;
 
+	/** @var array{set:bool,value:mixed} */
+	private array $saved_document_root = array(
+		'set'   => false,
+		'value' => null,
+	);
+
 	protected function setUp(): void {
 		babilim_test_reset();
 		update_option( 'babilim_consent', true );
+		$this->saved_document_root = array(
+			'set'   => array_key_exists( 'DOCUMENT_ROOT', $_SERVER ),
+			'value' => $_SERVER['DOCUMENT_ROOT'] ?? null,
+		);
 		$this->root = BABILIM_TEST_TMP_ROOT . '/upload-' . bin2hex( random_bytes( 4 ) );
 		mkdir( $this->root . '/plugins/acme', 0777, true );
 		mkdir( $this->root . '/tmp', 0777, true );
+		mkdir( $this->root . '/hosttmp', 0777, true );
+		mkdir( $this->root . '/public', 0777, true );
+		$_SERVER['DOCUMENT_ROOT'] = $this->root . '/public';
 		// Incompressible content, so the zip is a few parts long.
 		file_put_contents( $this->root . '/plugins/acme/acme.php', "<?php\n/**\n * Plugin Name: Acme\n * Version: 1.0\n */\n" );
-		file_put_contents( $this->root . '/plugins/acme/data.bin', random_bytes( 3000 ) );
+		file_put_contents( $this->root . '/plugins/acme/data.js', random_bytes( 3000 ) );
 		( new Babilim_State() )->set(
 			array(
 				'components' => array(
@@ -37,6 +50,11 @@ final class Test_Upload extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		if ( $this->saved_document_root['set'] ) {
+			$_SERVER['DOCUMENT_ROOT'] = $this->saved_document_root['value'];
+		} else {
+			unset( $_SERVER['DOCUMENT_ROOT'] );
+		}
 		babilim_test_rmtree( $this->root );
 	}
 
@@ -46,9 +64,10 @@ final class Test_Upload extends TestCase {
 
 	private function upload( Babilim_Fake_Http $http ): Babilim_Upload {
 		$tmp      = $this->root . '/tmp';
+		$host     = $this->root . '/hosttmp';
 		$packager = new Babilim_Packager(
 			static function () use ( $tmp ) { return $tmp; },
-			static function () use ( $tmp ) { return trailingslashit( $tmp ); },
+			static function () use ( $host ) { return $host; },
 			static function () { return str_repeat( 'ef', 16 ); },
 			$this->root . '/plugins',
 			$this->root . '/themes'
@@ -469,10 +488,199 @@ final class Test_Upload extends TestCase {
 		);
 	}
 
+	// -- The policy seal (written by confirm() only, checked on every entry). --
+
+	private function count_method( Babilim_Fake_Http $http, string $method ): int {
+		return count( array_keys( array_column( $http->requests, 'method' ), $method, true ) );
+	}
+
+	/** Seeds what an older confirm() leaves: a packed zip with no seal. */
+	private function seed_unsealed_pending( Babilim_Upload $u ): array {
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$dir = $this->root . '/tmp/babilim-upload-' . str_repeat( 'ab', 16 );
+		mkdir( $dir, 0700, true );
+		$zip = new ZipArchive();
+		$zip->open( $dir . '/package.zip', ZipArchive::CREATE );
+		$zip->addFromString( 'acme/uploads/customer.php', '<?php // customer' );
+		$zip->close();
+		$p = array_merge(
+			(array) Babilim_Upload::pending(),
+			array(
+				'zip'        => $dir . '/package.zip',
+				'dir'        => $dir,
+				'size'       => (int) filesize( $dir . '/package.zip' ),
+				'parts'      => 3,
+				'next'       => 2,
+				'attempts'   => 0,
+				'not_before' => 0,
+			)
+		);
+		update_option( Babilim_Upload::OPTION, $p, false );
+		return $p;
+	}
+
+	public function test_begin_writes_no_seal(): void {
+		$this->upload( new Babilim_Fake_Http( array() ) )->begin( $this->component(), 'fr_FR', $this->offer() );
+		$p = (array) Babilim_Upload::pending();
+		foreach ( array( 'package_policy', 'package_sha256', 'staging_base' ) as $key ) {
+			$this->assertArrayNotHasKey( $key, $p );
+		}
+	}
+
+	public function test_confirm_seals_the_package_after_packing(): void {
+		$u = $this->upload( new Babilim_Fake_Http( array() ) );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$this->assertTrue( $u->confirm()->is_ok() );
+		$p = (array) Babilim_Upload::pending();
+		$this->assertSame( 2, $p['package_policy'] );
+		$this->assertSame( hash_file( 'sha256', $p['zip'] ), $p['package_sha256'] );
+		$this->assertSame( realpath( $this->root . '/tmp' ), $p['staging_base'] );
+	}
+
+	public function test_a_pending_upload_without_a_seal_is_cancelled_not_resumed_by_step(): void {
+		$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ) ) );
+		$u    = $this->upload( $http );
+		$p    = $this->seed_unsealed_pending( $u );
+		$r    = $u->step();
+		$this->assertSame( 'upload_policy_changed', $r->code() );
+		$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+		$this->assertSame( 0, $this->count_method( $http, 'POST' ) );
+		$this->assertSame( 1, $this->count_method( $http, 'DELETE' ) );
+		$this->assertNull( Babilim_Upload::pending() );
+		$this->assertDirectoryDoesNotExist( $p['dir'] );
+	}
+
+	public function test_cross_version_interleaving_sends_nothing(): void {
+		$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ), $this->json( 200, array( 'state' => 'cancelled' ) ) ) );
+		$u    = $this->upload( $http );
+		$p    = $this->seed_unsealed_pending( $u );
+		$r    = $u->confirm();
+		$this->assertSame( 'upload_policy_changed', $r->code() );
+		$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+		$this->assertDirectoryDoesNotExist( $p['dir'] );
+		$this->assertNull( Babilim_Upload::pending() );
+
+		$p = $this->seed_unsealed_pending( $u );
+		$r = $u->step();
+		$this->assertSame( 'upload_policy_changed', $r->code() );
+		$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+		$this->assertSame( 0, $this->count_method( $http, 'POST' ) );
+		$this->assertDirectoryDoesNotExist( $p['dir'] );
+	}
+
+	public function test_a_sealed_package_whose_bytes_changed_is_cancelled(): void {
+		$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ) ) );
+		$u    = $this->upload( $http );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		$p = (array) Babilim_Upload::pending();
+		file_put_contents( $p['zip'], 'x', FILE_APPEND );
+		$this->assertSame( 'upload_policy_changed', $u->step()->code() );
+		$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+		$this->assertDirectoryDoesNotExist( $p['dir'] );
+	}
+
+	public function test_a_sealed_package_resumes(): void {
+		$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'n' => 1, 'size' => 1024 ) ), $this->json( 200, array( 'n' => 2, 'size' => 1024 ) ) ) );
+		$u    = $this->upload( $http );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		$this->assertTrue( $u->step()->is_ok() );
+		$this->assertTrue( $u->step()->is_ok() );
+		$this->assertMatchesRegularExpression( '#/parts/2$#', $http->requests[1]['url'] );
+		$this->assertSame( 3, Babilim_Upload::pending()['next'] );
+	}
+
+	public function test_read_part_refuses_a_zip_outside_the_recorded_base_or_a_base_no_longer_private(): void {
+		foreach ( array( rtrim( ABSPATH, '/' ), $this->root . '/hosttmp' ) as $bad_base ) {
+			$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ) ) );
+			$u    = $this->upload( $http );
+			$u->begin( $this->component(), 'fr_FR', $this->offer() );
+			$u->confirm();
+			$p                 = (array) Babilim_Upload::pending();
+			$p['staging_base'] = $bad_base;
+			update_option( Babilim_Upload::OPTION, $p, false );
+			$this->assertSame( 'packager_read_failed', $u->step()->code(), $bad_base );
+			$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+			babilim_test_reset();
+			update_option( 'babilim_consent', true );
+		}
+	}
+
+	public function test_a_base_that_is_no_longer_private_stops_the_upload(): void {
+		$http = new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ) ) );
+		$u    = $this->upload( $http );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		$_SERVER['DOCUMENT_ROOT'] = $this->root; // The base now lies under the public root.
+		$this->assertSame( 'packager_read_failed', $u->step()->code() );
+		$this->assertSame( 0, $this->count_method( $http, 'PUT' ) );
+	}
+
 	public function test_a_missing_offer_field_is_refused(): void {
 		$u = $this->upload( new Babilim_Fake_Http( array() ) );
 		$r = $u->begin( $this->component(), 'fr_FR', array( 'upload_id' => 'up_x' ) );
 		$this->assertSame( 'invalid_response', $r->code() );
 		$this->assertNull( Babilim_Upload::pending() );
+	}
+
+	/** @return string[] origin ids of the error events waiting for the owner's decision */
+	private function captured_origins(): array {
+		return array_column( Babilim_Error_Reporter::for_site()->awaiting(), 'origin_id' );
+	}
+
+	public function test_a_complete_answered_401_or_429_is_not_captured_as_an_error_event(): void {
+		foreach ( array( array( 401, 'unauthorized' ), array( 429, 'rate_limited' ), array( 403, 'quota_exceeded' ) ) as $case ) {
+			babilim_test_reset();
+			update_option( 'babilim_consent', true );
+			$responses   = $this->four_parts_ok();
+			$responses[] = $this->err( $case[0], $case[1] );
+			$responses[] = $this->json( 200, array( 'state' => 'cancelled' ) );
+			$http        = new Babilim_Fake_Http( $responses );
+			$u           = $this->upload( $http );
+			$u->begin( $this->component(), 'fr_FR', $this->offer() );
+			$u->confirm();
+			for ( $i = 0; $i < 5; $i++ ) {
+				$u->step();
+			}
+			$this->assertNull( Babilim_Upload::pending(), $case[1] );
+			$this->assertSame( array(), $this->captured_origins(), $case[1] );
+		}
+	}
+
+	public function test_a_real_complete_failure_is_captured_with_the_complete_origin(): void {
+		$responses   = $this->four_parts_ok();
+		$responses[] = $this->err( 404, 'not_found' );
+		$responses[] = $this->json( 200, array( 'state' => 'cancelled' ) );
+		$u           = $this->upload( new Babilim_Fake_Http( $responses ) );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		for ( $i = 0; $i < 5; $i++ ) {
+			$u->step();
+		}
+		$this->assertSame( array( 'upload.complete' ), $this->captured_origins() );
+	}
+
+	public function test_a_part_that_keeps_failing_is_captured_with_the_part_origin(): void {
+		$responses = array();
+		for ( $i = 0; $i < 4; $i++ ) {
+			$responses[] = $this->json( 500, array() );
+		}
+		$responses[] = $this->json( 200, array( 'state' => 'cancelled' ) );
+		$u           = $this->upload( new Babilim_Fake_Http( $responses ) );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		for ( $i = 0; $i < 4; $i++ ) {
+			$u->step();
+		}
+		$this->assertSame( array( 'upload.part' ), $this->captured_origins() );
+	}
+
+	public function test_giving_up_an_upload_is_not_captured(): void {
+		$u = $this->upload( new Babilim_Fake_Http( array( $this->json( 200, array( 'state' => 'cancelled' ) ) ) ) );
+		$u->begin( $this->component(), 'fr_FR', $this->offer() );
+		$u->confirm();
+		$u->cancel();
+		$this->assertSame( array(), $this->captured_origins() );
 	}
 }

@@ -22,6 +22,8 @@
               "type": "object",
               "required": ["status"],
               "additionalProperties": false,
+              "if": {"required": ["auto_install"]},
+              "then": {"properties": {"status": {"const": "babilim_available"}}},
               "properties": {
                 "status": {
                   "type": "string",
@@ -45,6 +47,7 @@
                   }
                 },
                 "hardcoded_text_warning": {"type": "boolean", "description": "1.6.0: present and true only when status is babilim_installed or babilim_available AND the build named by this entry's build_id belongs to a component whose source has a substantial amount of user-visible text that is not passed through translation functions, so a language pack cannot cover it. Absent means no notice -- it does NOT mean the component is fully translatable. Never false"},
+                "auto_install": {"const": true, "description": "1.10.0: present only when status is babilim_available and the service permits this site to install the build without a user action: a paid or partner license, or this request's own installed{} for the component is non-empty (the site already has a Babilim translation of it in some locale). Absent means the plugin must not install it automatically; the manual install action stays available"},
                 "upload_pending": {"type": "boolean", "description": "1.5.0: true only when status is queued and THIS site holds an open (not yet completed) source upload for this component version -- the site should offer the same request action again so the upload can be resumed or cancelled"},
                 "reason": {"type": "string", "minLength": 1, "description": "generic reason code only when status is failed or unsupported (1.8.0: unsupported also carries \"source_locale\" when the site locale equals the component's original language); also present when status is babilim_installed and the installed build's local integrity check failed (\"integrity_failed\"); 1.5.0: also present when status is requestable because the last source upload was rejected (\"source_rejected\") or expired (\"upload_expired\")"}
               }

@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "kind": "plugin",
+      "slug": "component-a",
+      "locales": {
+        "de_DE": {
+          "status": "babilim_installed",
+          "build_id": "bd_9f3c1a7e5d02",
+          "build_no": 3,
+          "built_at": "2026-09-18T10:00:00Z",
+          "update_available": false,
+          "built_for_version": "2.4.0"
+        },
+        "fr_FR": {
+          "status": "babilim_available",
+          "build_id": "bd_b3c4d5e6f701",
+          "build_no": 1,
+          "built_at": "2026-10-02T10:00:00Z",
+          "auto_install": true
+        }
+      }
+    },
+    {
+      "kind": "theme",
+      "slug": "component-b",
+      "locales": {
+        "de_DE": {
+          "status": "babilim_available",
+          "build_id": "bd_9e8d7c6b5a4f",
+          "build_no": 1,
+          "built_at": "2026-09-20T08:00:00Z"
+        },
+        "fr_FR": {
+          "status": "requestable"
+        }
+      }
+    }
+  ],
+  "updates": [],
+  "license": {
+    "kind": "free",
+    "status": "active"
+  },
+  "quota": {
+    "free_slots": {
+      "theme": {
+        "used": 0,
+        "limit": 1
+      },
+      "plugin": {
+        "used": 1,
+        "limit": 2
+      }
+    },
+    "downloads": {
+      "used": 3,
+      "limit": 500,
+      "period": "daily"
+    }
+  },
+  "features": {
+    "checkout": false,
+    "upload": true
+  },
+  "contract": "1.10.0"
+}

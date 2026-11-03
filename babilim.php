@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Babilim
  * Description:       Fills in missing translations for the plugins and themes already installed on your site.
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '1.0.1' );
+	define( 'BABILIM_VERSION', '1.1.0' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {
@@ -135,6 +135,7 @@ function babilim_deactivate( $network_wide = false ) {
 		wp_clear_scheduled_hook( 'babilim_maintenance' );
 		wp_clear_scheduled_hook( 'babilim_sync' );
 		wp_clear_scheduled_hook( 'babilim_sync_once' );
+		Babilim_Error_Reporter::for_site()->clear_all();
 	};
 	// A network-wide deactivation runs once, on the main site: every
 	// site has its own cron queue, so clear each one.

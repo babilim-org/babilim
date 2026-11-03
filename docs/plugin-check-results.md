@@ -73,9 +73,15 @@ reported.
 with the command above: it has no ordinary sniff, so
 `--sniffs=Internal.Tokenizer.Exception` makes phpcs answer "No sniffs
 were registered" (exit code 3) instead of scanning. It only runs inside
-Plugin Check's own runner. What it looks for is verifiable directly for
-this plugin: the source tree contains no `.js` or `.css` file at all,
-and no tracked non-test, non-doc file has a line over 1000 characters.
+Plugin Check's own runner. `scripts/plugin-check-native.sh` replaces it
+with a direct file scan: every `.js` and `.css` file is a finding if it
+is named `*.min.*` or has a line over 1000 characters. The shipped
+`.js` files are `admin/js/babilim-admin.js` and `admin/js/babilim-report.js`;
+neither has such a line. (The scan does not look at PHP files: the only
+hand-written PHP line over 1000 characters,
+`admin/class-babilim-admin.php:39`, is an inline SVG data URI for the
+menu icon; the generated `languages/*.l10n.php` files hold their
+translations as one long array line by format.)
 
 `prefixing`'s own `prefixes` value (`babilim`) comes from calling Plugin
 Check's own `Prefix_Scanner` directly against this plugin's source, the
@@ -447,3 +453,218 @@ wp plugin check babilim --require=<wp-content>/plugins/plugin-check/cli.php \
   guarded by the WordPress version.
 - **`readme_parser_warnings_tested_header_ignored`:** gone; `Tested up
   to` carries a real version.
+
+
+## Input reads and the official sniff (review fix wave)
+
+Plugin Check 2.1.0's bundled `vendor/bin/phpcs` with
+`phpcs-rulesets/plugin-review.xml` and `--runtime-set minimum_wp_version 6.6`,
+run over `tests/fixtures/sniff-probe/input-forms.php` (one function per
+candidate form, each after a nonce check so only
+`WordPress.Security.ValidatedSanitizedInput` is under test). Acceptance
+counts warnings as well as errors.
+
+Probe functions, in file order: `babilim_probe_helper` (a helper that
+sanitizes), `_map` (`array_map( 'sanitize_text_field', array_filter(
+wp_unslash( ... ), 'is_string' ) )`), `_loop` (foreach),
+`_root_plain` / `_root_raw` (DOCUMENT_ROOT, no guard),
+`_root_plain_guarded` / `_root_raw_guarded` (with an `isset()` +
+`is_string()` guard), `_extra_*` (more array variants: direct
+`array_map`, closure, early return) and `_map_then_filter` (sanitize
+first, then drop empty results).
+
+Verbatim output:
+
+```
+
+FILE: tests/fixtures/sniff-probe/input-forms.php
+--------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 11 WARNINGS AFFECTING 10 LINES
+--------------------------------------------------------------------------------
+  11 | WARNING | Detected usage of a non-sanitized input variable: $_POST['k']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+  28 | WARNING | Detected usage of a non-sanitized input variable: $_POST['k']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+  35 | WARNING | Detected usage of a non-sanitized input variable: $_POST['k']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+  46 | WARNING | Detected usage of a possibly undefined superglobal array
+     |         | index: $_SERVER['DOCUMENT_ROOT']. Check that the array index
+     |         | exists before using it.
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotValidated)
+  47 | WARNING | Detected usage of a possibly undefined superglobal array
+     |         | index: $_SERVER['DOCUMENT_ROOT']. Check that the array index
+     |         | exists before using it.
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotValidated)
+  47 | WARNING | Detected usage of a non-sanitized input variable:
+     |         | $_SERVER['DOCUMENT_ROOT']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+  55 | WARNING | Detected usage of a possibly undefined superglobal array
+     |         | index: $_SERVER['DOCUMENT_ROOT']. Check that the array index
+     |         | exists before using it.
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotValidated)
+  56 | WARNING | Detected usage of a possibly undefined superglobal array
+     |         | index: $_SERVER['DOCUMENT_ROOT']. Check that the array index
+     |         | exists before using it.
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotValidated)
+  68 | WARNING | Detected usage of a non-sanitized input variable:
+     |         | $_SERVER['DOCUMENT_ROOT']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+  95 | WARNING | Detected usage of a non-sanitized input variable: $_POST['k']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+ 112 | WARNING | Detected usage of a non-sanitized input variable: $_POST['k']
+     |         | (WordPress.Security.ValidatedSanitizedInput.InputNotSanitized)
+--------------------------------------------------------------------------------
+
+Time: 51ms; Memory: 6MB
+```
+
+### array input form
+
+Every filter-first form is reported `InputNotSanitized` (warning): the
+helper, `_map`, `_loop` and every `_extra_*` variant (the sniff does not
+follow `array_map()` or a helper into the elements). The one clean form
+is `_map_then_filter`, which sanitizes first and then drops the empty
+results:
+
+```php
+isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ? array_values( array_filter( array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ), 'strlen' ) ) : array()
+```
+
+`sanitize_text_field()` returns `''` for an array element, so a nested
+array is removed by the `strlen` filter and never reaches the caller as
+a value. This form is used in `Babilim_Admin::post_list()` (which
+`components[]`, `pending[]` and `locales[]` all use), with no
+`ValidatedSanitizedInput` ignore at all.
+
+### DOCUMENT_ROOT identity read
+
+Without a guard both comparisons are reported `InputNotValidated`
+(possibly undefined index), and the plain one also `InputNotSanitized`.
+With `isset( $_SERVER['DOCUMENT_ROOT'] ) && is_string( ... )` first,
+**the raw comparison is clean** (`babilim_probe_root_raw_guarded`, no
+finding) and the plain one is still reported (`InputNotSanitized`,
+line 68). The identity read is therefore:
+
+```php
+if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) || ! is_string( $_SERVER['DOCUMENT_ROOT'] ) ) {
+    return null;
+}
+$clean = sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) );
+if ( (string) filter_var( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ), FILTER_UNSAFE_RAW ) !== $clean ) {
+    return null; // sanitizing changed the value: its identity is undecidable
+}
+```
+
+No exception is registered for it.
+
+### Registered exceptions
+
+Lines where an `ignore` for `ValidatedSanitizedInput` is accepted by
+`tests/unit/test-plugin-check.php`. A row has the form
+``| `file.php:LINE` | sniff output | reason |``.
+
+None. Every `ValidatedSanitizedInput` finding in `admin/`, `includes/`,
+`babilim.php` and `uninstall.php` is handled by code, not by an ignore.
+
+### Result on the real source
+
+`phpcs --standard=plugin-review.xml --runtime-set minimum_wp_version 6.6
+--report=full admin includes babilim.php uninstall.php`: 0 errors and 0
+warnings. With `--ignore-annotations` added, no
+`WordPress.Security.ValidatedSanitizedInput.*` finding remains (the
+remaining ones are the `NonceVerification` annotations, which are
+justified where they stand).
+
+## 1.1.0 release run (zip built from 5123467)
+
+`build/babilim-1.1.0.zip`: 295 files, 4873139 bytes, sha256
+`f7753ee5e34a2ea068d911e95506a81c3fc0f914b9d0d83d94410d0feab10420`.
+`docs/` is not in the zip, so this section does not change that hash.
+
+`scripts/plugin-check-native.sh` was run on the unpacked zip, not on the
+working tree. Each phpcs-based check uses its own standard and sniffs
+from the table above; `minified_files` is the file scan described there.
+
+| Check | Errors | Warnings |
+|---|---|---|
+| `plugin_review_phpcs` | 0 | 0 |
+| `direct_db_queries` | 0 | 0 |
+| `direct_db` | 0 | 0 |
+| `late_escaping` | 0 | 0 |
+| `i18n_usage` | 0 | 0 |
+| `enqueued_scripts_in_footer` | 0 | 0 |
+| `performant_wp_query_params` | 0 | 0 |
+| `enqueued_resources` | 0 | 0 |
+| `setting_sanitization` | 0 | 0 |
+| `write_file` | 0 | 0 |
+| `prefixing` | 0 | 0 |
+| `verify_nonce` | 0 | 0 |
+| `safe_redirect` | 0 | 0 |
+| `offloading_files` | 0 | 0 |
+| `ai_provider` | 0 | 0 |
+| `localhost` | 0 | 0 |
+| `php_error_reporting` | 0 | 0 |
+| `minified_files` (file scan) | 0 | 0 |
+
+These counts are with the source's own `phpcs:ignore` / `phpcs:disable`
+annotations in effect, as Plugin Check runs them (72 of them across
+`admin/` and `includes/`). With
+`--ignore-annotations` added, some checks report the annotated lines;
+for example `direct_db_queries` then reports 0 errors and 14 warnings
+in 4 files. "Registered exceptions" above covers only the
+`ValidatedSanitizedInput` sniff, and lists none.
+
+### Negative control
+
+To show the run can fail, a copy of the unpacked zip had two lines added
+inside an ordinary admin method: one reading a raw `$_GET` value into a
+variable, one echoing that variable unescaped. The same script then
+reported, and exited non-zero:
+
+- `plugin_review_phpcs`: 0 errors, 4 warnings, all on the added input
+  line (`InputNotValidated`, `MissingUnslash`, `InputNotSanitized`,
+  `NonceVerification`).
+- `late_escaping`: 1 error on the added output line (`EscapeOutput`).
+
+Every other check stayed at 0 errors and 0 warnings.
+
+### Runtime and file checks (WordPress Playground)
+
+The same zip (sha256 above), unpacked and mounted as the plugin, with
+Plugin Check 2.1.0 activated, in a WordPress 6.6 / PHP 8.1 Playground
+boot (`@wp-playground/cli` 3.1.54). Each check ran in its own `wp
+eval-file` step, through Plugin Check's own `Default_Check_Repository`,
+`Check_Context` and `Check_Result`, one check per request. The runner is
+a one-off script kept outside this repository:
+
+| Check | Errors | Warnings |
+|---|---|---|
+| `plugin_readme` | 0 | 0 |
+| `plugin_uninstall` | 0 | 0 |
+| `direct_file_access` | 0 | 0 |
+| `file_type` | 0 | 0 |
+| `plugin_header_fields` | 0 | 0 |
+| `trademarks` | 0 | 0 |
+| `external_admin_menu_links` | 0 | 0 |
+| `wp_functions_compatibility` | 0 | 0 |
+| `plugin_updater` | 0 | 0 |
+| `code_obfuscation` | 0 | 0 |
+| `plugin_content` | 0 | 0 |
+| `no_unfiltered_uploads` | 0 | 0 |
+| `minified_files` | 0 | 0 |
+
+Negative control, same boot setup, on a copy with three probe files
+added (a PHP file hooking `site_transient_update_plugins` without an
+`ABSPATH` guard, a one-line minified `.js`, and an empty `.phar`): `plugin_updater` 1 error
+(`plugin_updater_detected`), `direct_file_access` 1 error
+(`missing_direct_file_access_protection`), `file_type` 2 errors
+(`phar_files`, `application_detected`); the other checks stayed at 0.
+
+`minified_files` in Plugin Check 2.1.0 hands only `.php` files to phpcs
+and reports tokenizer exceptions; phpcs's "appears to be minified"
+test applies to its JS and CSS tokenizers, so neither a minified `.js`
+probe nor a long-line `.php` probe made it report anything. Its 0 above
+is therefore not backed by a negative control; the `.js`/`.css` file
+scan in `scripts/plugin-check-native.sh` is what covers minified
+scripts.
+

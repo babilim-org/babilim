@@ -80,9 +80,12 @@ cleanup() {
 }
 trap cleanup EXIT
 
-( BABILIM_PKG_DIR="${WORK}/pkgs" php -S 127.0.0.1:${MOCK_PORT} "${SCRIPT_DIR}/mock-server/router.php" \
+( BABILIM_PKG_DIR="${WORK}/pkgs" BABILIM_MOCK_LOG="${OUT_DIR}/ux-mock-received-${WP_VERSION}-${MODE}.jsonl" php -S 127.0.0.1:${MOCK_PORT} "${SCRIPT_DIR}/mock-server/router.php" \
 	> "${OUT_DIR}/ux-mock-${WP_VERSION}-${MODE}.log" 2>&1 & echo $! > "${WORK}/mock.pid" )
 sleep 1
+# The report and errconsent scenarios read the mock's state and save screenshots.
+export BABILIM_UX_MOCK="http://127.0.0.1:${MOCK_PORT}"
+export BABILIM_UX_SHOTS="${BABILIM_UX_SHOTS:-${OUT_DIR}/shots-${WP_VERSION}-${MODE}}"
 
 if [ "${MODE}" = "callback" ]; then
 	RESET='{"callback":true}'
@@ -141,6 +144,27 @@ list | rowactions | l10n)
 	fixture_plugin newer-demo "Newer Demo"
 	fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
 	;;
+report)
+	fixture_plugin report-demo "Report Demo"
+	;;
+errconsent)
+	# A stand-in for the twice-daily WP-Cron run. In this Playground setup a
+	# request to wp-cron.php takes the cron lock but never reaches the plugin's
+	# `babilim_sync` event (cause not determined), so the scenario asks an
+	# administrator-only URL to run that same event: the plugin's own sync
+	# handler, exactly what cron would call. Test infrastructure only.
+	mkdir -p "${WORK}/mu"
+	cat > "${WORK}/mu/e2e-run-sync.php" <<'MUPHP'
+<?php
+add_action( 'admin_init', static function () {
+	if ( isset( $_GET['e2e_run_sync'] ) && current_user_can( 'manage_options' ) ) {
+		do_action( 'babilim_sync' );
+	}
+} );
+MUPHP
+	MOUNT_FIXTURES+=("--mount=${WORK}/mu:/wordpress/wp-content/mu-plugins")
+	fixture_plugin errors-demo "Errors Demo"
+	;;
 esac
 for flag in "" "--no-js"; do
 	if ! boot_server; then
@@ -153,7 +177,15 @@ for flag in "" "--no-js"; do
 	profile=""
 	case "${scenario}" in
 	list | rowactions | l10n) profile=',"profile":"list"' ;;
+	errconsent) profile=',"profile":"errors","fail_builds":["bd_0badc0de0bad"]' ;;
 	esac
+	if [ "${scenario}" = report ]; then
+		# The pack the report panel searches: one plain string and one with a
+		# context. The mock's default profile offers it for the site language.
+		build="bd_$(printf '%s' report-demoen_US | md5sum | cut -c1-12)"
+		printf '{"server_build_id":"%s","kind":"plugin","slug":"report-demo","locale":"en_US","version":"1.0.0","entries":{"Add to cart":"Warenkorb: Hinzufügen","button\\u0004Save changes":"Änderungen sichern"}}' "${build}" > "${WORK}/pkg-spec.json"
+		php "${SCRIPT_DIR}/mock-server/build-package.php" "${WORK}/pkgs/${build}.zip" "${WORK}/pkg-spec.json" > /dev/null
+	fi
 	if [ -n "${profile}" ]; then
 		for slug in woocommerce newer-demo; do
 			build="bd_$(printf '%s' "${slug}de_DE" | md5sum | cut -c1-12)"

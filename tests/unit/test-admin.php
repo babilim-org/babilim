@@ -1737,8 +1737,6 @@ final class Test_Admin extends TestCase {
 				'locale'       => 'zh_TW',
 				'build_id'     => 'bd_000000000001',
 				'category'     => 'terminology',
-				'msgid'        => 'Cart',
-				'msgctxt'      => '',
 				'plural_index' => '0',
 				'suggested'    => 'suggestion',
 				'note'         => 'note',
@@ -1755,49 +1753,8 @@ final class Test_Admin extends TestCase {
 		$this->assertSame( 'zh_TW', $sent['locale'] );
 		$this->assertSame( 'bd_000000000001', $sent['build_id'] );
 		$this->assertSame( 'terminology', $sent['category'] );
-		$this->assertSame( 'Cart', $sent['msgid'] );
 		$this->assertSame( 0, $sent['plural_index'] );
 		$this->assertSame( 'suggestion', $sent['suggested'] );
-	}
-
-	/**
-	 * msgid and msgctxt must both reach the service byte-for-byte,
-	 * including HTML markup, embedded newlines, and leading/trailing
-	 * whitespace (real translation strings sometimes carry all three,
-	 * and msgctxt is gettext's own disambiguating-context string, drawn
-	 * from the same source as msgid, not free-form user text) --
-	 * sanitize_text_field()/sanitize_textarea_field() would have
-	 * stripped/collapsed/trimmed them. current_msgstr, a genuinely
-	 * free-form multi-line <textarea> field, must keep its own line
-	 * breaks -- sanitize_text_field() would have collapsed them to
-	 * spaces.
-	 */
-	public function test_feedback_preserves_html_and_line_breaks_in_msgid_msgctxt_and_multiline_fields(): void {
-		update_option( 'babilim_consent', true );
-		$this->set_known_build( 'plugin', 'woocommerce', 'zh_TW', 'bd_000000000001' );
-		$http = new Babilim_Fake_Http( array( array( 'response' => array( 'code' => 201 ), 'body' => wp_json_encode( array( 'feedback_id' => 'fb_000000000001' ) ), 'headers' => array() ) ) );
-		$msgctxt_raw = "\tbutton label <b>context</b>\nline two ";
-		$this->post(
-			'babilim_feedback',
-			array(
-				'kind'           => 'plugin',
-				'slug'           => 'woocommerce',
-				'locale'         => 'zh_TW',
-				'build_id'       => 'bd_000000000001',
-				'category'       => 'terminology',
-				'msgid'          => "Save <strong>changes</strong>\nnow",
-				'msgctxt'        => $msgctxt_raw,
-				'current_msgstr' => "Line one\nLine two",
-			)
-		);
-
-		$admin = $this->admin( $http );
-		$admin->dispatch_babilim_feedback();
-
-		$sent = json_decode( $http->requests[0]['args']['body'], true );
-		$this->assertSame( "Save <strong>changes</strong>\nnow", $sent['msgid'] );
-		$this->assertSame( $msgctxt_raw, $sent['msgctxt'], 'msgctxt must survive untrimmed and uncollapsed, unlike sanitize_textarea_field()' );
-		$this->assertSame( "Line one\nLine two", $sent['current_msgstr'] );
 	}
 
 	/**
@@ -1808,8 +1765,6 @@ final class Test_Admin extends TestCase {
 	 */
 	public static function feedback_limited_fields(): array {
 		return array(
-			'msgid'          => array( 'msgid', 4000, 'Original string' ),
-			'msgctxt'        => array( 'msgctxt', 4000, 'String context' ),
 			'current_msgstr' => array( 'current_msgstr', 4000, 'Current translation' ),
 			'suggested'      => array( 'suggested', 4000, 'Suggested translation' ),
 			'note'           => array( 'note', 4000, 'Note (optional)' ),
@@ -1940,52 +1895,6 @@ final class Test_Admin extends TestCase {
 		$this->assertFeedbackPayloadMatchesSchema( $http->requests[0]['args']['body'] );
 	}
 
-	/**
-	 * msgid / msgctxt are handed over by the translations list, never typed:
-	 * they cannot be cut, so a report page for one over the limit offers
-	 * no form (nothing to fill in and then lose) and says why.
-	 *
-	 * @dataProvider over_long_report_strings
-	 */
-	public function test_the_report_page_offers_no_form_for_a_string_over_the_limit( string $field, int $length, bool $form_expected ): void {
-		update_option( 'babilim_consent', true );
-		$this->set_known_build( 'plugin', 'woocommerce', 'zh_TW', 'bd_000000000001' );
-		$_GET = array( 'screen' => 'report', 'kind' => 'plugin', 'slug' => 'woocommerce', 'locale' => 'zh_TW', 'build_id' => 'bd_000000000001', $field => str_repeat( '€', $length ) );
-
-		$html = $this->admin()->render_current_page();
-
-		if ( $form_expected ) {
-			$this->assertStringContainsString( 'value="babilim_feedback"', $html );
-			$this->assertStringContainsString( str_repeat( '€', $length ), $html, 'a string that fits is passed on whole' );
-		} else {
-			$this->assertStringNotContainsString( '<form', $html );
-			$this->assertStringNotContainsString( 'babilim_feedback', $html );
-			$this->assertStringContainsString( 'too long to be sent as a report', $html );
-		}
-	}
-
-	/** @return array<string,array{0:string,1:int,2:bool}> */
-	public static function over_long_report_strings(): array {
-		return array(
-			'msgid 4000'    => array( 'msgid', 4000, true ),
-			'msgid 4001'    => array( 'msgid', 4001, false ),
-			'msgid 10001'   => array( 'msgid', 10001, false ),
-			'msgctxt 4000'  => array( 'msgctxt', 4000, true ),
-			'msgctxt 4001'  => array( 'msgctxt', 4001, false ),
-		);
-	}
-
-	public function test_a_report_for_an_over_long_string_never_sends_a_request(): void {
-		update_option( 'babilim_consent', true );
-		$this->set_known_build( 'plugin', 'woocommerce', 'zh_TW', 'bd_000000000001' );
-		$http = $this->feedback_created_http();
-		$this->post_feedback( array( 'msgid' => str_repeat( 'x', 4001 ) ) );
-
-		$this->admin( $http )->dispatch_babilim_feedback();
-
-		$this->assertCount( 0, $http->requests );
-	}
-
 	public function test_the_report_form_limits_what_can_be_typed_to_the_contract(): void {
 		$_GET = array( 'screen' => 'report', 'kind' => 'plugin', 'slug' => 'woocommerce', 'locale' => 'zh_TW', 'build_id' => 'bd_000000000001' );
 		if ( ! babilim_test_real_kses_available() ) {
@@ -2017,34 +1926,24 @@ final class Test_Admin extends TestCase {
 		}
 	}
 
-	/**
-	 * An array value for msgid or msgctxt in the submitted form (e.g.
-	 * `msgid[]=x`) is dropped, never coerced into the literal string
-	 * "Array" and sent to the service.
-	 */
-	public function test_feedback_drops_array_msgid_and_msgctxt_fields(): void {
-		update_option( 'babilim_consent', true );
-		$this->set_known_build( 'plugin', 'woocommerce', 'zh_TW', 'bd_000000000001' );
-		$http = new Babilim_Fake_Http( array( array( 'response' => array( 'code' => 201 ), 'body' => wp_json_encode( array( 'feedback_id' => 'fb_000000000001' ) ), 'headers' => array() ) ) );
-		$this->post(
-			'babilim_feedback',
-			array(
-				'kind'     => 'plugin',
-				'slug'     => 'woocommerce',
-				'locale'   => 'zh_TW',
-				'build_id' => 'bd_000000000001',
-				'category' => 'terminology',
-				'msgid'    => array( 'x' ),
-				'msgctxt'  => array( 'y' ),
-			)
+	public function test_the_report_page_carries_no_original_string_fields_and_ignores_them_in_the_query(): void {
+		$_GET = array(
+			'screen'    => 'report',
+			'kind'      => 'plugin',
+			'slug'      => 'woocommerce',
+			'locale'    => 'zh_TW',
+			'build_id'  => 'bd_000000000001',
+			'msgid'     => 'Forged original',
+			'msgctxt'   => 'Forged context',
+			'msgstr'    => 'Forged translation',
 		);
+		$html = $this->admin()->render_current_page();
 
-		$this->admin( $http )->dispatch_babilim_feedback();
-
-		$this->assertCount( 1, $http->requests );
-		$sent = json_decode( $http->requests[0]['args']['body'], true );
-		$this->assertArrayNotHasKey( 'msgid', $sent );
-		$this->assertArrayNotHasKey( 'msgctxt', $sent );
+		$this->assertStringContainsString( 'name="build_id"', $html );
+		$this->assertStringNotContainsString( 'name="msgid"', $html );
+		$this->assertStringNotContainsString( 'name="msgctxt"', $html );
+		$this->assertStringNotContainsString( 'name="msgstr"', $html );
+		$this->assertStringNotContainsString( 'Forged', $html );
 	}
 
 	/**
@@ -2989,61 +2888,6 @@ final class Test_Admin extends TestCase {
 		$this->assertRenderedHtmlHasNoQualityWording( $html );
 	}
 
-	/**
-	 * A msgid/msgctxt arriving via the report page's own query string
-	 * (e.g. a future list link that carries string context) must
-	 * reach the rendered form exactly as it was, the same way the send
-	 * side already preserves it (see
-	 * test_feedback_preserves_html_and_line_breaks_in_msgid_msgctxt_and_
-	 * multiline_fields) -- sanitize_text_field()/sanitize_textarea_field()
-	 * would strip the HTML and (the former) collapse the line break
-	 * before the site owner ever sees it. Both are still escaped where
-	 * they're actually rendered (esc_attr() on the hidden field's own
-	 * value attribute), so the raw HTML never becomes live markup.
-	 */
-	public function test_report_page_preserves_html_and_line_breaks_in_the_msgid_and_msgctxt_query_params(): void {
-		// msgctxt's leading tab and trailing space are deliberate --
-		// sanitize_textarea_field() collapses/trims whitespace, so
-		// without them a stub that (unlike real WordPress core) doesn't
-		// also strip HTML would let a mutation back to
-		// sanitize_textarea_field() pass this test undetected.
-		$msgctxt_raw = "\tbutton <b>context</b>\nline two ";
-		$_GET         = array(
-			'screen'   => 'report',
-			'kind'     => 'plugin',
-			'slug'     => 'woocommerce',
-			'locale'   => 'zh_TW',
-			'build_id' => 'bd_000000000001',
-			'msgid'    => "Save <strong>now</strong>\nplease",
-			'msgctxt'  => $msgctxt_raw,
-		);
-
-		$html = $this->admin()->render_current_page();
-
-		$this->assertStringContainsString( "Save &lt;strong&gt;now&lt;/strong&gt;\nplease", $html );
-		$this->assertStringContainsString( "\tbutton &lt;b&gt;context&lt;/b&gt;\nline two ", $html );
-	}
-
-	/**
-	 * P-4: an array value for msgid (e.g. `?msgid[]=x`) must be rejected
-	 * outright, not coerced into the literal string "Array" by a bare
-	 * (string) cast.
-	 */
-	public function test_report_page_rejects_an_array_msgid_query_param(): void {
-		$_GET = array(
-			'screen'   => 'report',
-			'kind'     => 'plugin',
-			'slug'     => 'woocommerce',
-			'locale'   => 'zh_TW',
-			'build_id' => 'bd_000000000001',
-			'msgid'    => array( 'x' ),
-		);
-
-		$html = $this->admin()->render_current_page();
-
-		$this->assertStringContainsString( 'name="msgid" value=""', $html, 'an array msgid must never be coerced into a literal "Array" string' );
-	}
-
 	private function assertRenderedHtmlHasNoQualityWording( string $html ): void {
 		$lower = strtolower( $html );
 		$this->assertStringNotContainsString( 'quality', $lower );
@@ -3421,7 +3265,7 @@ final class Test_Admin extends TestCase {
 		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'theme', 'slug' => 'avada', 'locale' => 'fr_FR', 'version' => '7.11.4' ) );
 		$_GET = array( 'page' => 'babilim', 'screen' => 'upload-confirm' );
 		$html = $this->admin()->render_current_page();
-		foreach ( array( 'entire', 'keys, logs or customer data', 'until you ask', 'AI', 'other sites', 'right to upload', 'Upload and request', 'Cancel' ) as $needle ) {
+		foreach ( array( '.php and .js', 'common secrets', 'until you ask', 'AI', 'other sites', 'right to upload', 'Upload and request', 'Cancel', 'Babilim will upload these files from' ) as $needle ) {
 			$this->assertStringContainsString( $needle, $html, $needle );
 		}
 		$this->assertStringContainsString( 'babilim_upload_confirm', $html );

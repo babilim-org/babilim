@@ -4,7 +4,7 @@ Tags: translation, internationalization, i18n, l10n, language packs
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,7 @@ It then lets you request a translation from the Babilim translation service.
 
 If a plugin or theme ships its own translation, you can still request a Babilim translation for it.
 The settings screen shows the progress of a request.
+If an installed translation reads wrong, report it from the "Report translation" entry in the admin toolbar.
 
 More details:
 
@@ -31,14 +32,16 @@ More details:
 * **Translation data only.** Babilim downloads translation files (`.po`, `.mo`, `.json`) and nothing else. It never downloads or runs PHP or JavaScript from anywhere.
 * **Your own overrides.** A translation you place under `custom/` beats anything Babilim provides.
 * **Check, roll back, report.** Babilim checks every installed file against its recorded checksum automatically, twice a day. A translation can be rolled back to the previous build or removed. If a translation reads wrongly you can report it from the same screen.
-* **Clean removal.** Deleting the plugin removes its options, scheduled events and language files. Your `custom/` overrides and your site's identity are kept by default.
+* **Clean removal.** Deleting the plugin removes its settings, scheduled events and the language files it installed. Two separate settings decide what stays: by default the three identity records (registration number, access token and install key) are kept so a reinstall picks the site up again, and your own `custom/` overrides are kept.
 
 Where Babilim writes:
 
 * Babilim only writes inside its own folder, `wp-content/languages/babilim/`.
-* The only other write is a temporary zip in the system temp directory, and only for a source upload you confirm (see External services).
+* The only other write is a temporary zip for a source upload you confirm, in the system temporary directory or a folder your host names in the BABILIM_TEMP_DIR constant, and only when that folder lies outside the website (see External services).
 * If `wp-content/languages/` does not exist yet, Babilim creates only that empty folder.
 * It does not touch your plugins' or themes' own files, nor the language files WordPress itself installs.
+
+Named after Babel: language should not stand between people and the web.
 
 == How translations are loaded ==
 
@@ -122,7 +125,7 @@ The plugin retries later.
 = What happens when I deactivate or delete the plugin? =
 
 * Deactivating stops the scheduled tasks and leaves your installed translation files where they are. The plugin's loading layer is then no longer active.
-* Deleting the plugin removes its settings, its scheduled events and everything it recognizes under `wp-content/languages/babilim/`.
+* Deleting the plugin removes its settings, its scheduled events and everything it recognizes under `wp-content/languages/babilim/`, except what the two settings below keep.
 * The `custom/` folder is kept while "Keep my own translation overrides…" is ticked. Files the plugin did not create there may remain.
 * Deleting makes no request to the service.
 * By default deleting keeps your site's identity (see the next question), so that installing the plugin again picks up where you left off.
@@ -142,7 +145,7 @@ If you tick it before deleting the plugin, the site's registration number, acces
 After that, the site's paid license cannot be restored automatically: you must contact us at hi@babilim.org to get it back.
 Leave the box unticked unless you are sure you will never need this site's license again.
 
-WordPress runs no plugin code while a plugin is being deleted, so the deletion itself cannot show a warning.
+The uninstall step has no screen of its own and cannot ask you anything.
 Instead, while the box is ticked, the plugin asks you to confirm when you click Deactivate on the Plugins screen.
 To keep the identity, untick the box before you deactivate the plugin.
 
@@ -260,7 +263,7 @@ The service sees your server's IP address as part of any web request.
 While "Install available translations automatically" is on (it is on by default; you can turn it off under Settings), the twice-daily sync downloads available translations for the languages you manage without a click.
 Each download sends the identifier of the build.
 
-* On the free plan only components that already use one of your free slots are installed this way, so no new slot is taken.
+* The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.
 * Translations you remove yourself are not installed again automatically until you download them by hand.
 * "Remove everything Babilim installed" also turns automatic installation off. Turning it on again later can bring translations back.
 * On a multisite network, new translations are not installed automatically at all. Translations already installed are still updated.
@@ -270,7 +273,9 @@ Each download sends the identifier of the build.
 * Requesting a translation sends the component kind, its slug and version, and the locale.
 * Downloading a translation sends the identifier of the build you chose.
 * Reading the list of locales sends no site data beyond the headers above.
-* Reporting a problem sends the component, locale and build, the category you chose, and any of the following that you fill in: the original text, the current translation, your suggested translation, a note, and the address of the screen where you saw it.
+* Reporting a problem from the Report translation entry in the admin toolbar sends the component, locale and build, the original text, the current translation, the category you chose, and any suggested translation or note you fill in. It does not send the address of the screen you were on.
+* The service processes every report, including your suggested translation and note, automatically with AI models.
+* Reporting a problem with the older form on the Translations screen sends the component, locale and build, the category you chose, and the current translation, suggested translation, note and screen address you type. That form does not carry the original string.
 
 **Uploading a component's source (only after you confirm).**
 For a plugin or theme that is not listed on WordPress.org, requesting a translation needs the component's source.
@@ -278,17 +283,28 @@ The service asks for it and the plugin shows a confirmation screen first. Nothin
 
 If you do:
 
-* The entire plugin or theme directory is packaged as a zip and uploaded in parts.
-* If that directory contains keys, logs or customer data, they are uploaded too. The service removes common sensitive files (configuration, environment, database dumps, logs, keys) but cannot guarantee it finds everything.
+* Babilim will upload these files from the component: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are packaged as a zip and uploaded in parts. They are used to find the text that needs translating and to identify the plugin or theme.
+* Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key).
+* Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival.
 * The upload is kept by the service until you ask for it to be deleted. It is stored by its hosting provider and processed by AI models.
 * The original text and the translations made from it are provided to other sites that install the same version of the component.
 * By uploading you confirm you have the right to do so.
 
 The temporary zip:
 
-* It is written to the system temporary directory, or to WordPress's temporary directory when the system one is not usable or lies inside the site.
-* The directory has a random name and gets a deny-all `.htaccess` (honoured by Apache-compatible servers only) and an empty `index.php`.
-* The zip is deleted as soon as the upload finishes or fails, and anything left behind is removed after 24 hours by a daily job.
+* It is written only to the system temporary directory, or to the folder named by the BABILIM_TEMP_DIR constant, and only if that folder lies outside the website. If neither does, nothing is packaged or uploaded and the plugin tells you.
+* The folder has a random name and holds nothing but the zip.
+* The zip is deleted when the upload completes, fails or is cancelled. If the site is interrupted before that, the leftover sits in that temporary folder outside the website and is cleaned up by your host's own temporary-file housekeeping; Babilim does not promise a removal time.
+
+**Error reports (optional, off by default).**
+When something fails inside Babilim, the plugin can send an error report to the Babilim service so it can be published as a public issue on GitHub.
+Nothing is sent until you choose "Share this report" or "Always share" in the notice that appears after an error, or tick "Share error reports" in Settings.
+
+* What is sent: the plugin version, WordPress version, PHP version, the site language code, and for each event a random id, an error code, the action being performed, the place in the plugin where it happened, and the time. The notice that asks for your consent lists all of these.
+* Every code, action and place comes from a fixed list; no free text is sent.
+* Like every other request to the service, the report is sent as coming from your site: it carries the site access token and the User-Agent header with the site address. The service uses them only to accept the request.
+* The service publishes only the error code and versions as a public issue. The public issue contains no site address, site name, content, user data, list of plugins and themes, or file path.
+* The report is published publicly on GitHub and may be kept by third parties.
 
 **What is received.**
 Translation data files (`.po`, `.mo`, `.json`) for the locales you manage, together with status information: which translations exist, their build identifiers and dates, and any download limit that applies to your site.
@@ -301,7 +317,10 @@ The Translations screen shows the same list before you consent, and your consent
 The information described under "External services" is the only information the plugin sends, and only after you consent.
 The only exception is a source upload you explicitly confirm, described above.
 
-The plugin never sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
+Error reports are only sent after you choose to share them.
+
+The plugin itself never reads or sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
+Two things you type or confirm can still carry such data if you put it there: the free-text fields of a report, and the code files of a component you choose to upload (see "Uploading a component's source" above).
 
 The site access token and the private key are stored in your site's database and are never included in a page or script sent to a browser.
 Deleting the plugin keeps them by default so that a reinstall can reuse the site's identity. Ticking "Delete all Babilim data on uninstall" removes them.
@@ -313,6 +332,13 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 3. Settings: the languages to manage and the uninstall choices.
 
 == Changelog ==
+
+= 1.1.0 =
+* Optional error reports: when something fails inside Babilim, you can choose to share an error report so the error code can be published as a public issue. Off by default; nothing is sent until you agree.
+* New "Report translation" entry in the admin toolbar: search the translations Babilim installed on your site, pick one and report a problem with it.
+* Which available translations are installed automatically is now decided by the Babilim service and returned with the sync; the plugin no longer reads the license kind for this.
+* A source upload now contains only the component's code and description files: its .php and .js files, its block.json files, and the readme, style.css and theme.json in its main folder.
+* The temporary zip of a source upload is now only written to a folder confirmed to lie outside the website; when none is available the upload is refused with a message.
 
 = 1.0.1 =
 * The Translations screen shows "Original language" for a language a plugin or theme is originally written in, instead of "Not supported".
@@ -332,6 +358,9 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 * Removal of settings, scheduled events and language files on uninstall, with your `custom/` overrides and your site's identity kept by default.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds an optional "Report translation" toolbar entry, optional error reports and a smaller source upload. The reports are off until you use or enable them; no action needed.
 
 = 1.0.1 =
 Better detection of translations your plugins already ship; no action needed.

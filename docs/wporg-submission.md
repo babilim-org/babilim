@@ -25,10 +25,11 @@ against the plugin guidelines.
    and anything beyond that allowance, need a paid license. The allowance is
    set by the service and may change; the plugin does not count or enforce
    any allowance itself, and translation files that were already downloaded
-   keep working. The only thing that acts on the license kind without a
-   click is the optional background auto-install: on the free plan it only
-   updates components that already use a free slot, so a new slot is never
-   taken without a click. The admin screen also reads the license kind to
+   keep working. The Babilim service decides which available translations
+   may be installed automatically by the optional background auto-install,
+   and returns that decision with the sync; the plugin does not read the
+   license kind for it. On the free plan automatic installs normally do not take up a new free slot
+   without a click from a user. The admin screen reads the license kind only to
    show the allowance note and a confirmation before a request, to offer
    the upgrade, to show the license label, and to choose which restore
    control to show (a restore-code box for a free site, a new-code button
@@ -43,11 +44,13 @@ against the plugin guidelines.
    Guideline 8?
 
 4. Source upload. For a plugin or theme that is not hosted on wordpress.org,
-   after a per-request confirmation screen the plugin uploads the
-   entire plugin or theme directory to the service for translation. The
-   confirmation screen and the readme disclose that keys, logs or customer
-   data inside it would be uploaded too, that the service removes common
-   sensitive files but cannot guarantee it finds everything, that the upload
+   after a per-request confirmation screen the plugin uploads
+   every .php and .js file, every block.json file, and the readme.txt, readme.md,
+   style.css and theme.json in the main folder to the service for
+   translation. The confirmation screen and the readme list these files,
+   say that common secrets by file name and some folders are left out, that
+   code files can still contain text or data the owner would not want to
+   share, that the service removes the same kinds of files again, that the upload
    is kept until deletion is requested, that it is processed by AI models,
    and that the original text and the translations made from it are provided
    to other sites that install the same version. Is this disclosure
@@ -67,10 +70,10 @@ every request the plugin makes and every field it sends. The plugin loads no
 remote code: it only fetches translation data and builds `.l10n.php` files
 locally. Nothing is sent to the service before the site owner consents, and
 the plugin does not count or enforce any allowance; limits are decided by the
-service and reflected in the UI. The only thing that acts on the license
-kind without a click is the optional background auto-install, which on the
-free plan only updates components that already use a free slot, so no new
-slot is taken without a click; the admin screen also reads it to show the
+service and reflected in the UI. The Babilim service decides which
+available translations the optional background auto-install may install,
+and the plugin does not read the license kind for it; the admin screen
+reads the license kind only to show the
 allowance note, the license label and confirmation, to choose the restore
 control, and to offer the upgrade. A Playground blueprint will be added to
 the SVN assets directory (blueprints/blueprint.json) after approval.

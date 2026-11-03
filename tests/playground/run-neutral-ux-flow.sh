@@ -9,7 +9,7 @@
 # Usage: run-neutral-ux-flow.sh <out-dir> [runs] [scenarios]
 #   out-dir    results and per-run logs go here (outside the repository)
 #   runs       how many times each scenario is repeated, default 1
-#   scenarios  space separated, default "enable settings list"; also bulk, rowactions, l10n and screenshots; each scenario runs
+#   scenarios  space separated, default "enable settings list"; also bulk, rowactions, l10n, report, errconsent and screenshots; each scenario runs
 #              with and without the admin script (--no-js), on a fresh database
 #
 # Environment:
@@ -132,6 +132,9 @@ EOF
 
 PASS="neutral-$(head -c8 /dev/urandom | od -An -tx1 | tr -d ' \n')"
 export BABILIM_UX_PASS="${PASS}"
+# The report and errconsent scenarios read the mock's state and save screenshots.
+export BABILIM_UX_MOCK="http://127.0.0.1:${MOCK_PORT}"
+export BABILIM_UX_SHOTS="${BABILIM_UX_SHOTS:-${OUT_DIR}/shots}"
 # The l10n scenario's expected strings, read from the bundled file itself.
 BABILIM_UX_EXPECT_ENABLE="$(php -r 'echo (include $argv[1])["messages"]["Enable Babilim"];' "${PLUGIN_ROOT}/languages/babilim-zh_TW.l10n.php")"
 BABILIM_UX_EXPECT_SETTINGS_TITLE="$(php -r 'echo (include $argv[1])["messages"]["Babilim settings"];' "${PLUGIN_ROOT}/languages/babilim-zh_TW.l10n.php")"
@@ -215,6 +218,21 @@ MU
 			fixture_plugin "bulk-${letter}" "Bulk ${letter}"
 		done
 		fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
+		fixture_plugin report-demo "Report Demo"
+		fixture_plugin errors-demo "Errors Demo"
+	fi
+	if [ "$1" = errconsent ]; then
+		# WP-Cron is off on this server, so the scenario runs the plugin's own
+		# scheduled sync event from an administrator-only URL instead.
+		mkdir -p "${ROOT}/wp-content/mu-plugins"
+		cat > "${ROOT}/wp-content/mu-plugins/e2e-run-sync.php" <<'MUPHP'
+<?php
+add_action( 'admin_init', static function () {
+	if ( isset( $_GET['e2e_run_sync'] ) && current_user_can( 'manage_options' ) ) {
+		do_action( 'babilim_sync' );
+	}
+} );
+MUPHP
 	fi
 	local profile=""
 	[ "$1" = list ] && profile=',"profile":"list"'
@@ -224,6 +242,7 @@ MU
 	[ "$1" = bulk ] && profile=",\"profile\":\"bulk\",\"download_delay\":0.3,\"fail_builds\":[\"${failing_build}\"]"
 	[ "$1" = rowactions ] && profile=',"profile":"list"'
 	[ "$1" = l10n ] && profile=',"profile":"list"'
+	[ "$1" = errconsent ] && profile=',"profile":"errors","fail_builds":["bd_0badc0de0bad"]'
 	kill_tree "$(cat "${WORK}/site.pid" 2>/dev/null)"
 	: > "${WORK}/site.pid"
 	rm -f "${ROOT}"/wp-content/database/.ht.sqlite*
@@ -254,6 +273,11 @@ MU
 			printf '{"server_build_id":"%s","kind":"plugin","slug":"bulk-%s","locale":"de_DE","version":"1.0.0","entries":{"Cart":"Warenkorb"}}' "${id}" "${letter}" > "${WORK}/pkg-spec.json"
 			php "${SCRIPT_DIR}/mock-server/build-package.php" "${WORK}/pkgs/${id}.zip" "${WORK}/pkg-spec.json" > /dev/null
 		done
+	fi
+	if [ "$1" = report ]; then
+		local rb="bd_$(printf '%s' report-demoen_US | md5sum | cut -c1-12)"
+		printf '{"server_build_id":"%s","kind":"plugin","slug":"report-demo","locale":"en_US","version":"1.0.0","entries":{"Add to cart":"Warenkorb: Hinzufügen","button\\u0004Save changes":"Änderungen sichern"}}' "${rb}" > "${WORK}/pkg-spec.json"
+		php "${SCRIPT_DIR}/mock-server/build-package.php" "${WORK}/pkgs/${rb}.zip" "${WORK}/pkg-spec.json" > /dev/null
 	fi
 	if [ "$1" = list ] || [ "$1" = rowactions ] || [ "$1" = l10n ]; then
 		local spec="${WORK}/pkg-spec.json"

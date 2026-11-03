@@ -163,6 +163,22 @@ for a single batch are recorded in `docs/playground-results.md`.
     `docs/plugin-check-results.md`) but, like the PHP 7.4 gate above, is
     run manually, not gated on every push.
 
+## Staging folder for source uploads
+
+`Babilim_Packager` writes the upload zip only in the system temporary
+directory or in the folder named by the `BABILIM_TEMP_DIR` constant
+(define it in `wp-config.php`). The system temporary directory is used only
+when `$_SERVER['DOCUMENT_ROOT']` resolves and is exactly what
+`sanitize_text_field( wp_unslash( ... ) )` returns for it (a value that
+sanitizing would rewrite can name a different directory, so it counts as
+unknown), and the folder lies outside `DOCUMENT_ROOT`, `ABSPATH` and
+`WP_CONTENT_DIR`. `BABILIM_TEMP_DIR` must also lie outside `ABSPATH` and
+`WP_CONTENT_DIR` (always checked), and outside `DOCUMENT_ROOT` when it
+resolves. If neither qualifies the upload is refused before anything is
+written. WordPress's own `get_temp_dir()` is never a candidate. A leftover
+from an interrupted upload stays in that folder outside the website; cleaning it is
+the host's job, and no removal time is promised anywhere.
+
 ## The contract copy
 
 `tests/contract/v1/` is a byte-for-byte pinned copy of the service repo's

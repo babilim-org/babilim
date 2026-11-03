@@ -1,0 +1,37 @@
+{
+  "description": "Site reports a batch of client-side error events (opt-in); one new event accepted.",
+  "http": {"method": "POST", "path": "/v1/error-reports"},
+  "schema": {"request": "schemas/error-reports.request.schema.json", "response": "schemas/error-reports.response.schema.json"},
+  "setup": {
+    "sites": [
+      {"id": "st_3f9c2a1b7e4d", "token": "tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b", "verified": true, "license_kind": "free", "license_status": "active"}
+    ]
+  },
+  "stable_fields": ["/accepted", "/ignored"],
+  "request": {
+    "headers": {
+      "Authorization": "Bearer tok_7a0d3f6b8c1e4a7d0f3b6c9e2a5d8f1b",
+      "Content-Type": "application/json",
+      "User-Agent": "Babilim/1.9.0; https://example.org"
+    },
+    "body": {
+      "plugin_version": "1.9.0",
+      "wp_version": "6.6.2",
+      "php_version": "8.2.12",
+      "locale": "de_DE",
+      "events": [
+        {
+          "event_id": "0123456789abcdef0123456789abcdef",
+          "error_code": "install_failed",
+          "action": "install",
+          "origin_id": "installer.commit",
+          "at": "2026-11-01T08:30:00Z"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 202,
+    "body": {"accepted": 1, "ignored": 0}
+  }
+}

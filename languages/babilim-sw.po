@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.0.1\n"
+"Project-Id-Version: Babilim 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: sw\n"
@@ -16,10 +16,10 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:319
-#: admin/class-babilim-admin.php:320
-#: admin/class-babilim-admin.php:2500
-#: admin/class-babilim-admin.php:2554
+#: admin/class-babilim-admin.php:338
+#: admin/class-babilim-admin.php:339
+#: admin/class-babilim-admin.php:2614
+#: admin/class-babilim-admin.php:2668
 msgid "Babilim"
 msgstr "Babilim"
 
@@ -28,53 +28,53 @@ msgstr "Babilim"
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
 msgstr "Hujaza tafsiri zinazokosekana za programu-jalizi na mandhari ambazo tayari zimesakinishwa kwenye tovuti yako."
 
-#: admin/class-babilim-admin.php:335
-#: admin/class-babilim-admin.php:336
+#: admin/class-babilim-admin.php:354
+#: admin/class-babilim-admin.php:355
 #: admin/class-babilim-translations-table.php:400
 msgid "Translations"
 msgstr "Tafsiri"
 
-#: admin/class-babilim-admin.php:343
+#: admin/class-babilim-admin.php:362
 msgid "Babilim Settings"
 msgstr "Mipangilio ya Babilim"
 
-#: admin/class-babilim-admin.php:344
-#: admin/class-babilim-admin.php:2557
-#: admin/class-babilim-admin.php:2846
+#: admin/class-babilim-admin.php:363
+#: admin/class-babilim-admin.php:2671
+#: admin/class-babilim-admin.php:2960
 msgid "Settings"
 msgstr "Mipangilio"
 
-#: admin/class-babilim-admin.php:371
-#: admin/class-babilim-admin.php:779
+#: admin/class-babilim-admin.php:390
+#: admin/class-babilim-admin.php:789
 msgid "You are not allowed to do this."
 msgstr "Huruhusiwi kufanya hivi."
 
 #. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:400
+#: admin/class-babilim-admin.php:419
 #, php-format
 msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
 msgstr "Chagua vijenzi vichache zaidi: upeo wa shughuli %1$d kwa kila uendeshaji (umechagua %2$d)."
 
-#: admin/class-babilim-admin.php:413
-#: admin/class-babilim-admin.php:1132
-#: admin/class-babilim-admin.php:1303
+#: admin/class-babilim-admin.php:432
+#: admin/class-babilim-admin.php:1110
+#: admin/class-babilim-admin.php:1281
 msgid "That component is not installed on this site, so a translation cannot be requested for it."
 msgstr "Kijenzi hicho hakijasakinishwa kwenye tovuti hii, kwa hivyo tafsiri haiwezi kuombwa kwa ajili yake."
 
-#: admin/class-babilim-admin.php:933
+#: admin/class-babilim-admin.php:911
 msgid "Already installed."
 msgstr "Tayari imesakinishwa."
 
-#: admin/class-babilim-admin.php:933
+#: admin/class-babilim-admin.php:911
 msgid "Downloaded and installed."
 msgstr "Imepakuliwa na kusakinishwa."
 
-#: admin/class-babilim-admin.php:956
-#: admin/class-babilim-admin.php:1297
-#: admin/class-babilim-admin.php:1373
-#: admin/class-babilim-admin.php:1951
-#: admin/class-babilim-admin.php:2115
-#: includes/class-babilim-api-client.php:520
+#: admin/class-babilim-admin.php:934
+#: admin/class-babilim-admin.php:1275
+#: admin/class-babilim-admin.php:1353
+#: admin/class-babilim-admin.php:1954
+#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
 #: includes/class-babilim-site.php:705
@@ -82,140 +82,144 @@ msgstr "Imepakuliwa na kusakinishwa."
 msgid "Babilim has not been enabled for this site yet."
 msgstr "Babilim haijawashwa kwa tovuti hii bado."
 
-#: admin/class-babilim-admin.php:975
+#: admin/class-babilim-admin.php:953
 msgid "No build is available to download for this locale."
 msgstr "Hakuna toleo linalopatikana la kupakua kwa lugha hii."
 
-#: admin/class-babilim-admin.php:1030
+#: admin/class-babilim-admin.php:1008
 msgid "Rolled back to the previous build."
 msgstr "Imerudishwa kwenye toleo la awali."
 
-#: admin/class-babilim-admin.php:1089
+#: admin/class-babilim-admin.php:1067
 msgid "Rolled back and reported."
 msgstr "Imerudishwa nyuma na kuripotiwa."
 
 #. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1095
+#: admin/class-babilim-admin.php:1073
 #, php-format
 msgid "Rolled back, but the report could not be sent: %s"
 msgstr "Imerudishwa nyuma, lakini ripoti haikuweza kutumwa: %s"
 
-#: admin/class-babilim-admin.php:1119
+#: admin/class-babilim-admin.php:1097
 msgid "Removed."
 msgstr "Imeondolewa."
 
-#: admin/class-babilim-admin.php:1155
+#: admin/class-babilim-admin.php:1133
 msgid "Translation requested."
 msgstr "Tafsiri imeombwa."
 
-#: admin/class-babilim-admin.php:1177
+#: admin/class-babilim-admin.php:1155
 msgid "This component was already uploaded. Babilim is checking it now."
 msgstr "Kijenzi hiki kilishapakiwa. Babilim kinakikagua sasa."
 
-#: admin/class-babilim-admin.php:1217
+#: admin/class-babilim-admin.php:1195
 msgid "Upload cancelled."
 msgstr "Upakiaji umeghairiwa."
 
-#: admin/class-babilim-admin.php:1228
+#: admin/class-babilim-admin.php:1206
 msgid "Upload complete — translation requested."
 msgstr "Upakiaji umekamilika — tafsiri imeombwa."
 
-#: admin/class-babilim-admin.php:1306
+#: admin/class-babilim-admin.php:1284
 msgid "This component does not declare a version number, so a translation cannot be requested for it."
 msgstr "Kijenzi hiki hakitaji nambari ya toleo, kwa hivyo tafsiri haiwezi kuombwa kwa ajili yake."
 
 #. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1313
+#: admin/class-babilim-admin.php:1291
 #, php-format
 msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
 msgstr "Nambari ya toleo la kijenzi hiki ni ndefu kuliko herufi %d, jambo ambalo Babilim haiwezi kulishughulikia, kwa hivyo tafsiri haiwezi kuombwa kwa ajili yake."
 
-#: admin/class-babilim-admin.php:1319
+#: admin/class-babilim-admin.php:1297
 msgid "A translation cannot be requested for that locale on this site right now."
 msgstr "Tafsiri haiwezi kuombwa kwa lugha hiyo kwenye tovuti hii kwa sasa."
 
-#: admin/class-babilim-admin.php:1345
+#: admin/class-babilim-admin.php:1323
+#: admin/class-babilim-admin.php:3688
 msgid "Thank you. Your report was sent."
 msgstr "Asante. Ripoti yako imetumwa."
 
-#: admin/class-babilim-admin.php:1378
+#: admin/class-babilim-admin.php:1358
 msgid "This report does not name a valid plugin or theme and locale."
 msgstr "Ripoti hii haitaji programu-jalizi au mandhari halali na lugha."
 
-#: admin/class-babilim-admin.php:1382
+#: admin/class-babilim-admin.php:1365
 msgid "Please choose a category for this report."
 msgstr "Tafadhali chagua kategoria ya ripoti hii."
 
-#: admin/class-babilim-admin.php:1386
+#: admin/class-babilim-admin.php:1369
 msgid "This report is missing a valid build to report against."
 msgstr "Ripoti hii haina toleo halali la kuripotia."
 
-#: admin/class-babilim-admin.php:1389
+#: admin/class-babilim-admin.php:1372
 msgid "This build is not one this site currently knows about for this component/locale."
 msgstr "Toleo hili si moja ambalo tovuti hii inalifahamu kwa sasa kwa kijenzi/lugha hii."
 
 #. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1441
+#: admin/class-babilim-admin.php:1442
 #, php-format
 msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
 msgstr "Sehemu \"%1$s\" ni ndefu mno: ina herufi %2$d na kikomo ni %3$d. Hakuna kilichotumwa; tafadhali ifupishe na ujaribu tena."
 
-#: admin/class-babilim-admin.php:1466
+#: admin/class-babilim-admin.php:3666
 msgid "Original string"
 msgstr "Maandishi asili"
 
-#: admin/class-babilim-admin.php:1470
+#: admin/class-babilim-admin.php:3681
 msgid "String context"
 msgstr "Muktadha wa mfuatano wa maneno"
 
-#: admin/class-babilim-admin.php:1474
-#: admin/class-babilim-admin.php:4067
+#: admin/class-babilim-admin.php:1467
+#: admin/class-babilim-admin.php:3667
+#: admin/class-babilim-admin.php:4406
 msgid "Current translation"
 msgstr "Tafsiri ya sasa"
 
-#: admin/class-babilim-admin.php:1478
-#: admin/class-babilim-admin.php:4069
+#: admin/class-babilim-admin.php:1471
+#: admin/class-babilim-admin.php:3671
+#: admin/class-babilim-admin.php:4408
 msgid "Suggested translation"
 msgstr "Tafsiri inayopendekezwa"
 
-#: admin/class-babilim-admin.php:1482
-#: admin/class-babilim-admin.php:4071
+#: admin/class-babilim-admin.php:1475
+#: admin/class-babilim-admin.php:3672
+#: admin/class-babilim-admin.php:4410
 msgid "Note (optional)"
 msgstr "Maelezo (si lazima)"
 
-#: admin/class-babilim-admin.php:1486
-#: admin/class-babilim-admin.php:4073
+#: admin/class-babilim-admin.php:1479
+#: admin/class-babilim-admin.php:4412
 msgid "Where you saw this (optional)"
 msgstr "Ulipoona hili (si lazima)"
 
 #. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1549
+#: admin/class-babilim-admin.php:1542
 #, php-format
 msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
 msgstr "Usawazishaji wa Babilim umecheleweshwa kwa muda na huduma (kikomo cha kasi); utajaribu tena baada ya %s."
 
-#: admin/class-babilim-admin.php:1583
+#: admin/class-babilim-admin.php:1576
 msgid "That is not a valid WordPress locale code. Nothing was saved."
 msgstr "Hiyo si msimbo halali wa lugha wa WordPress. Hakuna kilichohifadhiwa."
 
-#: admin/class-babilim-admin.php:1616
+#: admin/class-babilim-admin.php:1619
 msgid "Settings saved."
 msgstr "Mipangilio imehifadhiwa."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1678
+#: admin/class-babilim-admin.php:1681
 #, php-format
 msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
 msgstr "Ikiwa hii imewashwa, kusanidua pia kunafuta utambulisho wa tovuti hii. Leseni ya kulipia iliyounganishwa na tovuti hii haiwezi kurejeshwa kiotomatiki baadaye; utalazimika kuwasiliana na Usaidizi wa Babilim kupitia %s ili kuipata tena."
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1694
+#: admin/class-babilim-admin.php:1697
 #, php-format
 msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
 msgstr "Babilim imewekwa kufuta utambulisho wa tovuti hii programu-jalizi itakapofutwa. Leseni ya kulipia iliyounganishwa na tovuti hii haingeweza kurejeshwa kiotomatiki; ungelazimika kuwasiliana na Usaidizi wa Babilim kupitia %s. Ili kuhifadhi utambulisho, bofya Ghairi, ondoa tiki kwenye \"Futa data yote ya Babilim wakati wa kusanidua\" katika Mipangilio ya Babilim, kisha uzime tena. Zima hata hivyo?"
 
 #. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1719
+#: admin/class-babilim-admin.php:1722
 #, php-format
 msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
@@ -223,90 +227,90 @@ msgstr[0] "Tovuti %1$d kwenye mtandao huu imewekwa kufuta utambulisho wake wa Ba
 msgstr[1] "Tovuti %1$d kwenye mtandao huu zimewekwa kufuta utambulisho wao wa Babilim programu-jalizi itakapofutwa. Leseni za kulipia zilizounganishwa na tovuti hizo haziwezi kurejeshwa kiotomatiki; ungelazimika kuwasiliana na Usaidizi wa Babilim kupitia %2$s. Ili kuhifadhi utambulisho, bofya Ghairi, ondoa tiki kwenye \"Futa data yote ya Babilim wakati wa kusanidua\" katika Mipangilio ya Babilim ya kila tovuti, kisha uzime tena. Zima hata hivyo?"
 
 #. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1738
+#: admin/class-babilim-admin.php:1741
 #, php-format
 msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgstr "Mtandao huu una tovuti nyingi mno kuzikagua moja baada ya nyingine, na baadhi yake huenda zimewekwa kufuta utambulisho wa Babilim programu-jalizi itakapofutwa. Leseni ya kulipia iliyounganishwa na tovuti kama hiyo haingeweza kurejeshwa kiotomatiki; ungelazimika kuwasiliana na Usaidizi wa Babilim kupitia %s. Ili kuhifadhi utambulisho, bofya Ghairi, ondoa tiki kwenye \"Futa data yote ya Babilim wakati wa kusanidua\" katika Mipangilio ya Babilim ya kila tovuti, kisha uzime tena. Zima hata hivyo?"
 
-#: admin/class-babilim-admin.php:1827
+#: admin/class-babilim-admin.php:1830
 msgid "Open Babilim settings"
 msgstr "Fungua mipangilio ya Babilim"
 
-#: admin/class-babilim-admin.php:1832
+#: admin/class-babilim-admin.php:1835
 msgid "Babilim could not verify this site, so nothing is downloaded or installed."
 msgstr "Babilim haikuweza kuthibitisha tovuti hii, kwa hivyo hakuna kinachopakuliwa wala kusakinishwa."
 
-#: admin/class-babilim-admin.php:1844
+#: admin/class-babilim-admin.php:1847
 msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
 msgstr "Huduma haikuweza kufikia tovuti yako. Huenda ngome ya moto, programu-jalizi ya usalama au sheria ya mwenyeji inazuia ombi; tafadhali ruhusu maombi kwenda /wp-json/babilim/v1/challenge."
 
-#: admin/class-babilim-admin.php:1846
+#: admin/class-babilim-admin.php:1849
 msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
 msgstr "Tovuti yako ilichukua muda mrefu mno kujibu. Tafadhali jaribu tena baadaye, na uhakikishe mwenyeji wako si polepole sana au amelemewa."
 
-#: admin/class-babilim-admin.php:1848
+#: admin/class-babilim-admin.php:1851
 msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
 msgstr "Tovuti yako ilijibu, lakini si kwa kilichotarajiwa. REST API huenda imebadilishwa na programu-jalizi nyingine, au sehemu hiyo ya mwisho huenda imehifadhiwa kwenye akiba; tafadhali ondoa /wp-json/babilim/v1/challenge kwenye uhifadhi wa akiba na ubadilishaji."
 
-#: admin/class-babilim-admin.php:1850
+#: admin/class-babilim-admin.php:1853
 msgid "Please check that your site can be reached from the internet, then try again."
 msgstr "Tafadhali hakikisha tovuti yako inaweza kufikiwa kutoka mtandaoni, kisha ujaribu tena."
 
-#: admin/class-babilim-admin.php:1873
+#: admin/class-babilim-admin.php:1876
 msgid "Re-verify"
 msgstr "Thibitisha upya"
 
 #. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1894
+#: admin/class-babilim-admin.php:1897
 #, php-format
 msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
 msgstr "Tovuti hii ni kubwa kuliko ukubwa unaokubaliwa na huduma katika usawazishaji mmoja, kwa hivyo baadhi ya vipengee viliachwa: vijenzi %1$d na lugha %2$d."
 
-#: admin/class-babilim-admin.php:1923
+#: admin/class-babilim-admin.php:1926
 msgid "This site is verified."
 msgstr "Tovuti hii imethibitishwa."
 
-#: admin/class-babilim-admin.php:1936
+#: admin/class-babilim-admin.php:1939
 msgid "Registration restarted."
 msgstr "Usajili umeanzishwa upya."
 
-#: admin/class-babilim-admin.php:1957
-#: admin/class-babilim-admin.php:2031
+#: admin/class-babilim-admin.php:1960
+#: admin/class-babilim-admin.php:2034
 msgid "Sync complete."
 msgstr "Usawazishaji umekamilika."
 
-#: admin/class-babilim-admin.php:1992
+#: admin/class-babilim-admin.php:1995
 msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
 msgstr "Babilim inawezesha na kukagua tovuti hii… Pakia upya ukurasa huu au subiri ukaguzi uliopangwa ukamilike."
 
 #. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:1997
+#: admin/class-babilim-admin.php:2000
 #, php-format
 msgid "Babilim could not finish enabling (%1$s): %2$s"
 msgstr "Babilim haikuweza kukamilisha kuwezesha (%1$s): %2$s"
 
-#: admin/class-babilim-admin.php:2002
+#: admin/class-babilim-admin.php:2005
 msgid "A host that serves only one PHP request at a time cannot complete this step."
 msgstr "Mwenyeji anayehudumia ombi moja tu la PHP kwa wakati mmoja hawezi kukamilisha hatua hii."
 
 #. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2023
+#: admin/class-babilim-admin.php:2026
 #, php-format
 msgid "Babilim is enabled: this site is verified and %d component was found."
 msgid_plural "Babilim is enabled: this site is verified and %d components were found."
 msgstr[0] "Babilim imewashwa: tovuti hii imethibitishwa na kijenzi %d kimepatikana."
 msgstr[1] "Babilim imewashwa: tovuti hii imethibitishwa na vijenzi %d vimepatikana."
 
-#: admin/class-babilim-admin.php:2107
+#: admin/class-babilim-admin.php:2111
 msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
 msgstr "Babilim imezimwa. Hakuna kitakachotumwa tena; tafsiri zilizosakinishwa tayari zinaendelea kufanya kazi."
 
-#: admin/class-babilim-admin.php:2129
+#: admin/class-babilim-admin.php:2243
 msgid "Supplementary translation index rebuilt."
 msgstr "Faharasa ya tafsiri ya ziada imejengwa upya."
 
 #. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2147
+#: admin/class-babilim-admin.php:2261
 #, php-format
 msgid "Sweep complete: %d file deleted."
 msgid_plural "Sweep complete: %d files deleted."
@@ -314,59 +318,55 @@ msgstr[0] "Usafishaji umekamilika: faili %d imefutwa."
 msgstr[1] "Usafishaji umekamilika: faili %d zimefutwa."
 
 #. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2179
+#: admin/class-babilim-admin.php:2293
 #, php-format
 msgid "Removed %d installed component."
 msgid_plural "Removed %d installed components."
 msgstr[0] "Kijenzi %d kilichosakinishwa kimeondolewa."
 msgstr[1] "Vijenzi %d vilivyosakinishwa vimeondolewa."
 
-#: admin/class-babilim-admin.php:2181
+#: admin/class-babilim-admin.php:2295
 msgid "Automatic installs are now off; turn them on again in the settings if you want them."
 msgstr "Usakinishaji wa kiotomatiki sasa umezimwa; uwashe tena kwenye mipangilio ukitaka."
 
-#: admin/class-babilim-admin.php:2502
+#: admin/class-babilim-admin.php:2616
 msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
 msgstr "Babilim hupata programu-jalizi na mandhari kwenye tovuti hii ambazo hazina tafsiri ya lugha yako na husakinisha moja kwa kila moja."
 
 #. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2510
+#: admin/class-babilim-admin.php:2624
 #, php-format
 msgid "Languages found on this site: %s."
 msgstr "Lugha zilizopatikana kwenye tovuti hii: %s."
 
-#: admin/class-babilim-admin.php:2515
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot)."
-msgstr "Tafsiri zinazopatikana zinaweza kusakinishwa kwa kubofya mara moja, na zile zinazokosekana zinaweza kuombwa. Baada ya hapo, tafsiri mpya na masasisho husakinishwa kiotomatiki (kwenye mpango wa bure, kwa programu-jalizi na mandhari zinazotumia nafasi ya bure tayari pekee)."
-
-#: admin/class-babilim-admin.php:2516
+#: admin/class-babilim-admin.php:2630
 msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
 msgstr "Mpango wa bure unashughulikia idadi ndogo ya programu-jalizi na mandhari; kikomo chako kamili kinaonyeshwa katika Mipangilio baada ya kuwasha Babilim."
 
-#: admin/class-babilim-admin.php:2517
+#: admin/class-babilim-admin.php:2631
 msgid "What is sent when you enable Babilim"
 msgstr "Kinachotumwa unapowasha Babilim"
 
-#: admin/class-babilim-admin.php:2521
+#: admin/class-babilim-admin.php:2635
 msgid "Enabling…"
 msgstr "Inawezesha…"
 
-#: admin/class-babilim-admin.php:2521
+#: admin/class-babilim-admin.php:2635
 msgid "Enable Babilim"
 msgstr "Washa Babilim"
 
-#: admin/class-babilim-admin.php:2522
+#: admin/class-babilim-admin.php:2636
 msgid "By clicking Enable, you agree to send the information listed above to Babilim."
 msgstr "Kwa kubofya Wezesha, unakubali kutuma taarifa zilizoorodheshwa hapo juu kwa Babilim."
 
-#: admin/class-babilim-admin.php:2556
-#: admin/class-babilim-admin.php:2604
-#: admin/class-babilim-admin.php:3953
+#: admin/class-babilim-admin.php:2670
+#: admin/class-babilim-admin.php:2718
+#: admin/class-babilim-admin.php:4313
 msgid "Check again now"
 msgstr "Angalia tena sasa"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2571
+#: admin/class-babilim-admin.php:2685
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
@@ -374,21 +374,21 @@ msgstr[0] "Babilim imesakinisha tafsiri %d kiotomatiki tangu ziara yako ya mwish
 msgstr[1] "Babilim imesakinisha tafsiri %d kiotomatiki tangu ziara yako ya mwisho."
 
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2597
+#: admin/class-babilim-admin.php:2711
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim inawezesha na kukagua tovuti hii… (jaribio la mwisho: %s)"
 
-#: admin/class-babilim-admin.php:2601
+#: admin/class-babilim-admin.php:2715
 msgid "Check again"
 msgstr "Angalia tena"
 
-#: admin/class-babilim-admin.php:2614
+#: admin/class-babilim-admin.php:2728
 msgid "No components synced yet."
 msgstr "Hakuna vijenzi vilivyosawazishwa bado."
 
 #. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2635
+#: admin/class-babilim-admin.php:2749
 #, php-format
 msgid "%d succeeded"
 msgid_plural "%d succeeded"
@@ -396,7 +396,7 @@ msgstr[0] "%d imefanikiwa"
 msgstr[1] "%d imefanikiwa"
 
 #. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2639
+#: admin/class-babilim-admin.php:2753
 #, php-format
 msgid "%d skipped"
 msgid_plural "%d skipped"
@@ -404,7 +404,7 @@ msgstr[0] "%d imerukwa"
 msgstr[1] "%d imerukwa"
 
 #. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2643
+#: admin/class-babilim-admin.php:2757
 #, php-format
 msgid "%d failed"
 msgid_plural "%d failed"
@@ -412,7 +412,7 @@ msgstr[0] "%d imeshindwa"
 msgstr[1] "%d imeshindwa"
 
 #. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2647
+#: admin/class-babilim-admin.php:2761
 #, php-format
 msgid "%d not yet tried"
 msgid_plural "%d not yet tried"
@@ -420,645 +420,632 @@ msgstr[0] "%d bado haijajaribiwa"
 msgstr[1] "%d bado haijajaribiwa"
 
 #. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2652
+#: admin/class-babilim-admin.php:2766
 #, php-format
 msgid "%1$s nothing to do."
 msgstr "%1$s hakuna cha kufanya."
 
 #. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2655
+#: admin/class-babilim-admin.php:2769
 #, php-format
 msgid "%1$s %2$s."
 msgstr "%1$s %2$s."
 
-#: admin/class-babilim-admin.php:2667
+#: admin/class-babilim-admin.php:2781
 msgid "Bulk download:"
 msgstr "Upakuaji wa pamoja:"
 
-#: admin/class-babilim-admin.php:2669
+#: admin/class-babilim-admin.php:2783
 msgid "Bulk update:"
 msgstr "Sasisho la pamoja:"
 
-#: admin/class-babilim-admin.php:2671
+#: admin/class-babilim-admin.php:2785
 msgid "Bulk request:"
 msgstr "Ombi la pamoja:"
 
-#: admin/class-babilim-admin.php:2684
+#: admin/class-babilim-admin.php:2798
 msgid "per day"
 msgstr "kwa siku"
 
-#: admin/class-babilim-admin.php:2698
+#: admin/class-babilim-admin.php:2812
 msgid "Wrong meaning"
 msgstr "Maana si sahihi"
 
-#: admin/class-babilim-admin.php:2700
+#: admin/class-babilim-admin.php:2814
 msgid "Wrong term"
 msgstr "Neno la istilahi si sahihi"
 
-#: admin/class-babilim-admin.php:2702
+#: admin/class-babilim-admin.php:2816
 msgid "Broken placeholder"
 msgstr "Kishikilia nafasi kimeharibika"
 
-#: admin/class-babilim-admin.php:2704
+#: admin/class-babilim-admin.php:2818
 msgid "Wrong for this context"
 msgstr "Si sahihi kwa muktadha huu"
 
-#: admin/class-babilim-admin.php:2706
+#: admin/class-babilim-admin.php:2820
 msgid "Wrong plural form"
 msgstr "Umbo la wingi si sahihi"
 
-#: admin/class-babilim-admin.php:2708
+#: admin/class-babilim-admin.php:2822
 msgid "Negation reversed"
 msgstr "Ukanushi umegeuzwa"
 
-#: admin/class-babilim-admin.php:2710
+#: admin/class-babilim-admin.php:2824
 msgid "Translation does not load"
 msgstr "Tafsiri haipakiwi"
 
 #. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2713
+#: admin/class-babilim-admin.php:2827
 msgctxt "problem report category"
 msgid "Other"
 msgstr "Nyingine"
 
 #. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2750
+#: admin/class-babilim-admin.php:2864
 #, php-format
 msgid "%1$s (%2$s): %3$s"
 msgstr "%1$s (%2$s): %3$s"
 
-#: admin/class-babilim-admin.php:2785
+#: admin/class-babilim-admin.php:2899
 msgid "Continuing…"
 msgstr "Inaendelea…"
 
 #. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2788
+#: admin/class-babilim-admin.php:2902
 #, php-format
 msgid "Continue next batch (%d left)"
 msgstr "Endelea na kundi linalofuata (zimebaki %d)"
 
-#: admin/class-babilim-admin.php:2838
+#: admin/class-babilim-admin.php:2952
 msgid "Search components"
 msgstr "Tafuta vijenzi"
 
 #. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2845
+#: admin/class-babilim-admin.php:2959
 #, php-format
 msgid "These are the languages this site uses. You can change them in %s."
 msgstr "Hizi ndizo lugha zinazotumiwa na tovuti hii. Unaweza kuzibadilisha katika %s."
 
-#: admin/class-babilim-admin.php:2864
+#: admin/class-babilim-admin.php:2978
 msgid "Upload this component?"
 msgstr "Pakia kijenzi hiki?"
 
-#: admin/class-babilim-admin.php:2866
+#: admin/class-babilim-admin.php:2980
 #: includes/class-babilim-upload.php:96
 msgid "There is no upload waiting for confirmation."
 msgstr "Hakuna upakiaji unaosubiri uthibitisho."
 
-#: admin/class-babilim-admin.php:2866
-#: admin/class-babilim-admin.php:2893
+#: admin/class-babilim-admin.php:2980
+#: admin/class-babilim-admin.php:3007
+#: admin/class-babilim-admin.php:3685
 msgid "Back"
 msgstr "Rudi"
 
-#: admin/class-babilim-admin.php:2870
+#: admin/class-babilim-admin.php:2984
 msgid "To translate this component, Babilim needs its source."
 msgstr "Ili kutafsiri kijenzi hiki, Babilim inahitaji chanzo chake."
 
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2872
-#, php-format
-msgid "The entire plugin or theme directory of %1$s (version %2$s) will be uploaded to Babilim."
-msgstr "Saraka nzima ya programu-jalizi au mandhari ya %1$s (toleo %2$s) itapakiwa kwenye Babilim."
-
-#: admin/class-babilim-admin.php:2873
-msgid "If that directory contains keys, logs or customer data, they will be uploaded too. The service removes common sensitive files (configuration, environment, database dumps, logs, keys) but cannot guarantee it finds everything."
-msgstr "Ikiwa saraka hiyo ina funguo, kumbukumbu au data ya wateja, vitapakiwa pia. Huduma huondoa faili nyeti za kawaida (usanidi, mazingira, nakala za hifadhidata, kumbukumbu, funguo) lakini haiwezi kuhakikisha kuwa inapata kila kitu."
-
-#: admin/class-babilim-admin.php:2874
+#: admin/class-babilim-admin.php:2988
 msgid "The upload is kept until you ask Babilim to delete it."
 msgstr "Upakiaji huhifadhiwa hadi utakapoomba Babilim iufute."
 
-#: admin/class-babilim-admin.php:2875
+#: admin/class-babilim-admin.php:2989
 msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
 msgstr "Huhifadhiwa na mtoa huduma wa upangishaji wa huduma hiyo na kuchakatwa na miundo ya AI ili kutoa tafsiri."
 
-#: admin/class-babilim-admin.php:2876
+#: admin/class-babilim-admin.php:2990
 msgid "The original text and the translations made from it will be provided to other sites that install the same version."
 msgstr "Maandishi asili na tafsiri zilizotengenezwa kutoka kwayo zitatolewa kwa tovuti nyingine zinazosakinisha toleo lilelile."
 
-#: admin/class-babilim-admin.php:2877
+#: admin/class-babilim-admin.php:2991
 msgid "By continuing you confirm that you have the right to upload this component."
 msgstr "Kwa kuendelea unathibitisha kwamba una haki ya kupakia kijenzi hiki."
 
-#: admin/class-babilim-admin.php:2878
+#: admin/class-babilim-admin.php:2992
 msgid "Upload and request"
 msgstr "Pakia na uombe"
 
-#: admin/class-babilim-admin.php:2878
+#: admin/class-babilim-admin.php:2992
 msgid "Uploading…"
 msgstr "Inapakia…"
 
-#: admin/class-babilim-admin.php:2879
-#: admin/class-babilim-admin.php:2898
-#: admin/class-babilim-admin.php:2935
-#: admin/class-babilim-admin.php:2992
+#: admin/class-babilim-admin.php:2993
+#: admin/class-babilim-admin.php:3012
+#: admin/class-babilim-admin.php:3049
+#: admin/class-babilim-admin.php:3106
 msgid "Cancel"
 msgstr "Ghairi"
 
-#: admin/class-babilim-admin.php:2891
+#: admin/class-babilim-admin.php:3005
 msgid "Uploading"
 msgstr "Inapakia"
 
-#: admin/class-babilim-admin.php:2893
-#: includes/class-babilim-upload.php:138
+#: admin/class-babilim-admin.php:3007
+#: includes/class-babilim-upload.php:145
 msgid "There is no upload in progress."
 msgstr "Hakuna upakiaji unaoendelea."
 
 #. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:2896
+#: admin/class-babilim-admin.php:3010
 #, php-format
 msgid "Uploading part %1$d of %2$d…"
 msgstr "Inapakia sehemu ya %1$d kati ya %2$d…"
 
-#: admin/class-babilim-admin.php:2897
+#: admin/class-babilim-admin.php:3011
 msgid "Continue"
 msgstr "Endelea"
 
-#: admin/class-babilim-admin.php:2937
+#: admin/class-babilim-admin.php:3051
 msgid "Confirm"
 msgstr "Thibitisha"
 
-#: admin/class-babilim-admin.php:2940
-#: admin/class-babilim-admin.php:3004
+#: admin/class-babilim-admin.php:3054
+#: admin/class-babilim-admin.php:3118
 #: admin/class-babilim-translations-table.php:691
 msgid "Remove"
 msgstr "Ondoa"
 
-#: admin/class-babilim-admin.php:2944
-#: admin/class-babilim-admin.php:3003
+#: admin/class-babilim-admin.php:3058
+#: admin/class-babilim-admin.php:3117
 #: admin/class-babilim-translations-table.php:690
 msgid "Roll back"
 msgstr "Rudisha nyuma"
 
-#: admin/class-babilim-admin.php:2947
+#: admin/class-babilim-admin.php:3061
 msgid "Nothing to confirm."
 msgstr "Hakuna cha kuthibitisha."
 
-#: admin/class-babilim-admin.php:2993
+#: admin/class-babilim-admin.php:3107
 msgid "Choose a language"
 msgstr "Chagua lugha"
 
-#: admin/class-babilim-admin.php:3005
+#: admin/class-babilim-admin.php:3119
 #: admin/class-babilim-translations-table.php:692
 msgid "Roll back and report"
 msgstr "Rudisha nyuma na uripoti"
 
-#: admin/class-babilim-admin.php:3006
-#: admin/class-babilim-admin.php:4028
+#: admin/class-babilim-admin.php:3120
+#: admin/class-babilim-admin.php:4374
 #: admin/class-babilim-translations-table.php:693
 msgid "Report a problem"
 msgstr "Ripoti tatizo"
 
-#: admin/class-babilim-admin.php:3010
+#: admin/class-babilim-admin.php:3124
 msgid "Nothing to choose."
 msgstr "Hakuna cha kuchagua."
 
 #. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3016
+#: admin/class-babilim-admin.php:3130
 #, php-format
 msgid "%1$s: %2$s. Choose the language."
 msgstr "%1$s: %2$s. Chagua lugha."
 
-#: admin/class-babilim-admin.php:3162
+#: admin/class-babilim-admin.php:3276
 msgid "Supplementary translations"
 msgstr "Tafsiri za ziada"
 
-#: admin/class-babilim-admin.php:3163
+#: admin/class-babilim-admin.php:3277
 msgid "Each component's own contribution to each locale's shared default-domain supplement."
 msgstr "Mchango wa kila kijenzi kwenye nyongeza ya default domain inayoshirikiwa ya kila lugha."
 
-#: admin/class-babilim-admin.php:3165
+#: admin/class-babilim-admin.php:3279
+#: admin/class-babilim-admin.php:3677
 #: admin/class-babilim-translations-table.php:399
 msgid "Component"
 msgstr "Kijenzi"
 
-#: admin/class-babilim-admin.php:3166
-#: admin/class-babilim-admin.php:3855
+#: admin/class-babilim-admin.php:3280
+#: admin/class-babilim-admin.php:3678
+#: admin/class-babilim-admin.php:4215
 msgid "Language"
 msgstr "Lugha"
 
-#: admin/class-babilim-admin.php:3167
+#: admin/class-babilim-admin.php:3281
 msgid "Included in index"
 msgstr "Imejumuishwa kwenye faharasa"
 
-#: admin/class-babilim-admin.php:3168
+#: admin/class-babilim-admin.php:3282
 msgid "Entries"
 msgstr "Ingizo"
 
-#: admin/class-babilim-admin.php:3169
-#: admin/class-babilim-admin.php:3859
+#: admin/class-babilim-admin.php:3283
+#: admin/class-babilim-admin.php:4219
 msgid "Conflicting keys"
 msgstr "Funguo zinazogongana"
 
-#: admin/class-babilim-admin.php:3172
+#: admin/class-babilim-admin.php:3286
 msgid "Yes"
 msgstr "Ndiyo"
 
-#: admin/class-babilim-admin.php:3189
+#: admin/class-babilim-admin.php:3303
 msgid "No — component inactive"
 msgstr "Hapana — kijenzi hakitumiki"
 
-#: admin/class-babilim-admin.php:3191
+#: admin/class-babilim-admin.php:3305
 msgid "No — installed version differs from the active one"
 msgstr "Hapana — toleo lililosakinishwa ni tofauti na lile linalotumika"
 
-#: admin/class-babilim-admin.php:3193
+#: admin/class-babilim-admin.php:3307
 msgid "No — component removed"
 msgstr "Hapana — kijenzi kimeondolewa"
 
-#: admin/class-babilim-admin.php:3195
+#: admin/class-babilim-admin.php:3309
 msgid "No"
 msgstr "Hapana"
 
-#: admin/class-babilim-admin.php:3217
+#: admin/class-babilim-admin.php:3331
 msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
 msgstr "Ni msimamizi wa mtandao pekee anayeweza kufanya hivi, kwa sababu hubadilisha faili za tafsiri zinazoshirikiwa na kila tovuti kwenye mtandao huu."
 
-#: admin/class-babilim-admin.php:3233
+#: admin/class-babilim-admin.php:3347
 msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
 msgstr "Babilim haikuweza kukamilisha uthibitishaji wa tovuti hii (huduma haikuweza kuifikia tena). Usajili umesitishwa."
 
-#: admin/class-babilim-admin.php:3234
+#: admin/class-babilim-admin.php:3348
 msgid "This site already has an active registration that can no longer be recovered automatically."
 msgstr "Tovuti hii tayari ina usajili unaotumika ambao hauwezi tena kurejeshwa kiotomatiki."
 
-#: admin/class-babilim-admin.php:3241
+#: admin/class-babilim-admin.php:3355
 msgid "Restart registration"
 msgstr "Anzisha upya usajili"
 
-#: admin/class-babilim-admin.php:3268
+#: admin/class-babilim-admin.php:3382
 msgid "Babilim settings"
 msgstr "Mipangilio ya Babilim"
 
-#: admin/class-babilim-admin.php:3275
+#: admin/class-babilim-admin.php:3389
 msgid "General"
 msgstr "Jumla"
 
-#: admin/class-babilim-admin.php:3276
+#: admin/class-babilim-admin.php:3390
 msgid "Advanced"
 msgstr "Mipangilio ya hali ya juu"
 
-#: admin/class-babilim-admin.php:3301
+#: admin/class-babilim-admin.php:3415
 msgid "Languages"
 msgstr "Lugha"
 
-#: admin/class-babilim-admin.php:3303
+#: admin/class-babilim-admin.php:3417
 msgid "Automatic installs"
 msgstr "Usakinishaji otomatiki"
 
-#: admin/class-babilim-admin.php:3305
+#: admin/class-babilim-admin.php:3419
 msgid "Install available translations automatically"
 msgstr "Sakinisha tafsiri zilizopo kiotomatiki"
 
-#: admin/class-babilim-admin.php:3306
-msgid "On the free plan, only components that already use one of your free slots are installed automatically, so no new slot is taken."
-msgstr "Kwenye mpango wa bure, ni vijenzi vinavyotumia nafasi huru zako pekee ndivyo husakinishwa kiotomatiki, kwa hivyo hakuna nafasi mpya inayotumika."
-
-#: admin/class-babilim-admin.php:3307
+#: admin/class-babilim-admin.php:3421
 msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
 msgstr "Tovuti hii ni sehemu ya mtandao wa tovuti nyingi, ambao hausakinishi tafsiri mpya kiotomatiki. Tafsiri zilizosakinishwa tayari bado husasishwa."
 
-#: admin/class-babilim-admin.php:3310
+#: admin/class-babilim-admin.php:3429
 msgid "Custom overrides"
 msgstr "Mbadala maalum"
 
-#: admin/class-babilim-admin.php:3312
+#: admin/class-babilim-admin.php:3431
 msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
 msgstr "Weka mbadala zangu za tafsiri wakati wa kufuta kila kitu au kusanidua programu-jalizi hii."
 
 #. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3315
+#: admin/class-babilim-admin.php:3434
 #, php-format
 msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
 msgstr "Faili za tafsiri unazoweka kwenye %s daima hupewa kipaumbele kuliko za Babilim. Huhifadhiwa isipokuwa ukiondoa tiki hapa."
 
-#: admin/class-babilim-admin.php:3319
+#: admin/class-babilim-admin.php:3438
 msgid "Uninstall"
 msgstr "Sanidua"
 
-#: admin/class-babilim-admin.php:3321
+#: admin/class-babilim-admin.php:3440
 msgid "Delete all Babilim data on uninstall"
 msgstr "Futa data yote ya Babilim wakati wa kusanidua"
 
-#: admin/class-babilim-admin.php:3322
+#: admin/class-babilim-admin.php:3441
 msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
 msgstr "Imezimwa kwa chaguo-msingi: kufuta programu-jalizi huhifadhi utambulisho wa tovuti hii, ili usakinishaji upya uutumie tena."
 
-#: admin/class-babilim-admin.php:3325
+#: admin/class-babilim-admin.php:3444
 msgid "Account"
 msgstr "Akaunti"
 
-#: admin/class-babilim-admin.php:3328
+#: admin/class-babilim-admin.php:3447
 msgid "Save changes"
 msgstr "Hifadhi mabadiliko"
 
-#: admin/class-babilim-admin.php:3331
-#: admin/class-babilim-admin.php:3336
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:3455
 msgid "Disable Babilim"
 msgstr "Zima Babilim"
 
-#: admin/class-babilim-admin.php:3332
+#: admin/class-babilim-admin.php:3451
 msgid "Installed translations are kept, but no further checks or downloads will run."
 msgstr "Tafsiri zilizosakinishwa huhifadhiwa, lakini hakutakuwa na ukaguzi wala upakuaji zaidi."
 
-#: admin/class-babilim-admin.php:3336
+#: admin/class-babilim-admin.php:3455
 msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
 msgstr "Zima Babilim? Tafsiri zilizosakinishwa zitabaki, lakini hakuna ukaguzi wala upakuaji utakaoendelea."
 
-#: admin/class-babilim-admin.php:3392
-#: admin/class-babilim-admin.php:3626
-#: admin/class-babilim-admin.php:3666
+#: admin/class-babilim-admin.php:3511
+#: admin/class-babilim-admin.php:3986
+#: admin/class-babilim-admin.php:4026
 #: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:320
+#: includes/class-babilim-sync-installer.php:319
 msgid "This site is not registered with Babilim yet."
 msgstr "Tovuti hii bado haijasajiliwa na Babilim."
 
-#: admin/class-babilim-admin.php:3400
+#: admin/class-babilim-admin.php:3519
 msgid "This site is already licensed. Reload the page."
 msgstr "Tovuti hii tayari ina leseni. Pakia upya ukurasa."
 
-#: admin/class-babilim-admin.php:3402
-#: admin/class-babilim-admin.php:3413
+#: admin/class-babilim-admin.php:3521
+#: admin/class-babilim-admin.php:3532
 msgid "Checkout is not available for this site right now."
 msgstr "Malipo hayapatikani kwa tovuti hii kwa sasa."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3405
+#: admin/class-babilim-admin.php:3524
 #, php-format
 msgid "Could not start checkout: %s"
 msgstr "Imeshindwa kuanzisha malipo: %s"
 
-#: admin/class-babilim-admin.php:3488
+#: admin/class-babilim-admin.php:3848
 msgid "Babilim is not enabled."
 msgstr "Babilim haijawashwa."
 
-#: admin/class-babilim-admin.php:3491
+#: admin/class-babilim-admin.php:3851
 msgid "Not registered yet"
 msgstr "Bado haijasajiliwa"
 
-#: admin/class-babilim-admin.php:3493
+#: admin/class-babilim-admin.php:3853
 msgid "Not verified"
 msgstr "Haijathibitishwa"
 
-#: admin/class-babilim-admin.php:3495
+#: admin/class-babilim-admin.php:3855
 msgid "Verified"
 msgstr "Imethibitishwa"
 
-#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3863
 msgid "Status"
 msgstr "Hali"
 
-#: admin/class-babilim-admin.php:3508
+#: admin/class-babilim-admin.php:3868
 msgid "Licensed"
 msgstr "Ina leseni"
 
-#: admin/class-babilim-admin.php:3510
+#: admin/class-babilim-admin.php:3870
 msgid "Partner"
 msgstr "Mshirika"
 
-#: admin/class-babilim-admin.php:3512
+#: admin/class-babilim-admin.php:3872
 msgid "Free"
 msgstr "Bila malipo"
 
-#: admin/class-babilim-admin.php:3516
+#: admin/class-babilim-admin.php:3876
 msgid "License"
 msgstr "Leseni"
 
-#: admin/class-babilim-admin.php:3519
+#: admin/class-babilim-admin.php:3879
 #: admin/class-babilim-translations-table.php:865
 msgid "Upgrade this site"
 msgstr "Boresha tovuti hii"
 
 #. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3523
+#: admin/class-babilim-admin.php:3883
 #, php-format
 msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
 msgstr "Ununuzi wa mara moja kwa tovuti hii: %1$s %2$s. Unajumuisha masasisho yote ya tafsiri yajayo. Malipo yanashughulikiwa na Paddle kwenye kichupo kipya."
 
-#: admin/class-babilim-admin.php:3580
+#: admin/class-babilim-admin.php:3940
 msgid "This issues a new restore code and the previous one stops working. Continue?"
 msgstr "Hii inatoa msimbo mpya wa kurejesha na ule wa awali utaacha kufanya kazi. Endelea?"
 
-#: admin/class-babilim-admin.php:3580
+#: admin/class-babilim-admin.php:3940
 msgid "Show a new restore code"
 msgstr "Onyesha msimbo mpya wa kurejesha"
 
-#: admin/class-babilim-admin.php:3582
+#: admin/class-babilim-admin.php:3942
 msgid "rc_…"
 msgstr "rc_…"
 
-#: admin/class-babilim-admin.php:3582
+#: admin/class-babilim-admin.php:3942
 msgid "Restore code"
 msgstr "Msimbo wa kurejesha"
 
-#: admin/class-babilim-admin.php:3583
+#: admin/class-babilim-admin.php:3943
 msgid "Restore purchase"
 msgstr "Rejesha ununuzi"
 
-#: admin/class-babilim-admin.php:3584
+#: admin/class-babilim-admin.php:3944
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "Ulishanunua leseni ya kikoa hiki? Weka msimbo wa kurejesha uliopokea wakati wa malipo."
 
-#: admin/class-babilim-admin.php:3620
+#: admin/class-babilim-admin.php:3980
 msgid "That does not look like a restore code."
 msgstr "Hii haionekani kuwa msimbo wa kurejesha."
 
-#: admin/class-babilim-admin.php:3634
+#: admin/class-babilim-admin.php:3994
 msgid "This restore code was not recognised for this site."
 msgstr "Msimbo huu wa kurejesha haukutambuliwa kwa tovuti hii."
 
-#: admin/class-babilim-admin.php:3636
+#: admin/class-babilim-admin.php:3996
 msgid "Too many attempts. Try again tomorrow."
 msgstr "Majaribio mengi mno. Jaribu tena kesho."
 
-#: admin/class-babilim-admin.php:3638
+#: admin/class-babilim-admin.php:3998
 msgid "This site must be verified first."
 msgstr "Tovuti hii lazima ithibitishwe kwanza."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3641
+#: admin/class-babilim-admin.php:4001
 #, php-format
 msgid "Could not restore the purchase: %s"
 msgstr "Imeshindwa kurejesha ununuzi: %s"
 
-#: admin/class-babilim-admin.php:3651
+#: admin/class-babilim-admin.php:4011
 msgid "Purchase restored. This site is now licensed."
 msgstr "Ununuzi umerejeshwa. Tovuti hii sasa ina leseni."
 
-#: admin/class-babilim-admin.php:3674
+#: admin/class-babilim-admin.php:4034
 msgid "This site has no purchase to show a code for."
 msgstr "Tovuti hii haina ununuzi wa kuonyeshwa msimbo."
 
 #. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3677
+#: admin/class-babilim-admin.php:4037
 #, php-format
 msgid "Could not show a new restore code: %s"
 msgstr "Imeshindwa kuonyesha msimbo mpya wa kurejesha: %s"
 
 #. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:3688
+#: admin/class-babilim-admin.php:4048
 #, php-format
 msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
 msgstr "Msimbo wako mpya wa kurejesha: %s. Uhifadhi mahali salama — msimbo wa awali haufanyi kazi tena."
 
-#: admin/class-babilim-admin.php:3703
+#: admin/class-babilim-admin.php:4063
 msgid "What is sent when Babilim checks this site"
 msgstr "Kinachotumwa Babilim inapokagua tovuti hii"
 
-#: admin/class-babilim-admin.php:3732
+#: admin/class-babilim-admin.php:4092
 msgid "(detected)"
 msgstr "(imegunduliwa)"
 
-#: admin/class-babilim-admin.php:3735
+#: admin/class-babilim-admin.php:4095
 msgid "No language is managed yet."
 msgstr "Hakuna lugha inayosimamiwa bado."
 
-#: admin/class-babilim-admin.php:3737
+#: admin/class-babilim-admin.php:4097
 msgid "Babilim adds translations for every language checked here."
 msgstr "Babilim huongeza tafsiri za kila lugha iliyotiwa alama hapa."
 
-#: admin/class-babilim-admin.php:3742
+#: admin/class-babilim-admin.php:4102
 msgid "Add another language"
 msgstr "Ongeza lugha nyingine"
 
-#: admin/class-babilim-admin.php:3743
+#: admin/class-babilim-admin.php:4103
 msgid "Choose a language…"
 msgstr "Chagua lugha…"
 
-#: admin/class-babilim-admin.php:3749
+#: admin/class-babilim-admin.php:4109
 msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
 msgstr "Imeshindwa kupakia orodha kamili ya lugha za WordPress.org kutoka kwenye huduma, kwa hivyo hakuna lugha nyingine inayoweza kuongezwa sasa."
 
-#: admin/class-babilim-admin.php:3807
+#: admin/class-babilim-admin.php:4167
 msgid "Theme"
 msgstr "Mandhari"
 
-#: admin/class-babilim-admin.php:3807
+#: admin/class-babilim-admin.php:4167
 msgid "Plugin"
 msgstr "Programu-jalizi"
 
-#: admin/class-babilim-admin.php:3814
+#: admin/class-babilim-admin.php:4174
 msgid "Free quota"
 msgstr "Kiwango cha bure"
 
 #. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:3821
+#: admin/class-babilim-admin.php:4181
 #, php-format
 msgid "Downloads: %1$d/%2$d (%3$s)"
 msgstr "Upakuaji: %1$d/%2$d (%3$s)"
 
-#: admin/class-babilim-admin.php:3853
+#: admin/class-babilim-admin.php:4213
 msgid "Supplementary translation index"
 msgstr "Faharasa ya tafsiri za ziada"
 
-#: admin/class-babilim-admin.php:3856
+#: admin/class-babilim-admin.php:4216
 msgid "Built"
 msgstr "Imejengwa"
 
-#: admin/class-babilim-admin.php:3857
+#: admin/class-babilim-admin.php:4217
 msgid "Included"
 msgstr "Imejumuishwa"
 
-#: admin/class-babilim-admin.php:3858
+#: admin/class-babilim-admin.php:4218
 msgid "Excluded"
 msgstr "Imeondolewa"
 
-#: admin/class-babilim-admin.php:3860
+#: admin/class-babilim-admin.php:4220
 msgid "Already in WordPress core"
 msgstr "Tayari ipo kwenye kiini cha WordPress"
 
-#: admin/class-babilim-admin.php:3879
+#: admin/class-babilim-admin.php:4239
 msgid "Supplementary translation maintenance"
 msgstr "Matengenezo ya tafsiri za ziada"
 
-#: admin/class-babilim-admin.php:3882
+#: admin/class-babilim-admin.php:4242
 msgid "Maintenance status is not available right now."
 msgstr "Hali ya matengenezo haipatikani kwa sasa."
 
 #. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:3890
+#: admin/class-babilim-admin.php:4250
 #, php-format
 msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
 msgstr "Usafishaji ulisitishwa tarehe %1$s: %2$s. Hakuna kilichofutwa."
 
 #. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:4264
 #, php-format
 msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
 msgstr "Usafishaji wa mwisho tarehe %1$s: %2$d zimewekwa alama mpya, faili %3$d zimefutwa, rekodi %4$d zimeondolewa."
 
-#: admin/class-babilim-admin.php:3911
+#: admin/class-babilim-admin.php:4271
 msgid "No cleanup has run yet."
 msgstr "Hakuna usafishaji uliofanyika bado."
 
 #. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:3922
+#: admin/class-babilim-admin.php:4282
 #, php-format
 msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
 msgstr "Uandishi wa faharasa ya tafsiri uligongana na ombi lingine tarehe %1$s (%2$s) na haukutekelezwa; toleo la hivi karibuni zaidi lilihifadhiwa."
 
 #. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:3935
+#: admin/class-babilim-admin.php:4295
 #, php-format
 msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
 msgstr "Uandishi wa faharasa ya tafsiri tarehe %1$s (%2$s) haukukamilika na haukutekelezwa (%3$s)."
 
-#: admin/class-babilim-admin.php:3951
+#: admin/class-babilim-admin.php:4311
 msgid "Maintenance"
 msgstr "Matengenezo"
 
-#: admin/class-babilim-admin.php:3962
+#: admin/class-babilim-admin.php:4322
 msgid "Rebuild index now"
 msgstr "Jenga upya faharasa sasa"
 
-#: admin/class-babilim-admin.php:3968
+#: admin/class-babilim-admin.php:4328
 msgid "Sweep now"
 msgstr "Safisha sasa"
 
-#: admin/class-babilim-admin.php:3984
+#: admin/class-babilim-admin.php:4344
 msgid "Danger zone"
 msgstr "Eneo la hatari"
 
-#: admin/class-babilim-admin.php:3992
+#: admin/class-babilim-admin.php:4352
 msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
 msgstr "Huondoa kila faili la lugha ambalo Babilim limesakinisha kwa kila programu-jalizi na mandhari kwenye tovuti hii."
 
-#: admin/class-babilim-admin.php:3993
+#: admin/class-babilim-admin.php:4353
 msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
 msgstr "Ungependa kuondoa kila kitu ambacho Babilim ilisakinisha? Hii inafuta kila faili la lugha lililosakinishwa na Babilim kwa kila programu-jalizi na mandhari kwenye tovuti hii."
 
-#: admin/class-babilim-admin.php:3993
+#: admin/class-babilim-admin.php:4353
 msgid "Remove everything Babilim installed"
 msgstr "Ondoa kila kitu ambacho Babilim ilisakinisha"
 
-#: admin/class-babilim-admin.php:4032
-msgid "This string is too long to be sent as a report, so no report form is offered for it."
-msgstr "Maandishi haya ni marefu mno kutumwa kama ripoti, kwa hivyo hakuna fomu ya ripoti inayotolewa kwa ajili yake."
-
-#: admin/class-babilim-admin.php:4059
+#: admin/class-babilim-admin.php:3670
+#: admin/class-babilim-admin.php:4398
 msgid "Category"
 msgstr "Kategoria"
 
-#: admin/class-babilim-admin.php:4061
+#: admin/class-babilim-admin.php:4400
 msgid "Choose a category…"
 msgstr "Chagua kategoria…"
 
-#: admin/class-babilim-admin.php:4076
+#: admin/class-babilim-admin.php:4415
 msgid "Roll back and send report"
 msgstr "Rudisha nyuma na utume ripoti"
 
-#: admin/class-babilim-admin.php:4076
+#: admin/class-babilim-admin.php:3684
+#: admin/class-babilim-admin.php:4415
 msgid "Send report"
 msgstr "Tuma ripoti"
 
@@ -1405,7 +1392,7 @@ msgid "Could not write the downloaded package to disk."
 msgstr "Imeshindwa kuandika kifurushi kilichopakuliwa kwenye diski."
 
 #. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:593
+#: includes/class-babilim-api-client.php:605
 #, php-format
 msgid "Unexpected HTTP %d response."
 msgstr "Jibu lisilotarajiwa la HTTP %d."
@@ -1445,10 +1432,6 @@ msgstr "Ufunguo wa umma wa usakinishaji wa tovuti hii, unaotumika kuthibitisha k
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "Kila programu-jalizi/mandhari iliyosakinishwa: slug yake, toleo, maandishi ya domain (text domain), kama imeorodheshwa wp.org, locale zake zilizojumuishwa, na locale ambazo tayari umesakinisha tafsiri ya Babilim kwa ajili yazo."
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component's entire directory, as a zip."
-msgstr "Ni pale tu unapothibitisha upakiaji wa programu-jalizi au mandhari isiyo kwenye WordPress.org: saraka nzima ya kijenzi hicho, kama zip."
 
 #: includes/class-babilim-consent.php:116
 msgid "(generic codes and coordinates only)"
@@ -1828,41 +1811,37 @@ msgstr "imeshindwa kuchanganua _manifest.json: %s"
 msgid "_manifest.json has an unexpected structure"
 msgstr "_manifest.json ina muundo usiotarajiwa"
 
-#: includes/class-babilim-packager.php:84
-#: includes/class-babilim-packager.php:93
-#: includes/class-babilim-packager.php:105
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
 msgid "Could not create the package archive."
 msgstr "Imeshindwa kuunda faili ya kifurushi."
 
-#: includes/class-babilim-packager.php:88
-msgid "No writable temporary directory is available for packaging."
-msgstr "Hakuna saraka ya muda inayoweza kuandikwa kwa ajili ya kufungasha."
-
-#: includes/class-babilim-packager.php:99
+#: includes/class-babilim-packager.php:125
 msgid "A file in the component could not be read, so it was not packaged."
 msgstr "Faili moja katika kijenzi haikuweza kusomwa, kwa hivyo haikufungashwa."
 
-#: includes/class-babilim-packager.php:139
+#: includes/class-babilim-packager.php:180
 msgid "Only plugins and themes can be packaged."
 msgstr "Programu-jalizi na mandhari pekee ndizo zinazoweza kufungashwa."
 
-#: includes/class-babilim-packager.php:144
-#: includes/class-babilim-packager.php:153
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
 msgid "The component's main file was not found."
 msgstr "Faili kuu ya kijenzi haikupatikana."
 
-#: includes/class-babilim-packager.php:149
+#: includes/class-babilim-packager.php:190
 msgid "The component is not inside the plugins or themes directory."
 msgstr "Kijenzi hakipo ndani ya saraka ya programu-jalizi au mandhari."
 
 #: includes/class-babilim-site.php:348
 #: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1270
+#: includes/class-babilim-site.php:1271
 msgid "Babilim ran out of time for this step and will continue on the next check."
 msgstr "Babilim imeishiwa na muda kwa hatua hii na itaendelea katika ukaguzi unaofuata."
 
 #: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:316
+#: includes/class-babilim-sync-installer.php:315
 msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
 msgstr "Babilim haikuweza kuthibitisha tovuti hii, kwa hivyo hakuna kitakachopakuliwa wala kusakinishwa hadi uthibitishaji ufanikiwe."
 
@@ -1911,19 +1890,19 @@ msgstr "Huduma iliomba tovuti hii isubiri kabla ya kusawazisha tena."
 msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
 msgstr "Tovuti hii ina vijenzi %1$d katika lugha %2$d, ambavyo vinahitaji makundi %3$d ya ukaguzi; Babilim inaweza kushughulikia upeo wa %4$d kwa kila uendeshaji. Punguza lugha zinazosimamiwa katika Mipangilio au zima programu-jalizi na mandhari zisizotumika, kisha bonyeza Angalia tena sasa."
 
-#: includes/class-babilim-site.php:986
+#: includes/class-babilim-site.php:987
 msgid "Babilim could not finish checking this site."
 msgstr "Babilim haikuweza kumaliza kukagua tovuti hii."
 
-#: includes/class-babilim-site.php:1481
+#: includes/class-babilim-site.php:1483
 msgid "This site's address is too long for Babilim to register."
 msgstr "Anwani ya tovuti hii ni ndefu mno kwa Babilim kuisajili."
 
-#: includes/class-babilim-site.php:1484
+#: includes/class-babilim-site.php:1486
 msgid "This site's locale code is not one Babilim can register."
 msgstr "Msimbo wa lugha wa tovuti hii si ule ambao Babilim inaweza kusajili."
 
-#: includes/class-babilim-sync-installer.php:330
+#: includes/class-babilim-sync-installer.php:329
 msgid "The download response was missing a usable location."
 msgstr "Jibu la upakuaji halikuwa na eneo linaloweza kutumika."
 
@@ -1932,15 +1911,15 @@ msgstr "Jibu la upakuaji halikuwa na eneo linaloweza kutumika."
 msgid "The service's upload offer was incomplete."
 msgstr "Ofa ya upakiaji ya huduma haikukamilika."
 
-#: includes/class-babilim-upload.php:109
+#: includes/class-babilim-upload.php:112
 msgid "This component is larger than the service accepts, so it cannot be uploaded."
 msgstr "Kijenzi hiki ni kikubwa kuliko huduma inavyokubali, kwa hivyo hakiwezi kupakiwa."
 
-#: includes/class-babilim-upload.php:153
+#: includes/class-babilim-upload.php:163
 msgid "The packaged component could not be read."
 msgstr "Kijenzi kilichofungashwa hakikuweza kusomwa."
 
-#: includes/class-babilim-upload.php:264
+#: includes/class-babilim-upload.php:293
 msgid "A part of the upload kept failing, so the upload was cancelled."
 msgstr "Sehemu ya upakiaji iliendelea kushindwa, kwa hivyo upakiaji ulighairiwa."
 
@@ -1953,3 +1932,165 @@ msgstr "Imeshindwa kusoma: %s"
 #: admin/class-babilim-cell.php:146
 msgid "Original language"
 msgstr "Lugha asili"
+
+#: admin/class-babilim-admin.php:2156
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "Ripoti hii itachapishwa hadharani kwenye GitHub na inaweza kuhifadhiwa na wahusika wengine."
+
+#: admin/class-babilim-admin.php:2157
+msgid "Share this report"
+msgstr "Shiriki ripoti hii"
+
+#: admin/class-babilim-admin.php:2158
+msgid "Always share"
+msgstr "Shiriki kila wakati"
+
+#: admin/class-babilim-admin.php:2159
+msgid "Don't share"
+msgstr "Usishiriki"
+
+#: admin/class-babilim-admin.php:3424
+msgid "Error reports"
+msgstr "Ripoti za hitilafu"
+
+#: admin/class-babilim-admin.php:3426
+msgid "Share error reports"
+msgstr "Shiriki ripoti za hitilafu"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2136
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "Ripoti %d inasubiri. \"Shiriki kila wakati\" na \"Usishiriki\" zinatumika kwa zote."
+msgstr[1] "Ripoti %d zinasubiri. \"Shiriki kila wakati\" na \"Usishiriki\" zinatumika kwa zote."
+
+#: admin/class-babilim-admin.php:3621
+#: admin/class-babilim-admin.php:3657
+msgid "Report translation"
+msgstr "Ripoti tafsiri"
+
+#: admin/class-babilim-admin.php:3658
+msgid "Search the installed translations"
+msgstr "Tafuta katika tafsiri zilizosakinishwa"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:3660
+msgid "Search"
+msgstr "Tafuta"
+
+#: admin/class-babilim-admin.php:3661
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim haijasakinisha tafsiri yoyote kwa lugha hii."
+
+#: admin/class-babilim-admin.php:3662
+msgid "No installed translation matches."
+msgstr "Hakuna tafsiri iliyosakinishwa inayolingana."
+
+#: admin/class-babilim-admin.php:3665
+msgid "The search could not be completed."
+msgstr "Utafutaji haukuweza kukamilika."
+
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:3669
+msgid "Choose"
+msgstr "Chagua"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:3674
+msgid "Preview"
+msgstr "Hakiki"
+
+#: admin/class-babilim-admin.php:3682
+msgid "These fields will be sent:"
+msgstr "Sehemu hizi zitatumwa:"
+
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:3687
+msgid "Close"
+msgstr "Funga"
+
+#: admin/class-babilim-admin.php:3689
+msgid "This string can't be reported from this site."
+msgstr "Mfuatano huu hauwezi kuripotiwa kutoka tovuti hii."
+
+#: admin/class-babilim-admin.php:3690
+msgid "Too many reports today. Try again tomorrow."
+msgstr "Ripoti nyingi mno leo. Jaribu tena kesho."
+
+#: admin/class-babilim-admin.php:3691
+msgid "The report could not be sent."
+msgstr "Ripoti haikuweza kutumwa."
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:3676
+msgid "Type"
+msgstr "Aina"
+
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:3680
+msgid "Build"
+msgstr "Toleo la kifurushi"
+
+#: admin/class-babilim-admin.php:2131
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim imekumbwa na hitilafu. Shiriki ripoti ya hitilafu?"
+
+#: admin/class-babilim-admin.php:3427
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "Kitu kikishindwa ndani ya Babilim, tuma ripoti ya hitilafu kwa Babilim service ili ichapishwe kama tatizo la umma kwenye GitHub. Ripoti hutumwa kana kwamba inatoka kwenye tovuti hii, kwa uthibitishaji uleule kama kila ombi lingine kwa Babilim service. Huduma huchapisha tu msimbo wa hitilafu na matoleo kama tatizo la umma kwenye GitHub; tatizo la umma halina anwani ya tovuti, maudhui wala njia za faili. Imezimwa kwa chaguo-msingi."
+
+#: admin/class-babilim-admin.php:3683
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "Ripoti yako huchakatwa kiotomatiki na mifumo ya AI na inaweza kuboresha tafsiri hii kwa tovuti nyingine."
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:3664
+msgid "Type at least 2 characters to search."
+msgstr "Andika angalau herufi 2 ili kutafuta."
+
+#: admin/class-babilim-admin.php:2629
+msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
+msgstr "Tafsiri zinazopatikana zinaweza kusakinishwa kwa mbofyo mmoja, na zile zinazokosekana zinaweza kuombwa. Baada ya hapo, tafsiri mpya na masasisho husakinishwa kiotomatiki. Huduma ya Babilim huamua ni tafsiri zipi zinazopatikana zinaweza kusakinishwa kiotomatiki. Kwenye mpango wa bure, kwa kawaida huruhusu tu programu jalizi na mandhari ambazo tayari zina tafsiri ya Babilim iliyosakinishwa kwenye tovuti hii, ili usakinishaji wa kiotomatiki usichukue nafasi mpya ya bure."
+
+#: admin/class-babilim-admin.php:3420
+msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
+msgstr "Huduma ya Babilim huamua ni tafsiri zipi zinazopatikana zinaweza kusakinishwa kiotomatiki. Kwenye mpango wa bure, kwa kawaida huruhusu tu programu jalizi na mandhari ambazo tayari zina tafsiri ya Babilim iliyosakinishwa kwenye tovuti hii, ili usakinishaji wa kiotomatiki usichukue nafasi mpya ya bure."
+
+#: admin/class-babilim-admin.php:1387
+msgid "This report does not name an installed string."
+msgstr "Ripoti hii haitaji mfuatano wa maandishi uliosakinishwa."
+
+#: admin/class-babilim-admin.php:1395
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "Mfuatano huu wa maandishi haumo miongoni mwa tafsiri zilizosakinishwa kwenye tovuti hii. Tafuta tena na uuchague kutoka kwenye orodha."
+
+#: admin/class-babilim-admin.php:1398
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "Tafsiri hii ilisasishwa tangu ulipotafuta. Tafuta tena na uchague mfuatano wa maandishi kutoka kwenye orodha mpya."
+
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:2986
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim itapakia faili hizi kutoka %1$s (toleo %2$s): kila faili ya .php na .js, kila faili ya block.json, na readme.txt, readme.md, style.css na theme.json katika folda kuu yake. Hutumiwa kupata maandishi yanayohitaji kutafsiriwa na kutambua programu jalizi au mandhari."
+
+#: admin/class-babilim-admin.php:2987
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "Faili zenye majina au viendelezi vingine hazijajumuishwa, wala folda za uploads, cache, logs, backup, data, vendor, node_modules na languages, faili zilizofichwa, au faili ambazo majina yake yanalingana na siri za kawaida (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Faili za msimbo bado zinaweza kuwa na maandishi au data ambazo hungependa kushiriki; zikague ikiwa huna uhakika. Huduma huondoa aina hizo hizo za faili tena inapozipokea."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "Ni pale tu unapothibitisha upakiaji wa programu jalizi au mandhari ambayo haipo kwenye WordPress.org: kila faili ya .php na .js, kila faili ya block.json, na readme.txt, readme.md, style.css na theme.json katika folda kuu ya kijenzi hicho, kama zip, baada ya faili zinazolingana na siri za kawaida kuachwa."
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "Kijenzi hakina faili zinazoweza kupakiwa."
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim haikuweza kuthibitisha folda ya muda nje ya tovuti, kwa hiyo kijenzi hakikufungashwa na hakuna kilichopakiwa. Bainisha BABILIM_TEMP_DIR katika wp-config.php kama folda inayoweza kuandikwa nje ya mzizi wa wavuti (kwa mfano folda iliyo kando ya, si ndani ya, saraka ya umma ya tovuti yako), au mwombe mwenyeji wako akupe moja."
+
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "Babilim ilisasishwa wakati upakiaji huu ulikuwa unasubiri. Kifurushi cha zamani kilitupwa; tafadhali thibitisha upakiaji tena."

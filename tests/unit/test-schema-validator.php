@@ -277,6 +277,32 @@ final class Test_Schema_Validator extends TestCase {
 		Babilim_Schema_Validator::assert_known_keywords( array( 'type' => 'string', 'foo' => 1 ) );
 	}
 
+	/**
+	 * 1.10.0 `if`/`then`: the `then` branch applies only when `if` matches
+	 * (here: `auto_install` present forces status babilim_available).
+	 */
+	public function test_if_then_constrains_only_when_the_if_branch_matches(): void {
+		$schema = array(
+			'type'  => 'object',
+			'if'    => array( 'required' => array( 'flag' ) ),
+			'then'  => array( 'properties' => array( 'status' => array( 'const' => 'ok' ) ) ),
+		);
+
+		$this->assertSame( array(), Babilim_Schema_Validator::validate( json_decode( '{"status":"other"}' ), $schema ) );
+		$this->assertSame( array(), Babilim_Schema_Validator::validate( json_decode( '{"flag":true,"status":"ok"}' ), $schema ) );
+		$this->assertNotEmpty( Babilim_Schema_Validator::validate( json_decode( '{"flag":true,"status":"other"}' ), $schema ) );
+	}
+
+	public function test_inventory_schema_rejects_auto_install_on_a_non_available_status(): void {
+		$entry_schema = $this->schema( 'inventory.response.schema.json' )['properties']['components']['items']['properties']['locales']['additionalProperties'];
+		$entry        = $this->exampleResponseBody( 'inventory.auto-install.json' )->components[0]->locales->fr_FR;
+		$this->assertTrue( $entry->auto_install );
+		$this->assertSame( array(), Babilim_Schema_Validator::validate( $entry, $entry_schema ) );
+
+		$entry->status = 'wporg';
+		$this->assertNotEmpty( Babilim_Schema_Validator::validate( $entry, $entry_schema ) );
+	}
+
 	public function test_an_unrecognized_format_value_throws(): void {
 		$this->expectException( \RuntimeException::class );
 		Babilim_Schema_Validator::validate( json_decode( '"x"' ), array( 'type' => 'string', 'format' => 'email' ) );

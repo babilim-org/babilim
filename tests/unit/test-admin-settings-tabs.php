@@ -219,7 +219,7 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$x = $this->xpath( $this->page() );
 		$this->assertStringContainsString( 'Automatic installs', $x->document->textContent );
 		$this->assertTrue( $this->el( $x, '//input[@type="checkbox"][@name="auto_install"]' )->hasAttribute( 'checked' ), 'a missing option reads as on' );
-		$this->assertStringContainsString( 'no new slot is taken', $x->document->textContent );
+		$this->assertStringContainsString( 'The Babilim service decides which available translations may be installed automatically', $x->document->textContent );
 
 		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE' ) ) );
 		$this->admin()->dispatch_babilim_save_settings();

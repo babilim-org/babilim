@@ -972,6 +972,7 @@ final class Babilim_Site {
 				$merged = self::merge_inventory_responses( $merged, $response );
 			}
 			$this->state->drain_client_events( $events );
+			$this->send_error_reports( $token, $deadline );
 
 			$merged['fetched_at'] = gmdate( 'c' );
 			$merged['omitted']    = array(
@@ -1367,6 +1368,7 @@ final class Babilim_Site {
 			// was recorded once, when it was degraded.
 			if ( ! $ok && empty( $record['degraded_at'] ) ) {
 				$this->state->record_client_event( 'integrity_failed', $kind, $slug, $locale );
+				Babilim_Error_Reporter::for_site()->capture( 'verify_failed', 'download', 'site.sync' );
 			}
 
 			// `verified_at` is a required field of every entry this
@@ -1499,6 +1501,58 @@ final class Babilim_Site {
 			'locales'        => $locales,
 			'install_pub'    => base64_encode( $pub ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- transport encoding of a key or signature, not code.
 		);
+	}
+
+	/**
+	 * Sends the error events the owner agreed to share, once, at the end of
+	 * a successful sync. Whatever happens here never changes the sync
+	 * result, never records a new error event and is never retried within
+	 * the request: an event that is not accepted just counts one attempt.
+	 *
+	 * @param string|null          $token    Site token.
+	 * @param Babilim_Deadline    $deadline This run's time budget.
+	 */
+	private function send_error_reports( ?string $token, Babilim_Deadline $deadline ): void {
+		try {
+			$reporter = Babilim_Error_Reporter::for_site();
+			$pending  = $reporter->pending();
+			if ( array() === $pending ) {
+				return;
+			}
+			$events = array();
+			$unsent = array();
+			foreach ( $pending as $event ) {
+				$out = $reporter->preview( $event );
+				// A field over the contract's limit would get the whole
+				// report refused every time, so that event is discarded.
+				if ( ! Babilim_Contract_Limits::fits( $out['error_code'], Babilim_Contract_Limits::ERROR_CODE )
+					|| ! Babilim_Contract_Limits::fits( $out['action'], Babilim_Contract_Limits::ERROR_ACTION )
+					|| ! Babilim_Contract_Limits::fits( $out['origin_id'], Babilim_Contract_Limits::ERROR_ORIGIN )
+				) {
+					$unsent[] = $out['event_id'];
+					continue;
+				}
+				$events[] = $event;
+			}
+			if ( array() !== $unsent ) {
+				$reporter->mark_sent( $unsent ); // Removes them from the queue; they can never be sent.
+			}
+			if ( array() === $events || ! $deadline->can_start( self::STEP_MIN_SECONDS ) ) {
+				return;
+			}
+			$ids      = array_column( $events, 'event_id' );
+			$response = $this->client( $token )->error_reports(
+				$reporter->request_body( $events ),
+				$deadline->step( self::STEP_TIMEOUT_INVENTORY )
+			);
+			if ( is_wp_error( $response ) ) {
+				$reporter->mark_failed( $ids );
+			} else {
+				$reporter->mark_sent( $ids );
+			}
+		} catch ( \Throwable $e ) {
+			unset( $e ); // Reporting must never break the sync.
+		}
 	}
 
 	/**

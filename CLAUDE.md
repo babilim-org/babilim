@@ -46,12 +46,12 @@ task on:
   opened with `fopen()` because `flock()` needs a native handle, and it
   never holds any content.
   The second exception is source packaging: `Babilim_Packager` (and only
-  it) writes one zip plus a deny-all `.htaccess` and empty `index.php` into
-  a private staging directory it creates under the system temp directory
-  (or WordPress's temp directory when the system one is inside the site),
-  removes it when the upload ends, and sweeps leftovers older than 24 hours
-  daily. Nothing else may write there, and nothing but a zip is ever
-  written.
+  it) writes one zip into a private staging directory it creates under the
+  system temp directory (only when `DOCUMENT_ROOT` resolves unmodified and
+  the folder lies outside it, `ABSPATH` and `WP_CONTENT_DIR`) or under
+  `BABILIM_TEMP_DIR`, and removes it when the upload ends. A leftover from
+  an interrupted upload is left to the host's temp housekeeping. Nothing
+  else may write there, and nothing but a zip is ever written.
   The third exception is `Babilim_Wp_Fs::atomic_rename()`: when
   WP_Filesystem runs in direct mode it moves a file inside
   `WP_LANG_DIR/babilim/` with PHP's native `rename()`, because

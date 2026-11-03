@@ -331,6 +331,7 @@ final class Babilim_Loader {
 			}
 		} catch ( \Throwable $e ) {
 			self::log_error( $e );
+			self::report_failure( 'loader.translation_file' );
 		}
 		return $file;
 	}
@@ -451,6 +452,7 @@ final class Babilim_Loader {
 			return is_string( $translations ) ? wp_json_encode( $decoded ) : $decoded;
 		} catch ( \Throwable $e ) {
 			self::log_error( $e );
+			self::report_failure( 'loader.script_translations' );
 		}
 		return $translations;
 	}
@@ -620,6 +622,19 @@ final class Babilim_Loader {
 	private static function probe_is_readable( string $path ): bool {
 		++self::$fs_probe_count;
 		return is_readable( $path );
+	}
+
+	/**
+	 * Records a load failure for the error report queue; never throws.
+	 *
+	 * @param string $origin_id Catalog origin id.
+	 */
+	private static function report_failure( string $origin_id ): void {
+		try {
+			Babilim_Error_Reporter::for_site()->capture( 'load_failed', 'load', $origin_id );
+		} catch ( \Throwable $e ) {
+			unset( $e ); // Reporting must never break a page load.
+		}
 	}
 
 	/**

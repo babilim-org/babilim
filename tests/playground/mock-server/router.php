@@ -103,7 +103,64 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/([^/]+)/verify$#', (st
 		$json_reply( 403, array( 'error' => array( 'code' => 'verification_required', 'message' => 'The service could not reach this site.', 'hint' => 'Allow the challenge endpoint.', 'reason' => 'callback_unreachable' ) ) );
 		return;
 	}
-	$json_reply( 200, array( 'site_token' => 'tok_pg_' . count( $state['registered'] ), 'verified' => true, 'license' => array( 'kind' => 'free', 'status' => 'active' ), 'quota' => new stdClass() ) );
+	$token             = 'tok_pg_' . count( $state['registered'] );
+	$state['tokens'][] = $token; // The only bearer values /v1/feedback and /v1/error-reports accept.
+	$write_state( $state );
+	$json_reply( 200, array( 'site_token' => $token, 'verified' => true, 'license' => array( 'kind' => 'free', 'status' => 'active' ), 'quota' => new stdClass() ) );
+	return;
+}
+
+// -- Feedback and error reports. Every request is recorded (the raw body,
+// the path, whether its bearer token was one this mock issued, the status it
+// got) in the state file -- read back through /_control/state -- and, when
+// BABILIM_MOCK_LOG names a file, appended there as one JSON line. The token
+// itself is never recorded, only the verdict. `POST /_mock/feedback-script`
+// queues HTTP statuses (e.g. [429, 422]) that the next /v1/feedback requests
+// answer with before going back to the normal 201.
+if ( 'POST' === $method && ( '/v1/feedback' === $path || '/v1/error-reports' === $path ) ) {
+	$raw       = (string) file_get_contents( 'php://input' );
+	$body      = json_decode( $raw, true );
+	$header    = (string) ( $_SERVER['HTTP_AUTHORIZATION'] ?? '' );
+	$state     = $read_state();
+	$auth      = 'missing';
+	if ( '' !== $header ) {
+		$auth = ( 1 === preg_match( '/^Bearer (\S+)$/', $header, $bearer ) && in_array( $bearer[1], (array) ( $state['tokens'] ?? array() ), true ) ) ? 'ok' : 'bad';
+	}
+	$status = 0;
+	$reply  = array();
+	if ( 'ok' !== $auth ) {
+		$status = 401;
+		$reply  = array( 'error' => array( 'code' => 'unauthorized', 'message' => 'Missing or invalid site token.', 'hint' => 'Re-register the site or rotate the token from the Babilim settings screen.' ) );
+	} elseif ( ! is_array( $body ) ) {
+		$status = 400;
+		$reply  = array( 'error' => array( 'code' => 'invalid_request', 'message' => 'The body is not a JSON object.', 'hint' => '' ) );
+	} elseif ( '/v1/feedback' === $path ) {
+		$script = is_array( $state['feedback_script'] ?? null ) ? $state['feedback_script'] : array();
+		$step   = array_shift( $script );
+		$state['feedback_script'] = $script;
+		if ( 429 === (int) $step ) {
+			$status = 429;
+			header( 'Retry-After: 37' );
+			$reply = array( 'error' => array( 'code' => 'rate_limited', 'message' => 'Too many requests.', 'hint' => '' ) );
+		} elseif ( 422 === (int) $step ) {
+			$status = 422;
+			$reply  = array( 'error' => array( 'code' => 'unprocessable', 'message' => 'This build does not belong to this site.', 'hint' => '' ) );
+		} else {
+			$status = 201;
+			$reply  = array( 'feedback_id' => 'fb_' . bin2hex( random_bytes( 6 ) ) );
+		}
+	} else {
+		$status = 202;
+		$reply  = array( 'accepted' => count( (array) ( $body['events'] ?? array() ) ), 'ignored' => 0 );
+	}
+	$entry                = array( 'path' => $path, 'auth' => $auth, 'status' => $status, 'at' => gmdate( 'c' ), 'raw' => $raw );
+	$state['received'][]  = $entry;
+	$write_state( $state );
+	$log_file = getenv( 'BABILIM_MOCK_LOG' );
+	if ( false !== $log_file && '' !== $log_file ) {
+		file_put_contents( $log_file, json_encode( $entry ) . "\n", FILE_APPEND );
+	}
+	$json_reply( $status, $reply );
 	return;
 }
 
@@ -128,6 +185,7 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/[^/]+/inventory$#', (s
 	}
 	$locales    = is_array( $body ) && is_array( $body['locales'] ?? null ) ? $body['locales'] : array();
 	$components = array();
+	$updates    = array();
 	$profile    = (string) ( $state['profile'] ?? '' );
 	foreach ( is_array( $body ) && is_array( $body['components'] ?? null ) ? $body['components'] : array() as $component ) {
 		if ( 'bulk' === $profile && 0 === strpos( (string) ( $component['slug'] ?? '' ), 'bulk-' ) ) {
@@ -138,7 +196,8 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/[^/]+/inventory$#', (s
 				'slug'    => $slug,
 				'locales' => (object) array(
 					'de_DE' => array(
-						'status'   => 'babilim_available',
+						'status'       => 'babilim_available',
+						'auto_install' => true,
 						'build_id' => 'bd_' . substr( md5( $slug . 'de_DE' ), 0, 12 ),
 						'build_no' => 1,
 						'built_at' => '2026-09-20T08:00:00Z',
@@ -193,6 +252,18 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/[^/]+/inventory$#', (s
 			);
 		}
 		$components[] = array( 'kind' => (string) ( $component['kind'] ?? 'plugin' ), 'slug' => (string) ( $component['slug'] ?? '' ), 'locales' => (object) $entries );
+		if ( 'errors' === $profile && 'errors-demo' === (string) ( $component['slug'] ?? '' ) && array() !== $locales ) {
+			// The errors profile: errors-demo always lists one pending update
+			// whose build the download endpoint refuses (see `fail_builds`), so
+			// the plugin's install step fails on every run.
+			$updates[] = array(
+				'kind'     => 'plugin',
+				'slug'     => 'errors-demo',
+				'locale'   => (string) reset( $locales ),
+				'build_id' => (string) ( $state['update_build'] ?? 'bd_0badc0de0bad' ),
+				'build_no' => 2,
+			);
+		}
 	}
 	$state                    = $read_state();
 	$state['inventory_log'][] = array( 'components' => count( $components ), 'ms' => (int) round( ( microtime( true ) - $started ) * 1000 ) );
@@ -201,7 +272,7 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/[^/]+/inventory$#', (s
 		200,
 		array(
 			'components' => $components,
-			'updates'    => array(),
+			'updates'    => $updates,
 			'license'    => array( 'kind' => 'free', 'status' => 'active' ),
 			'quota'      => new stdClass(),
 			'features'   => new stdClass(),
@@ -245,9 +316,40 @@ if ( 'POST' === $method && '/_mock/reset' === $path ) {
 			'sites'         => array(),
 			'script'        => array(),
 			'inventory_log' => array(),
+			'tokens'        => array(),
+			'received'      => array(),
+			'feedback_script' => array(),
 		)
 	);
+	$reset_log = getenv( 'BABILIM_MOCK_LOG' );
+	if ( false !== $reset_log && '' !== $reset_log ) {
+		file_put_contents( $reset_log, json_encode( array( 'event' => 'reset', 'at' => gmdate( 'c' ) ) ) . "\n", FILE_APPEND );
+	}
 	$json_reply( 200, array( 'ok' => true ) );
+	return;
+}
+// Changes a few settings in the middle of a run without clearing anything:
+// `profile`, `update_build` (the build id the errors profile lists as an
+// update) and `fail_builds`.
+if ( 'POST' === $method && '/_mock/set' === $path ) {
+	$opts  = json_decode( (string) file_get_contents( 'php://input' ), true );
+	$opts  = is_array( $opts ) ? $opts : array();
+	$state = $read_state();
+	foreach ( array( 'profile', 'update_build', 'fail_builds' ) as $key ) {
+		if ( array_key_exists( $key, $opts ) ) {
+			$state[ $key ] = $opts[ $key ];
+		}
+	}
+	$write_state( $state );
+	$json_reply( 200, array( 'ok' => true ) );
+	return;
+}
+if ( 'POST' === $method && '/_mock/feedback-script' === $path ) {
+	$steps = json_decode( (string) file_get_contents( 'php://input' ), true );
+	$state = $read_state();
+	$state['feedback_script'] = array_merge( $state['feedback_script'] ?? array(), is_array( $steps ) ? array_values( $steps ) : array() );
+	$write_state( $state );
+	$json_reply( 200, array( 'queued' => count( $state['feedback_script'] ) ) );
 	return;
 }
 if ( 'POST' === $method && '/_mock/script' === $path ) {

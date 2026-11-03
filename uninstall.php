@@ -114,6 +114,9 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		// -- Babilim_State (last-synced state + client-event ring buffer) --
 		delete_option( 'babilim_state' );
 		delete_option( 'babilim_client_events' );
+		delete_option( 'babilim_share_errors' );
+		delete_option( 'babilim_error_awaiting' );
+		delete_option( 'babilim_error_queue' );
 		// The remembered plugin main file -> wp.org slug map: derived data, always removed.
 		delete_option( 'babilim_plugin_slugs' );
 
@@ -131,6 +134,7 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		}
 		delete_option( 'babilim_upload_pending' );
 		delete_option( 'babilim_upload_done' );
+		delete_option( 'babilim_version' );
 
 		// -- Babilim_Manifest (cross-request write lock) -- short-TTL, but
 		// still an option this plugin creates, so it is cleaned up the same

@@ -109,7 +109,7 @@ final class Babilim_Consent {
 			array(
 				'field'       => 'source package',
 				'value'       => '',
-				'description' => __( 'Only when you confirm an upload for a plugin or theme that is not on WordPress.org: that component\'s entire directory, as a zip.', 'babilim' ),
+				'description' => __( 'Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component\'s main folder, as a zip, after files that match common secrets are left out.', 'babilim' ),
 			),
 			array(
 				'field'       => 'client_events',

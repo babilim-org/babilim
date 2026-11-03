@@ -127,7 +127,7 @@ pot-check:
 # STALE (+0/-0)): make l10n L10N_SRC=languages
 L10N_LOCALES ?= languages/LOCALES
 # Allowed empty entries per locale (under 4% of the pot); read by l10n-check.
-L10N_MAX_UNTRANSLATED ?= 15
+L10N_MAX_UNTRANSLATED ?= 0
 export L10N_MAX_UNTRANSLATED
 
 .PHONY: l10n

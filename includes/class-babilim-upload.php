@@ -96,6 +96,9 @@ final class Babilim_Upload {
 			return Babilim_Result::error( 'no_upload', __( 'There is no upload waiting for confirmation.', 'babilim' ) );
 		}
 		if ( isset( $p['zip'] ) ) {
+			if ( ! $this->sealed( $p ) ) {
+				return $this->policy_changed( $p );
+			}
 			return Babilim_Result::ok( array( 'parts' => $p['parts'] ) ); // Already packed (a double submit).
 		}
 		$packed = $this->packager->pack( $p );
@@ -111,13 +114,17 @@ final class Babilim_Upload {
 		$p = array_merge(
 			$p,
 			array(
-				'zip'        => (string) $packed->get( 'zip' ),
-				'dir'        => (string) $packed->get( 'dir' ),
-				'size'       => $size,
-				'parts'      => $parts,
-				'next'       => 1,
-				'attempts'   => 0,
-				'not_before' => 0,
+				'zip'            => (string) $packed->get( 'zip' ),
+				'dir'            => (string) $packed->get( 'dir' ),
+				'size'           => $size,
+				'parts'          => $parts,
+				'next'           => 1,
+				'attempts'       => 0,
+				'not_before'     => 0,
+				// The seal: written only here, after a successful pack().
+				'package_policy' => (int) $packed->get( 'policy' ),
+				'package_sha256' => (string) $packed->get( 'sha256' ),
+				'staging_base'   => (string) dirname( (string) $packed->get( 'dir' ) ),
 			)
 		);
 		self::save( $p );
@@ -137,6 +144,9 @@ final class Babilim_Upload {
 		if ( null === $p || ! isset( $p['zip'] ) ) {
 			return Babilim_Result::error( 'no_upload', __( 'There is no upload in progress.', 'babilim' ) );
 		}
+		if ( ! $this->sealed( $p ) ) {
+			return $this->policy_changed( $p );
+		}
 		if ( time() < (int) $p['not_before'] ) {
 			return $this->progress( $p, false );
 		}
@@ -148,9 +158,9 @@ final class Babilim_Upload {
 		if ( (int) $p['next'] > (int) $p['parts'] ) {
 			return $this->complete( $p );
 		}
-		$bytes = $this->read_part( (string) $p['zip'], (int) $p['next'], (int) $p['part_bytes'] );
+		$bytes = $this->read_part( (string) $p['zip'], (int) $p['next'], (int) $p['part_bytes'], (string) ( $p['staging_base'] ?? '' ) );
 		if ( null === $bytes ) {
-			return $this->fail( $p, 'packager_read_failed', __( 'The packaged component could not be read.', 'babilim' ) );
+			return $this->fail( $p, 'packager_read_failed', __( 'The packaged component could not be read.', 'babilim' ), 'upload.part' );
 		}
 		$out = $this->api->upload_part( (string) $p['upload_id'], (int) $p['next'], $bytes, self::PART_TIMEOUT );
 		if ( is_wp_error( $out ) ) {
@@ -162,6 +172,25 @@ final class Babilim_Upload {
 		return $this->progress( $p, false );
 	}
 
+	/**
+	 * Whether the package on disk is the one the current packager produced
+	 * and recorded: same policy version, same bytes.
+	 *
+	 * @param array<string,mixed> $p
+	 */
+	private function sealed( array $p ): bool {
+		return Babilim_Packager::POLICY === (int) ( $p['package_policy'] ?? 0 )
+			&& is_string( $p['package_sha256'] ?? null )
+			&& is_string( $p['zip'] ?? null )
+			&& is_readable( $p['zip'] )
+			&& hash_file( 'sha256', $p['zip'] ) === $p['package_sha256'];
+	}
+
+	/** @param array<string,mixed> $p */
+	private function policy_changed( array $p ): Babilim_Result {
+		return $this->fail( $p, 'upload_policy_changed', __( 'Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again.', 'babilim' ) );
+	}
+
 	/** @param array<string,mixed> $p */
 	private function complete( array $p ): Babilim_Result {
 		$done = $this->api->complete_upload( (string) $p['upload_id'], (int) $p['parts'], (int) $p['size'], self::PART_TIMEOUT );
@@ -171,7 +200,7 @@ final class Babilim_Upload {
 				// a few times. `restarts` is never reset by a part succeeding.
 				$p['restarts'] = (int) ( $p['restarts'] ?? 0 ) + 1;
 				if ( $p['restarts'] > self::MAX_ATTEMPTS ) {
-					return $this->fail( $p, 'upload_incomplete', $done->get_error_message() );
+					return $this->fail( $p, 'upload_incomplete', $done->get_error_message(), 'upload.complete' );
 				}
 				$p['next'] = 1;
 				self::save( $p );
@@ -188,12 +217,12 @@ final class Babilim_Upload {
 				// upload); only give up when the retries run out.
 				++$p['attempts'];
 				if ( (int) $p['attempts'] > self::MAX_ATTEMPTS ) {
-					return $this->fail( $p, $this->short_code( $done ), $done->get_error_message() );
+					return $this->fail( $p, $this->short_code( $done ), $done->get_error_message(), 'upload.complete' );
 				}
 				self::save( $p );
 				return $this->progress( $p, false );
 			}
-			return $this->fail( $p, $this->short_code( $done ), $done->get_error_message() );
+			return $this->fail( $p, $this->short_code( $done ), $done->get_error_message(), 'upload.complete' );
 		}
 		return $this->finish( $p );
 	}
@@ -250,7 +279,7 @@ final class Babilim_Upload {
 	private function part_failed( array $p, WP_Error $error ): Babilim_Result {
 		$code = $error->get_error_code();
 		if ( in_array( $code, array( 'babilim_upload_expired', 'babilim_not_found', 'babilim_payload_too_large', 'babilim_no_consent' ), true ) ) {
-			return $this->fail( $p, $this->short_code( $error ), $error->get_error_message() );
+			return $this->fail( $p, $this->short_code( $error ), $error->get_error_message(), 'upload.part' );
 		}
 		if ( 'babilim_upload_sealed' === $code ) {
 			return $this->finish( $p ); // Sealed by an earlier complete: the service has every part.
@@ -261,7 +290,7 @@ final class Babilim_Upload {
 			$p['not_before'] = time() + max( 1, (int) ( $data['retry_after'] ?? 60 ) );
 		}
 		if ( (int) $p['attempts'] > self::MAX_ATTEMPTS ) {
-			return $this->fail( $p, 'upload_part_failed', __( 'A part of the upload kept failing, so the upload was cancelled.', 'babilim' ) );
+			return $this->fail( $p, 'upload_part_failed', __( 'A part of the upload kept failing, so the upload was cancelled.', 'babilim' ), 'upload.part' );
 		}
 		self::save( $p );
 		return $this->progress( $p, false );
@@ -283,7 +312,13 @@ final class Babilim_Upload {
 	}
 
 	/** @param array<string,mixed> $p */
-	private function fail( array $p, string $code, string $message ): Babilim_Result {
+	private function fail( array $p, string $code, string $message, string $origin = '' ): Babilim_Result {
+		// $origin names the step that failed; '' (packaging problems, the
+		// size limit) and expected answers (quota, authorization, rate limits,
+		// verification, withdrawn consent) are not reported; neither is cancelling.
+		if ( '' !== $origin && ! Babilim_Error_Reporter::is_excluded_code( $code ) ) {
+			Babilim_Error_Reporter::for_site()->capture( 'upload_failed', 'upload', $origin );
+		}
 		$this->api->cancel_upload( (string) $p['upload_id'] );
 		$this->teardown( $p );
 		return Babilim_Result::error( $code, $message );
@@ -332,8 +367,15 @@ final class Babilim_Upload {
 	}
 
 	/** Reads one part of the staging zip (read only). */
-	private function read_part( string $zip, int $n, int $part_bytes ): ?string {
+	private function read_part( string $zip, int $n, int $part_bytes, string $staging_base ): ?string {
 		if ( ! Babilim_Packager::owns( dirname( $zip ) ) ) {
+			return null;
+		}
+		// The zip must sit under the base chosen when it was packed, and
+		// that base must still lie outside the website.
+		$real_dir  = realpath( dirname( $zip ) );
+		$real_base = '' !== $staging_base ? realpath( $staging_base ) : false;
+		if ( false === $real_dir || false === $real_base || 0 !== strpos( $real_dir, rtrim( $real_base, '/' ) . '/' ) || ! $this->packager->base_still_private( $real_base ) ) {
 			return null;
 		}
 		$fh = fopen( $zip, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- read-only slice of the staging zip; the packaging staging directory is a documented exception.

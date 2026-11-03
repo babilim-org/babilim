@@ -4,7 +4,7 @@ This plugin talks to the Babilim translation service over the plugin's `BABILIM_
 
 If this file and the schemas under `tests/contract/v1/schemas/` ever disagree, the schemas win — update this file to match, don't patch around it.
 
-**Contract version:** 1.8.0
+**Contract version:** 1.10.0
 
 ## Conventions
 
@@ -70,6 +70,8 @@ Response `200`: `components[]` (each `kind, slug, locales: {<locale>: {status, b
 
 Asking for a translation (`queued`/`running`/`failed`/`requestable`) is never gated by the free-download quota itself, but a free site must have a free slot for a component it has not yet bound. So `quota_exceeded` replaces what would otherwise be `babilim_available` (a build exists, this site hasn't downloaded it, and downloading it would need a free slot this site doesn't have: the component isn't already bound to one of its free slots, and that kind's free slots are full), and (1.4.0) also what would otherwise be `failed`/`requestable` for such an unbound component, since neither a request nor a retry could take a slot. The same free-slot check `POST /v1/downloads` does at download time is what decides this status ahead of time, so the two never disagree.
 
+(1.10.0) A `babilim_available` entry may carry `auto_install: true` when the site holds a paid or partner license or already reported a Babilim translation of that component installed in some locale; absent means the plugin never installs it without a click. `updates[]` is unaffected.
+
 `updates[]` lists only (component, locale) pairs this site has **already installed** where the installed build differs from the service's current active build — including the service rolling back to an older build (a "downgrade" from the site's point of view). A pair the site has never installed never appears here, no matter its status (`babilim_available` is not an update — injecting a language pack the user never opted to download would bypass consent/quota). The plugin installs these itself during its own sync run, through its normal installer; it never touches WordPress's update transients.
 
 ### `POST /v1/downloads`
@@ -105,6 +107,13 @@ Request: `{kind, slug, locale, build_id, category, msgid?, msgctxt?, plural_inde
 `category` is one of: `mistranslation`, `terminology`, `placeholder`, `context`, `plural`, `negation`, `loading`, `other`.
 `build_id` must be a build this site has downloaded or installed, else `422`.
 Response `201`: `{feedback_id}`.
+
+### `POST /v1/error-reports`
+Send error events the site owner has agreed to share. Auth required. Nothing is sent before the owner agrees, and an event carries only catalog values (see `error-catalog.json`), a random id and a timestamp.
+Request: `{plugin_version, wp_version?, php_version?, locale?, events: [{event_id, error_code, action, origin_id, at}]}` with 1 to 20 events; `event_id` is 32 lowercase hex characters.
+`error_code`, `action` and `origin_id` come from `error-catalog.json`; a value outside it is never sent.
+Response `202`: `{accepted, ignored}`. A repeated `event_id` is counted in `ignored`, not rejected.
+The plugin sends at most one such request at the end of a successful sync, never retries it within the same run, and counts any non-2xx answer or transport error as one failed attempt for each event in it (an event is dropped after 3 attempts or 30 days). A field longer than its schema limit is never sent: that event is discarded.
 
 ### `GET /v1/meta/locales`
 The full WordPress.org locale registry, unranked. No auth required.

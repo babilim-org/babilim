@@ -15,6 +15,20 @@ Babilim is a WordPress plugin. It looks at what is installed, finds the plugins 
 
 Requires WordPress 6.6 or later and PHP 7.4 or later.
 
+## Why "Babilim"
+
+**Babilim: from Babel, a gate**
+
+In the old story, people who shared one language gathered on a plain and set out to build a tower that would reach the sky. Then their speech was confused, they could no longer understand one another, the work stopped, and they scattered across the earth. Language has stood between people ever since.
+
+The city's name carries two meanings. In ancient Akkadian it was Bāb-ilim, "gate of the gods", the name that later became Babylon. Yet those who passed down the tower story heard it as a word for confusion, and a name that once meant a gate came to stand for a world divided by language. Babilim uses the name in its first meaning: a gate, not a wall.
+
+Babilim exists to open that gate in the wall. A WordPress site runs dozens of plugins and themes, and when even one of them hasn't been translated, the site suddenly switches to a foreign language at that point. Babilim finds those gaps and fills them automatically, so the whole site speaks your language — without waiting for someone to translate it, and without doing it yourself.
+
+To be honest about the price: every translated string comes with an AI bill, and that is what our fees pay for. We charge so we can keep doing this, not to turn language into a business.
+
+Language should not be a barrier to using the web.
+
 ## How it works
 
 * Before you agree, the plugin makes no request at all, not even on activation.
@@ -26,6 +40,18 @@ Requires WordPress 6.6 or later and PHP 7.4 or later.
 * It writes only inside `wp-content/languages/babilim/`, apart from a temporary zip for a source upload you confirm.
 
 Every WordPress language is supported on equal footing. The language list comes from the WordPress.org locale registry.
+
+## How we translate
+
+**Every string goes through a full process.**
+
+Babilim doesn't just hand strings to an AI. Before translating anything, it works out what the plugin does, who uses it and what tone it should take, and gathers the vocabulary of its field — in a help desk, for example, "Open" is a ticket status, not the verb "to open".
+
+- **Speaks WordPress's language**: terms follow the wording the WordPress translation community has already approved, and each term is translated one way across the whole site.
+- **Never breaks your site**: placeholders, markup and plural rules are protected before translation. If a single one is wrong, the language pack is not released.
+- **A second pair of eyes**: strings likely to go wrong are always checked again by a separate AI, and the rest are spot-checked. Wherever human translations exist, each language pack is also compared with a part of them the system has never seen.
+- **Keeps what should stay**: product and brand names stay as written, and where an official or human translation exists, the human one comes first.
+- **Gets better with use**: when someone reports a weak translation, it is re-examined automatically and the language pack is rebuilt if needed, so every site using that plugin gets the update.
 
 ## Pricing
 

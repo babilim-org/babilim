@@ -432,31 +432,26 @@ final class Test_Sync_Install extends TestCase {
 	// -- installing what is available (first installs) ---------------------
 
 	/** @param array[] $extra_components More state components. */
-	private function seed_available( string $license_kind, array $extra_components = array() ): void {
+	private function seed_available( array $cell_extra = array(), array $extra_components = array(), array $updates = array() ): void {
 		$this->state->set(
 			array(
 				'components' => array_merge(
-					array( array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) ) ) ),
+					array( array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) + $cell_extra ) ) ),
 					$extra_components
 				),
-				'updates'    => array(),
-				'license'    => array( 'kind' => $license_kind ),
+				'updates'    => $updates,
 			)
 		);
 	}
 
-	/** A second component whose single locale is available. */
+	/** A second component whose single locale is available and marked auto_install. */
 	private function other_available( string $slug, string $build ): array {
-		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => $build ) ) );
+		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => $build, 'auto_install' => true ) ) );
 	}
 
-	private function seed_other_locale_record(): void {
-		$this->manifest->set( 'plugin', 'woocommerce', 'de_DE', array( 'build_id' => 'bd_0000000000aa', 'files' => array(), 'integrity' => array( 'ok' => true, 'checked_at' => '2026-01-01T00:00:00Z' ), 'installed_at' => '2026-01-01T00:00:00Z' ) );
-	}
-
-	public function test_free_site_does_not_install_a_component_that_holds_no_slot_yet(): void {
+	public function test_a_cell_without_the_auto_install_flag_is_never_installed_automatically(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'free' );
+		$this->seed_available();
 
 		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
 
@@ -465,10 +460,10 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertNull( $this->manifest->installed( 'plugin', 'woocommerce', 'zh_TW' ) );
 	}
 
-	public function test_on_multisite_nothing_is_installed_automatically_even_for_a_paid_site(): void {
+	public function test_on_multisite_nothing_is_installed_automatically_even_with_the_flag(): void {
 		$GLOBALS['babilim_test_multisite'] = true;
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 
 		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
 
@@ -477,10 +472,10 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertNull( $this->manifest->installed( 'plugin', 'woocommerce', 'zh_TW' ) );
 	}
 
-	public function test_free_site_installs_a_component_that_already_has_a_record_in_another_language(): void {
+	public function test_a_cell_with_the_auto_install_flag_is_installed_without_any_local_license_rule(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'free' );
-		$this->seed_other_locale_record();
+		$this->seed_available( array( 'auto_install' => true ) );
+		$this->assertFalse( $this->site->has_manifest_record( 'plugin', 'woocommerce' ), 'no record in any language' );
 
 		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
 
@@ -490,45 +485,87 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertSame( 1, (int) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALLED, 0 ) );
 	}
 
-	public function test_a_missing_or_unknown_license_follows_the_free_rule(): void {
-		foreach ( array( null, array(), 'unknown', '' ) as $i => $license ) {
+	public function test_a_flag_that_is_not_boolean_true_is_ignored(): void {
+		foreach ( array( false, 1, '1', 'true' ) as $i => $flag ) {
 			$this->setUp();
 			$this->stage_package( self::NEW, 'st_e2e' );
-			$this->seed_available( 'free' );
-			$state = $this->state->get();
-			if ( null === $license ) {
-				unset( $state['license'] );
-			} elseif ( array() === $license ) {
-				$state['license'] = array();
-			} else {
-				$state['license'] = array( 'kind' => $license );
-			}
-			$this->state->set( $state );
+			$this->seed_available( array( 'auto_install' => $flag ) );
 
-			$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), "variant $i without a bound component" );
+			$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), "variant $i" );
 			$this->assertCount( 0, $this->http->requests, "variant $i" );
-
-			$this->seed_other_locale_record();
-			$this->assertCount( 1, $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), "variant $i with a bound component" );
 		}
 	}
 
-	public function test_paid_and_partner_sites_install_without_a_prior_record(): void {
-		foreach ( array( 'paid', 'partner' ) as $kind ) {
-			$this->setUp();
-			$this->stage_package( self::NEW, 'st_e2e' );
-			$this->seed_available( $kind );
+	public function test_the_flag_does_not_bypass_the_skip_list_or_an_existing_record(): void {
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$this->seed_available( array( 'auto_install' => true ) );
+		update_option( Babilim_Sync_Installer::OPTION_SKIP, array( 'plugin:woocommerce:zh_TW' => true ), false );
+		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), 'skip list' );
+		$this->assertCount( 0, $this->http->requests );
 
-			$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		delete_option( Babilim_Sync_Installer::OPTION_SKIP );
+		$this->seed_installed_old_build();
+		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), 'existing record' );
+		$this->assertCount( 0, $this->http->requests );
+	}
 
-			$this->assertCount( 1, $done, $kind );
-			$this->assertTrue( $done[0]['result']->is_ok(), $kind );
+	public function test_without_the_flag_updates_are_still_installed(): void {
+		$this->seed_installed_old_build();
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$unflagged = array( 'kind' => 'plugin', 'slug' => 'second', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => 'bd_000000000003' ) ) );
+		$this->seed_available( array(), array( $unflagged ), array( $this->update_entry() ) );
+
+		$done = $this->sync_installer->install_pending_updates();
+		$this->assertCount( 1, $done );
+		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
+		$this->assertSame( self::NEW, ( new Babilim_Manifest( $this->fs ) )->installed( 'plugin', 'woocommerce', 'zh_TW' )['build_id'] );
+
+		$requests = count( $this->http->requests );
+		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
+		$this->assertCount( $requests, $this->http->requests, 'install_available adds no request' );
+	}
+
+	public function test_install_available_does_not_read_the_license(): void {
+		$tokens = token_get_all( (string) file_get_contents( dirname( __DIR__, 2 ) . '/includes/class-babilim-sync-installer.php' ) );
+		$count  = count( $tokens );
+		$found  = false;
+		for ( $i = 0; $i < $count; $i++ ) {
+			if ( ! is_array( $tokens[ $i ] ) || T_FUNCTION !== $tokens[ $i ][0] ) {
+				continue;
+			}
+			$j = $i + 1;
+			while ( $j < $count && ( ! is_array( $tokens[ $j ] ) || T_STRING !== $tokens[ $j ][0] ) ) {
+				++$j;
+			}
+			if ( ! isset( $tokens[ $j ] ) || 'install_available' !== $tokens[ $j ][1] ) {
+				continue;
+			}
+			$found = true;
+			while ( $j < $count && '{' !== $tokens[ $j ] ) {
+				++$j;
+			}
+			$depth = 0;
+			for ( ; $j < $count; $j++ ) {
+				$t = $tokens[ $j ];
+				if ( '{' === $t || ( is_array( $t ) && in_array( $t[0], array( T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES ), true ) ) ) {
+					++$depth;
+				} elseif ( '}' === $t ) {
+					--$depth;
+					if ( 0 === $depth ) {
+						break;
+					}
+				} elseif ( is_array( $t ) && T_CONSTANT_ENCAPSED_STRING === $t[0] ) {
+					$this->assertNotSame( 'license', trim( $t[1], '\'"' ), 'install_available() must not read the license' );
+				}
+			}
+			$this->assertGreaterThan( 0, $j - $i, 'the method body was walked' );
 		}
+		$this->assertTrue( $found, 'install_available() was found' );
 	}
 
 	public function test_a_locale_that_is_not_managed_is_not_installed(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 
 		$this->assertSame( array(), $this->sync_installer->install_available( array( 'de_DE' ), 20 ) );
 		$this->assertCount( 0, $this->http->requests );
@@ -536,7 +573,7 @@ final class Test_Sync_Install extends TestCase {
 
 	public function test_a_skipped_triple_is_not_installed_until_a_download_clears_it(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 		update_option( Babilim_Sync_Installer::OPTION_SKIP, array( 'plugin:woocommerce:zh_TW' => true ), false );
 
 		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
@@ -557,7 +594,7 @@ final class Test_Sync_Install extends TestCase {
 
 	public function test_option_off_or_no_consent_makes_zero_requests(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 
 		update_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 0, false );
 		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
@@ -571,7 +608,7 @@ final class Test_Sync_Install extends TestCase {
 
 	public function test_a_missing_option_counts_as_on(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 		$this->assertFalse( get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, false ) );
 
 		$this->assertCount( 1, $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
@@ -579,7 +616,7 @@ final class Test_Sync_Install extends TestCase {
 
 	public function test_the_limit_is_honoured_and_shared_with_updates(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( 'paid', array( $this->other_available( 'second', 'bd_000000000003' ) ) );
+		$this->seed_available( array( 'auto_install' => true ), array( $this->other_available( 'second', 'bd_000000000003' ) ) );
 
 		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 0 ) );
 		$this->assertCount( 0, $this->http->requests );
@@ -608,8 +645,7 @@ final class Test_Sync_Install extends TestCase {
 	/** @return array<string,mixed> */
 	private function state_with_available(): array {
 		return array(
-			'components' => array( array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) ) ) ),
-			'license'    => array( 'kind' => 'paid' ),
+			'components' => array( array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW, 'auto_install' => true ) ) ) ),
 		);
 	}
 
@@ -618,7 +654,7 @@ final class Test_Sync_Install extends TestCase {
 		$manifest                                            = json_decode( $this->zip['manifest.json'], true );
 		$manifest['files']['woocommerce-zh_TW.mo']['sha256'] = str_repeat( '0', 64 );
 		$this->zip['manifest.json']                          = wp_json_encode( $manifest );
-		$this->seed_available( 'paid' );
+		$this->seed_available( array( 'auto_install' => true ) );
 
 		for ( $i = 0; $i < 3; $i++ ) {
 			$this->assertCount( 1, $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), 'attempt ' . ( $i + 1 ) );

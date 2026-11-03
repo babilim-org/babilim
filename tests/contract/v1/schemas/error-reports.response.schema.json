@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "error-reports.response.schema.json",
+  "title": "202 response to POST /v1/error-reports",
+  "type": "object",
+  "required": ["accepted", "ignored"],
+  "additionalProperties": false,
+  "properties": {
+    "accepted": {"type": "integer", "minimum": 0},
+    "ignored": {"type": "integer", "minimum": 0, "description": "number of events dropped because their event_id was already received"}
+  }
+}

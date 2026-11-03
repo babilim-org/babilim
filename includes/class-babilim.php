@@ -205,9 +205,27 @@ class Babilim {
 	private function __construct() {}
 
 	/**
+	 * Once per plugin version: drops this site's own upload staging
+	 * directory when an older version packaged it. Nothing else is
+	 * touched (see Babilim_Packager::sweep_legacy()).
+	 */
+	private function run_upgrade_cleanup(): void {
+		if ( ! function_exists( 'get_option' ) || BABILIM_VERSION === get_option( 'babilim_version' ) ) {
+			return;
+		}
+		try {
+			( new Babilim_Packager() )->sweep_legacy( Babilim_Upload::pending() );
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+	}
+
+	/**
 	 * Runs on `plugins_loaded`.
 	 */
 	public function init() {
+		$this->run_upgrade_cleanup();
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		$this->register_default_index_triggers();
 		$this->register_maintenance_cron();
@@ -354,6 +372,11 @@ class Babilim {
 		foreach ( $outcomes as $outcome ) {
 			if ( $outcome['result']->is_error() ) {
 				$this->state()->record_client_event( 'install_failed', $outcome['kind'], $outcome['slug'], $outcome['locale'] );
+				// Quota, authorization, rate limits and verification are
+				// expected answers, not install errors.
+				if ( ! Babilim_Error_Reporter::is_excluded_code( (string) $outcome['result']->code() ) ) {
+					Babilim_Error_Reporter::for_site()->capture( 'install_failed', 'install', 'installer.commit' );
+				}
 			}
 		}
 	}
@@ -409,6 +432,7 @@ class Babilim {
 				if ( $result->is_error() && 'integrity_failed' === $result->code() ) {
 					$installer->degrade( $kind, $slug, $locale );
 					$this->state()->record_client_event( 'integrity_failed', $kind, $slug, $locale );
+					Babilim_Error_Reporter::for_site()->capture( 'verify_failed', 'sync', 'site.verify_installed' );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -703,8 +727,11 @@ class Babilim {
 	 * against disk (sweep_orphans() runs first, then rebuild_all()
 	 * rebuilds every locale's merged `default` index), then removes any
 	 * `Babilim_Paths::incoming_dir()` a killed install left behind (see
-	 * Babilim_Sync_Installer::sweep_stale_incoming_dirs()) and any source
-	 * packaging directory older than a day (Babilim_Packager::sweep()).
+	 * Babilim_Sync_Installer::sweep_stale_incoming_dirs()), and finally
+	 * removes this site's own expired or unsealed upload staging
+	 * directory. Source packaging staging is not scanned for:
+	 * Babilim_Packager::sweep() leaves every directory it cannot trace to
+	 * this site's own upload record alone.
 	 */
 	public function run_maintenance(): void {
 		try {
@@ -719,7 +746,7 @@ class Babilim {
 			$this->log_error( $e );
 		}
 		try {
-			( new Babilim_Packager() )->sweep();
+			( new Babilim_Packager() )->sweep( Babilim_Upload::pending() );
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 		}
@@ -756,6 +783,10 @@ class Babilim {
 					continue;
 				}
 				$this->state()->record_client_event( $code, $kind, $slug, $locale );
+				// Only an integrity failure is an error; 'orphaned' is not.
+				if ( 'integrity_failed' === $code ) {
+					Babilim_Error_Reporter::for_site()->capture( 'verify_failed', 'sync', 'site.verify_installed' );
+				}
 			}
 		}
 	}

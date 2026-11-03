@@ -59,6 +59,19 @@ final class Babilim_Contract_Limits {
 	/** `wp_version` and `php_version` of a registration. */
 	public const ENV_VERSION = 32;
 
+	/** `error_code` and `action` of an error report event. */
+	public const ERROR_CODE   = 50;
+	public const ERROR_ACTION = 50;
+
+	/** `origin_id` of an error report event. */
+	public const ERROR_ORIGIN = 80;
+
+	/** Most events in one error report. */
+	public const ERROR_EVENTS = 20;
+
+	/** `plugin_version`, `wp_version` and `php_version` of an error report. */
+	public const ERROR_ENV_VERSION = 20;
+
 	/**
 	 * A value's length the way the schemas count it: in characters, not
 	 * bytes.

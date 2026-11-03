@@ -484,6 +484,29 @@ final class Test_Contract extends TestCase {
 		$this->assertGreaterThan( 0, $flagged );
 	}
 
+	/**
+	 * 1.10.0: a `babilim_available` entry may carry `auto_install: true`;
+	 * absent means the plugin never installs it without a click.
+	 */
+	public function test_inventory_response_parses_the_1_10_0_auto_install_flag(): void {
+		$path = dirname( __DIR__ ) . '/contract/v1/examples/inventory.auto-install.json';
+		$this->assertFileExists( $path );
+
+		$example = $this->fixture( 'inventory.auto-install.json' );
+		$http    = new Babilim_Fake_Http( array( $this->response_from_fixture( $example ) ) );
+		$client  = new Babilim_Api_Client( $http, 'https://api.babilim.org', 'tok_x' );
+
+		$result = $client->inventory( $this->site_id_from_path( $example ), array() );
+
+		$this->assertEquals( $example['response']['body'], $result );
+		$by_slug = array();
+		foreach ( $result['components'] as $component ) {
+			$by_slug[ $component['slug'] ] = $component['locales'];
+		}
+		$this->assertTrue( $by_slug['component-a']['fr_FR']['auto_install'] );
+		$this->assertArrayNotHasKey( 'auto_install', $by_slug['component-b']['de_DE'] );
+	}
+
 	public function test_401_unauthorized_maps_correctly(): void {
 		$example = $this->fixture( 'errors.401.json' );
 		$http    = new Babilim_Fake_Http( array( $this->response_from_fixture( $example ) ) );

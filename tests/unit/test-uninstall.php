@@ -91,6 +91,15 @@ final class Test_Uninstall extends TestCase {
 		$this->assertFalse( get_transient( 'babilim_challenge_rl' ), 'babilim_challenge_rl transient must be removed by uninstall.php' );
 	}
 
+	public function test_uninstall_deletes_the_version_option(): void {
+		update_option( 'babilim_version', '1.1.0', false );
+		if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+			define( 'WP_UNINSTALL_PLUGIN', true );
+		}
+		require dirname( __DIR__, 2 ) . '/uninstall.php';
+		$this->assertFalse( get_option( 'babilim_version', false ) );
+	}
+
 	/**
 	 * The admin screens' own options (consent, manual locales, the
 	 * keep-custom-on-purge setting) must also be gone, cleaned up the

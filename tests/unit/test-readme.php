@@ -236,23 +236,65 @@ final class Test_Readme extends TestCase {
 
 	public function test_the_submission_document_asks_the_directory_team_about_each_disclosed_behavior(): void {
 		$doc = file_get_contents( dirname( __DIR__, 2 ) . '/docs/wporg-submission.md' );
-		foreach ( array( 'plugins@wordpress.org', 'WP_Translation_File::transform', 'Guideline 8', 'Guideline 6', 'Guideline 5', 'merchant of record', 'entire plugin or theme directory', 'Delay auto-updates for 24 hours', 'Release Confirmation', 'Test Preview' ) as $needle ) {
+		foreach ( array( 'plugins@wordpress.org', 'WP_Translation_File::transform', 'Guideline 8', 'Guideline 6', 'Guideline 5', 'merchant of record', 'every .php and .js file', 'Delay auto-updates for 24 hours', 'Release Confirmation', 'Test Preview' ) as $needle ) {
 			$this->assertStringContainsString( $needle, $doc, $needle );
 		}
+	}
+
+	public function test_readme_describes_uninstall_report_and_privacy_exactly(): void {
+		$root = dirname( __DIR__, 2 );
+		$desc = $this->section( 'Description' );
+		foreach ( array( 'Two separate settings', 'registration number', 'custom/' ) as $needle ) {
+			$this->assertStringContainsString( $needle, $desc, $needle );
+		}
+		$faq = $this->section( 'Frequently Asked Questions' );
+		$this->assertStringNotContainsString( 'runs no plugin code', $faq );
+		$this->assertStringContainsString( 'has no screen of its own', $faq );
+		$this->assertStringContainsString( 'does not carry the original string', $this->section( 'External services' ) );
+		$privacy = $this->section( 'Privacy' );
+		foreach ( array( 'plugin itself never', 'free-text fields' ) as $needle ) {
+			$this->assertStringContainsString( $needle, $privacy, $needle );
+		}
+		$changelog = $this->section( 'Changelog' );
+		$this->assertSame( 1, preg_match( '/^= 1\.1\.0 =\n(.*?)(?=^= |\z)/ms', $changelog, $m ), 'a 1.1.0 changelog entry exists' );
+		foreach ( array( 'decided by the Babilim service', 'code and description files', 'outside the website' ) as $needle ) {
+			$this->assertStringContainsString( $needle, $m[1], $needle );
+		}
+		$this->assertStringContainsString( 'and a smaller source upload', $this->section( 'Upgrade Notice' ) );
+		$files = array_merge( array( $root . '/readme.txt', $root . '/docs/development.md' ), (array) glob( $root . '/*.md' ) );
+		foreach ( $files as $file ) {
+			$text = (string) file_get_contents( $file );
+			foreach ( array( 'removed after 24 hours', 'older than 24 hours' ) as $needle ) {
+				$this->assertStringNotContainsString( $needle, $text, basename( $file ) . " must not promise a removal time: {$needle}" );
+			}
+		}
+		$dev = (string) file_get_contents( $root . '/docs/development.md' );
+		$this->assertStringContainsString( 'interrupted upload', $dev );
+		$this->assertStringNotContainsString( 'interrupted site', $dev );
+	}
+
+	public function test_the_submission_document_leaves_auto_install_to_the_service(): void {
+		$doc = (string) file_get_contents( dirname( __DIR__, 2 ) . '/docs/wporg-submission.md' );
+		$this->assertStringContainsString( 'The Babilim service decides which available translations', $doc );
+		$this->assertStringNotContainsString( 'acts on the license kind without a click', $doc );
 	}
 
 	public function test_external_services_discloses_a_source_upload(): void {
 		$s = $this->section( 'External services' );
 		$this->assertStringContainsString( 'Uploading a component', $s );
-		foreach ( array( 'entire', 'keys, logs or customer data', 'until you ask', 'AI', 'other sites', 'right to do so', 'Upload and request' ) as $needle ) {
+		foreach ( array( '.php and .js', 'block.json', 'readme.txt, readme.md, style.css and theme.json', 'main folder', 'common secrets', 'Code files can still contain', 'until you ask', 'AI', 'other sites', 'right to do so', 'Upload and request' ) as $needle ) {
 			$this->assertStringContainsString( $needle, $s, $needle );
+		}
+		foreach ( array( 'entire', 'never sent', 'configuration files are not' ) as $needle ) {
+			$this->assertStringNotContainsString( $needle, $s, $needle );
 		}
 		$this->assertStringContainsString( 'explicitly confirm', $this->section( 'Privacy' ) );
 		$this->assertStringNotContainsString( 'web root', $s, 'the temporary location is described as it is, not as a guarantee' );
-		$this->assertStringNotContainsString( 'blocks direct', $s, 'a .htaccess file is not a guarantee on every server' );
-		$this->assertStringContainsString( 'Apache-compatible servers only', $s );
-		foreach ( array( 'system temporary directory', 'WordPress\'s temporary directory', '.htaccess', '24 hours' ) as $needle ) {
+		foreach ( array( 'system temporary directory', 'BABILIM_TEMP_DIR', 'nothing is packaged or uploaded', 'host' ) as $needle ) {
 			$this->assertStringContainsString( $needle, $s, $needle );
+		}
+		foreach ( array( '.htaccess', 'Apache', '24 hours', 'daily job', 'blocks direct', 'WordPress\'s temporary directory' ) as $needle ) {
+			$this->assertStringNotContainsString( $needle, $s, $needle );
 		}
 	}
 }

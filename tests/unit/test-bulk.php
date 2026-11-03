@@ -174,6 +174,15 @@ final class Test_Bulk extends TestCase {
 
 	// -- parser, nonce, capability ----------------------------------------
 
+	public function test_list_inputs_drop_non_strings_and_sanitize_each_element(): void {
+		$this->seed( 1, self::AVAILABLE );
+		$http = new Babilim_Fake_Http( array() );
+		$this->post( $this->admin( $http ), array( 'action' => 'download', 'components' => array( '<b>a</b>', array( 'x' ), 'b ' ) ) );
+		$method = new ReflectionMethod( Babilim_Admin::class, 'post_list' );
+		$method->setAccessible( true );
+		$this->assertSame( array( 'a', 'b' ), $method->invoke( null, 'components' ) );
+	}
+
 	public function test_top_and_bottom_action_both_trigger_the_run(): void {
 		foreach ( array( array( 'action' => 'download' ), array( 'action' => '-1', 'action2' => 'download' ) ) as $i => $actions ) {
 			babilim_test_reset();

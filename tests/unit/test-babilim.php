@@ -230,6 +230,41 @@ final class Test_Babilim extends TestCase {
 		}
 	}
 
+	/**
+	 * @param array[] $outcomes Sync installer outcomes.
+	 * @return string[] origin ids of the error events waiting for a decision
+	 */
+	private function origins_after_install_outcomes( array $outcomes ): array {
+		babilim_test_reset();
+		$babilim = Babilim::instance();
+		$method  = new ReflectionMethod( $babilim, 'record_install_failures' );
+		$method->setAccessible( true );
+		$method->invoke( $babilim, $outcomes );
+		return array_column( Babilim_Error_Reporter::for_site()->awaiting(), 'origin_id' );
+	}
+
+	private function outcome( string $code ): array {
+		return array(
+			'kind'   => 'plugin',
+			'slug'   => 'acme',
+			'locale' => 'fr_FR',
+			'result' => Babilim_Result::error( $code, 'x' ),
+		);
+	}
+
+	public function test_expected_install_answers_are_not_captured_as_error_events(): void {
+		foreach ( array( 'babilim_quota_exceeded', 'babilim_unauthorized', 'babilim_rate_limited', 'verification_required', 'no_token' ) as $code ) {
+			$this->assertSame( array(), $this->origins_after_install_outcomes( array( $this->outcome( $code ) ) ), $code );
+		}
+	}
+
+	public function test_a_real_install_failure_is_still_captured(): void {
+		$this->assertSame(
+			array( 'installer.commit' ),
+			$this->origins_after_install_outcomes( array( $this->outcome( 'babilim_write_failed' ) ) )
+		);
+	}
+
 	/** @return mixed */
 	private function call_private( object $object, string $method ) {
 		$reflection = new ReflectionMethod( $object, $method );
@@ -899,28 +934,54 @@ final class Test_Babilim extends TestCase {
 	}
 
 	/**
-	 * run_maintenance() calls Babilim_Packager::sweep() (default
-	 * constructor): a day-old staging
-	 * directory is gone afterwards, a fresh one stays.
+	 * run_maintenance() no longer scans a temp base: a day-old directory
+	 * the site cannot trace to its own pending record is left alone.
 	 */
-	public function test_run_maintenance_sweeps_a_stale_upload_staging_directory(): void {
-		$base  = rtrim( get_temp_dir(), '/' ); // WordPress's temp dir; the packager sweeps it as well as the system one.
+	public function test_run_maintenance_does_not_scan_a_temp_base_for_staging_directories(): void {
+		$base  = rtrim( get_temp_dir(), '/' );
 		if ( ! is_dir( $base ) ) {
 			mkdir( $base, 0777, true );
 		}
 		$old   = $base . '/babilim-upload-' . str_repeat( 'a', 32 );
-		$fresh = $base . '/babilim-upload-' . str_repeat( 'b', 32 );
 		babilim_test_rmtree( $old );
-		babilim_test_rmtree( $fresh );
 		mkdir( $old, 0700 );
-		mkdir( $fresh, 0700 );
 		touch( $old, time() - 90000 );
 
 		Babilim::instance()->run_maintenance();
 
-		$this->assertDirectoryDoesNotExist( $old );
-		$this->assertDirectoryExists( $fresh );
-		babilim_test_rmtree( $fresh );
+		$this->assertDirectoryExists( $old );
+		babilim_test_rmtree( $old );
+	}
+
+	public function test_the_legacy_sweep_runs_once_per_plugin_version(): void {
+		$base = BABILIM_TEST_TMP_ROOT . '/legacy-' . bin2hex( random_bytes( 4 ) );
+		$dir  = $base . '/babilim-upload-' . str_repeat( 'ab', 16 );
+		mkdir( $dir, 0700, true );
+		file_put_contents( $dir . '/package.zip', 'old' );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_1', 'dir' => $dir ), false );
+
+		$this->assertFalse( get_option( 'babilim_version', false ) );
+		Babilim::instance()->init();
+		$this->assertDirectoryDoesNotExist( $dir, 'the first init after an upgrade removes this site\'s unsealed pending directory' );
+		$this->assertSame( BABILIM_VERSION, get_option( 'babilim_version' ) );
+
+		mkdir( $dir, 0700, true );
+		Babilim::reset_for_tests();
+		Babilim::instance()->init();
+		$this->assertDirectoryExists( $dir, 'the second init does not sweep again' );
+		babilim_test_rmtree( $base );
+	}
+
+	public function test_run_maintenance_passes_the_pending_record_to_sweep(): void {
+		$base = BABILIM_TEST_TMP_ROOT . '/maint-' . bin2hex( random_bytes( 4 ) );
+		$dir  = $base . '/babilim-upload-' . str_repeat( 'cd', 16 );
+		mkdir( $dir, 0700, true );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_1', 'dir' => $dir, 'package_policy' => 2, 'expires_at' => '2000-01-01T00:00:00Z' ), false );
+
+		Babilim::instance()->run_maintenance();
+
+		$this->assertDirectoryDoesNotExist( $dir, 'an expired sealed pending is swept' );
+		babilim_test_rmtree( $base );
 	}
 
 	// -- active_components() uses the same wp.org-transient-aware
@@ -1327,7 +1388,7 @@ final class Test_Babilim extends TestCase {
 	}
 
 	private function available_component( string $slug, string $locale = 'ja' ): array {
-		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( $locale => array( 'status' => 'babilim_available', 'build_id' => 'bd_0000000000a1' ) ) );
+		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( $locale => array( 'status' => 'babilim_available', 'build_id' => 'bd_0000000000a1', 'auto_install' => true ) ) );
 	}
 
 	private function failing_download(): array {

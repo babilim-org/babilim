@@ -4,7 +4,7 @@
  * own tracked-file list, filtered through .distignore, using
  * ZipArchive rather than an external `zip` binary.
  *
- * Usage: php scripts/build-zip.php
+ * Usage: [BABILIM_ZIP_OUT=<path>] php scripts/build-zip.php
  */
 
 declare(strict_types=1);
@@ -97,6 +97,17 @@ if ( ! is_dir( $build_dir ) && ! mkdir( $build_dir, 0777, true ) && ! is_dir( $b
 }
 
 $zip_path = $build_dir . '/' . $slug . '-' . $version . '.zip';
+// BABILIM_ZIP_OUT (relative to the repo root, or absolute) redirects the
+// output so tests can build a scratch zip without touching the release.
+$zip_out = getenv( 'BABILIM_ZIP_OUT' );
+if ( is_string( $zip_out ) && '' !== $zip_out ) {
+	$zip_path = ( '/' === $zip_out[0] ) ? $zip_out : $root . '/' . $zip_out;
+	$out_dir  = dirname( $zip_path );
+	if ( ! is_dir( $out_dir ) && ! mkdir( $out_dir, 0777, true ) && ! is_dir( $out_dir ) ) {
+		fwrite( STDERR, "Could not create $out_dir\n" );
+		exit( 1 );
+	}
+}
 if ( file_exists( $zip_path ) ) {
 	unlink( $zip_path );
 }

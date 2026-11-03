@@ -454,6 +454,18 @@ final class Babilim_Api_Client {
 	}
 
 	/**
+	 * `POST /v1/error-reports` -- sends error events the site owner agreed
+	 * to share. Auth required; never retried within the request.
+	 *
+	 * @param array    $payload {plugin_version, wp_version?, php_version?, locale?, events}.
+	 * @param int|null $timeout Seconds for this request; null for the default.
+	 * @return array|WP_Error {accepted, ignored} on success.
+	 */
+	public function error_reports( array $payload, ?int $timeout = null ) {
+		return $this->send( 'POST', '/v1/error-reports', $payload, true, false, $timeout );
+	}
+
+	/**
 	 * Sends a JSON POST and decodes its response.
 	 *
 	 * @param string $method    HTTP method.

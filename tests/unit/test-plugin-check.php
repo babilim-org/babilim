@@ -113,25 +113,250 @@ final class Test_Plugin_Check extends TestCase {
 		$this->assertSame( array(), $problems, 'every discouraged call needs "// phpcs:ignore <Rule> -- <reason>" on its own line or the line above' );
 	}
 
-	public function test_every_superglobal_read_is_annotated_or_sanitized(): void {
-		$problems = array();
-		foreach ( $this->sources() as $file ) {
-			foreach ( file( $file ) ?: array() as $number => $line ) {
-				if ( 1 !== preg_match( '/\$_(GET|POST|REQUEST|SERVER|COOKIE|FILES)\b/', $line ) ) {
-					continue;
-				}
-				if ( 1 === preg_match( '/^\s*(\*|\/\/)/', $line ) ) {
-					continue;
-				}
-				$unslashed_and_sanitized = false !== strpos( $line, 'wp_unslash(' )
-					&& 1 === preg_match( '/(sanitize_text_field\(|sanitize_key\(|sanitize_textarea_field\(|absint\(|intval\(|\(int\))/', $line );
-				$ignored_input_rule      = 1 === preg_match( '/phpcs:ignore[^\n]*WordPress\.Security\.ValidatedSanitizedInput/', $line );
-				if ( ! $unslashed_and_sanitized && ! $ignored_input_rule ) {
-					$problems[] = basename( $file ) . ':' . ( $number + 1 );
-				}
+	/**
+	 * The registered exceptions: `file:line` rows of the "registered
+	 * exceptions" table in docs/plugin-check-results.md. A
+	 * `phpcs:ignore ...ValidatedSanitizedInput` is accepted only on one
+	 * of these lines.
+	 *
+	 * @return string[] "basename:line" entries.
+	 */
+	private function registered_input_exceptions(): array {
+		$doc   = file_get_contents( dirname( __DIR__, 2 ) . '/docs/plugin-check-results.md' );
+		$found = array();
+		$in    = false;
+		foreach ( explode( "\n", false === $doc ? '' : $doc ) as $row ) {
+			if ( 0 === strpos( $row, '### Registered exceptions' ) ) {
+				$in = true;
+				continue;
+			}
+			if ( $in && 0 === strpos( $row, '#' ) ) {
+				break;
+			}
+			if ( $in && 1 === preg_match( '/^\|\s*`([A-Za-z0-9_.\-]+):(\d+)`\s*\|/', $row, $m ) ) {
+				$found[] = $m[1] . ':' . $m[2];
 			}
 		}
+		return $found;
+	}
+
+	/**
+	 * Accepted forms of a superglobal read: (A) sanitize_*( wp_unslash( ... ) )
+	 * on one line; (F) array_map() the sanitizer over the unslashed array, then
+	 * drop the empty results with strlen (a nested array becomes ''); (D) the DOCUMENT_ROOT identity
+	 * read, where the unslashed value is compared with its sanitized form
+	 * through filter_var( ..., FILTER_UNSAFE_RAW ); or a bare isset()/
+	 * is_string() guard that uses no value.
+	 *
+	 * @param string $line Source line.
+	 */
+	private static function input_line_is_handled( string $line ): bool {
+		$sanitizer = '(sanitize_text_field\(|sanitize_key\(|sanitize_textarea_field\(|absint\(|intval\(|\(int\))';
+		if ( false !== strpos( $line, 'wp_unslash(' ) && 1 === preg_match( '/' . $sanitizer . '/', $line ) ) {
+			return true; // (A)
+		}
+		if ( 1 === preg_match( '/array_filter\(\s*array_map\(\s*\'sanitize_text_field\',\s*wp_unslash\(\s*\$_(GET|POST|REQUEST)\[[^\]]*\]\s*\)\s*\),\s*\'strlen\'\s*\)/', $line ) ) {
+			return true; // (F)
+		}
+		if ( 1 === preg_match( '/\(string\)\s*filter_var\(\s*wp_unslash\(\s*\$_SERVER\[\s*\'DOCUMENT_ROOT\'\s*\]\s*\),\s*FILTER_UNSAFE_RAW\s*\)/', $line ) ) {
+			return true; // (D)
+		}
+		// A guard that only tests the key and its type.
+		$rest = preg_replace( '/\b(isset|is_string)\(\s*\$_(GET|POST|REQUEST|SERVER|COOKIE|FILES)\[[^\]]*\]\s*\)/', '', $line );
+		return 1 !== preg_match( '/\$_(GET|POST|REQUEST|SERVER|COOKIE|FILES)\b/', (string) $rest );
+	}
+
+	/**
+	 * Whether a line carries a phpcs directive ("ignore" or "disable";
+	 * the name is case-insensitive, as in phpcs) that covers the
+	 * ValidatedSanitizedInput sniff: one naming it, one naming a parent
+	 * (WordPress, WordPress.Security), or one naming no sniff at all.
+	 * A directive that names other sniffs only does not count. The
+	 * reason after the first " --" (whatever follows it) is dropped, and a closing "*" "/" is trimmed
+	 * the way the phpcs tokenizer does, so a block comment without a
+	 * reason is read correctly.
+	 *
+	 * @param string $line      Source line.
+	 * @param string $directive 'ignore' or 'disable'.
+	 */
+	private static function directive_covers_input_rule( string $line, string $directive ): bool {
+		if ( 1 !== preg_match( '/phpcs:' . $directive . '(?!\w)(?<rest>.*)$/is', $line, $m ) ) {
+			return false;
+		}
+		$rest = (string) preg_replace( '/(^|\s)--.*$/s', '', $m['rest'] );
+		$rest = trim( rtrim( $rest, " */\t\r\n" ) );
+		if ( '' === $rest ) {
+			return true;
+		}
+		$target = strtolower( 'WordPress.Security.ValidatedSanitizedInput' );
+		foreach ( explode( ',', $rest ) as $sniff ) {
+			$sniff = strtolower( trim( $sniff ) );
+			if ( '' === $sniff ) {
+				continue;
+			}
+			if ( $sniff === $target || 0 === strpos( $target, $sniff . '.' ) || 0 === strpos( $sniff, $target . '.' ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Whether a line has code outside its comments. A "/* ... *" "/"
+	 * block is removed first, so `/* note *" "/ $b = $_POST['b'];` still
+	 * counts as code; a line starting with `//`, `*`, an unterminated
+	 * block opener or `#` (but not the `#[` of an attribute) does not.
+	 *
+	 * @param string $line Source line.
+	 */
+	private static function line_has_code( string $line ): bool {
+		$rest = ltrim( (string) preg_replace( '~/\*.*?\*/~s', '', $line ) );
+		if ( '' === $rest || '*' === $rest[0] || 0 === strpos( $rest, '/*' ) || 0 === strpos( $rest, '//' ) ) {
+			return false;
+		}
+		return '#' !== $rest[0] || 0 === strpos( $rest, '#[' );
+	}
+
+	/**
+	 * Lines of one file that break the input rule. Judged on their own,
+	 * before any comment line is skipped, however clean the rest of the
+	 * line looks:
+	 * - a `phpcs:disable` covering ValidatedSanitizedInput is never
+	 *   accepted;
+	 * - a `phpcs:ignore` covering it is accepted only at the end of a
+	 *   line of code and only on a registered line; on a line of its own
+	 *   (it would cover the next line) it is never accepted;
+	 * - any other line with code that reads a superglobal must be in a
+	 *   handled form, wherever its comment sits.
+	 * "Covering" is defined by directive_covers_input_rule().
+	 *
+	 * @param string[] $lines      File lines.
+	 * @param string   $name       File basename.
+	 * @param string[] $registered "basename:line" exceptions.
+	 * @return string[] "basename:line" problems.
+	 */
+	private static function input_problems( array $lines, string $name, array $registered ): array {
+		$problems = array();
+		foreach ( $lines as $number => $line ) {
+			$at = $name . ':' . ( $number + 1 );
+			if ( self::directive_covers_input_rule( $line, 'disable' ) ) {
+				$problems[] = $at;
+				continue;
+			}
+			$has_code = self::line_has_code( $line );
+			if ( self::directive_covers_input_rule( $line, 'ignore' ) ) {
+				if ( ! $has_code || ! in_array( $at, $registered, true ) ) {
+					$problems[] = $at;
+				}
+				continue; // A registered exception, with its evidence in the results document.
+			}
+			if ( ! $has_code ) {
+				continue;
+			}
+			if ( 1 === preg_match( '/\$_(GET|POST|REQUEST|SERVER|COOKIE|FILES)\b/', $line ) && ! self::input_line_is_handled( $line ) ) {
+				$problems[] = $at;
+			}
+		}
+		return $problems;
+	}
+
+	public function test_every_superglobal_read_is_annotated_or_sanitized(): void {
+		$problems   = array();
+		$registered = $this->registered_input_exceptions();
+		foreach ( $this->sources() as $file ) {
+			$problems = array_merge( $problems, self::input_problems( file( $file ) ?: array(), basename( $file ), $registered ) );
+		}
 		$this->assertSame( array(), $problems );
+	}
+
+	public function test_an_unregistered_input_ignore_fails_even_beside_a_sanitized_read(): void {
+		$lines = array(
+			"\t\$x = array( sanitize_text_field( wp_unslash( \$_POST['a'] ) ), \$_POST['b'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- not registered\n",
+		);
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( $lines, 'f.php', array() ) );
+		$this->assertSame( array(), self::input_problems( $lines, 'f.php', array( 'f.php:1' ) ) );
+	}
+
+	public function test_a_standalone_input_ignore_or_a_disable_block_is_a_problem(): void {
+		$ignore_above = array(
+			"\t// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- covers the next line\n",
+			"\t\$x = array( sanitize_text_field( wp_unslash( \$_POST['a'] ) ), \$_POST['b'] );\n",
+		);
+		// Even registered, a line-above ignore is refused.
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( $ignore_above, 'f.php', array( 'f.php:1' ) ) );
+
+		$block = array(
+			"\t// phpcs:disable WordPress.Security.ValidatedSanitizedInput\n",
+			"\t\$x = array( sanitize_text_field( wp_unslash( \$_POST['a'] ) ), \$_POST['b'] );\n",
+			"\t// phpcs:enable WordPress.Security.ValidatedSanitizedInput\n",
+		);
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( $block, 'f.php', array() ) );
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( array( "\t// phpcs:disable\n" ), 'f.php', array() ) );
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( array( "\t/* phpcs:disable WordPress.Security -- x */\n" ), 'f.php', array() ) );
+		// phpcs cuts the reason at the first " --", whatever follows it.
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( array( "	// phpcs:disable WordPress.Security --x\n" ), 'f.php', array() ) );
+		$this->assertSame( array( 'f.php:1' ), self::input_problems( array( "	// phpcs:disable --reason\n" ), 'f.php', array() ) );
+		// A disable naming another sniff is unaffected.
+		$this->assertSame( array(), self::input_problems( array( "\t// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- reason\n" ), 'f.php', array() ) );
+	}
+
+	public function test_block_comments_case_and_parent_sniffs_are_judged_like_phpcs(): void {
+		$bad = array(
+			"\t/* phpcs:disable */\n",
+			"\t/* phpcs:disable WordPress.Security */\n",
+			"\t// PHPCS:Disable WordPress.Security.ValidatedSanitizedInput -- reason\n",
+			"\t// phpcs:ignore\n",
+			"\t// phpcs:ignore WordPress\n",
+			"\t/* phpcs:ignore WordPress.Security */\n",
+			"\t// PHPCS:IGNORE WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- x\n",
+		);
+		foreach ( $bad as $line ) {
+			$this->assertSame( array( 'f.php:1' ), self::input_problems( array( $line ), 'f.php', array( 'f.php:1' ) ), $line );
+		}
+		// End-of-line form: only on a registered line, bare or parent-named included.
+		foreach ( array( "\t\$a = \$_POST['a']; // phpcs:ignore\n", "\t\$a = \$_POST['a']; // phpcs:ignore WordPress.Security -- x\n" ) as $line ) {
+			$this->assertSame( array( 'f.php:1' ), self::input_problems( array( $line ), 'f.php', array() ), $line );
+			$this->assertSame( array(), self::input_problems( array( $line ), 'f.php', array( 'f.php:1' ) ), $line );
+		}
+		// Other sniffs are unaffected.
+		foreach ( array(
+			"\t/* phpcs:disable WordPress.Security.EscapeOutput */\n",
+			"\t// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- x\n",
+			"\t// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- reason\n",
+		) as $line ) {
+			$this->assertSame( array(), self::input_problems( array( $line ), 'f.php', array() ), $line );
+		}
+	}
+
+	public function test_a_read_after_a_leading_block_comment_or_attribute_is_still_checked(): void {
+		foreach ( array(
+			"\t/* note */ \$b = \$_POST['b'];\n",
+			"\t#[\\SensitiveParameter] \$b = \$_POST['b'];\n",
+		) as $line ) {
+			$this->assertSame( array( 'f.php:1' ), self::input_problems( array( $line ), 'f.php', array() ), $line );
+		}
+		// Comment-only lines that mention a superglobal stay skipped.
+		foreach ( array( "\t// reads \$_POST['b']\n", "\t * \$_POST['b']\n", "\t/* \$_POST['b'] */\n", "\t# \$_POST['b']\n" ) as $line ) {
+			$this->assertSame( array(), self::input_problems( array( $line ), 'f.php', array() ), $line );
+		}
+	}
+
+	public function test_every_registered_input_exception_is_still_a_real_ignore_line(): void {
+		$this->assertIsArray( $this->registered_input_exceptions() );
+		foreach ( $this->registered_input_exceptions() as $entry ) {
+			list( $name, $line ) = explode( ':', $entry );
+			$matches             = array();
+			foreach ( $this->sources() as $file ) {
+				if ( basename( $file ) === $name ) {
+					$matches = file( $file ) ?: array();
+				}
+			}
+			$this->assertMatchesRegularExpression(
+				'/phpcs:ignore[^\n]*WordPress\.Security\.ValidatedSanitizedInput/',
+				$matches[ (int) $line - 1 ] ?? '',
+				"$entry is registered but carries no such ignore (the line moved? update the table)"
+			);
+		}
 	}
 
 	/**
@@ -158,7 +383,7 @@ final class Test_Plugin_Check extends TestCase {
 	private const ALLOWED_STYLE_ENQUEUE_PATTERN = '/^\s*wp_register_style\(\s*\'babilim-admin\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION\s*\);\s*$|^\s*wp_enqueue_style\(\s*\'babilim-admin\'\s*\);\s*$/';
 
 	/**
-	 * The one script this plugin ships: its own admin script, enqueued
+	 * The scripts this plugin ships: its own admin script and the report panel script, enqueued
 	 * from its own directory with an explicit version, in the footer,
 	 * and with no dependencies; plus the file-less handle that carries the
 	 * Deactivate link's confirmation on the plugins list. Matched exactly, so any other
@@ -166,7 +391,7 @@ final class Test_Plugin_Check extends TestCase {
 	 *
 	 * @var string
 	 */
-	private const ALLOWED_SCRIPT_ENQUEUE_PATTERN = '/^\s*wp_register_script\(\s*\'babilim-plugins-list\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-plugins-list\'\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-admin\',\s*plugins_url\(\s*\'admin\/js\/babilim-admin\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$/';
+	private const ALLOWED_SCRIPT_ENQUEUE_PATTERN = '/^\s*wp_register_script\(\s*\'babilim-plugins-list\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-plugins-list\'\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-admin\',\s*plugins_url\(\s*\'admin\/js\/babilim-admin\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-report\',\s*plugins_url\(\s*\'admin\/js\/babilim-report\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$/';
 
 	public function test_no_remote_code_or_external_asset_patterns(): void {
 		$problems = array();
@@ -205,7 +430,7 @@ final class Test_Plugin_Check extends TestCase {
 				$found[] = substr( $path, strlen( $root ) + 1 );
 			}
 		}
-		$this->assertSame( array( 'admin/js/babilim-admin.js' ), $found, 'the one admin script, and no other script, stylesheet or source map' );
+		$this->assertSame( array( 'admin/js/babilim-admin.js', 'admin/js/babilim-report.js' ), $found, 'the two admin scripts, and no other script, stylesheet or source map' );
 	}
 
 	public function test_every_global_function_class_and_hook_name_is_prefixed(): void {
@@ -245,6 +470,47 @@ final class Test_Plugin_Check extends TestCase {
 	}
 
 	/**
+	 * Running the test suite must never rebuild or delete the release
+	 * zip under build/ -- the zip tests build to a scratch path.
+	 */
+	public function test_the_release_zip_is_not_touched_by_this_test(): void {
+		if ( ! class_exists( 'ZipArchive' ) ) {
+			$this->markTestSkipped( 'ZipArchive is not available.' );
+		}
+		$root = dirname( __DIR__, 2 );
+		if ( ! file_exists( $root . '/.git' ) ) {
+			$this->markTestSkipped( 'build-zip.php requires a git working tree (git ls-files).' );
+		}
+		$readme = (string) file_get_contents( $root . '/readme.txt' );
+		$this->assertSame( 1, preg_match( '/^Stable tag:\s*(\S+)/mi', $readme, $m ) );
+		$release = $root . '/build/babilim-' . $m[1] . '.zip';
+		$scratch = $root . '/build/.test-babilim.zip';
+
+		$existed = is_file( $release );
+		if ( $existed ) {
+			// Pin an old mtime so any rebuild is visible.
+			$this->assertTrue( touch( $release, 1000000000 ) );
+		}
+		clearstatcache();
+		$before = $existed ? filemtime( $release ) : null;
+
+		$output    = array();
+		$exit_code = 0;
+		exec( 'cd ' . escapeshellarg( $root ) . ' && BABILIM_ZIP_OUT=build/.test-babilim.zip php scripts/build-zip.php 2>&1', $output, $exit_code );
+		$this->assertSame( 0, $exit_code, "build-zip.php failed:\n" . implode( "\n", $output ) );
+		$this->assertFileExists( $scratch );
+		unlink( $scratch );
+
+		clearstatcache();
+		if ( $existed ) {
+			$this->assertFileExists( $release, 'the release zip must still exist' );
+			$this->assertSame( $before, filemtime( $release ), 'the release zip must not be rebuilt' );
+		} else {
+			$this->assertFileDoesNotExist( $release, 'the release zip must not be created' );
+		}
+	}
+
+	/**
 	 * .distignore listing the right entries is necessary but not
 	 * sufficient -- this actually builds the real release zip
 	 * (`scripts/build-zip.php`, the same script `make zip` runs) and
@@ -266,12 +532,9 @@ final class Test_Plugin_Check extends TestCase {
 
 		$output    = array();
 		$exit_code = 0;
-		exec( 'cd ' . escapeshellarg( $root ) . ' && php scripts/build-zip.php 2>&1', $output, $exit_code );
+		$zip_path  = $root . '/build/.test-babilim.zip';
+		exec( 'cd ' . escapeshellarg( $root ) . ' && BABILIM_ZIP_OUT=build/.test-babilim.zip php scripts/build-zip.php 2>&1', $output, $exit_code );
 		$this->assertSame( 0, $exit_code, "build-zip.php failed:\n" . implode( "\n", $output ) );
-
-		$readme = (string) file_get_contents( $root . '/readme.txt' );
-		$this->assertSame( 1, preg_match( '/^Stable tag:\s*(\S+)/mi', $readme, $m ) );
-		$zip_path = $root . '/build/babilim-' . $m[1] . '.zip';
 		$this->assertFileExists( $zip_path );
 
 		$zip = new ZipArchive();

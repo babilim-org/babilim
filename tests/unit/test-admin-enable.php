@@ -198,7 +198,7 @@ final class Test_Admin_Enable extends TestCase {
 
 		$this->assertCount( 0, $http->requests );
 		$this->assertStringContainsString( '<p>Languages found on this site: de_DE and fr_FR.</p>', $html );
-		$this->assertStringContainsString( '<p>Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically (on the free plan, only for plugins and themes that already use a free slot).</p>', $html );
+		$this->assertStringContainsString( '<p>Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.</p>', $html );
 		$this->assertStringNotContainsString( 'prepared in the background', $html );
 		$this->assertStringContainsString( '<p>The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim.</p>', $html );
 		$this->assertLessThan( strpos( $html, '<details>' ), strpos( $html, 'Languages found on this site' ), 'the explanation comes before the payload details' );

@@ -184,9 +184,10 @@ final class Babilim_Sync_Installer {
 	 *
 	 * Skipped: a cell the site already has a record for, a
 	 * (kind, slug, locale) the owner removed (OPTION_SKIP), a build that
-	 * failed MAX_AUTO_ATTEMPTS times, and -- on the free plan -- any
-	 * component with no record in any language yet, so no new free slot
-	 * is taken behind the owner's back.
+	 * failed MAX_AUTO_ATTEMPTS times, and any cell the service did not
+	 * mark `auto_install: true`; this class never reads the license
+	 * kind. `updates[]` (install_pending_updates()) does not depend on
+	 * the flag.
 	 *
 	 * On a multisite network nothing is installed here at all.
 	 *
@@ -207,9 +208,6 @@ final class Babilim_Sync_Installer {
 			return $done;
 		}
 		$state    = $this->state->get();
-		// Only an explicit paid or partner license lifts the slot rule; a
-		// missing, empty or unknown kind is treated as free.
-		$free     = ! in_array( (string) ( ( (array) ( $state['license'] ?? array() ) )['kind'] ?? '' ), array( 'paid', 'partner' ), true );
 		$skip     = get_option( self::OPTION_SKIP, array() );
 		$skip     = is_array( $skip ) ? $skip : array();
 		$failures = $this->failures();
@@ -229,13 +227,14 @@ final class Babilim_Sync_Installer {
 				if ( ! is_array( $cell ) || 'babilim_available' !== ( $cell['status'] ?? '' ) || '' === $build_id || ! in_array( $locale, $locales, true ) ) {
 					continue;
 				}
+				// Only the service decides what may be installed unasked.
+				if ( true !== ( $cell['auto_install'] ?? null ) ) {
+					continue;
+				}
 				if ( isset( $skip[ "$kind:$slug:$locale" ] ) || (int) ( $failures[ $build_id ] ?? 0 ) >= self::MAX_AUTO_ATTEMPTS ) {
 					continue;
 				}
 				if ( $this->site->has_manifest_record( $kind, $slug, $locale ) ) {
-					continue;
-				}
-				if ( $free && ! $this->site->has_manifest_record( $kind, $slug ) ) {
 					continue;
 				}
 

@@ -6,7 +6,7 @@
  * additionalProperties (bool or nested schema), items, pattern, enum,
  * minLength, maxLength, maxItems, maxProperties, uniqueItems, minItems,
  * minimum, maximum, format (date-time/
- * uri/uri-reference), const, oneOf.
+ * uri/uri-reference), const, oneOf, if/then (no `else`).
  *
  * assert_known_keywords() is called at the top of every validate() --
  * any schema keyword outside that list throws, rather than being
@@ -82,6 +82,8 @@ final class Babilim_Schema_Validator {
 		'format',
 		'const',
 		'oneOf',
+		'if',
+		'then',
 	);
 
 	/**
@@ -173,6 +175,11 @@ final class Babilim_Schema_Validator {
 		if ( isset( $schema['oneOf'] ) && is_array( $schema['oneOf'] ) ) {
 			foreach ( $schema['oneOf'] as $index => $sub_schema ) {
 				self::assert_known_keywords( (array) $sub_schema, "{$path}.oneOf[{$index}]" );
+			}
+		}
+		foreach ( array( 'if', 'then' ) as $conditional ) {
+			if ( isset( $schema[ $conditional ] ) && is_array( $schema[ $conditional ] ) ) {
+				self::assert_known_keywords( $schema[ $conditional ], "{$path}.{$conditional}" );
 			}
 		}
 	}
@@ -298,6 +305,13 @@ final class Babilim_Schema_Validator {
 					$errors = array_merge( $errors, self::validate_node( $item, (array) $schema['items'], $root, "{$path}[{$index}]" ) );
 				}
 			}
+		}
+
+		// `if`/`then` (no `else` exists in the pinned contract): `then`
+		// applies only when the data matches `if` with no errors.
+		if ( isset( $schema['if'], $schema['then'] ) && is_array( $schema['if'] ) && is_array( $schema['then'] )
+			&& array() === self::validate_node( $data, $schema['if'], $root, $path ) ) {
+			$errors = array_merge( $errors, self::validate_node( $data, $schema['then'], $root, $path ) );
 		}
 
 		return $errors;

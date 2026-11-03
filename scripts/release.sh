@@ -7,6 +7,8 @@
 #   WPORG_SVN_URL        SVN repository (default: the plugin directory repository)
 #   WPORG_SVN_USER       optional SVN username
 #   BABILIM_RELEASE_WORK work directory (default: a fresh mktemp -d)
+#   BABILIM_ZIP_OUT      zip to publish (default: build/babilim-<version>.zip);
+#                        the same variable scripts/build-zip.php writes to
 #
 # --skip-checks exists for the test suite only; `make release` never passes it.
 set -euo pipefail
@@ -40,7 +42,8 @@ V=$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' readme.txt | hea
 if [ "$SKIP_CHECKS" -eq 0 ]; then
 	make release-check
 fi
-[ -f "build/babilim-$V.zip" ] || { echo "FAIL: build/babilim-$V.zip does not exist" >&2; exit 1; }
+ZIP=${BABILIM_ZIP_OUT:-build/babilim-$V.zip}
+[ -f "$ZIP" ] || { echo "FAIL: $ZIP does not exist" >&2; exit 1; }
 
 echo "==> Checking out $URL"
 WORK=${BABILIM_RELEASE_WORK:-$(mktemp -d)}
@@ -54,7 +57,7 @@ echo "==> Checking that tag $V is free"
 echo "==> Staging trunk and assets"
 rm -rf "$WORK/unzipped" "$WORK/gitassets"
 mkdir -p "$WORK/gitassets"
-php -r '$z = new ZipArchive(); $z->open( $argv[1] ) === true && $z->extractTo( $argv[2] ) || exit( 1 );' "build/babilim-$V.zip" "$WORK/unzipped"
+php -r '$z = new ZipArchive(); $z->open( $argv[1] ) === true && $z->extractTo( $argv[2] ) || exit( 1 );' "$ZIP" "$WORK/unzipped"
 # Assets come from the committed tree, so an ignored or untracked file in the
 # working directory can never reach the public assets directory.
 git archive HEAD .wordpress-org | tar -x -C "$WORK/gitassets"

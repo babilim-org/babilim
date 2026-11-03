@@ -27,6 +27,10 @@ parameters:
 		# copy of includes/ made at run time, analysed once already as the
 		# real source above.
 		- playground/_generated/*
+		# Plugin Check probe inputs: deliberately unsanitized or odd read
+		# forms fed to the official sniff (see docs/plugin-check-results.md),
+		# never loaded by the plugin or its tests.
+		- fixtures/sniff-probe/*
 
 	scanFiles:
 		- phpstan-stubs/PHPUnitTestCase.stub.php

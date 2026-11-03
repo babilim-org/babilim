@@ -135,5 +135,8 @@ final class Test_Consent extends TestCase {
 		$rows = array_values( array_filter( ( new Babilim_Consent() )->payload_preview( $this->inventory() ), static function ( $row ) { return 'source package' === $row['field']; } ) );
 		$this->assertCount( 1, $rows );
 		$this->assertStringContainsString( 'Only when you confirm', $rows[0]['description'] );
+		$this->assertStringContainsString( 'every .php and .js file', $rows[0]['description'] );
+		$this->assertStringContainsString( 'common secrets', $rows[0]['description'] );
+		$this->assertStringNotContainsString( 'entire', $rows[0]['description'] );
 	}
 }
