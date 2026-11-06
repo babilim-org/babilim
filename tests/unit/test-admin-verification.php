@@ -107,6 +107,18 @@ final class Test_Admin_Verification extends TestCase {
 		return $this->admin()->render_current_page();
 	}
 
+	/** Submits the dismiss form the way the browser does: with the fingerprint the rendered form carries. */
+	private function dismiss_from( string $html, Babilim_Admin $admin ): void {
+		$this->assertSame( 1, preg_match( '/name="fingerprint" value="([^"]*)"/', $html, $m ), 'the form carries a fingerprint' );
+		$this->post_dismiss( $m[1], $admin );
+	}
+
+	private function post_dismiss( string $fingerprint, Babilim_Admin $admin ): void {
+		$_POST    = array( 'action' => 'babilim_verification_notice_dismiss', '_wpnonce' => wp_create_nonce( 'babilim_verification_notice_dismiss' ), 'fingerprint' => $fingerprint );
+		$_REQUEST = $_POST;
+		$admin->dispatch_babilim_verification_notice_dismiss();
+	}
+
 	private function notice_html( Babilim_Admin $admin ): string {
 		ob_start();
 		$admin->render_verification_admin_notice();
@@ -229,6 +241,152 @@ final class Test_Admin_Verification extends TestCase {
 			$GLOBALS['hook_suffix'] = $screen;
 			$this->assertSame( '', $this->notice_html( $admin ), "no warning on '{$screen}'" );
 		}
+	}
+
+	public function test_the_dashboard_notice_can_be_dismissed_per_user_until_the_warning_changes(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$warning          = get_option( Babilim_Site::OPTION_VERIFICATION_WARNING );
+		$warning['since'] = 100;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+
+		$html = $this->notice_html( $admin );
+		$this->assertStringContainsString( 'is-dismissible', $html );
+		$this->assertStringContainsString( 'data-babilim-dismiss-form=', $html );
+		$this->assertStringContainsString( 'value="babilim_verification_notice_dismiss"', $html );
+
+		$this->dismiss_from( $html, $admin );
+		$this->assertSame( '', $this->notice_html( $admin ), 'dismissed for this warning' );
+
+		$warning['since'] = 200;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'a new warning shows again' );
+
+		$GLOBALS['babilim_test_user_id'] = 2;
+		$warning['since']                = 100;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'another user still sees it' );
+	}
+
+	public function test_a_new_reason_with_the_same_since_shows_the_notice_again(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$warning          = get_option( Babilim_Site::OPTION_VERIFICATION_WARNING );
+		$warning['since'] = 100;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$this->dismiss_from( $this->notice_html( $admin ), $admin );
+		$this->assertSame( '', $this->notice_html( $admin ) );
+
+		$warning['reason'] = 'callback_unreachable';
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'the reason changed, the notice is back' );
+	}
+
+	public function test_the_dismissal_stores_the_warning_the_user_saw_not_the_one_at_post_time(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$warning          = get_option( Babilim_Site::OPTION_VERIFICATION_WARNING );
+		$warning['since'] = 100;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$seen = $this->notice_html( $admin );
+
+		// The warning changes after the page was drawn and before the button is pressed.
+		$warning['since']  = 200;
+		$warning['reason'] = 'callback_invalid';
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$this->dismiss_from( $seen, $admin );
+
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'the newer warning was never seen, so it is not hidden' );
+	}
+
+	public function test_a_warning_that_is_cleared_and_comes_back_shows_the_notice_again(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$warning          = get_option( Babilim_Site::OPTION_VERIFICATION_WARNING );
+		$warning['since'] = 100;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$this->dismiss_from( $this->notice_html( $admin ), $admin );
+
+		delete_option( Babilim_Site::OPTION_VERIFICATION_WARNING );
+		$this->assertSame( '', $this->notice_html( $admin ) );
+		$warning['since'] = 300;
+		update_option( Babilim_Site::OPTION_VERIFICATION_WARNING, $warning );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ) );
+	}
+
+	public function test_a_malformed_fingerprint_is_not_stored(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$this->post_dismiss( '<script>', $admin );
+		$this->assertFalse( get_user_option( Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED ) );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ) );
+	}
+
+	public function test_dismissal_is_stored_once_for_the_user_whatever_the_screen(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$this->dismiss_from( $this->notice_html( $admin ), $admin );
+		$stored = get_user_option( Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED );
+
+		// Network admin and the main site read the same record (one key for the
+		// whole network, with a value per site), so they never disagree. The
+		// control: with the record removed the network screen does show the
+		// notice, so an empty result below can only come from the dismissal.
+		$GLOBALS['babilim_test_multisite']     = true;
+		$GLOBALS['babilim_test_network_admin'] = true;
+		$this->assertTrue( is_network_admin(), 'the test really is on the network screen' );
+		unset( $GLOBALS['babilim_test_user_options'][ get_current_user_id() ][ Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED ] );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'control: the network screen renders the notice when nothing was dismissed' );
+		update_user_option( get_current_user_id(), Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED, $stored, true );
+		$this->assertSame( '', $this->notice_html( $admin ), 'the network screen reads the dismissal made on the site screen' );
+		$stored = get_user_option( Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED );
+		$this->assertIsArray( $stored );
+		$this->assertArrayHasKey( get_current_blog_id(), $stored );
+		$this->assertArrayHasKey( Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED, $GLOBALS['babilim_test_user_options'][ get_current_user_id() ], 'stored under the unprefixed key' );
+	}
+
+	public function test_the_dismiss_action_needs_the_capability(): void {
+		$this->seed_warning( 'callback_timeout' );
+		$_POST    = array( 'action' => 'babilim_verification_notice_dismiss', '_wpnonce' => wp_create_nonce( 'babilim_verification_notice_dismiss' ) );
+		$_REQUEST = $_POST;
+		$GLOBALS['babilim_test_current_user_can'] = false;
+		try {
+			$this->admin()->dispatch_babilim_verification_notice_dismiss();
+			$this->fail( 'expected wp_die' );
+		} catch ( Babilim_Test_Wp_Die_Exception $e ) {
+			$this->assertFalse( get_user_option( Babilim_Admin::USER_OPTION_VERIFICATION_DISMISSED ) );
+		}
+	}
+
+	public function test_dismissal_is_per_site_on_multisite(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
+		$this->seed_warning( 'callback_timeout' );
+		$admin = $this->admin();
+		$admin->register_menu();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+
+		$this->dismiss_from( $this->notice_html( $admin ), $admin );
+		$this->assertSame( '', $this->notice_html( $admin ), 'dismissed on site 1' );
+
+		switch_to_blog( 2 );
+		$this->seed_warning( 'callback_timeout' );
+		update_option( 'babilim_consent', true );
+		$this->assertStringContainsString( 'could not verify this site', $this->notice_html( $admin ), 'site 2 is unaffected' );
+		restore_current_blog();
+		$this->assertSame( '', $this->notice_html( $admin ), 'site 1 stays dismissed' );
 	}
 
 	public function test_the_admin_notice_is_not_repeated_on_the_plugins_own_screen_and_needs_a_warning(): void {
@@ -366,35 +524,35 @@ final class Test_Admin_Verification extends TestCase {
 	public function test_the_settings_screen_has_the_delete_all_checkbox_off_by_default_with_the_risk_text(): void {
 		$html = $this->settings_html();
 
-		$this->assertStringContainsString( 'name="delete_data_on_uninstall"', $html );
+		$this->assertStringContainsString( 'name="babilim_delete_data_on_uninstall"', $html );
 		$this->assertStringContainsString( 'Delete all Babilim data on uninstall', $html );
-		$this->assertDoesNotMatchRegularExpression( '/name="delete_data_on_uninstall"[^>]*checked/', $html );
+		$this->assertDoesNotMatchRegularExpression( '/name="babilim_delete_data_on_uninstall"[^>]*checked/', $html );
 		$this->assertStringContainsString( 'paid license', $html );
 		$this->assertStringContainsString( 'cannot be restored automatically', $html );
 		$this->assertStringContainsString( 'contact Babilim support at hi@babilim.org to get it back', $html, 'the settings-screen risk text names the support address' );
 
 		update_option( 'babilim_delete_data_on_uninstall', true );
-		$this->assertMatchesRegularExpression( '/name="delete_data_on_uninstall"[^>]*checked/', $this->settings_html() );
+		$this->assertMatchesRegularExpression( '/name="babilim_delete_data_on_uninstall"[^>]*checked/', $this->settings_html() );
 	}
 
 	public function test_saving_settings_stores_the_delete_all_choice_through_the_sanitizer(): void {
 		$admin = $this->admin();
 		$admin->register_settings();
 
-		$this->post( 'babilim_save_settings', array( 'delete_data_on_uninstall' => 'on' ) );
-		$admin->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'delete_data_on_uninstall' => 'on' ) );
+		babilim_test_submit_settings( $admin, $fields );
 		$this->assertTrue( get_option( 'babilim_delete_data_on_uninstall' ) );
 
-		$this->post( 'babilim_save_settings', array() );
-		$admin->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array() );
+		babilim_test_submit_settings( $admin, $fields );
 		$this->assertFalse( get_option( 'babilim_delete_data_on_uninstall' ), 'an unticked box stores false' );
 	}
 
 	public function test_saving_settings_without_the_capability_never_touches_the_delete_all_choice(): void {
 		$GLOBALS['babilim_test_current_user_can'] = false;
-		$this->post( 'babilim_save_settings', array( 'delete_data_on_uninstall' => 'on' ) );
+		$fields = babilim_test_settings_fields( array( 'delete_data_on_uninstall' => 'on' ) );
 		try {
-			$this->admin()->dispatch_babilim_save_settings();
+			babilim_test_submit_settings( $this->admin(), $fields );
 			$this->fail( 'Expected wp_die().' );
 		} catch ( Babilim_Test_Wp_Die_Exception $e ) {
 			$this->assertFalse( get_option( 'babilim_delete_data_on_uninstall' ) );

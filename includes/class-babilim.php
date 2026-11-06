@@ -218,7 +218,18 @@ class Babilim {
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 		}
-		update_option( 'babilim_version', BABILIM_VERSION, false );
+		// The failure counters an older version left may hold attempts
+		// that this version would not have counted: start empty, once per
+		// version change. (Nothing is installed from a sync answer that was
+		// not just refreshed: run_sync() checks is_ok() first.)
+		delete_option( Babilim_Sync_Installer::OPTION_FAILURES );
+		// The two settings the General form saves through the Settings API
+		// (which cannot say autoload=false) are created here first, with
+		// the defaults the code already reads them with, so they are not
+		// autoloaded; add_option() leaves one that already exists alone.
+		add_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 1, '', false );
+		add_option( Babilim_Error_Reporter::OPTION_SHARE, '0', '', false );
+		update_option( 'babilim_version', BABILIM_VERSION, true ); // Read on every request, so autoloaded.
 	}
 
 	/**
@@ -309,7 +320,12 @@ class Babilim {
 	 */
 	public function run_sync(): void {
 		$this->verify_installed_items();
-		$this->site()->sync( Babilim_Site::CRON_BUDGET_SECONDS );
+		$result = $this->site()->sync( Babilim_Site::CRON_BUDGET_SECONDS );
+		if ( ! $result->is_ok() ) {
+			// Nothing is installed from an answer that was not just
+			// refreshed, not even a listed update.
+			return;
+		}
 		$this->install_translations();
 	}
 

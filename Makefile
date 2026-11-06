@@ -157,12 +157,19 @@ public-check:
 public-history-check:
 	@bash scripts/public-history-check.sh
 
+# Compares the messages, source and readme of the built zip against the
+# retired restriction wording (see scripts/wording-check.php).
+.PHONY: wording-check
+wording-check: zip
+	@version=$$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' readme.txt | head -n 1); \
+	php scripts/wording-check.php "build/babilim-$$version.zip"
+
 # Gates a real release on no TODO-OWNER placeholder remaining in
 # readme.txt (a field that is not yet known is written as TODO-OWNER
 # during development). Deliberately not part of `make test`. Also runs
 # public-check, since both are pre-release gates.
 .PHONY: release-check
-release-check: public-check pot-check l10n-check zip
+release-check: public-check pot-check l10n-check wording-check zip
 	@version=$$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' readme.txt | head -n 1); \
 	size=$$(stat -c %s "build/babilim-$$version.zip"); \
 	[ $$size -le 10000000 ] || { echo "FAIL: zip is $$size bytes (> 10 MB)"; exit 1; }

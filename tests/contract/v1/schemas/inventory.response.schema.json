@@ -27,7 +27,7 @@
               "properties": {
                 "status": {
                   "type": "string",
-                  "description": "bundled = the component ships its own translation for this locale; a hint state only (not terminal, 1.8.0): shown when no Babilim build is installed/available and no job exists, and a Babilim translation can still be requested",
+                  "description": "bundled = the component ships its own translation for this locale; a hint state only (not terminal, 1.8.0): shown when no Babilim build is installed/available and no job exists, and a Babilim translation can still be requested. 1.11.0: babilim_available means an active build exists AND this site may download it now -- a paid or partner license, or a free site whose free-plan slot for the component is already bound. A free site with an unbound component sees requestable (slot free) or quota_exceeded (slots full); posting POST /v1/requests for it binds the slot and answers available",
                   "enum": ["bundled", "wporg", "babilim_installed", "babilim_available", "requestable", "queued", "running", "failed", "unsupported", "quota_exceeded", "license_required"]
                 },
                 "build_id": {"type": "string", "pattern": "^bd_[0-9a-f]{12}$"},
@@ -47,7 +47,7 @@
                   }
                 },
                 "hardcoded_text_warning": {"type": "boolean", "description": "1.6.0: present and true only when status is babilim_installed or babilim_available AND the build named by this entry's build_id belongs to a component whose source has a substantial amount of user-visible text that is not passed through translation functions, so a language pack cannot cover it. Absent means no notice -- it does NOT mean the component is fully translatable. Never false"},
-                "auto_install": {"const": true, "description": "1.10.0: present only when status is babilim_available and the service permits this site to install the build without a user action: a paid or partner license, or this request's own installed{} for the component is non-empty (the site already has a Babilim translation of it in some locale). Absent means the plugin must not install it automatically; the manual install action stays available"},
+                "auto_install": {"const": true, "description": "DEPRECATED (1.11.0): sent on every babilim_available entry and always true, so a plugin that still reads it behaves as before; new plugins must ignore it. Whether to install automatically is the plugin's own (user-controlled) decision. Never present on any other status, never false"},
                 "upload_pending": {"type": "boolean", "description": "1.5.0: true only when status is queued and THIS site holds an open (not yet completed) source upload for this component version -- the site should offer the same request action again so the upload can be resumed or cancelled"},
                 "reason": {"type": "string", "minLength": 1, "description": "generic reason code only when status is failed or unsupported (1.8.0: unsupported also carries \"source_locale\" when the site locale equals the component's original language); also present when status is babilim_installed and the installed build's local integrity check failed (\"integrity_failed\"); 1.5.0: also present when status is requestable because the last source upload was rejected (\"source_rejected\") or expired (\"upload_expired\")"}
               }

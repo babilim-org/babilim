@@ -203,7 +203,7 @@ final class Babilim_Api_Client {
 	 *
 	 * @param string $build_id Build id, e.g. `bd_...`.
 	 * @return array|WP_Error {location: string} on the `302`;
-	 *                         WP_Error('babilim_quota_exceeded'|'babilim_not_available', ...) otherwise.
+	 *                         WP_Error('babilim_slot_required'|'babilim_not_available', ...) otherwise.
 	 */
 	public function download( string $build_id, ?int $timeout = null ) {
 		// The contract's own pattern: anything else would only be

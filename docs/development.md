@@ -106,6 +106,21 @@ A run that is out of time returns `in_progress`: the handler schedules
 one `babilim_sync_once` event and calls `spawn_cron()`, and the screen
 shows an informational notice with a "Check again" button.
 
+Nothing is installed after a sync that did not finish, not even the
+builds listed in `updates[]`. `in_progress` is this plugin's own result,
+not an answer from the service: the run ran out of time, a request
+failed, or the service answered 429 or 5xx before every inventory batch
+was sent. The answers of the batches that did go through are not stored
+(`Babilim_Site::sync()` writes the state only once every batch has
+answered), so `updates[]` is still the list from the last completed
+sync. A build listed there may since have been replaced or withdrawn,
+or the component may have moved to another version, and the service has
+not been asked about it in this run. Installing from it could put back a
+build the service no longer offers, so the run waits for a sync that
+completes. A site whose inventory needs more batches than one run may
+send (`MAX_SYNC_BATCHES`) gets `too_many_components` and a message
+instead.
+
 What the screen shows follows from stored state only: consent, the
 `fetched_at` of the last completed check, and the last sync error
 (`babilim_sync_last_error`, `{code, message, since, at}`; `since` is
@@ -119,9 +134,16 @@ A recorded error is never retried by a page load; "Check again now"
 
 The settings page (`admin.php?page=babilim-settings`) has two tabs,
 `tab=general` (the default; any other value is General) and
-`tab=advanced`. General is one form (`babilim-settings-form`,
-`babilim_save_settings`) holding the managed languages, the uninstall
-choices and the account block; its "Disable Babilim" button belongs to a
+`tab=advanced`. General is one Settings API form (`babilim-settings-form`,
+option group `babilim_settings`, posted to `options.php`) holding the
+managed languages, the uninstall choices and the account block. Each
+field is a registered setting with its own sanitizer; the language block
+is posted as `babilim_manual_locales[checked][]` and `[new]`, and its
+sanitizer also writes `babilim_disabled_locales`. An invalid typed
+language refuses the whole save (every other setting keeps its stored
+value). Turning error sharing on or off runs on
+`update_option_babilim_share_errors` / `add_option_babilim_share_errors`
+(authorize what waits, or forget it). The General tab's "Disable Babilim" button belongs to a
 second, separate form through its `form` attribute, because forms cannot
 be nested. Unchecking a detected language adds it to
 `babilim_disabled_locales` (checking it removes it again; files already

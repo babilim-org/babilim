@@ -485,10 +485,10 @@ final class Test_Contract extends TestCase {
 	}
 
 	/**
-	 * 1.10.0: a `babilim_available` entry may carry `auto_install: true`;
-	 * absent means the plugin never installs it without a click.
+	 * 1.11.0: every `babilim_available` entry carries `auto_install: true`
+	 * (deprecated, kept for older plugins); other statuses carry none.
 	 */
-	public function test_inventory_response_parses_the_1_10_0_auto_install_flag(): void {
+	public function test_inventory_response_carries_auto_install_on_every_available_entry(): void {
 		$path = dirname( __DIR__ ) . '/contract/v1/examples/inventory.auto-install.json';
 		$this->assertFileExists( $path );
 
@@ -504,7 +504,15 @@ final class Test_Contract extends TestCase {
 			$by_slug[ $component['slug'] ] = $component['locales'];
 		}
 		$this->assertTrue( $by_slug['component-a']['fr_FR']['auto_install'] );
+		$this->assertSame( 'requestable', $by_slug['component-b']['de_DE']['status'] );
 		$this->assertArrayNotHasKey( 'auto_install', $by_slug['component-b']['de_DE'] );
+		foreach ( $result['components'] as $component ) {
+			foreach ( $component['locales'] as $cell ) {
+				if ( 'babilim_available' === $cell['status'] ) {
+					$this->assertTrue( $cell['auto_install'] );
+				}
+			}
+		}
 	}
 
 	public function test_401_unauthorized_maps_correctly(): void {
@@ -554,12 +562,24 @@ final class Test_Contract extends TestCase {
 		$this->assertMatchesRequestSchema( $http->requests[0]['args']['body'], 'downloads.request.schema.json' );
 	}
 
-	public function test_download_quota_exceeded_maps_to_403_error(): void {
-		$example = $this->fixture( 'downloads.403-quota.json' );
+	public function test_a_slot_required_download_error_maps_to_babilim_slot_required(): void {
+		$example = $this->fixture( 'downloads.403-slot-required.json' );
 		$http    = new Babilim_Fake_Http( array( $this->response_from_fixture( $example ) ) );
 		$client  = new Babilim_Api_Client( $http, 'https://api.babilim.org', 'tok_x' );
 
 		$result = $client->download( $example['request']['body']['build_id'] );
+
+		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assertSame( 'babilim_slot_required', $result->get_error_code() );
+		$this->assertSame( $example['response']['body']['error']['message'], $result->get_error_message() );
+	}
+
+	public function test_request_quota_exceeded_maps_to_403_error(): void {
+		$example = $this->fixture( 'requests.403-quota.json' );
+		$http    = new Babilim_Fake_Http( array( $this->response_from_fixture( $example ) ) );
+		$client  = new Babilim_Api_Client( $http, 'https://api.babilim.org', 'tok_x' );
+
+		$result = $client->request_translation( $example['request']['body'] );
 
 		$this->assertSame( 'babilim_quota_exceeded', $result->get_error_code() );
 	}

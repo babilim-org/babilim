@@ -539,7 +539,7 @@ final class Test_Translations_Table extends TestCase {
 	}
 
 	public function test_free_site_request_buttons_carry_the_slot_confirmation_and_paid_sites_do_not(): void {
-		$sentence = 'If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?';
+		$sentence = 'If this plugin or theme is not on one of the free service plan\'s slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?';
 		$this->seed_site( $this->sample_state(), $this->sample_inventory(), array(), 'free' );
 		$html = $this->page();
 		$x    = $this->xpath( $html );
@@ -551,22 +551,56 @@ final class Test_Translations_Table extends TestCase {
 			$this->assertSame( 1, $buttons->length );
 			$this->assertSame( $sentence, $this->attr( $buttons->item( 0 ), 'data-babilim-confirm' ) );
 		}
-		$this->assertSame( 0, $x->query( '//table//td//span[@class="description"][contains(., "free slots")]' )->length, 'no per-cell sentence: it would stretch the action cell' );
-		$this->assertSame( 1, $x->query( '//p[@class="description"][contains(., "free slots")]' )->length, 'the one note above the table keeps the sentence for no-JS users' );
+		$this->assertSame( 0, $x->query( '//table//td//span[@class="description"][contains(., "free service plan")]' )->length, 'no per-cell sentence: it would stretch the action cell' );
+		$this->assertSame( 1, $x->query( '//p[@class="description"][contains(., "free service plan")]' )->length, 'the one note above the table keeps the sentence for no-JS users' );
 		$this->assertStringContainsString( 'Bulk actions apply to every matching language of each selected component.', $html );
 
 		babilim_test_reset();
 		$this->seed_site( $this->sample_state(), $this->sample_inventory(), array(), 'paid' );
 		$html = $this->page();
 		$this->assertStringNotContainsString( 'data-babilim-confirm', $html );
-		$this->assertStringNotContainsString( 'free slots', $html );
+		$this->assertStringNotContainsString( 'free service plan', $html );
+	}
+
+	public function test_the_slot_sentences_use_the_limits_the_service_reported_and_no_number_otherwise(): void {
+		$quota = array( 'quota' => array( 'free_slots' => array( 'theme' => array( 'used' => 0, 'limit' => 3 ), 'plugin' => array( 'used' => 1, 'limit' => 5 ) ) ) );
+		$this->seed_site( $this->sample_state(), $this->sample_inventory(), $quota, 'free' );
+		$html = $this->page();
+		$this->assertStringContainsString( 'for this site (the limit is 3 for themes and 5 for plugins), unless it already has one.', $html );
+		$this->assertStringContainsString( 'puts it on one (the limit is 3 for themes and 5 for plugins). A slot stays used', $html );
+		$this->assertStringNotContainsString( 'one theme and two plugins', $html );
+
+		babilim_test_reset();
+		$this->seed_site( $this->sample_state(), $this->sample_inventory(), array(), 'free' );
+		$html = $this->page();
+		$this->assertStringContainsString( 'free service plan', $html );
+		$this->assertDoesNotMatchRegularExpression( '/limit is \d|one theme|two plugins/', $html, 'nothing reported, no number' );
+	}
+
+	public function test_the_slot_sentences_are_whole_translatable_strings_without_spliced_fragments(): void {
+		$pot = (string) file_get_contents( dirname( __DIR__, 2 ) . '/languages/babilim.pot' );
+		$this->assertStringNotContainsString( 'msgid "(the limit is', $pot, 'no number fragment is a string of its own' );
+		$this->assertStringNotContainsString( 'for this site%s', $pot, 'no %s is spliced into a sentence' );
+		$this->assertStringNotContainsString( 'puts it on one%s', $pot );
+		$with = Babilim_Translations_Table::slot_note( array( 'theme' => 3, 'plugin' => 5 ) );
+		$this->assertStringContainsString( 'for this site (the limit is 3 for themes and 5 for plugins), unless it already has one.', $with );
+		$without = Babilim_Translations_Table::slot_note();
+		$this->assertStringContainsString( 'for this site, unless it already has one.', $without );
+		$this->assertDoesNotMatchRegularExpression( '/\d/', $without );
+		$this->assertStringContainsString( 'puts it on one (the limit is 3 for themes and 5 for plugins). A slot', Babilim_Translations_Table::slot_sentence( array( 'theme' => 3, 'plugin' => 5 ) ) );
+		$this->assertStringContainsString( 'puts it on one. A slot', Babilim_Translations_Table::slot_sentence() );
+	}
+
+	public function test_slot_limits_reads_only_what_the_service_reported(): void {
+		$this->assertSame( array(), Babilim_Translations_Table::slot_limits( array() ) );
+		$this->assertSame( array( 'theme' => 7 ), Babilim_Translations_Table::slot_limits( array( 'quota' => array( 'free_slots' => array( 'theme' => array( 'limit' => 7 ), 'plugin' => 'x' ) ) ) ) );
 	}
 
 	public function test_free_site_note_is_a_statement_without_the_confirmation_question(): void {
-		$statement = 'Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back.';
+		$statement = 'Requesting a translation puts this plugin or theme on one of the free service plan\'s slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it.';
 		$this->seed_site( $this->sample_state(), $this->sample_inventory(), array(), 'free' );
 		$x    = $this->xpath( $this->page() );
-		$note = $x->query( '//p[@class="description"][contains(., "free slots")]' );
+		$note = $x->query( '//p[@class="description"][contains(., "free service plan")]' );
 		$this->assertSame( 1, $note->length );
 		$text = $note->item( 0 )->textContent;
 		$this->assertStringContainsString( 'Bulk actions apply to every matching language of each selected component. ' . $statement, $text );
@@ -829,13 +863,12 @@ final class Test_Translations_Table extends TestCase {
 		$this->assertSame( '', trim( $x->query( '//span[contains(@class,"babilim-cell-action")]' )->item( 0 )->textContent ) );
 	}
 
-	public function test_a_license_blocked_cell_keeps_the_upgrade_link_in_the_action_cell_and_no_disabled_button(): void {
+	public function test_a_blocked_cell_has_no_upgrade_link_even_when_checkout_is_offered(): void {
 		$this->seed_site( array( self::component( 'acme', array( 'de_DE' => array( 'status' => 'license_required' ) ) ) ), array( self::inventory( 'acme', 'Acme' ) ), array( 'price' => array( 'amount' => '8.99', 'currency' => 'USD' ) ), 'free' );
 		update_option( 'babilim_identity', array( 'site_id' => 'st_test', 'token' => str_repeat( 'a', 40 ) ), false );
 		$x = $this->xpath( $this->page() );
 		$this->assertSame( 0, $x->query( '//button[@disabled]' )->length );
-		$link = $x->query( '//span[contains(@class,"babilim-cell-action")]/button[@form="babilim-checkout-form"][normalize-space()="Upgrade this site"]' );
-		$this->assertSame( 1, $link->length );
+		$this->assertSame( 0, $x->query( '//table//button[@form="babilim-checkout-form"]' )->length );
 	}
 
 	public function test_the_language_links_show_names_and_keep_the_code_as_title_and_parameter(): void {
@@ -1153,7 +1186,7 @@ final class Test_Translations_Table extends TestCase {
 		);
 		$m = new ReflectionMethod( Babilim_Translations_Table::class, 'column_translations' );
 		$m->setAccessible( true );
-		$t    = new Babilim_Translations_Table( array(), array(), 'all', '', '', false, array(), false, '' );
+		$t    = new Babilim_Translations_Table( array(), array(), 'all', '', '', false, array(), '' );
 		$html = (string) $m->invoke( $t, $item );
 		$x    = $this->xpath( $html );
 		$this->assertSame( 1, $x->query( '/html/body/div[contains(@class,"babilim-cell-list")]/div[contains(@class,"babilim-cell-grid")]' )->length, 'one container and one grid per cell' );
@@ -1198,7 +1231,7 @@ final class Test_Translations_Table extends TestCase {
 		);
 		$m = new ReflectionMethod( Babilim_Translations_Table::class, 'column_translations' );
 		$m->setAccessible( true );
-		$t    = new Babilim_Translations_Table( array(), array(), 'all', '', '', false, array(), false, '' );
+		$t    = new Babilim_Translations_Table( array(), array(), 'all', '', '', false, array(), '' );
 		$html = (string) $m->invoke( $t, $item );
 		$this->assertMatchesRegularExpression( '/<button[^>]*data-babilim-idle-label="Request translation"[^>]*data-babilim-busy-label="[^"]+"[^>]*>Request translation<\\/button>/', $html );
 	}
@@ -1241,7 +1274,7 @@ final class Test_Translations_Table extends TestCase {
 	}
 
 	private function no_items_html( string $view, string $locale, string $search, string $kind ): string {
-		$t = new Babilim_Translations_Table( array(), array(), $view, $locale, $search, false, array(), false, $kind );
+		$t = new Babilim_Translations_Table( array(), array(), $view, $locale, $search, false, array(), $kind );
 		ob_start();
 		$t->no_items();
 		return (string) ob_get_clean();

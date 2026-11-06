@@ -29,17 +29,60 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	public const PER_PAGE = 50;
 
 	/**
-	 * Statement about free slots, shown above the list (not a question).
+	 * The slot limits the service last reported, `kind => limit`, from
+	 * the stored state's `quota.free_slots`. A kind the service did not
+	 * report is left out: this plugin knows no number of its own.
+	 *
+	 * @param array $state Stored state (Babilim_State::get()).
+	 * @return array<string,int>
 	 */
-	public static function slot_note(): string {
-		return __( 'Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back.', 'babilim' );
+	public static function slot_limits( array $state ): array {
+		$slots  = (array) ( ( (array) ( $state['quota'] ?? array() ) )['free_slots'] ?? array() );
+		$limits = array();
+		foreach ( array( 'theme', 'plugin' ) as $kind ) {
+			$slot = $slots[ $kind ] ?? null;
+			if ( is_array( $slot ) && isset( $slot['limit'] ) && is_numeric( $slot['limit'] ) ) {
+				$limits[ $kind ] = max( 0, (int) $slot['limit'] );
+			}
+		}
+		return $limits;
 	}
 
 	/**
-	 * Sentence shown before a request that may use a free slot.
+	 * Statement about free-plan slots, shown above the list (not a question).
+	 * Two complete sentences: one that names the limits the service reported,
+	 * one without any number for when it has not reported both.
+	 *
+	 * @param array<string,int> $limits slot_limits(); empty when unknown.
 	 */
-	public static function slot_sentence(): string {
-		return __( 'If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?', 'babilim' );
+	public static function slot_note( array $limits = array() ): string {
+		if ( isset( $limits['theme'], $limits['plugin'] ) ) {
+			return sprintf(
+				/* translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service). */
+				__( 'Requesting a translation puts this plugin or theme on one of the free service plan\'s slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it.', 'babilim' ),
+				$limits['theme'],
+				$limits['plugin']
+			);
+		}
+		return __( 'Requesting a translation puts this plugin or theme on one of the free service plan\'s slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it.', 'babilim' );
+	}
+
+	/**
+	 * Sentence shown before a request that may use a free-plan slot. Same
+	 * split as slot_note().
+	 *
+	 * @param array<string,int> $limits slot_limits(); empty when unknown.
+	 */
+	public static function slot_sentence( array $limits = array() ): string {
+		if ( isset( $limits['theme'], $limits['plugin'] ) ) {
+			return sprintf(
+				/* translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service). */
+				__( 'If this plugin or theme is not on one of the free service plan\'s slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?', 'babilim' ),
+				$limits['theme'],
+				$limits['plugin']
+			);
+		}
+		return __( 'If this plugin or theme is not on one of the free service plan\'s slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?', 'babilim' );
 	}
 
 	/**
@@ -305,12 +348,11 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	private $free;
 
 	/**
-	 * Whether the one-time upgrade is on offer, so a cell the license
-	 * blocks gets an Upgrade button.
+	 * Slot limits the service reported (see slot_limits()).
 	 *
-	 * @var bool
+	 * @var array<string,int>
 	 */
-	private $upgrade = false;
+	private $slot_limits = array();
 
 	/**
 	 * Every locale any row lists, for the language links.
@@ -350,21 +392,21 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 * @param string              $search        Search text.
 	 * @param bool                $free          Whether the site is on the free plan.
 	 * @param string[]            $all_locales   Every language of the rows of every tab.
-	 * @param bool                $upgrade       Whether the one-time upgrade is on offer (adds an Upgrade button to cells the license blocks).
 	 * @param string              $kind          Selected tab: plugin, theme or '' for every kind.
 	 * @param array<string,int>   $kind_counts   kind_counts() for the tabs.
 	 * @param array<string,int>   $locale_counts locale_action_counts() for the language links.
+	 * @param array<string,int>   $slot_limits   slot_limits(): the limits the service reported.
 	 */
-	public function __construct( array $items, array $counts, string $view, string $locale_filter, string $search, bool $free = false, array $all_locales = array(), bool $upgrade = false, string $kind = '', array $kind_counts = array(), array $locale_counts = array() ) {
+	public function __construct( array $items, array $counts, string $view, string $locale_filter, string $search, bool $free = false, array $all_locales = array(), string $kind = '', array $kind_counts = array(), array $locale_counts = array(), array $slot_limits = array() ) {
 		parent::__construct( array( 'plural' => 'translations', 'singular' => 'translation', 'ajax' => false ) );
 		$this->locale_counts = $locale_counts;
-		$this->upgrade       = $upgrade;
 		$this->items         = $items;
 		$this->counts        = $counts;
 		$this->view          = $view;
 		$this->locale_filter = $locale_filter;
 		$this->search        = $search;
 		$this->free          = $free;
+		$this->slot_limits   = $slot_limits;
 		$this->all_locales   = $all_locales;
 		$this->kind          = $kind;
 		$this->kind_counts   = $kind_counts;
@@ -546,7 +588,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 		$note = '' === $this->locale_filter
 			? __( 'Bulk actions apply to every matching language of each selected component.', 'babilim' )
 			: __( 'Bulk actions apply only to the selected language of each selected component.', 'babilim' );
-		echo '<p class="description">' . esc_html( $note ) . ( $this->free ? ' ' . esc_html( self::slot_note() ) : '' ) . '</p>';
+		echo '<p class="description">' . esc_html( $note ) . ( $this->free ? ' ' . esc_html( self::slot_note( $this->slot_limits ) ) : '' ) . '</p>';
 	}
 
 	/**
@@ -847,8 +889,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	/**
 	 * The content of one cell's action cell. A runnable action gets its
 	 * own form, collected for cell_forms(); a cell that cannot run
-	 * anything gets nothing (no disabled button), except the upgrade
-	 * link when the license is what blocks it.
+	 * anything gets nothing (no disabled button).
 	 *
 	 * @param array  $item   Row.
 	 * @param string $locale Locale.
@@ -861,9 +902,6 @@ final class Babilim_Translations_Table extends WP_List_Table {
 			return '';
 		}
 		if ( null === $cell['action'] ) {
-			if ( $this->upgrade && in_array( $cell['blocked_reason'], array( 'license_required', 'quota_exceeded' ), true ) ) {
-				return '<button type="submit" form="babilim-checkout-form" class="button-link">' . esc_html__( 'Upgrade this site', 'babilim' ) . '</button>';
-			}
 			return '';
 		}
 
@@ -881,7 +919,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 
 		$confirm = $this->free && 'babilim_request' === $cell['action'];
 		$html    = '<button type="submit" form="' . esc_attr( $id ) . '" class="button" data-babilim-idle-label="' . esc_attr( $cell['action_label'] ) . '" data-babilim-busy-label="' . esc_attr( $cell['busy_label'] ) . '"'
-			. ( $confirm ? ' data-babilim-confirm="' . esc_attr( self::slot_sentence() ) . '"' : '' ) . '>'
+			. ( $confirm ? ' data-babilim-confirm="' . esc_attr( self::slot_sentence( $this->slot_limits ) ) . '"' : '' ) . '>'
 			. esc_html( $cell['action_label'] ) . '</button>';
 		return $html;
 	}

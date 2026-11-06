@@ -46,6 +46,7 @@ final class Test_Uninstall extends TestCase {
 		update_option( 'babilim_delete_data_on_uninstall', true );
 		update_option( 'babilim_verification_warning', array( 'reason' => 'callback_unreachable' ) );
 		update_option( 'babilim_auto_install_failures', array( 'bd_000000000001' => 1 ) );
+		update_option( 'babilim_install_refused', array( 'bd_000000000001' => '2026-01-01T00:00:00+00:00' ), false );
 		update_option( 'babilim_auto_install', 0, false );
 		update_option( 'babilim_auto_install_skip', array( 'plugin:a:de_DE' => true ), false );
 		update_option( 'babilim_auto_installed', 3, false );
@@ -81,6 +82,7 @@ final class Test_Uninstall extends TestCase {
 			'babilim_plugin_slugs',
 			'babilim_verification_warning',
 			'babilim_auto_install_failures',
+			'babilim_install_refused',
 			'babilim_auto_install',
 			'babilim_auto_install_skip',
 			'babilim_auto_installed',
@@ -89,6 +91,29 @@ final class Test_Uninstall extends TestCase {
 			$this->assertFalse( get_option( $option, false ), "{$option} must be removed by uninstall.php" );
 		}
 		$this->assertFalse( get_transient( 'babilim_challenge_rl' ), 'babilim_challenge_rl transient must be removed by uninstall.php' );
+	}
+
+	public function test_uninstall_removes_the_toolbar_option_and_every_users_dismissal(): void {
+		update_option( 'babilim_toolbar_report', 0 );
+		update_user_option( 5, 'babilim_verification_dismissed', array( 1 => '100:callback_timeout' ), true );
+		update_user_option( 5, 'babilim_error_notice_hidden', array( 1 => 'cccccccccccccccccccccccccccccccc' ), true );
+		$this->run_uninstall();
+		$this->assertContains( 'babilim_error_notice_hidden', array_column( $GLOBALS['babilim_test_deleted_metadata'], 2 ) );
+		$this->assertFalse( get_option( 'babilim_toolbar_report', false ) );
+		$this->assertContains(
+			array( 'user', 0, 'babilim_verification_dismissed', true ),
+			$GLOBALS['babilim_test_deleted_metadata']
+		);
+		$this->assertSame( array(), $GLOBALS['babilim_test_user_options'][5] ?? array() );
+	}
+
+	public function test_uninstall_removes_the_dismissals_of_every_site_on_multisite(): void {
+		$GLOBALS['babilim_test_multisite'] = true;
+		$GLOBALS['babilim_test_sites']     = array( 1, 2 );
+		update_user_option( 5, 'babilim_verification_dismissed', array( 1 => '100:a', 2 => '200:b' ), true );
+		$this->run_uninstall();
+		$this->assertContains( 'babilim_verification_dismissed', array_column( $GLOBALS['babilim_test_deleted_metadata'], 2 ) );
+		$this->assertSame( array(), $GLOBALS['babilim_test_user_options'][5] ?? array() );
 	}
 
 	public function test_uninstall_deletes_the_version_option(): void {

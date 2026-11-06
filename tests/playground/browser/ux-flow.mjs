@@ -40,7 +40,8 @@
 //                 BABILIM_SEAM_OLD_VERSION, BABILIM_SEAM_NEW_VERSION
 //               "report": the 1.1 toolbar report panel (run by run-ux-flow.sh with
 //                 the mock's default profile and a pack for the
-//                 report-demo fixture): toolbar entry on admin pages only, focus
+//                 report-demo fixture): toolbar entry on admin pages only, the
+//                 panel script loaded only on the first click, focus
 //                 and Tab trap and Esc, search, four reports (201, 429, 422, 201),
 //                 and every body the mock received checked against the pinned
 //                 schema. With --no-js only the toolbar entry is checked.
@@ -50,7 +51,21 @@
 //                 before agreeing, "Always share" sends one schema-valid body equal
 //                 to what the notice showed, and unchecking share-errors in
 //                 Settings stops it. Takes about 70 seconds per run.
-//               Both read the mock's state through BABILIM_UX_MOCK and save
+//               "notices": the dismissible notices and the upload confirmation
+//                 (run-ux-flow.sh mounts a small mu-plugin that seeds the
+//                 verification warning, error reports and the pending upload
+//                 through administrator-only URLs): the verification notice's X
+//                 hides it across reloads, the same warning stays hidden and a
+//                 changed reason shows it again; the error report notice's X
+//                 only hides it (the waiting reports stay) and a newer report
+//                 brings it back; a confirm form left open while another tab
+//                 replaced the pending upload is refused and sends nothing.
+//               "noquota": enable, then the free-plan slot sentences when the
+//                 service reports no numbers: the note above the list, the
+//                 question on every request button, and (with the script) the
+//                 dialog, cancelled (needs the mock reset with
+//                 {"profile":"noquota"} and the list fixtures)
+//               report and errconsent read the mock's state through BABILIM_UX_MOCK and save
 //               screenshots into BABILIM_UX_SHOTS.
 //   --no-js       the plugin's admin script is blocked, so every form must
 //                 work as a plain form post
@@ -137,8 +152,9 @@ async function enableScenario( page, state ) {
 	report( ( await page.locator( 'details summary' ).count() ) >= 1, 'welcome block lists what is sent' );
 	report( ( await page.locator( 'input[name="consent"]' ).count() ) === 0, 'no consent checkbox' );
 	const welcomeText = await bodyText( page );
-	report( /Available translations can be installed with one click, and missing ones can be requested\. After that, new translations and updates are installed automatically\. The Babilim service decides which available translations may be installed automatically\. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot\./.test( welcomeText ), 'welcome block explains installs, requests and the free plan' );
-	report( /The free plan covers a limited number of plugins and themes/.test( welcomeText ), 'welcome block mentions the free plan limit' );
+	report( /Available translations can be installed with one click, and missing ones can be requested\. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync\./.test( welcomeText ), 'welcome block explains installs and requests' );
+	report( /The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim\./.test( welcomeText ), 'welcome block states the free plan slots' );
+	report( ! /decides which available translations/.test( welcomeText ), 'welcome block does not say the service decides which translations are installed' );
 	if ( ( await enable.count() ) !== 1 ) {
 		console.log( `  url: ${ page.url() } title: ${ await page.title() }` );
 		console.log( `  body: ${ ( await page.locator( 'body' ).innerText() ).replace( /\s+/g, ' ' ).slice( 0, 400 ) }` );
@@ -248,8 +264,8 @@ async function settingsScenario( page, state ) {
 		console.log( `  settings page: ${ ( await bodyText( page ) ).slice( 0, 300 ) }` );
 	}
 	report( ( await page.locator( 'form#babilim-settings-form form' ).count() ) === 0, 'no nested form' );
-	report( ( await page.locator( 'form#babilim-settings-form input[name="auto_install"]' ).count() ) === 1, 'General has the Automatic installs checkbox' );
-	report( await page.locator( 'form#babilim-settings-form input[name="auto_install"]' ).isChecked(), 'Automatic installs is checked by default' );
+	report( ( await page.locator( 'form#babilim-settings-form input[name="babilim_auto_install"]' ).count() ) === 1, 'General has the Automatic installs checkbox' );
+	report( await page.locator( 'form#babilim-settings-form input[name="babilim_auto_install"]' ).isChecked(), 'Automatic installs is checked by default' );
 	if ( ! noJs ) {
 		report( state.scriptStatuses.length > 0 && state.scriptStatuses.every( ( s ) => s === 200 ), 'the admin script loaded (HTTP 200)' );
 	} else {
@@ -257,22 +273,22 @@ async function settingsScenario( page, state ) {
 	}
 
 	// 2. Stop managing a language, save, and see it unchecked.
-	const box = page.locator( 'input[name="locales[]"]' ).first();
+	const box = page.locator( 'input[name="babilim_manual_locales[checked][]"]' ).first();
 	const value = await box.getAttribute( 'value' );
 	await box.uncheck();
 	await submitAndSettle( page, page.locator( 'form#babilim-settings-form button.button-primary' ) );
 	report( page.url().includes( 'tab=general' ), 'saving returns to the General tab' );
 	report( /Settings saved/.test( await bodyText( page ) ), 'a saved notice is shown' );
-	report( ! ( await page.locator( `input[name="locales[]"][value="${ value }"]` ).isChecked() ), 'the language stays listed, unchecked' );
-	await page.locator( `input[name="locales[]"][value="${ value }"]` ).check();
+	report( ! ( await page.locator( `input[name="babilim_manual_locales[checked][]"][value="${ value }"]` ).isChecked() ), 'the language stays listed, unchecked' );
+	await page.locator( `input[name="babilim_manual_locales[checked][]"][value="${ value }"]` ).check();
 	await submitAndSettle( page, page.locator( 'form#babilim-settings-form button.button-primary' ) );
-	const restored = await page.locator( `input[name="locales[]"][value="${ value }"]` ).isChecked();
+	const restored = await page.locator( `input[name="babilim_manual_locales[checked][]"][value="${ value }"]` ).isChecked();
 	report( restored, 'checking it again and saving restores it' );
 	if ( ! restored ) {
-		console.log( `  url: ${ page.url() } boxes: ${ JSON.stringify( await page.locator( 'input[name="locales[]"]' ).evaluateAll( ( els ) => els.map( ( e ) => [ e.value, e.checked ] ) ) ) }` );
+		console.log( `  url: ${ page.url() } boxes: ${ JSON.stringify( await page.locator( 'input[name="babilim_manual_locales[checked][]"]' ).evaluateAll( ( els ) => els.map( ( e ) => [ e.value, e.checked ] ) ) ) }` );
 		console.log( `  page text: ${ ( await bodyText( page ) ).slice( 0, 300 ) }` );
 		await page.goto( settings, { waitUntil: 'load' } );
-		console.log( `  after a plain reload: ${ JSON.stringify( await page.locator( 'input[name="locales[]"]' ).evaluateAll( ( els ) => els.map( ( e ) => [ e.value, e.checked ] ) ) ) }` );
+		console.log( `  after a plain reload: ${ JSON.stringify( await page.locator( 'input[name="babilim_manual_locales[checked][]"]' ).evaluateAll( ( els ) => els.map( ( e ) => [ e.value, e.checked ] ) ) ) }` );
 	}
 
 	// 3. Advanced tab.
@@ -314,6 +330,10 @@ async function openList( page, query = '' ) {
 	}
 	return false;
 }
+
+// A status that starts with Installed. A plain 'Installed' would also match
+// "Not installed", the status of every line nothing is installed for.
+const INSTALLED = /^Installed\b/;
 
 async function rowCount( page ) {
 	return page.locator( 'table.wp-list-table tbody#the-list tr:not(.no-items)' ).count();
@@ -786,7 +806,7 @@ async function listScenario( page, state ) {
 // plugin's own manifest while the mock keeps answering "available".
 async function listDownload( page ) {
 	await openList( page, '&s=woo' );
-	const cell = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="en_US"]' ) } ).first();
+	const cell = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="de_DE"]' ) } ).first();
 	const button = cell.locator( 'button', { hasText: 'Download' } );
 	report( ( await button.count() ) === 1, 'the WooCommerce de_DE line has a Download button' );
 	if ( ( await button.count() ) !== 1 ) {
@@ -800,10 +820,51 @@ async function listDownload( page ) {
 	}
 	report( new URL( page.url() ).searchParams.get( 's' ) === 'woo', 'the redirect keeps the search' );
 	await openList( page, '&s=woo' );
-	const after = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="en_US"]' ) } ).first();
-	const done = after.locator( '.babilim-cell-status', { hasText: 'Installed' } );
+	const after = page.locator( 'table.wp-list-table tbody#the-list .babilim-cell-row' ).filter( { has: page.locator( '.babilim-cell-lang[title="de_DE"]' ) } ).first();
+	const done = after.locator( '.babilim-cell-status', { hasText: INSTALLED } );
 	report( ( await done.count() ) === 1 && ( await after.locator( 'button', { hasText: 'Download' } ).count() ) === 0, 'after a reload the line says Installed and offers no Download button' );
 	report( /^Installed( · \w+ \d+, \d{4})?$/.test( ( await after.locator( '.babilim-cell-status' ).innerText() ).trim() ), 'the line says Installed' );
+}
+
+// The slot sentences as the list draws them on a free site, with the limits
+// the mock's list profile reports (1 for themes, 3 for plugins).
+const SLOT_QUESTION = "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is 1 for themes and 3 for plugins).";
+const SLOT_NOTE = "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is 1 for themes and 3 for plugins), unless it already has one.";
+
+// The same two sentences when the service reported no numbers (the mock's
+// noquota profile): whole sentences of their own, with no limit in them.
+const SLOT_QUESTION_PLAIN = "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?";
+const SLOT_NOTE_PLAIN = "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one.";
+
+// The slot sentences without numbers: the note above the list, and the
+// question every request button carries (asked with the script; without it
+// the form posts and nothing is asked). Cancelling the dialog sends nothing.
+async function noquotaScenario( page ) {
+	const listed = await enableOnly( page );
+	report( listed, 'the translations list shows after enabling' );
+	if ( ! listed ) {
+		return;
+	}
+	const text = await bodyText( page );
+	report( text.includes( SLOT_NOTE_PLAIN ), 'with no numbers from the service the note above the list is the sentence without a limit' );
+	report( ! /the limit is/.test( text ), 'no limit is named anywhere on the page' );
+	const buttons = page.locator( 'table.wp-list-table tbody#the-list button', { hasText: 'Request translation' } );
+	const questions = await buttons.evaluateAll( ( els ) => els.map( ( el ) => el.getAttribute( 'data-babilim-confirm' ) ) );
+	report( questions.length > 0 && questions.every( ( q ) => q === SLOT_QUESTION_PLAIN ), `every request button carries the question without a limit (${ questions.length } button(s))` );
+	if ( ! noJs && questions.length > 0 ) {
+		let dialog = '';
+		page.once( 'dialog', ( d ) => {
+			dialog = d.message();
+			d.dismiss();
+		} );
+		await page.evaluate( () => {
+			window.__babilimBeforeSubmit = true;
+		} );
+		await buttons.first().click();
+		await page.waitForTimeout( 1500 );
+		report( dialog === SLOT_QUESTION_PLAIN, `with the script the confirmation asks the question without a limit ("${ dialog }")` );
+		report( await page.evaluate( () => window.__babilimBeforeSubmit === true ), 'cancelling it sends nothing' );
+	}
 }
 
 async function listOthers( page ) {
@@ -838,11 +899,11 @@ async function listOthers( page ) {
 		if ( noJs ) {
 			report( dialog === '', 'without the script there is no confirm dialog' );
 		} else {
-			report( /free slots/.test( dialog ), 'with the script a free-slot confirmation is shown' );
+			report( dialog.startsWith( SLOT_QUESTION ), `with the script a free-slot confirmation is shown, with the service's limits ("${ dialog }")` );
 		}
 	}
 	if ( noJs ) {
-		report( /free slots/.test( await bodyText( page ) ), 'without the script the free-slot sentence is on the page' );
+		report( ( await bodyText( page ) ).includes( SLOT_NOTE ), 'without the script the free-slot sentence is on the page, with the service\'s limits' );
 	}
 
 	// 480px: no horizontal scroll, and a long name is not cut off.
@@ -917,7 +978,7 @@ async function bulkScenario( page, state ) {
 	let text = await bodyText( page );
 	report( /Bulk download: 2 succeeded\./.test( text ), 'top Apply: the notice says 2 succeeded' );
 	report( ( await mockDownloads() ) - before === 2, 'top Apply: the service saw two download requests' );
-	report( ( await page.locator( 'form#babilim-translations .babilim-cell-status', { hasText: 'Installed' } ).count() ) >= 2, 'top Apply: two lines say Installed' );
+	report( ( await page.locator( 'form#babilim-translations .babilim-cell-status', { hasText: INSTALLED } ).count() ) >= 2, 'top Apply: two lines say Installed' );
 
 	// 2. Bottom Apply (action2), two other components.
 	await openList( page );
@@ -982,7 +1043,7 @@ async function bulkScenario( page, state ) {
 	await page.waitForTimeout( 2000 );
 	report( ( await mockDownloads() ) - before6 === 6, `the service saw exactly six download requests (${ ( await mockDownloads() ) - before6 }), none repeated, none missing, and it stopped` );
 	for ( const slug of six ) {
-		const done = ( await bulkRow( page, slug ).locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) === 1;
+		const done = ( await bulkRow( page, slug ).locator( '.babilim-cell-status', { hasText: INSTALLED } ).count() ) === 1;
 		if ( ! done ) {
 			report( false, `${ slug } says Installed after the last batch` );
 		}
@@ -1009,7 +1070,7 @@ async function rowactionsScenario( page, state ) {
 	const line = () => page.locator( 'table.wp-list-table tbody#the-list tr' ).filter( { hasText: 'WooCommerce' } );
 	await submitAndSettle( page, line().locator( 'button', { hasText: 'Download' } ).first() );
 	await openList( page, '&s=woo' );
-	report( ( await line().locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) === 1, 'the de_DE line says Installed' );
+	report( ( await line().locator( '.babilim-cell-status', { hasText: INSTALLED } ).count() ) === 1, 'the de_DE line says Installed' );
 	report( ( await line().locator( 'button', { hasText: /^Roll back/ } ).count() ) === 0, 'no Roll back without a previous build' );
 	// Row actions are only shown while the row is hovered or focused.
 	const remove = () => line().locator( 'button', { hasText: /^Remove$/ } );
@@ -1032,7 +1093,7 @@ async function rowactionsScenario( page, state ) {
 		report( /^Remove the (.+) translation of WooCommerce from this site\?$/.test( asked ), 'a confirm dialog asks the question' );
 		report( await page.evaluate( () => window.__babilimBeforeSubmit === true ), 'cancelling the dialog sends nothing' );
 		await openList( page, '&s=woo' );
-		report( ( await line().locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) === 1, 'after cancelling the files are still there' );
+		report( ( await line().locator( '.babilim-cell-status', { hasText: INSTALLED } ).count() ) === 1, 'after cancelling the files are still there' );
 
 		page.once( 'dialog', ( d ) => d.accept() );
 		await reveal();
@@ -1054,7 +1115,7 @@ async function rowactionsScenario( page, state ) {
 		report( /Remove the (.+) translation of WooCommerce from this site\?/.test( await bodyText( page ) ), 'the page asks the question, naming the component' );
 		await Promise.all( [ page.waitForNavigation( { waitUntil: 'load' } ), page.locator( 'a.button', { hasText: 'Cancel' } ).click() ] );
 		await openList( page, '&s=woo' );
-		report( ( await line().locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) === 1, 'Cancel leaves the files in place' );
+		report( ( await line().locator( '.babilim-cell-status', { hasText: INSTALLED } ).count() ) === 1, 'Cancel leaves the files in place' );
 		await reveal();
 		await submitAndSettle( page, remove() );
 		await submitAndSettle( page, page.locator( 'form button.button-primary', { hasText: 'Remove' } ) );
@@ -1258,6 +1319,23 @@ async function reportScenario( page ) {
 		return;
 	}
 
+	// 2b. The toolbar entry can be turned off in Settings (and the script goes with it), then on again.
+	const setToolbar = async ( on ) => {
+		await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=general`, { waitUntil: 'load' } );
+		const toolbarBox = page.locator( 'input[name="babilim_toolbar_report"]' );
+		if ( on ) {
+			await toolbarBox.check();
+		} else {
+			await toolbarBox.uncheck();
+		}
+		await submitAndSettle( page, page.locator( 'form#babilim-settings-form button.button-primary' ) );
+		await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	};
+	await setToolbar( false );
+	report( ( await page.locator( '#wp-admin-bar-babilim-report' ).count() ) === 0 && ! ( await page.content() ).includes( 'babilim-report-js' ) && ! ( await page.content() ).includes( 'babilim-report.js' ) && ! ( await page.content() ).includes( 'babilim-report-loader' ), 'with the toolbar setting off there is no entry and neither the report script nor its loader is loaded' );
+	await setToolbar( true );
+	report( ( await page.locator( TOOLBAR ).count() ) === 1 && ( await page.locator( 'script#babilim-report-loader-js-after' ).count() ) === 1, 'with the toolbar setting back on the entry and the panel loader return' );
+
 	// 3. Install the pack through the list's Download button.
 	await openList( page, '&s=report' );
 	const line = page.locator( 'table.wp-list-table tbody#the-list tr' ).filter( { hasText: REPORT_LABEL } );
@@ -1272,16 +1350,22 @@ async function reportScenario( page ) {
 	await submitAndSettle( page, download );
 	const afterDownload = ( await page.locator( '#wpbody-content .notice' ).allInnerTexts() ).join( ' ' ).replace( /\s+/g, ' ' );
 	await openList( page, '&s=report' );
-	const installedOk = ( await line.locator( '.babilim-cell-status', { hasText: 'Installed' } ).count() ) >= 1;
+	const installedOk = ( await line.locator( '.babilim-cell-status', { hasText: INSTALLED } ).count() ) >= 1;
 	report( installedOk, `the pack is installed (the line says Installed)${ installedOk ? '' : ': after Download the page said "' + afterDownload + '"' }` );
 
 	// 4. Open the panel: focus, trap, Esc.
 	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
-	const cfg = await page.evaluate( () => JSON.stringify( window.babilimReport || {} ) );
-	report( cfg !== '{}' && ! tokens.some( ( t ) => cfg.includes( t ) ) && ! /tok_/.test( cfg ), 'the report script settings (window.babilimReport) carry no site token' );
+	const before = await page.evaluate( () => ( {
+		settings: typeof window.babilimReport,
+		script: document.querySelectorAll( 'script[src*="babilim-report.js"]' ).length,
+	} ) );
+	report( 'undefined' === before.settings && 0 === before.script, `before the toolbar entry is clicked the panel script and its settings are not loaded (${ JSON.stringify( before ) })` );
 	const pageSource = await page.content();
 	report( tokens.length > 0 && ! tokens.some( ( t ) => pageSource.includes( t ) ), 'the admin page source does not contain the site token' );
 	await openReportPanel( page );
+	const cfg = await page.evaluate( () => JSON.stringify( window.babilimReport || {} ) );
+	report( cfg !== '{}' && ! tokens.some( ( t ) => cfg.includes( t ) ) && ! /tok_/.test( cfg ), 'the report script settings (window.babilimReport), loaded on the click, carry no site token' );
+	report( ( await page.locator( 'script[src*="babilim-report.js"]' ).count() ) === 1, 'the click loaded the panel script once' );
 	await shot( page, 'report-1-panel-open' );
 	const first = await focusInfo( page );
 	report( first.inside && first.desc.startsWith( 'input#babilim-report-q' ), `opening moves focus into the dialog (${ first.desc })` );
@@ -1449,20 +1533,125 @@ async function errconsentScenario( page ) {
 
 	// 5. Stop sharing in Settings; a later error is asked about again and never sent.
 	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim-settings&tab=general`, { waitUntil: 'load' } );
-	const box = page.locator( 'input[name="share_errors"]' );
+	const box = page.locator( 'input[name="babilim_share_errors"]' );
 	report( await box.isChecked(), 'Settings shows the share-errors box checked after "Always share"' );
 	await shot( page, 'errconsent-2-settings-checked' );
 	await box.uncheck();
 	await submitAndSettle( page, page.locator( 'form#babilim-settings-form button.button-primary' ) );
-	report( ! ( await page.locator( 'input[name="share_errors"]' ).isChecked() ), 'after saving, the box stays unchecked' );
+	report( ! ( await page.locator( 'input[name="babilim_share_errors"]' ).isChecked() ), 'after saving, the box stays unchecked' );
 	// The next scheduled run tries the undeliverable update again and fails the same way.
 	await runCron();
 	const again = await waitForNotice();
 	report( again, 'with sharing off, a new error asks for consent again' );
 	await shot( page, 'errconsent-3-notice-after-opt-out' );
+
+	// 6. The notice can be closed with its own X, which declines: it does not come back and nothing waits.
+	// While an answer is still awaited, other admin screens must not show it (checked here, not after
+	// the decline, when nothing is awaiting and the check would pass whatever the screen scope is).
+	await page.goto( `${ baseUrl }/wp-admin/edit.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) === 0, 'while an answer is awaited the notice does not show on other admin screens' );
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) > 0, 'the notice is still awaiting an answer on the dashboard before the X' );
+	await Promise.all( [
+		page.waitForNavigation( { waitUntil: 'load' } ),
+		noticeLocator.first().locator( '.notice-dismiss' ).click(),
+	] );
+	await page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	report( ( await noticeLocator.count() ) === 0, 'after the notice X the notice is gone and stays gone on reload' );
+	report( ( await reports() ).length === 1, 'dismissing the notice sent nothing' );
 	await checkAgain();
 	await checkAgain();
 	report( ( await reports() ).length === 1, `after opting out nothing more is sent (${ ( await reports() ).length } report(s) in total)` );
+}
+
+// The dismissible notices and the upload confirmation. The page state is
+// seeded through the administrator-only URLs of the e2e-notices mu-plugin
+// that run-ux-flow.sh mounts for this scenario (test infrastructure only).
+async function noticesScenario( page ) {
+	const listed = await enableOnly( page );
+	report( listed, 'the translations list shows after enabling' );
+	if ( ! listed ) {
+		return;
+	}
+	const seed = async ( query ) => {
+		await page.goto( `${ baseUrl }/wp-admin/index.php?${ query }`, { waitUntil: 'load' } );
+		return ( await page.locator( 'body' ).innerText() ).trim();
+	};
+	const dashboard = async () => page.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	const closeNotice = async ( notice ) => {
+		await Promise.all( [
+			page.waitForNavigation( { waitUntil: 'load' } ),
+			notice.first().locator( '.notice-dismiss' ).click(),
+		] );
+	};
+
+	// 1. The verification notice: X hides it, reloads keep it hidden, the same
+	// warning stays hidden, a changed reason shows it again.
+	const verification = page.locator( '.notice-warning', { hasText: 'could not verify this site' } );
+	await seed( 'e2e_warning=callback_timeout:1700000000' );
+	await dashboard();
+	report( ( await verification.count() ) === 1, 'the verification notice shows on the dashboard' );
+	await closeNotice( verification );
+	await dashboard();
+	report( ( await verification.count() ) === 0, 'after the X the verification notice stays gone on reload' );
+	await seed( 'e2e_warning=callback_timeout:1700000000' );
+	await dashboard();
+	report( ( await verification.count() ) === 0, 'the same warning written again stays hidden' );
+	await seed( 'e2e_warning=callback_unreachable:1700000000' );
+	await dashboard();
+	report( ( await verification.count() ) === 1, 'a warning with a different reason shows the notice again' );
+	await seed( 'e2e_warning=none:0' );
+	await seed( 'e2e_warning=callback_unreachable:1800000000' );
+	await dashboard();
+	report( ( await verification.count() ) === 1, 'a warning that was cleared and came back shows the notice again' );
+	await seed( 'e2e_warning=none:0' );
+
+	// 2. The error report notice: X only hides it; the waiting reports stay;
+	// a newer report brings it back.
+	const errors = page.locator( '.notice-warning', { hasText: 'Babilim hit an error. Share an error report?' } );
+	await seed( 'e2e_report=install_failed:install:installer.commit' );
+	await dashboard();
+	report( ( await errors.count() ) === 1, 'the error report notice shows for a waiting report' );
+	await closeNotice( errors );
+	await dashboard();
+	report( ( await errors.count() ) === 0, 'after the X the error report notice stays gone on reload' );
+	report( ( await seed( 'e2e_awaiting=1' ) ).includes( 'awaiting=1' ), 'the X deleted no waiting report (1 still waits)' );
+	await seed( 'e2e_report=download_failed:download:site.sync' );
+	await dashboard();
+	report( ( await errors.count() ) === 1, 'a newer report brings the notice back' );
+	report( ( await seed( 'e2e_awaiting=1' ) ).includes( 'awaiting=2' ), 'both reports are waiting' );
+
+	// 3. "Don't share" discards only the reports the page listed: a report that
+	// came in after the page was drawn stays. Two reports wait; a second tab
+	// draws the notice, a third report arrives, then that tab presses the button.
+	const stalePage = await page.context().newPage();
+	await stalePage.goto( `${ baseUrl }/wp-admin/index.php`, { waitUntil: 'load' } );
+	const staleDecline = stalePage.locator( '.notice-warning', { hasText: 'Babilim hit an error. Share an error report?' } ).first().locator( 'button', { hasText: "Don't share" } );
+	report( ( await staleDecline.count() ) === 1, 'a second tab draws the notice with Don\'t share' );
+	await seed( 'e2e_report=load_failed:load:loader.translation_file' );
+	await Promise.all( [
+		stalePage.waitForNavigation( { waitUntil: 'load' } ),
+		staleDecline.click(),
+	] );
+	await stalePage.close();
+	const left = await seed( 'e2e_awaiting=1' );
+	report( /awaiting=1\b/.test( left ), `Don't share dropped the two reports the page listed and kept the one that came later (${ left })` );
+	await seed( 'e2e_awaiting=clear' );
+
+	// 4. The upload confirmation is bound to the offer it was drawn for.
+	await seed( 'e2e_pending=up_aaaaaaaaaaaa' );
+	await page.goto( `${ baseUrl }/wp-admin/admin.php?page=babilim&screen=upload-confirm`, { waitUntil: 'load' } );
+	const offerField = page.locator( 'form input[name="upload_id"]' );
+	report( ( await offerField.count() ) === 2 && ( await offerField.first().getAttribute( 'value' ) ) === 'up_aaaaaaaaaaaa', 'the confirm and cancel forms carry the pending upload id' );
+	await shot( page, 'notices-1-upload-confirm' );
+	// Another tab replaces the pending upload while this page stays open.
+	const other = await page.context().newPage();
+	await other.goto( `${ baseUrl }/wp-admin/index.php?e2e_pending=up_bbbbbbbbbbbb`, { waitUntil: 'load' } );
+	await other.close();
+	await submitAndSettle( page, page.locator( 'button', { hasText: 'Upload and request' } ) );
+	report( /out of date/.test( await bodyText( page ) ), 'the old confirm form is refused with an explanation' );
+	report( ( await seed( 'e2e_pending_state=1' ) ).includes( 'pending=up_bbbbbbbbbbbb zip=no' ), 'the replaced offer is still pending and nothing was packaged or sent' );
+	await seed( 'e2e_pending=none' );
 }
 
 const browser = await chromium.launch();
@@ -1505,6 +1694,10 @@ try {
 		await reportScenario( page );
 	} else if ( 'errconsent' === scenario ) {
 		await errconsentScenario( page );
+	} else if ( 'notices' === scenario ) {
+		await noticesScenario( page );
+	} else if ( 'noquota' === scenario ) {
+		await noquotaScenario( page );
 	} else {
 		report( false, `unknown scenario "${ scenario }"` );
 	}

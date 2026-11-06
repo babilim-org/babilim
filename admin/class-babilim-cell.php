@@ -120,7 +120,11 @@ final class Babilim_Cell {
 				if ( 'upload_expired' === $reason ) {
 					return self::cell( 'none', false, false, 'babilim_request', null, __( 'Upload expired before it finished', 'babilim' ), '', true );
 				}
-				return self::cell( 'none', false, false, 'babilim_request', null, __( 'No translation', 'babilim' ), '' );
+				// States only what is true on this site: nothing is installed.
+				// It says nothing about whether the service has a translation
+				// (a free site whose slot is not bound yet sees `requestable`
+				// either way).
+				return self::cell( 'none', false, false, 'babilim_request', null, __( 'Not installed', 'babilim' ), '' );
 			case 'queued':
 				if ( ! empty( $entry['upload_pending'] ) ) {
 					// The service asked for this component's source and the
@@ -136,9 +140,9 @@ final class Babilim_Cell {
 			case 'failed':
 				return self::cell( 'none', false, false, 'babilim_request', null, __( 'Translation failed', 'babilim' ), '', true );
 			case 'quota_exceeded':
-				return self::cell( 'none', false, false, null, 'quota_exceeded', __( 'Free quota used', 'babilim' ), '' );
+				return self::cell( 'none', false, false, null, 'quota_exceeded', __( 'All free-plan slots for this site are used', 'babilim' ), '' );
 			case 'license_required':
-				return self::cell( 'none', false, false, null, 'license_required', __( 'Needs a paid license', 'babilim' ), '' );
+				return self::cell( 'none', false, false, null, 'license_required', __( 'Not covered by the free service plan', 'babilim' ), '' );
 			case 'unsupported':
 				// `reason` = `source_locale`: the component's own source
 				// language is this locale, so there is nothing to translate.
@@ -288,11 +292,11 @@ final class Babilim_Cell {
 				return self::cell( 'babilim', true, false, 'babilim_request', null, $text, $build_id, true, true );
 			case 'license_required':
 				/* translators: %s: the component version a Babilim translation was built for. */
-				$text = $known ? sprintf( __( 'Installed · built for %s, new version needs a paid license', 'babilim' ), $version ) : __( 'Installed · built for a different version, new version needs a paid license', 'babilim' );
+				$text = $known ? sprintf( __( 'Installed · built for %s, new version not covered by the free service plan', 'babilim' ), $version ) : __( 'Installed · built for a different version, new version not covered by the free service plan', 'babilim' );
 				return self::cell( 'babilim', true, false, null, 'license_required', $text, $build_id );
 			case 'quota_exceeded':
 				/* translators: %s: the component version a Babilim translation was built for. */
-				$text = $known ? sprintf( __( 'Installed · built for %s, free quota used', 'babilim' ), $version ) : __( 'Installed · built for a different version, free quota used', 'babilim' );
+				$text = $known ? sprintf( __( 'Installed · built for %s, all free-plan slots for this site are used', 'babilim' ), $version ) : __( 'Installed · built for a different version, all free-plan slots for this site are used', 'babilim' );
 				return self::cell( 'babilim', true, false, null, 'quota_exceeded', $text, $build_id );
 			default:
 				/* translators: %s: the component version a Babilim translation was built for. */

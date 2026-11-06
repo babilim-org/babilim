@@ -1304,7 +1304,7 @@ final class Babilim_Manifest {
 
 			case 'default_index':
 				$latest = array_key_exists( $key, $default_index_data ) ? $default_index_data[ $key ] : null;
-				if ( $latest != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons
+				if ( $latest != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons -- deliberately loose: JSON round-tripping never guarantees array key order, and this compares content, not identity.
 					return null;
 				}
 				if ( null === $value ) {
@@ -1315,14 +1315,14 @@ final class Babilim_Manifest {
 				break;
 
 			case 'sweep_guard':
-				if ( $sweep_guard != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons
+				if ( $sweep_guard != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons -- deliberately loose: JSON round-tripping never guarantees array key order, and this compares content, not identity.
 					return null;
 				}
 				$sweep_guard = $value;
 				break;
 
 			case 'sweep_summary':
-				if ( $sweep_summary != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons
+				if ( $sweep_summary != $baseline ) { // phpcs:ignore Universal.Operators.StrictComparisons -- deliberately loose: JSON round-tripping never guarantees array key order, and this compares content, not identity.
 					return null;
 				}
 				$sweep_summary = $value;

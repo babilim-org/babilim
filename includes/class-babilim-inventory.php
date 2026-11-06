@@ -516,7 +516,7 @@ final class Babilim_Inventory {
 			if ( '' === $dir || ! is_dir( $dir ) ) {
 				return array();
 			}
-			$entries = @scandir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			$entries = @scandir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- scandir() warns on an unreadable directory; the false return is handled right below.
 			if ( false === $entries ) {
 				return array();
 			}

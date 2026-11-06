@@ -111,12 +111,31 @@ final class Test_Admin_Report_Panel extends TestCase {
 		return $bar->nodes;
 	}
 
-	public function test_init_hooks_the_toolbar_script_and_both_ajax_actions(): void {
+	public function test_init_hooks_the_toolbar_script_and_the_ajax_actions(): void {
 		$this->admin()->init();
 		$bar = array_column( $GLOBALS['babilim_test_actions']['admin_bar_menu'] ?? array(), 'priority' );
 		$this->assertSame( array( 100 ), $bar );
+		$this->assertArrayHasKey( 'wp_ajax_babilim_report_panel', $GLOBALS['babilim_test_actions'] );
 		$this->assertArrayHasKey( 'wp_ajax_babilim_translation_search', $GLOBALS['babilim_test_actions'] );
 		$this->assertArrayHasKey( 'wp_ajax_babilim_translation_report', $GLOBALS['babilim_test_actions'] );
+	}
+
+	/** The JSON the loader is configured with (its inline "before" script). */
+	private function loader_config(): array {
+		$this->assertArrayHasKey( 'babilim-report-loader', $GLOBALS['babilim_test_inline_scripts'] );
+		foreach ( $GLOBALS['babilim_test_inline_scripts']['babilim-report-loader'] as $js ) {
+			if ( 1 === preg_match( '/^var babilimReportLoader = (\{.*\});$/s', $js, $m ) ) {
+				return (array) json_decode( $m[1], true );
+			}
+		}
+		$this->fail( 'the loader has no configuration' );
+		return array();
+	}
+
+	/** Runs the panel-config ajax action; returns what it sent. */
+	private function panel_config(): array {
+		$this->request( 'babilim_report_panel', array() );
+		return $this->sent( array( $this->admin(), 'ajax_babilim_report_panel' ) );
 	}
 
 	public function test_toolbar_node_only_for_capable_users_with_consent(): void {
@@ -139,15 +158,102 @@ final class Test_Admin_Report_Panel extends TestCase {
 		$this->assertSame( array(), $this->nodes(), 'no consent' );
 	}
 
-	public function test_script_is_enqueued_and_localized_only_when_the_node_is_shown(): void {
+	public function test_only_a_small_loader_is_enqueued_and_only_when_the_node_is_shown(): void {
 		$this->admin()->enqueue_report_script();
-		$this->assertArrayNotHasKey( 'babilim-report', $GLOBALS['babilim_test_enqueued_scripts'] );
+		$this->assertSame( array(), $GLOBALS['babilim_test_enqueued_scripts'] );
 
 		update_option( 'babilim_consent', true );
 		update_option( 'babilim_identity', array( 'site_id' => 'st_x', 'token' => 'tok_SECRET_value' ), false );
 		$this->admin()->enqueue_report_script();
-		$this->assertArrayHasKey( 'babilim-report', $GLOBALS['babilim_test_enqueued_scripts'] );
-		$data = $GLOBALS['babilim_test_localized_scripts']['babilim-report']['babilimReport'];
+		$this->assertSame( array( 'babilim-report-loader' => true ), $GLOBALS['babilim_test_enqueued_scripts'], 'the panel script itself waits for a click' );
+		$this->assertFalse( $GLOBALS['babilim_test_registered_scripts']['babilim-report-loader']['src'], 'the loader has no file of its own' );
+		$this->assertSame( array(), $GLOBALS['babilim_test_localized_scripts'], 'the panel settings wait for a click too' );
+		$config = $this->loader_config();
+		$this->assertSame( array( 'ajaxUrl', 'nonce', 'src' ), array_keys( $config ) );
+		$this->assertSame( wp_create_nonce( 'babilim_report_panel' ), $config['nonce'] );
+		$this->assertSame( plugins_url( 'admin/js/babilim-report.js', BABILIM_FILE ) . '?ver=' . BABILIM_VERSION, $config['src'] );
+		$this->assertNotEmpty( $config['ajaxUrl'] );
+		$this->assertStringNotContainsString( 'tok_SECRET_value', implode( "\n", $GLOBALS['babilim_test_inline_scripts']['babilim-report-loader'] ) );
+	}
+
+	public function test_the_loader_fetches_the_settings_and_the_script_on_the_first_click(): void {
+		$m = new ReflectionMethod( Babilim_Admin::class, 'report_loader_js' );
+		$m->setAccessible( true );
+		$js = (string) $m->invoke( null );
+		$this->assertStringContainsString( "'#wp-admin-bar-babilim-report > a'", $js );
+		$this->assertStringContainsString( "'babilim_report_panel'", $js );
+		$this->assertStringContainsString( 'window.babilimReport = ', $js );
+		$this->assertStringContainsString( "document.createElement('script')", $js );
+		$this->assertStringContainsString( 'link.click()', $js, 'the click that loaded the panel then opens it' );
+		$this->assertStringNotContainsString( 'innerHTML', $js );
+	}
+
+	/**
+	 * The loader's script, run in Node against a fake DOM
+	 * (tests/support/report-loader-sim.mjs). A success opens the panel
+	 * once. Any failure (the ajax answer -1, an error answer, no network,
+	 * the script not loading) puts the loader back as it was -- no
+	 * settings left, no script left, no reload, no navigation, a
+	 * developer-only console.error -- so the next click tries again.
+	 */
+	public function test_the_loader_opens_the_panel_or_resets_so_the_next_click_tries_again(): void {
+		$node = trim( (string) shell_exec( 'command -v node 2>/dev/null' ) );
+		if ( '' === $node ) {
+			$this->markTestSkipped( 'node is not installed' );
+		}
+		$m = new ReflectionMethod( Babilim_Admin::class, 'report_loader_js' );
+		$m->setAccessible( true );
+		$file = BABILIM_TEST_TMP_ROOT . '/report-loader-' . bin2hex( random_bytes( 4 ) ) . '.js';
+		file_put_contents( $file, (string) $m->invoke( null ) );
+		try {
+			exec( escapeshellarg( $node ) . ' ' . escapeshellarg( dirname( __DIR__ ) . '/support/report-loader-sim.mjs' ) . ' ' . escapeshellarg( $file ) . ' 2>&1', $out, $rc );
+		} finally {
+			unlink( $file );
+		}
+		$this->assertSame( 0, $rc, implode( "\n", $out ) );
+		$r = json_decode( (string) end( $out ), true );
+		$this->assertIsArray( $r, implode( "\n", $out ) );
+
+		$ok = $r['ok'];
+		$this->assertTrue( $ok['firstPrevented'] );
+		$this->assertTrue( $ok['whileLoadingPrevented'], 'a second click while loading does nothing' );
+		$this->assertSame( array( 1, 1, 1, true ), array( $ok['afterFirst']['fetches'], $ok['afterFirst']['scripts'], $ok['afterFirst']['opens'], $ok['afterFirst']['settings'] ), 'asked once, script added once, panel opened' );
+		$this->assertFalse( $ok['secondPrevented'], 'later clicks are left to the panel script' );
+		$this->assertFalse( $ok['thirdPrevented'] );
+		$this->assertSame( array( 1, 1, 0, 0, 0 ), array( $ok['end']['fetches'], $ok['end']['scripts'], $ok['end']['reloads'], $ok['end']['assigned'], $ok['end']['errors'] ) );
+
+		foreach ( array( 'refusedThenOk', 'errorThenOk', 'networkThenOk', 'scriptFailsThenOk' ) as $case ) {
+			$c = $r[ $case ];
+			$after = $c['afterFirst'];
+			$this->assertSame( 0, $after['reloads'], $case . ': no reload' );
+			$this->assertSame( 0, $after['assigned'], $case . ': no navigation' );
+			$this->assertSame( 0, $after['opens'], $case . ': no panel' );
+			$this->assertFalse( $after['settings'], $case . ': no settings left behind' );
+			$this->assertSame( $after['scripts'], $after['removed'], $case . ': no script left behind' );
+			$this->assertSame( 1, $after['errors'], $case . ': one console.error for developers' );
+			$this->assertTrue( $c['secondPrevented'], $case . ': the next click is the loader\'s again' );
+			$this->assertSame( 2, $c['afterSecond']['fetches'], $case . ': the next click asks again' );
+			$this->assertSame( 1, $c['afterSecond']['opens'], $case . ': and opens the panel when that works' );
+			$this->assertTrue( $c['afterSecond']['settings'], $case );
+			$this->assertFalse( $c['thirdPrevented'], $case . ': then clicks are the panel\'s' );
+			$this->assertSame( array( 0, 0 ), array( $c['end']['reloads'], $c['end']['assigned'] ), $case );
+		}
+
+		$never = $r['alwaysRefused'];
+		$this->assertTrue( $never['secondPrevented'] );
+		$this->assertTrue( $never['thirdPrevented'] );
+		$this->assertSame( array( 3, 0, 0, 0, 3 ), array( $never['end']['fetches'], $never['end']['opens'], $never['end']['reloads'], $never['end']['assigned'], $never['end']['errors'] ), 'every click tries again; nothing else happens' );
+		foreach ( $never['errorText'] as $text ) {
+			$this->assertStringStartsWith( 'Babilim: ', $text, 'a plain English developer message' );
+		}
+	}
+
+	public function test_the_panel_settings_come_from_the_ajax_action(): void {
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_identity', array( 'site_id' => 'st_x', 'token' => 'tok_SECRET_value' ), false );
+		$out = $this->panel_config();
+		$this->assertTrue( $out['success'] );
+		$data = $out['data'];
 		$this->assertSame( 'fr_FR', $data['locale'] );
 		$this->assertSame( Babilim_Admin::FEEDBACK_CATEGORIES, $data['categories'] );
 		$this->assertSame( wp_create_nonce( 'babilim_translation_search' ), $data['searchNonce'] );
@@ -155,6 +261,50 @@ final class Test_Admin_Report_Panel extends TestCase {
 		$this->assertNotEmpty( $data['ajaxUrl'] );
 		$this->assertNotEmpty( $data['strings'] );
 		$this->assertStringNotContainsString( 'tok_SECRET_value', (string) wp_json_encode( $data ) );
+	}
+
+	public function test_the_panel_settings_need_the_nonce_the_capability_consent_and_the_setting(): void {
+		update_option( 'babilim_consent', true );
+		$_REQUEST = array();
+		try {
+			$this->admin()->ajax_babilim_report_panel();
+			$this->fail( 'a missing nonce must stop the request' );
+		} catch ( \Throwable $e ) {
+			$this->assertNull( $GLOBALS['babilim_test_json'] ?? null );
+		}
+
+		$GLOBALS['babilim_test_current_user_can'] = false;
+		$out = $this->panel_config();
+		$this->assertFalse( $out['success'] );
+		$this->assertSame( 403, $out['status'] );
+		$GLOBALS['babilim_test_current_user_can'] = true;
+
+		update_option( 'babilim_consent', false );
+		$this->assertFalse( $this->panel_config()['success'], 'no consent' );
+		update_option( 'babilim_consent', true );
+
+		update_option( Babilim_Admin::OPTION_TOOLBAR_REPORT, 0 );
+		$this->assertFalse( $this->panel_config()['success'], 'the toolbar entry is off' );
+	}
+
+	public function test_the_script_is_not_enqueued_without_an_admin_bar(): void {
+		update_option( 'babilim_consent', true );
+		$GLOBALS['babilim_test_admin_bar_showing'] = false;
+		$this->admin()->enqueue_report_script();
+		$this->assertSame( array(), $GLOBALS['babilim_test_enqueued_scripts'] );
+	}
+
+	public function test_the_toolbar_entry_and_script_disappear_when_the_setting_is_off(): void {
+		update_option( 'babilim_consent', true );
+		update_option( Babilim_Admin::OPTION_TOOLBAR_REPORT, 0 );
+		$this->assertSame( array(), $this->nodes() );
+		$this->admin()->enqueue_report_script();
+		$this->assertSame( array(), $GLOBALS['babilim_test_enqueued_scripts'] );
+
+		update_option( Babilim_Admin::OPTION_TOOLBAR_REPORT, 1 );
+		$this->assertCount( 1, $this->nodes() );
+		$this->admin()->enqueue_report_script();
+		$this->assertArrayHasKey( 'babilim-report-loader', $GLOBALS['babilim_test_enqueued_scripts'] );
 	}
 
 	public function test_search_ajax_requires_nonce_and_returns_no_locale_flag(): void {
@@ -566,7 +716,6 @@ final class Test_Admin_Report_Panel extends TestCase {
 
 	private function localized_strings(): array {
 		update_option( 'babilim_consent', true );
-		$this->admin()->enqueue_report_script();
-		return $GLOBALS['babilim_test_localized_scripts']['babilim-report']['babilimReport']['strings'];
+		return $this->panel_config()['data']['strings'];
 	}
 }

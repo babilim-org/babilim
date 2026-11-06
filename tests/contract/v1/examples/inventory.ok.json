@@ -1,5 +1,5 @@
 {
-  "description": "Full sync covering all ten per-locale statuses across six components, plus two updates[] entries -- both for components this site has ALREADY INSTALLED: component-a is the service rolling an active build back to an older build_no (site should downgrade on next sync; already-downloaded files are never invalidated), component-f is a normal newer build. Every status is derivable from setup alone -- see docs/api/v1.md 'status derivation' for the algorithm this fixture follows: component-e/de_DE (plugin, unbound, plugin slots full) is quota_exceeded, while component-b/de_DE (theme, unbound, but theme slots have room) is babilim_available -- the two differ only in which quota pool has headroom, not in kind of story. (1.4.0) component-f/fr_FR is failed: component-f already holds a slot, so a retry is possible; component-d/fr_FR is quota_exceeded: unbound with the plugin slots full, neither a request nor a retry could take a slot.",
+  "description": "Full sync covering all ten per-locale statuses across six components, plus two updates[] entries -- both for components this site has ALREADY INSTALLED: component-a is the service rolling an active build back to an older build_no (site should downgrade on next sync; already-downloaded files are never invalidated), component-f is a normal newer build. Every status is derivable from setup alone -- see docs/api/v1.md 'status derivation' for the algorithm this fixture follows: component-e/de_DE (plugin, unbound, plugin slots full) is quota_exceeded, while component-b/de_DE (theme, already bound to this site's free theme slot) is babilim_available and carries auto_install: true (1.11.0: babilim_available means the component already holds a slot; an unbound component is requestable or quota_exceeded). (1.4.0) component-f/fr_FR is failed: component-f already holds a slot, so a retry is possible; component-d/fr_FR is quota_exceeded: unbound with the plugin slots full, neither a request nor a retry could take a slot.",
   "http": {
     "method": "POST",
     "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
@@ -20,7 +20,7 @@
         "quota": {
           "free_slots": {
             "theme": {
-              "used": 0,
+              "used": 1,
               "limit": 1
             },
             "plugin": {
@@ -46,6 +46,11 @@
         "site_id": "st_3f9c2a1b7e4d",
         "kind": "plugin",
         "slug": "component-f"
+      },
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "theme",
+        "slug": "component-b"
       }
     ],
     "builds": [
@@ -315,7 +320,8 @@
               "status": "babilim_available",
               "build_id": "bd_9e8d7c6b5a4f",
               "build_no": 1,
-              "built_at": "2026-09-20T08:00:00Z"
+              "built_at": "2026-09-20T08:00:00Z",
+              "auto_install": true
             },
             "fr_FR": {
               "status": "requestable"
@@ -401,7 +407,7 @@
       "quota": {
         "free_slots": {
           "theme": {
-            "used": 0,
+            "used": 1,
             "limit": 1
           },
           "plugin": {
@@ -419,7 +425,7 @@
         "checkout": false,
         "upload": true
       },
-      "contract": "1.0.0"
+      "contract": "1.11.0"
     }
   }
 }

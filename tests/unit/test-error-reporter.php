@@ -97,9 +97,23 @@ final class Test_Error_Reporter extends TestCase {
 	public function test_decline_clears_awaiting_only(): void {
 		$r = $this->reporter();
 		$this->capture( $r );
-		$r->decline();
+		$r->decline( array_column( $r->awaiting(), 'event_id' ) );
 		$this->assertSame( array(), $r->awaiting() );
 		$this->assertArrayNotHasKey( 'babilim_share_errors', $this->store );
+	}
+
+	public function test_decline_drops_only_the_listed_events(): void {
+		$r = $this->reporter();
+		$this->capture( $r );
+		$this->capture_distinct( $r, 1 );
+		$ids = array_column( $r->awaiting(), 'event_id' );
+		$this->assertCount( 2, $ids );
+
+		$r->decline( array( $ids[0] ) );
+
+		$this->assertSame( array( $ids[1] ), array_column( $r->awaiting(), 'event_id' ) );
+		$r->decline( array() );
+		$this->assertCount( 1, $r->awaiting(), 'an empty list drops nothing' );
 	}
 
 	public function test_pending_excludes_expired_and_exhausted(): void {
@@ -232,6 +246,11 @@ final class Test_Error_Reporter extends TestCase {
 	 */
 	public function test_expected_build_states_are_excluded_codes( string $code ): void {
 		$this->assertTrue( Babilim_Error_Reporter::is_excluded_code( $code ), $code );
+	}
+
+	public function test_slot_required_is_an_expected_service_answer_not_an_error_event(): void {
+		$this->assertTrue( Babilim_Error_Reporter::is_excluded_code( 'slot_required' ) );
+		$this->assertTrue( Babilim_Error_Reporter::is_excluded_code( 'babilim_slot_required' ) );
 	}
 
 	public function test_request_body_is_the_environment_plus_each_events_preview(): void {

@@ -477,9 +477,13 @@ final class Test_Contract_Limits extends TestCase {
 
 	public function test_a_steady_transient_writes_nothing_after_the_first_read(): void {
 		set_site_transient( 'update_plugins', (object) array( 'response' => array(), 'no_update' => array( 'hello.php' => (object) array( 'slug' => 'hello-dolly' ) ) ) );
+		// Counted on pre_update_option_, which every update_option() call
+		// runs exactly once -- even one whose value is unchanged and that
+		// the store would skip -- so the inventory's own "only when the
+		// slug changed" guard is what keeps the count at one.
 		$writes = 0;
 		add_filter(
-			'sanitize_option_' . Babilim_Inventory::PLUGIN_SLUGS_OPTION,
+			'pre_update_option_' . Babilim_Inventory::PLUGIN_SLUGS_OPTION,
 			static function ( $value ) use ( &$writes ) {
 				++$writes;
 				return $value;

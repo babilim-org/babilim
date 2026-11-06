@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.1.0\n"
+"Project-Id-Version: Babilim 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:53:18+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:53:18+00:00\n"
+"POT-Creation-Date: 2026-11-05T19:50:56+00:00\n"
+"PO-Revision-Date: 2026-11-05T19:50:56+00:00\n"
 "Language: is_IS\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
 "X-Generator: Babilim\n"
@@ -16,64 +16,292 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:338
-#: admin/class-babilim-admin.php:339
-#: admin/class-babilim-admin.php:2614
-#: admin/class-babilim-admin.php:2668
+#: admin/class-babilim-admin.php:378
+#: admin/class-babilim-admin.php:379
+#: admin/class-babilim-admin.php:3051
+#: admin/class-babilim-admin.php:3105
 msgid "Babilim"
 msgstr "Babilim"
 
 #. Description of the plugin
 #: babilim.php
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
-msgstr "Fyllir inn vantandi þýðingar fyrir viðbæturnar og þemun sem þegar eru uppsett á vefnum þínum."
+msgstr "Fyllir inn þýðingar sem vantar fyrir viðbæturnar og þemun sem þegar eru uppsett á vefnum þínum."
 
-#: admin/class-babilim-admin.php:354
-#: admin/class-babilim-admin.php:355
-#: admin/class-babilim-translations-table.php:400
-msgid "Translations"
-msgstr "Þýðingar"
+#: admin/class-babilim-admin.php:1274
+msgid "That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list."
+msgstr "Sá upphleðsluskjár var úreltur: önnur upphleðsla hefur verið undirbúin síðan. Engu var sent. Skoðaðu þá núverandi í Þýðingalistanum."
 
-#: admin/class-babilim-admin.php:362
-msgid "Babilim Settings"
-msgstr "Babilim stillingar"
+#: admin/class-babilim-admin.php:3067
+msgid "The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim."
+msgstr "Ókeypis þjónustuleiðin gefur hverjum vef takmarkaðan fjölda plássa fyrir viðbætur og þemu; plássin sem eru í notkun birtast í stillingunum eftir að þú virkjar Babilim."
 
-#: admin/class-babilim-admin.php:363
-#: admin/class-babilim-admin.php:2671
-#: admin/class-babilim-admin.php:2960
-msgid "Settings"
-msgstr "Stillingar"
-
-#: admin/class-babilim-admin.php:390
-#: admin/class-babilim-admin.php:789
-msgid "You are not allowed to do this."
-msgstr "Þú hefur ekki heimild til að gera þetta."
-
-#. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:419
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:62
 #, php-format
-msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
-msgstr "Veldu færri einingar: að hámarki %1$d aðgerðir í hverri keyrslu (þú valdir %2$d)."
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "Þegar þú biður um þýðingu fær þessi viðbót eða þetta þema eitt af plássum ókeypis þjónustuleiðarinnar fyrir þennan vef (hámarkið er %1$d fyrir þemu og %2$d fyrir viðbætur), nema það hafi nú þegar pláss. Plássið helst í notkun og misheppnuð þýðing losar það ekki."
 
-#: admin/class-babilim-admin.php:432
-#: admin/class-babilim-admin.php:1110
-#: admin/class-babilim-admin.php:1281
-msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "Þessi eining er ekki uppsett á þessum vef, því er ekki hægt að biðja um þýðingu fyrir hana."
+#: admin/class-babilim-translations-table.php:67
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "Þegar þú biður um þýðingu fær þessi viðbót eða þetta þema eitt af plássum ókeypis þjónustuleiðarinnar fyrir þennan vef, nema það hafi nú þegar pláss. Plássið helst í notkun og misheppnuð þýðing losar það ekki."
 
-#: admin/class-babilim-admin.php:911
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:80
+#, php-format
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "Ef þessi viðbót eða þetta þema er ekki þegar á einu af plássum ókeypis þjónustuleiðarinnar fyrir þennan vef, fær það pláss þegar þú biður um þýðingu (hámarkið er %1$d fyrir þemu og %2$d fyrir viðbætur). Plássið helst í notkun og misheppnuð þýðing losar það ekki. Viltu halda áfram?"
+
+#: admin/class-babilim-translations-table.php:85
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "Ef þessi viðbót eða þetta þema er ekki þegar á einu af plássum ókeypis þjónustuleiðarinnar fyrir þennan vef, fær það pláss þegar þú biður um þýðingu. Plássið helst í notkun og misheppnuð þýðing losar það ekki. Viltu halda áfram?"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1974
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "%1$d vefur á þessu neti er stilltur á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þeim vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %2$s. Til að halda auðkenninu skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum þess vefs og afvirkja aftur. Afvirkja samt?"
+msgstr[1] "%1$d vefir á þessu neti eru stilltir á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þeim vefjum sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %2$s. Til að halda auðkennunum skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum hvers vefs og afvirkja aftur. Afvirkja samt?"
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:3206
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:3301
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s ekkert að gera."
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:773
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:776
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:3575
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s. Veldu tungumálið."
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:3194
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d mistókst"
+msgstr[1] "%d mistókust"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:3198
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d ekki reynt enn"
+msgstr[1] "%d ekki reynt enn"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2522
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "%d tilkynning bíður. „Always share“ og „Don't share“ gilda um þær allar."
+msgstr[1] "%d tilkynningar bíða. „Always share“ og „Don't share“ gilda um þær allar."
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:3190
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d sleppt"
+msgstr[1] "%d sleppt"
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:3186
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d tókst"
+msgstr[1] "%d tókust"
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:544
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "%d til uppsetningar"
+msgstr[1] "%d til uppsetningar"
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(opinber lykill sem var búinn til fyrir þennan vef)"
+
+#: admin/class-babilim-admin.php:4670
+msgid "(detected)"
+msgstr "(greint)"
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(aðeins almennir kóðar og hnit)"
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:4830
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "Hreinsun var sett í bið %1$s: %2$s. Engu var eytt."
+
+#: includes/class-babilim-packager.php:125
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "Ekki tókst að lesa skrá í einingunni og hún var því ekki pökkuð."
+
+#: admin/class-babilim-admin.php:2386
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "Vefhýsing sem afgreiðir aðeins eina PHP-beiðni í einu getur ekki lokið þessu skrefi."
+
+#: includes/class-babilim-upload.php:293
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "Hluti upphleðslunnar mistókst ítrekað og hætt var við upphleðsluna."
+
+#: admin/class-babilim-admin.php:1377
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "Ekki er hægt að biðja um þýðingu fyrir þessa staðfærslu á þessum vef eins og er."
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:4862
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "Ritun í þýðingaskrána rakst á aðra beiðni á %1$s (%2$s) og var ekki beitt; nýjasta útgáfan var varðveitt."
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:4875
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "Ekki tókst að ljúka ritun í þýðingaskrána á %1$s (%2$s) og henni var ekki beitt (%3$s)."
+
+#: admin/class-babilim-admin.php:3898
+msgid "Account"
+msgstr "Reikningur"
+
+#: admin/class-babilim-admin.php:4682
+msgid "Add another language"
+msgstr "Bæta við öðru tungumáli"
+
+#: admin/class-babilim-admin.php:3835
+msgid "Advanced"
+msgstr "Ítarlegt"
+
+#: admin/class-babilim-translations-table.php:466
+#: admin/class-babilim-translations-table.php:514
+msgid "All"
+msgstr "Allt"
+
+#: admin/class-babilim-cell.php:143
+msgid "All free-plan slots for this site are used"
+msgstr "Öll pláss í ókeypis þjónustuleið fyrir þennan vef eru í notkun"
+
+#: admin/class-babilim-translations-table.php:541
+msgid "All languages"
+msgstr "Öll tungumál"
+
+#: admin/class-babilim-admin.php:4800
+msgid "Already in WordPress core"
+msgstr "Þegar í kjarna WordPress"
+
+#: admin/class-babilim-admin.php:961
 msgid "Already installed."
 msgstr "Þegar uppsett."
 
-#: admin/class-babilim-admin.php:911
-msgid "Downloaded and installed."
-msgstr "Sótt og uppsett."
+#: admin/class-babilim-admin.php:2544
+msgid "Always share"
+msgstr "Always share"
 
-#: admin/class-babilim-admin.php:934
-#: admin/class-babilim-admin.php:1275
-#: admin/class-babilim-admin.php:1353
-#: admin/class-babilim-admin.php:1954
-#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "Önnur uppsetning er í gangi; reyndu aftur eftir augnablik."
+
+#: admin/class-babilim-admin.php:3866
+msgid "Automatic installs"
+msgstr "Sjálfvirkar uppsetningar"
+
+#: admin/class-babilim-admin.php:2731
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "Sjálfvirkar uppsetningar eru nú óvirkar; kveiktu aftur á þeim í stillingunum ef þú vilt."
+
+#: admin/class-babilim-translations-table.php:467
+msgid "Available"
+msgstr "Tiltæk"
+
+#: admin/class-babilim-admin.php:3066
+msgid "Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "Hægt er að setja upp tiltækar þýðingar með einum smelli og biðja um þær sem vantar. Þegar kveikt er á sjálfvirkum uppsetningum eru þýðingar sem þjónustan skráir sem tiltækar fyrir tungumálin sem þú sérð um settar upp við samstillingu tvisvar á dag."
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:326
+#, php-format
+msgid "Available · %s"
+msgstr "Tiltæk · %s"
+
+#: admin/class-babilim-admin.php:402
+msgid "Babilim Settings"
+msgstr "Babilim stillingar"
+
+#: admin/class-babilim-admin.php:4677
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim bætir við þýðingum fyrir öll tungumál sem eru valin hér."
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim gat ekki staðfest tímabundna möppu utan vefsins, þannig að íhlutnum var ekki pakkað og engu var hlaðið upp. Skilgreindu BABILIM_TEMP_DIR í wp-config.php sem skrifanlega möppu utan rótarmöppu vefsins (til dæmis möppu við hliðina á, en ekki inni í, opinberri möppu vefsvæðisins þíns), eða biddu vefhýsinguna þína um slíka."
+
+#: includes/class-babilim-site.php:987
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim gat ekki lokið við að athuga þennan vef."
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:2381
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim gat ekki lokið virkjun (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:3792
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim gat ekki lokið við að sannreyna þetta vefsvæði (þjónustan náði ekki sambandi við það aftur). Skráning er í bið."
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:401
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim gat ekki staðfest þennan vef, því er engu hlaðið niður eða sett upp fyrr en staðfesting tekst."
+
+#: admin/class-babilim-admin.php:2216
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim gat ekki staðfest þessa vefsíðu, því er engu hlaðið niður eða sett upp."
+
+#: admin/class-babilim-admin.php:3053
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim finnur viðbætur og þemu á þessari vefsíðu sem hafa enga þýðingu fyrir tungumálið þitt og setur upp eina fyrir hvert."
+
+#: admin/class-babilim-admin.php:984
+#: admin/class-babilim-admin.php:1355
+#: admin/class-babilim-admin.php:1433
+#: admin/class-babilim-admin.php:2335
+#: admin/class-babilim-admin.php:2665
 #: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
@@ -82,1371 +310,592 @@ msgstr "Sótt og uppsett."
 msgid "Babilim has not been enabled for this site yet."
 msgstr "Babilim hefur ekki enn verið virkjað fyrir þennan vef."
 
-#: admin/class-babilim-admin.php:953
-msgid "No build is available to download for this locale."
-msgstr "Engin útgáfa er tiltæk til niðurhals fyrir þessa staðfærslu."
+#: admin/class-babilim-admin.php:4239
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim hefur ekki sett upp neina þýðingu fyrir þetta tungumál."
 
-#: admin/class-babilim-admin.php:1008
-msgid "Rolled back to the previous build."
-msgstr "Sneri aftur í fyrri útgáfu."
-
-#: admin/class-babilim-admin.php:1067
-msgid "Rolled back and reported."
-msgstr "Sneri til baka og tilkynnti."
-
-#. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1073
-#, php-format
-msgid "Rolled back, but the report could not be sent: %s"
-msgstr "Sneri til baka, en ekki tókst að senda tilkynninguna: %s"
-
-#: admin/class-babilim-admin.php:1097
-msgid "Removed."
-msgstr "Fjarlægt."
-
-#: admin/class-babilim-admin.php:1133
-msgid "Translation requested."
-msgstr "Beðið um þýðingu."
-
-#: admin/class-babilim-admin.php:1155
-msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "Þessari einingu var þegar hlaðið upp. Babilim er að athuga hana núna."
-
-#: admin/class-babilim-admin.php:1195
-msgid "Upload cancelled."
-msgstr "Hætt við upphleðslu."
-
-#: admin/class-babilim-admin.php:1206
-msgid "Upload complete — translation requested."
-msgstr "Upphleðslu lokið — beðið um þýðingu."
-
-#: admin/class-babilim-admin.php:1284
-msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "Þessi eining tilgreinir ekki útgáfunúmer, því er ekki hægt að biðja um þýðingu fyrir hana."
-
-#. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1291
-#, php-format
-msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "Útgáfunúmer þessarar einingar er lengra en %d stafir, sem Babilim ræður ekki við, því er ekki hægt að biðja um þýðingu fyrir hana."
-
-#: admin/class-babilim-admin.php:1297
-msgid "A translation cannot be requested for that locale on this site right now."
-msgstr "Ekki er hægt að biðja um þýðingu fyrir þessa staðfærslu á þessum vef eins og er."
-
-#: admin/class-babilim-admin.php:1323
-#: admin/class-babilim-admin.php:3688
-msgid "Thank you. Your report was sent."
-msgstr "Takk fyrir. Tilkynningin þín var send."
-
-#: admin/class-babilim-admin.php:1358
-msgid "This report does not name a valid plugin or theme and locale."
-msgstr "Þessi skýrsla nefnir hvorki gilda viðbót eða þema né staðfærslu."
-
-#: admin/class-babilim-admin.php:1365
-msgid "Please choose a category for this report."
-msgstr "Veldu flokk fyrir þessa tilkynningu."
-
-#: admin/class-babilim-admin.php:1369
-msgid "This report is missing a valid build to report against."
-msgstr "Þessa tilkynningu vantar gilda útgáfu til að tilkynna um."
-
-#: admin/class-babilim-admin.php:1372
-msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "Þessi útgáfa er ekki ein af þeim sem þessi vefur þekkir núna fyrir þessa einingu og staðfærslu."
-
-#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1442
-#, php-format
-msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
-msgstr "Reiturinn „%1$s“ er of langur: hann hefur %2$d stafi og hámarkið er %3$d. Engu var sent; styttu hann og reyndu aftur."
-
-#: admin/class-babilim-admin.php:3666
-msgid "Original string"
-msgstr "Upprunalegur strengur"
-
-#: admin/class-babilim-admin.php:3681
-msgid "String context"
-msgstr "Samhengi strengs"
-
-#: admin/class-babilim-admin.php:1467
-#: admin/class-babilim-admin.php:3667
-#: admin/class-babilim-admin.php:4406
-msgid "Current translation"
-msgstr "Núverandi þýðing"
-
-#: admin/class-babilim-admin.php:1471
-#: admin/class-babilim-admin.php:3671
-#: admin/class-babilim-admin.php:4408
-msgid "Suggested translation"
-msgstr "Tillaga að þýðingu"
-
-#: admin/class-babilim-admin.php:1475
-#: admin/class-babilim-admin.php:3672
-#: admin/class-babilim-admin.php:4410
-msgid "Note (optional)"
-msgstr "Athugasemd (valfrjálst)"
-
-#: admin/class-babilim-admin.php:1479
-#: admin/class-babilim-admin.php:4412
-msgid "Where you saw this (optional)"
-msgstr "Hvar þú sást þetta (valfrjálst)"
-
-#. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1542
-#, php-format
-msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
-msgstr "Þjónustan seinkar samstillingu Babilim tímabundið (hraðatakmörkun); það reynir aftur eftir %s."
-
-#: admin/class-babilim-admin.php:1576
-msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "Þetta er ekki gildur WordPress staðfærslukóði. Engu var vistað."
-
-#: admin/class-babilim-admin.php:1619
-msgid "Settings saved."
-msgstr "Stillingar vistaðar."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1681
-#, php-format
-msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "Ef kveikt er á þessu eyðir fjarlæging einnig auðkenni þessa vefs. Ekki er hægt að endurheimta greidda leyfið sem tengt er þessum vef sjálfkrafa eftir það; þú þyrftir að hafa samband við þjónustuver Babilim á %s til að fá það aftur."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1697
-#, php-format
-msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Babilim er stillt á að eyða auðkenni þessa vefs þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þessum vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %s. Til að halda auðkenninu skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum og afvirkja aftur. Afvirkja samt?"
-
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1722
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] "%1$d vefur á þessu neti er stilltur á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þeim vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %2$s. Til að halda auðkenninu skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum þess vefs og afvirkja aftur. Afvirkja samt?"
-msgstr[1] "%1$d vefir á þessu neti eru stilltir á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þeim vefjum sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %2$s. Til að halda auðkennunum skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum hvers vefs og afvirkja aftur. Afvirkja samt?"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1741
-#, php-format
-msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Þetta net hefur of marga vefi til að hægt sé að athuga þá einn og einn og sumir þeirra gætu verið stilltir á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er slíkum vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %s. Til að halda auðkennunum skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum hvers vefs og afvirkja aftur. Afvirkja samt?"
-
-#: admin/class-babilim-admin.php:1830
-msgid "Open Babilim settings"
-msgstr "Opna Babilim stillingar"
-
-#: admin/class-babilim-admin.php:1835
-msgid "Babilim could not verify this site, so nothing is downloaded or installed."
-msgstr "Babilim gat ekki staðfest þessa vefsíðu, því er engu hlaðið niður eða sett upp."
-
-#: admin/class-babilim-admin.php:1847
-msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "Þjónustan náði ekki sambandi við vefinn þinn. Líklega er eldveggur, öryggisviðbót eða regla hjá vefhýsingu að loka á beiðnina; leyfðu beiðnir til /wp-json/babilim/v1/challenge."
-
-#: admin/class-babilim-admin.php:1849
-msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
-msgstr "Vefsíðan þín var of lengi að svara. Reyndu aftur síðar og athugaðu hvort vefhýsingin sé of hæg eða yfirhlaðin."
-
-#: admin/class-babilim-admin.php:1851
-msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "Vefurinn þinn svaraði, en ekki með því sem búist var við. Önnur viðbót gæti verið að endurskrifa REST API, eða endapunkturinn gæti verið í skyndiminni; undanskildu /wp-json/babilim/v1/challenge frá skyndiminni og endurskrifun."
-
-#: admin/class-babilim-admin.php:1853
-msgid "Please check that your site can be reached from the internet, then try again."
-msgstr "Athugaðu hvort hægt sé að ná í vefsíðuna þína af internetinu og reyndu svo aftur."
-
-#: admin/class-babilim-admin.php:1876
-msgid "Re-verify"
-msgstr "Staðfesta aftur"
-
-#. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1897
-#, php-format
-msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "Þessi vefsíða er stærri en þjónustan tekur við í einni samstillingu, því var sumu sleppt: %1$d einingum og %2$d tungumálum."
-
-#: admin/class-babilim-admin.php:1926
-msgid "This site is verified."
-msgstr "Þessi vefur er staðfestur."
-
-#: admin/class-babilim-admin.php:1939
-msgid "Registration restarted."
-msgstr "Skráning hófst að nýju."
-
-#: admin/class-babilim-admin.php:1960
-#: admin/class-babilim-admin.php:2034
-msgid "Sync complete."
-msgstr "Samstillingu lokið."
-
-#: admin/class-babilim-admin.php:1995
-msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
-msgstr "Babilim er að virkja og athuga þessa vefsíðu… Endurhlaðið þessa síðu eða bíðið eftir að tímasetta athugunin klárist."
-
-#. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:2000
-#, php-format
-msgid "Babilim could not finish enabling (%1$s): %2$s"
-msgstr "Babilim gat ekki lokið virkjun (%1$s): %2$s"
-
-#: admin/class-babilim-admin.php:2005
-msgid "A host that serves only one PHP request at a time cannot complete this step."
-msgstr "Vefhýsing sem afgreiðir aðeins eina PHP-beiðni í einu getur ekki lokið þessu skrefi."
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2026
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] "Babilim er virkt: þessi vefur er staðfestur og %d eining fannst."
-msgstr[1] "Babilim er virkt: þessi vefur er staðfestur og %d einingar fundust."
-
-#: admin/class-babilim-admin.php:2111
-msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
-msgstr "Babilim er óvirkt. Engu meira er sent; þýðingar sem þegar eru uppsettar halda áfram að virka."
-
-#: admin/class-babilim-admin.php:2243
-msgid "Supplementary translation index rebuilt."
-msgstr "Viðbótarþýðingaskrá endurbyggð."
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2261
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] "Hreinsun lokið: %d skrá eytt."
-msgstr[1] "Hreinsun lokið: %d skrám eytt."
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2293
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] "%d uppsett eining fjarlægð."
-msgstr[1] "%d uppsettar einingar fjarlægðar."
-
-#: admin/class-babilim-admin.php:2295
-msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "Sjálfvirkar uppsetningar eru nú óvirkar; kveiktu aftur á þeim í stillingunum ef þú vilt."
-
-#: admin/class-babilim-admin.php:2616
-msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
-msgstr "Babilim finnur viðbætur og þemu á þessari vefsíðu sem hafa enga þýðingu fyrir tungumálið þitt og setur upp eina fyrir hvert."
-
-#. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2624
-#, php-format
-msgid "Languages found on this site: %s."
-msgstr "Tungumál sem fundust á þessari vefsíðu: %s."
-
-#: admin/class-babilim-admin.php:2630
-msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "Ókeypis áskriftin nær yfir takmarkaðan fjölda viðbóta og þema; nákvæmur kvóti þinn birtist í Stillingum eftir að þú virkjar Babilim."
-
-#: admin/class-babilim-admin.php:2631
-msgid "What is sent when you enable Babilim"
-msgstr "Hvað er sent þegar þú virkjar Babilim"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enabling…"
-msgstr "Verið er að virkja…"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enable Babilim"
-msgstr "Virkja Babilim"
-
-#: admin/class-babilim-admin.php:2636
-msgid "By clicking Enable, you agree to send the information listed above to Babilim."
-msgstr "Með því að smella á Virkja samþykkir þú að senda upplýsingarnar hér að ofan til Babilim."
-
-#: admin/class-babilim-admin.php:2670
-#: admin/class-babilim-admin.php:2718
-#: admin/class-babilim-admin.php:4313
-msgid "Check again now"
-msgstr "Athuga aftur núna"
+#: admin/class-babilim-admin.php:2517
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim rakst á villu. Deila villutilkynningu?"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2685
+#: admin/class-babilim-admin.php:3122
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
 msgstr[0] "Babilim setti upp %d þýðingu sjálfkrafa frá síðustu heimsókn þinni."
 msgstr[1] "Babilim setti upp %d þýðingar sjálfkrafa frá síðustu heimsókn þinni."
 
+#: admin/class-babilim-admin.php:2492
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim er óvirkt. Engu meira er sent; þýðingar sem þegar eru uppsettar halda áfram að virka."
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2407
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim er virkt: þessi vefur er staðfestur og %d eining fannst."
+msgstr[1] "Babilim er virkt: þessi vefur er staðfestur og %d einingar fundust."
+
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2711
+#: admin/class-babilim-admin.php:3148
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim er að virkja og athuga þessa vefsíðu… (síðasta tilraun: %s)"
 
-#: admin/class-babilim-admin.php:2715
-msgid "Check again"
-msgstr "Athuga aftur"
-
-#: admin/class-babilim-admin.php:2728
-msgid "No components synced yet."
-msgstr "Engar einingar hafa verið samstilltar enn."
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2749
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] "%d tókst"
-msgstr[1] "%d tókust"
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2753
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] "%d sleppt"
-msgstr[1] "%d sleppt"
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2757
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] "%d mistókst"
-msgstr[1] "%d mistókust"
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2761
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] "%d ekki reynt enn"
-msgstr[1] "%d ekki reynt enn"
-
-#. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2766
-#, php-format
-msgid "%1$s nothing to do."
-msgstr "%1$s ekkert að gera."
-
-#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2769
-#, php-format
-msgid "%1$s %2$s."
-msgstr "%1$s %2$s."
-
-#: admin/class-babilim-admin.php:2781
-msgid "Bulk download:"
-msgstr "Hópniðurhal:"
-
-#: admin/class-babilim-admin.php:2783
-msgid "Bulk update:"
-msgstr "Hópuppfærsla:"
-
-#: admin/class-babilim-admin.php:2785
-msgid "Bulk request:"
-msgstr "Hópbeiðni:"
-
-#: admin/class-babilim-admin.php:2798
-msgid "per day"
-msgstr "á dag"
-
-#: admin/class-babilim-admin.php:2812
-msgid "Wrong meaning"
-msgstr "Röng merking"
-
-#: admin/class-babilim-admin.php:2814
-msgid "Wrong term"
-msgstr "Rangt hugtak"
-
-#: admin/class-babilim-admin.php:2816
-msgid "Broken placeholder"
-msgstr "Bilaður staðgengill"
-
-#: admin/class-babilim-admin.php:2818
-msgid "Wrong for this context"
-msgstr "Rangt í þessu samhengi"
-
-#: admin/class-babilim-admin.php:2820
-msgid "Wrong plural form"
-msgstr "Rangt fleirtölusnið"
-
-#: admin/class-babilim-admin.php:2822
-msgid "Negation reversed"
-msgstr "Neitun snúið við"
-
-#: admin/class-babilim-admin.php:2824
-msgid "Translation does not load"
-msgstr "Þýðing hleðst ekki"
-
-#. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2827
-msgctxt "problem report category"
-msgid "Other"
-msgstr "Annað"
-
-#. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2864
-#, php-format
-msgid "%1$s (%2$s): %3$s"
-msgstr "%1$s (%2$s): %3$s"
-
-#: admin/class-babilim-admin.php:2899
-msgid "Continuing…"
-msgstr "Held áfram…"
-
-#. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2902
-#, php-format
-msgid "Continue next batch (%d left)"
-msgstr "Halda áfram með næstu lotu (%d eftir)"
-
-#: admin/class-babilim-admin.php:2952
-msgid "Search components"
-msgstr "Leita í einingum"
-
-#. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2959
-#, php-format
-msgid "These are the languages this site uses. You can change them in %s."
-msgstr "Þetta eru tungumálin sem þessi vefur notar. Þú getur breytt þeim í %s."
-
-#: admin/class-babilim-admin.php:2978
-msgid "Upload this component?"
-msgstr "Senda þessa einingu inn?"
-
-#: admin/class-babilim-admin.php:2980
-#: includes/class-babilim-upload.php:96
-msgid "There is no upload waiting for confirmation."
-msgstr "Engin innsending bíður staðfestingar."
-
-#: admin/class-babilim-admin.php:2980
-#: admin/class-babilim-admin.php:3007
-#: admin/class-babilim-admin.php:3685
-msgid "Back"
-msgstr "Til baka"
-
-#: admin/class-babilim-admin.php:2984
-msgid "To translate this component, Babilim needs its source."
-msgstr "Til að þýða þessa einingu þarf Babilim frumkóða hennar."
-
-#: admin/class-babilim-admin.php:2988
-msgid "The upload is kept until you ask Babilim to delete it."
-msgstr "Innsendingin er geymd þar til þú biður Babilim um að eyða henni."
-
-#: admin/class-babilim-admin.php:2989
-msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
-msgstr "Hún er geymd hjá hýsingaraðila þjónustunnar og unnin af gervigreindarlíkönum til að búa til þýðinguna."
-
-#: admin/class-babilim-admin.php:2990
-msgid "The original text and the translations made from it will be provided to other sites that install the same version."
-msgstr "Upprunalegi textinn og þýðingarnar sem gerðar eru úr honum verða veittar öðrum vefjum sem setja upp sömu útgáfu."
-
-#: admin/class-babilim-admin.php:2991
-msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "Með því að halda áfram staðfestir þú að þú hafir rétt til að senda þessa einingu inn."
-
-#: admin/class-babilim-admin.php:2992
-msgid "Upload and request"
-msgstr "Senda inn og óska eftir þýðingu"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Uploading…"
-msgstr "Sendi inn…"
-
-#: admin/class-babilim-admin.php:2993
-#: admin/class-babilim-admin.php:3012
-#: admin/class-babilim-admin.php:3049
-#: admin/class-babilim-admin.php:3106
-msgid "Cancel"
-msgstr "Hætta við"
-
-#: admin/class-babilim-admin.php:3005
-msgid "Uploading"
-msgstr "Sendi inn"
-
-#: admin/class-babilim-admin.php:3007
-#: includes/class-babilim-upload.php:145
-msgid "There is no upload in progress."
-msgstr "Engin innsending er í gangi."
-
-#. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:3010
-#, php-format
-msgid "Uploading part %1$d of %2$d…"
-msgstr "Sendi hluta %1$d af %2$d…"
-
-#: admin/class-babilim-admin.php:3011
-msgid "Continue"
-msgstr "Halda áfram"
-
-#: admin/class-babilim-admin.php:3051
-msgid "Confirm"
-msgstr "Staðfesta"
-
-#: admin/class-babilim-admin.php:3054
-#: admin/class-babilim-admin.php:3118
-#: admin/class-babilim-translations-table.php:691
-msgid "Remove"
-msgstr "Fjarlægja"
-
-#: admin/class-babilim-admin.php:3058
-#: admin/class-babilim-admin.php:3117
-#: admin/class-babilim-translations-table.php:690
-msgid "Roll back"
-msgstr "Afturkalla"
-
-#: admin/class-babilim-admin.php:3061
-msgid "Nothing to confirm."
-msgstr "Ekkert til að staðfesta."
-
-#: admin/class-babilim-admin.php:3107
-msgid "Choose a language"
-msgstr "Veldu tungumál"
-
-#: admin/class-babilim-admin.php:3119
-#: admin/class-babilim-translations-table.php:692
-msgid "Roll back and report"
-msgstr "Afturkalla og tilkynna"
-
-#: admin/class-babilim-admin.php:3120
-#: admin/class-babilim-admin.php:4374
-#: admin/class-babilim-translations-table.php:693
-msgid "Report a problem"
-msgstr "Tilkynna vandamál"
-
-#: admin/class-babilim-admin.php:3124
-msgid "Nothing to choose."
-msgstr "Ekkert til að velja."
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3130
-#, php-format
-msgid "%1$s: %2$s. Choose the language."
-msgstr "%1$s: %2$s. Veldu tungumálið."
-
-#: admin/class-babilim-admin.php:3276
-msgid "Supplementary translations"
-msgstr "Viðbótarþýðingar"
-
-#: admin/class-babilim-admin.php:3277
-msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "Framlag hverrar einingar til viðbótar fyrir sjálfgefið textalén hverrar staðfærslu."
-
-#: admin/class-babilim-admin.php:3279
-#: admin/class-babilim-admin.php:3677
-#: admin/class-babilim-translations-table.php:399
-msgid "Component"
-msgstr "Eining"
-
-#: admin/class-babilim-admin.php:3280
-#: admin/class-babilim-admin.php:3678
-#: admin/class-babilim-admin.php:4215
-msgid "Language"
-msgstr "Tungumál"
-
-#: admin/class-babilim-admin.php:3281
-msgid "Included in index"
-msgstr "Innifalið í skránni"
-
-#: admin/class-babilim-admin.php:3282
-msgid "Entries"
-msgstr "Færslur"
-
-#: admin/class-babilim-admin.php:3283
-#: admin/class-babilim-admin.php:4219
-msgid "Conflicting keys"
-msgstr "Lyklar í árekstri"
-
-#: admin/class-babilim-admin.php:3286
-msgid "Yes"
-msgstr "Já"
-
-#: admin/class-babilim-admin.php:3303
-msgid "No — component inactive"
-msgstr "Nei — eining óvirk"
-
-#: admin/class-babilim-admin.php:3305
-msgid "No — installed version differs from the active one"
-msgstr "Nei — uppsetta útgáfan er önnur en sú virka"
-
-#: admin/class-babilim-admin.php:3307
-msgid "No — component removed"
-msgstr "Nei — eining fjarlægð"
-
-#: admin/class-babilim-admin.php:3309
-msgid "No"
-msgstr "Nei"
-
-#: admin/class-babilim-admin.php:3331
-msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "Aðeins netstjóri getur gert þetta, því það breytir þýðingarskrám sem öll vefsvæði á þessu neti deila."
-
-#: admin/class-babilim-admin.php:3347
-msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
-msgstr "Babilim gat ekki lokið við að sannreyna þetta vefsvæði (þjónustan náði ekki sambandi við það aftur). Skráning er í bið."
-
-#: admin/class-babilim-admin.php:3348
-msgid "This site already has an active registration that can no longer be recovered automatically."
-msgstr "Þetta vefsvæði er þegar með virka skráningu sem ekki er lengur hægt að endurheimta sjálfkrafa."
-
-#: admin/class-babilim-admin.php:3355
-msgid "Restart registration"
-msgstr "Hefja skráningu aftur"
-
-#: admin/class-babilim-admin.php:3382
-msgid "Babilim settings"
-msgstr "Babilim stillingar"
-
-#: admin/class-babilim-admin.php:3389
-msgid "General"
-msgstr "Almennt"
-
-#: admin/class-babilim-admin.php:3390
-msgid "Advanced"
-msgstr "Ítarlegt"
-
-#: admin/class-babilim-admin.php:3415
-msgid "Languages"
-msgstr "Tungumál"
-
-#: admin/class-babilim-admin.php:3417
-msgid "Automatic installs"
-msgstr "Sjálfvirkar uppsetningar"
-
-#: admin/class-babilim-admin.php:3419
-msgid "Install available translations automatically"
-msgstr "Setja upp tiltækar þýðingar sjálfvirkt"
-
-#: admin/class-babilim-admin.php:3421
-msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
-msgstr "Þetta vefsvæði er hluti af fjölsetursneti sem setur ekki upp nýjar þýðingar sjálfkrafa. Þýðingar sem þegar eru uppsettar eru áfram uppfærðar."
-
-#: admin/class-babilim-admin.php:3429
-msgid "Custom overrides"
-msgstr "Sérsniðnar yfirskriftir"
-
-#: admin/class-babilim-admin.php:3431
-msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "Halda eigin þýðingaryfirskriftum mínum þegar öllu er eytt eða þessi viðbót er fjarlægð."
-
-#. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3434
-#, php-format
-msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "Þýðingarskrár sem þú setur í %s hafa alltaf forgang yfir skrár frá Babilim. Þær eru varðveittar nema þú afhakir þetta."
-
-#: admin/class-babilim-admin.php:3438
-msgid "Uninstall"
-msgstr "Fjarlæging"
-
-#: admin/class-babilim-admin.php:3440
-msgid "Delete all Babilim data on uninstall"
-msgstr "Eyða öllum Babilim gögnum við fjarlægingu"
-
-#: admin/class-babilim-admin.php:3441
-msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "Slökkt sjálfgefið: ef viðbótinni er eytt er auðkenni þessa vefsvæðis varðveitt svo hægt sé að endurnýta það við enduruppsetningu."
-
-#: admin/class-babilim-admin.php:3444
-msgid "Account"
-msgstr "Reikningur"
-
-#: admin/class-babilim-admin.php:3447
-msgid "Save changes"
-msgstr "Vista breytingar"
-
-#: admin/class-babilim-admin.php:3450
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim"
-msgstr "Gera Babilim óvirkt"
-
-#: admin/class-babilim-admin.php:3451
-msgid "Installed translations are kept, but no further checks or downloads will run."
-msgstr "Uppsettar þýðingar eru varðveittar en engar frekari athuganir eða niðurhal fara fram."
-
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Gera Babilim óvirkt? Uppsettar þýðingar eru varðveittar en engar frekari athuganir eða niðurhal fara fram."
-
-#: admin/class-babilim-admin.php:3511
-#: admin/class-babilim-admin.php:3986
-#: admin/class-babilim-admin.php:4026
-#: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:319
-msgid "This site is not registered with Babilim yet."
-msgstr "Þetta vefsvæði hefur ekki enn verið skráð hjá Babilim."
-
-#: admin/class-babilim-admin.php:3519
-msgid "This site is already licensed. Reload the page."
-msgstr "Þetta vefsvæði er þegar með leyfi. Endurhlaðið síðuna."
-
-#: admin/class-babilim-admin.php:3521
-#: admin/class-babilim-admin.php:3532
-msgid "Checkout is not available for this site right now."
-msgstr "Greiðsla er ekki tiltæk fyrir þennan vef núna."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3524
-#, php-format
-msgid "Could not start checkout: %s"
-msgstr "Ekki tókst að hefja greiðslu: %s"
-
-#: admin/class-babilim-admin.php:3848
+#: admin/class-babilim-admin.php:2376
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim er að virkja og athuga þessa vefsíðu… Endurhlaðið þessa síðu eða bíðið eftir að tímasetta athugunin klárist."
+
+#: admin/class-babilim-admin.php:4426
 msgid "Babilim is not enabled."
 msgstr "Babilim er ekki virkt."
 
-#: admin/class-babilim-admin.php:3851
-msgid "Not registered yet"
-msgstr "Ekki skráð enn"
-
-#: admin/class-babilim-admin.php:3853
-msgid "Not verified"
-msgstr "Ekki staðfest"
-
-#: admin/class-babilim-admin.php:3855
-msgid "Verified"
-msgstr "Staðfest"
-
-#: admin/class-babilim-admin.php:3863
-msgid "Status"
-msgstr "Staða"
-
-#: admin/class-babilim-admin.php:3868
-msgid "Licensed"
-msgstr "Með leyfi"
-
-#: admin/class-babilim-admin.php:3870
-msgid "Partner"
-msgstr "Samstarfsaðili"
-
-#: admin/class-babilim-admin.php:3872
-msgid "Free"
-msgstr "Ókeypis"
-
-#: admin/class-babilim-admin.php:3876
-msgid "License"
-msgstr "Leyfi"
-
-#: admin/class-babilim-admin.php:3879
-#: admin/class-babilim-translations-table.php:865
-msgid "Upgrade this site"
-msgstr "Uppfæra þennan vef"
-
-#. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3883
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1949
 #, php-format
-msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
-msgstr "Einskiptiskaup fyrir þessa vefsíðu: %1$s %2$s. Inniheldur allar framtíðaruppfærslur á þýðingum. Greiðslan fer fram í gegnum Paddle í nýjum flipa."
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Babilim er stillt á að eyða auðkenni þessa vefs þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er þessum vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %s. Til að halda auðkenninu skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum og afvirkja aftur. Afvirkja samt?"
 
-#: admin/class-babilim-admin.php:3940
-msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "Þetta gefur út nýjan endurheimtarkóða og sá fyrri hættir að virka. Halda áfram?"
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:939
+#: includes/class-babilim-site.php:1271
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Tíminn sem Babilim hafði til að ljúka þessu skrefi rann út og Babilim heldur áfram við næstu athugun."
 
-#: admin/class-babilim-admin.php:3940
-msgid "Show a new restore code"
-msgstr "Sýna nýjan endurheimtarkóða"
+#: admin/class-babilim-admin.php:3827
+msgid "Babilim settings"
+msgstr "Babilim stillingar"
 
-#: admin/class-babilim-admin.php:3942
-msgid "rc_…"
-msgstr "rc_…"
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1622
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "Þjónustan seinkar samstillingu Babilim tímabundið (hraðatakmörkun); það reynir aftur eftir %s."
 
-#: admin/class-babilim-admin.php:3942
-msgid "Restore code"
-msgstr "Endurheimtarkóði"
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "Babilim var uppfært á meðan þessi upphleðsla beið. Gamla pakkanum var hent; staðfestu upphleðsluna aftur."
 
-#: admin/class-babilim-admin.php:3943
-msgid "Restore purchase"
-msgstr "Endurheimta kaup"
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:3428
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim mun hlaða upp þessum skrám úr %1$s (útgáfa %2$s): hverri .php og .js skrá, hverri block.json skrá og readme.txt, readme.md, style.css og theme.json í aðalmöppu þess. Þær eru notaðar til að finna textann sem þarf að þýða og til að bera kennsl á viðbótina eða þemað."
 
-#: admin/class-babilim-admin.php:3944
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest er ekki tiltækt: %s"
+
+#: admin/class-babilim-admin.php:3422
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:4263
+msgid "Back"
+msgstr "Til baka"
+
+#: admin/class-babilim-admin.php:4522
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "Keyptir þú leyfi fyrir þetta lén áður? Sláðu inn endurheimtarkóðann sem þú fékkst við greiðslu."
 
-#: admin/class-babilim-admin.php:3980
-msgid "That does not look like a restore code."
-msgstr "Þetta lítur ekki út eins og endurheimtarkóði."
+#: admin/class-babilim-admin.php:3253
+msgid "Broken placeholder"
+msgstr "Bilaður staðgengill"
 
-#: admin/class-babilim-admin.php:3994
-msgid "This restore code was not recognised for this site."
-msgstr "Þessi endurheimtarkóði þekktist ekki fyrir þennan vef."
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:4258
+msgid "Build"
+msgstr "Útgáfa"
 
-#: admin/class-babilim-admin.php:3996
-msgid "Too many attempts. Try again tomorrow."
-msgstr "Of margar tilraunir. Reyndu aftur á morgun."
-
-#: admin/class-babilim-admin.php:3998
-msgid "This site must be verified first."
-msgstr "Fyrst þarf að staðfesta þennan vef."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4001
-#, php-format
-msgid "Could not restore the purchase: %s"
-msgstr "Ekki tókst að endurheimta kaupin: %s"
-
-#: admin/class-babilim-admin.php:4011
-msgid "Purchase restored. This site is now licensed."
-msgstr "Kaupin voru endurheimt. Þessi vefsíða er nú með leyfi."
-
-#: admin/class-babilim-admin.php:4034
-msgid "This site has no purchase to show a code for."
-msgstr "Engin kaup eru tengd þessum vef sem hægt er að sýna kóða fyrir."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4037
-#, php-format
-msgid "Could not show a new restore code: %s"
-msgstr "Ekki tókst að sýna nýjan endurheimtarkóða: %s"
-
-#. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:4048
-#, php-format
-msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
-msgstr "Nýi endurheimtarkóðinn þinn: %s. Geymdu hann á öruggum stað — fyrri kóðinn virkar ekki lengur."
-
-#: admin/class-babilim-admin.php:4063
-msgid "What is sent when Babilim checks this site"
-msgstr "Hvað er sent þegar Babilim athugar þessa vefsíðu"
-
-#: admin/class-babilim-admin.php:4092
-msgid "(detected)"
-msgstr "(greint)"
-
-#: admin/class-babilim-admin.php:4095
-msgid "No language is managed yet."
-msgstr "Ekkert tungumál er í umsjón enn."
-
-#: admin/class-babilim-admin.php:4097
-msgid "Babilim adds translations for every language checked here."
-msgstr "Babilim bætir við þýðingum fyrir öll tungumál sem eru valin hér."
-
-#: admin/class-babilim-admin.php:4102
-msgid "Add another language"
-msgstr "Bæta við öðru tungumáli"
-
-#: admin/class-babilim-admin.php:4103
-msgid "Choose a language…"
-msgstr "Veldu tungumál…"
-
-#: admin/class-babilim-admin.php:4109
-msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "Ekki tókst að hlaða fullum lista yfir WordPress.org staðfærslur frá þjónustunni, því er ekki hægt að bæta við öðru tungumáli núna."
-
-#: admin/class-babilim-admin.php:4167
-msgid "Theme"
-msgstr "Þema"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Plugin"
-msgstr "Viðbót"
-
-#: admin/class-babilim-admin.php:4174
-msgid "Free quota"
-msgstr "Ókeypis kvóti"
-
-#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:4181
-#, php-format
-msgid "Downloads: %1$d/%2$d (%3$s)"
-msgstr "Niðurhal: %1$d/%2$d (%3$s)"
-
-#: admin/class-babilim-admin.php:4213
-msgid "Supplementary translation index"
-msgstr "Skrá yfir viðbótarþýðingar"
-
-#: admin/class-babilim-admin.php:4216
+#: admin/class-babilim-admin.php:4796
 msgid "Built"
 msgstr "Smíðað"
 
-#: admin/class-babilim-admin.php:4217
-msgid "Included"
-msgstr "Innifalið"
+#: admin/class-babilim-translations-table.php:590
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "Magnaðgerðir gilda aðeins um valið tungumál hverrar valinnar einingar."
 
-#: admin/class-babilim-admin.php:4218
-msgid "Excluded"
-msgstr "Undanskilið"
+#: admin/class-babilim-translations-table.php:589
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "Magnaðgerðir gilda um öll samsvarandi tungumál hverrar valinnar einingar."
 
-#: admin/class-babilim-admin.php:4220
-msgid "Already in WordPress core"
-msgstr "Þegar í kjarna WordPress"
+#: admin/class-babilim-admin.php:3218
+msgid "Bulk download:"
+msgstr "Hópniðurhal:"
 
-#: admin/class-babilim-admin.php:4239
-msgid "Supplementary translation maintenance"
-msgstr "Viðhald viðbótarþýðinga"
+#: admin/class-babilim-admin.php:3222
+msgid "Bulk request:"
+msgstr "Hópbeiðni:"
 
-#: admin/class-babilim-admin.php:4242
-msgid "Maintenance status is not available right now."
-msgstr "Staða viðhalds er ekki tiltæk núna."
-
-#. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:4250
-#, php-format
-msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "Hreinsun var sett í bið %1$s: %2$s. Engu var eytt."
-
-#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:4264
-#, php-format
-msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "Síðasta hreinsun %1$s: %2$d nýmerkt, %3$d skrám eytt, %4$d færslum fjarlægðum."
-
-#: admin/class-babilim-admin.php:4271
-msgid "No cleanup has run yet."
-msgstr "Engin hreinsun hefur verið keyrð enn."
-
-#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:4282
-#, php-format
-msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
-msgstr "Ritun í þýðingaskrána rakst á aðra beiðni á %1$s (%2$s) og var ekki beitt; nýjasta útgáfan var varðveitt."
-
-#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:4295
-#, php-format
-msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
-msgstr "Ekki tókst að ljúka ritun í þýðingaskrána á %1$s (%2$s) og henni var ekki beitt (%3$s)."
-
-#: admin/class-babilim-admin.php:4311
-msgid "Maintenance"
-msgstr "Viðhald"
-
-#: admin/class-babilim-admin.php:4322
-msgid "Rebuild index now"
-msgstr "Endurbyggja atriðaskrána núna"
-
-#: admin/class-babilim-admin.php:4328
-msgid "Sweep now"
-msgstr "Skanna núna"
-
-#: admin/class-babilim-admin.php:4344
-msgid "Danger zone"
-msgstr "Hættusvæði"
-
-#: admin/class-babilim-admin.php:4352
-msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
-msgstr "Fjarlægir allar tungumálaskrár sem Babilim hefur sett upp fyrir allar viðbætur og þemu á þessum vef."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
-msgstr "Fjarlægja allt sem Babilim setti upp? Þetta eyðir öllum tungumálaskrám sem Babilim setti upp fyrir allar viðbætur og þemu á þessum vef."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed"
-msgstr "Fjarlægja allt sem Babilim setti upp"
-
-#: admin/class-babilim-admin.php:3670
-#: admin/class-babilim-admin.php:4398
-msgid "Category"
-msgstr "Flokkur"
-
-#: admin/class-babilim-admin.php:4400
-msgid "Choose a category…"
-msgstr "Veldu flokk…"
-
-#: admin/class-babilim-admin.php:4415
-msgid "Roll back and send report"
-msgstr "Afturkalla og senda tilkynningu"
-
-#: admin/class-babilim-admin.php:3684
-#: admin/class-babilim-admin.php:4415
-msgid "Send report"
-msgstr "Senda skýrslu"
-
-#: admin/class-babilim-cell.php:65
-msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "Sumur texti þessarar einingar er harðkóðaður af höfundi hennar og tungumálapakki getur ekki þýtt hann."
-
-#: admin/class-babilim-cell.php:105
-msgid "WordPress.org"
-msgstr "WordPress.org"
-
-#: admin/class-babilim-cell.php:108
-msgid "Bundled with the theme"
-msgstr "Fylgir með þemanu"
+#: admin/class-babilim-admin.php:3220
+msgid "Bulk update:"
+msgstr "Hópuppfærsla:"
 
 #: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "Fylgir með viðbótinni"
 
-#: admin/class-babilim-cell.php:118
-msgid "Upload was not accepted"
-msgstr "Innsendingin var ekki samþykkt"
+#: admin/class-babilim-cell.php:108
+msgid "Bundled with the theme"
+msgstr "Fylgir með þemanu"
 
-#: admin/class-babilim-cell.php:121
-msgid "Upload expired before it finished"
-msgstr "Innsendingin rann út áður en henni lauk"
+#: admin/class-babilim-admin.php:3073
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "Með því að smella á Virkja samþykkir þú að senda upplýsingarnar hér að ofan til Babilim."
 
-#: admin/class-babilim-cell.php:123
-msgid "No translation"
-msgstr "Engin þýðing"
+#: admin/class-babilim-admin.php:3433
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "Með því að halda áfram staðfestir þú að þú hafir rétt til að senda þessa einingu inn."
 
-#: admin/class-babilim-cell.php:129
-#: admin/class-babilim-cell.php:131
-#: admin/class-babilim-cell.php:265
-#: admin/class-babilim-cell.php:267
-msgid "Upload in progress — continue or cancel"
-msgstr "Innsending í gangi — haltu áfram eða hættu við"
+#: admin/class-babilim-admin.php:3436
+#: admin/class-babilim-admin.php:3456
+#: admin/class-babilim-admin.php:3494
+#: admin/class-babilim-admin.php:3551
+msgid "Cancel"
+msgstr "Hætta við"
 
-#: admin/class-babilim-cell.php:133
-msgid "Scheduled, waiting to be processed"
-msgstr "Áætlað, bíður vinnslu"
+#: admin/class-babilim-admin.php:4248
+#: admin/class-babilim-admin.php:4978
+msgid "Category"
+msgstr "Flokkur"
 
-#: admin/class-babilim-cell.php:135
-msgid "Translating…"
-msgstr "Þýði…"
+#: admin/class-babilim-admin.php:3152
+msgid "Check again"
+msgstr "Athuga aftur"
 
-#: admin/class-babilim-cell.php:137
-msgid "Translation failed"
-msgstr "Þýðing mistókst"
+#: admin/class-babilim-admin.php:3107
+#: admin/class-babilim-admin.php:3155
+#: admin/class-babilim-admin.php:4893
+msgid "Check again now"
+msgstr "Athuga aftur núna"
 
-#: admin/class-babilim-cell.php:139
-msgid "Free quota used"
-msgstr "Ókeypis kvóti notaður"
+#: admin/class-babilim-admin.php:3976
+#: admin/class-babilim-admin.php:3987
+msgid "Checkout is not available for this site right now."
+msgstr "Greiðsla er ekki tiltæk fyrir þennan vef núna."
 
-#: admin/class-babilim-cell.php:141
-msgid "Needs a paid license"
-msgstr "Krefst greidds leyfis"
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:4247
+msgid "Choose"
+msgstr "Velja"
 
-#: admin/class-babilim-cell.php:148
-msgid "Not supported"
-msgstr "Ekki studd"
+#: admin/class-babilim-admin.php:4980
+msgid "Choose a category…"
+msgstr "Veldu flokk…"
 
-#: admin/class-babilim-cell.php:150
-msgid "Status unknown"
-msgstr "Staða óþekkt"
+#: admin/class-babilim-admin.php:3552
+msgid "Choose a language"
+msgstr "Veldu tungumál"
 
-#: admin/class-babilim-cell.php:170
-#: admin/class-babilim-cell.php:197
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Installed"
-msgstr "Uppsett"
+#: admin/class-babilim-admin.php:4683
+msgid "Choose a language…"
+msgstr "Veldu tungumál…"
 
-#: admin/class-babilim-cell.php:183
-#: admin/class-babilim-cell.php:185
-msgid "Update available"
-msgstr "Uppfærsla í boði"
-
-#: admin/class-babilim-cell.php:210
-msgid "Removed after a failed integrity check"
-msgstr "Fjarlægt eftir misheppnaða heildarleikaprófun"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-#, php-format
-msgid "Installed · built for %s, new version scheduled"
-msgstr "Uppsett · smíðað fyrir %s, ný útgáfa á áætlun"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-msgid "Installed · built for a different version, new version scheduled"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa er tímasett"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-#, php-format
-msgid "Installed · built for %s, translating the new version…"
-msgstr "Uppsett · smíðað fyrir %s, nýja útgáfan er þýdd…"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-msgid "Installed · built for a different version, translating the new version…"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu, nýja útgáfan er í þýðingu…"
-
-#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:279
-#, php-format
-msgid "Installed · built for %1$s, this site has %2$s"
-msgstr "Uppsett · smíðað fyrir %1$s, þessi vefur er með %2$s"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-#, php-format
-msgid "Installed · built for %s"
-msgstr "Uppsett · smíðað fyrir %s"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-msgid "Installed · built for a different version"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-#, php-format
-msgid "Installed · built for %s, new version failed"
-msgstr "Uppsett · smíðað fyrir %s, ný útgáfa mistókst"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-msgid "Installed · built for a different version, new version failed"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa mistókst"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-#, php-format
-msgid "Installed · built for %s, new version needs a paid license"
-msgstr "Uppsett · smíðað fyrir %s, ný útgáfa krefst greidds leyfis"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa krefst greidds leyfis"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-#, php-format
-msgid "Installed · built for %s, free quota used"
-msgstr "Uppsett · smíðað fyrir %s, ókeypis kvóti uppurinn"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-msgid "Installed · built for a different version, free quota used"
-msgstr "Uppsett · smíðað fyrir aðra útgáfu, ókeypis kvóti uppurinn"
-
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Available"
-msgstr "Tiltæk"
-
-#. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:319
-#, php-format
-msgid "Installed · %s"
-msgstr "Uppsett · %s"
-
-#. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:322
-#, php-format
-msgid "Available · %s"
-msgstr "Tiltæk · %s"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:412
-msgid "Update"
-msgstr "Uppfæra"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:411
-msgid "Download"
-msgstr "Sækja"
-
-#: admin/class-babilim-cell.php:362
-msgid "Updating…"
-msgstr "Uppfæri…"
-
-#: admin/class-babilim-cell.php:362
-msgid "Downloading…"
-msgstr "Sæki…"
-
-#: admin/class-babilim-cell.php:365
-msgid "Retry request"
-msgstr "Reyna beiðni aftur"
-
-#: admin/class-babilim-cell.php:367
-msgid "Request newer translation"
-msgstr "Biðja um nýrri þýðingu"
-
-#: admin/class-babilim-cell.php:367
-#: admin/class-babilim-translations-table.php:413
-msgid "Request translation"
-msgstr "Biðja um þýðingu"
-
-#: admin/class-babilim-cell.php:369
-msgid "Requesting…"
-msgstr "Bið um…"
-
-#: admin/class-babilim-translations-table.php:35
-msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "Þegar beðið er um þýðingu er eitt af lausum plássum þínum notað, nema þessi eining noti þegar eitt. Misheppnuð þýðing skilar ekki plássinu."
-
-#: admin/class-babilim-translations-table.php:42
-msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "Ef þessi eining notar ekki enn eitt af lausum plássum þínum notar beiðni um þýðingu eitt. Misheppnuð þýðing skilar ekki plássinu. Halda áfram?"
-
-#: admin/class-babilim-translations-table.php:382
-msgid "No plugins or themes found."
-msgstr "Engar viðbætur eða þemu fundust."
-
-#: admin/class-babilim-translations-table.php:386
+#: admin/class-babilim-translations-table.php:428
 msgid "Clear filters"
 msgstr "Hreinsa síur"
 
-#. translators: %s: a "Clear filters" link.
-#: admin/class-babilim-translations-table.php:388
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:4265
+msgid "Close"
+msgstr "Loka"
+
+#: admin/class-babilim-admin.php:3724
+#: admin/class-babilim-admin.php:4255
+#: admin/class-babilim-translations-table.php:441
+msgid "Component"
+msgstr "Eining"
+
+#: admin/class-babilim-admin.php:3496
+msgid "Confirm"
+msgstr "Staðfesta"
+
+#: admin/class-babilim-admin.php:3728
+#: admin/class-babilim-admin.php:4799
+msgid "Conflicting keys"
+msgstr "Lyklar í árekstri"
+
+#: admin/class-babilim-admin.php:3455
+msgid "Continue"
+msgstr "Halda áfram"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:3339
 #, php-format
-msgid "No components match these filters. %s"
-msgstr "Engar einingar passa við þessar síur. %s"
+msgid "Continue next batch (%d left)"
+msgstr "Halda áfram með næstu lotu (%d eftir)"
 
-#: admin/class-babilim-translations-table.php:398
-msgid "Select all"
-msgstr "Velja allt"
+#: admin/class-babilim-admin.php:3336
+msgid "Continuing…"
+msgstr "Held áfram…"
 
-#: admin/class-babilim-translations-table.php:424
-#: admin/class-babilim-translations-table.php:472
-msgid "All"
-msgstr "Allt"
-
-#: admin/class-babilim-translations-table.php:425
-msgid "Available"
-msgstr "Tiltæk"
-
-#: admin/class-babilim-translations-table.php:426
-msgid "Updates"
-msgstr "Uppfærslur"
-
-#: admin/class-babilim-translations-table.php:427
-msgid "Requestable"
-msgstr "Hægt að biðja um"
-
-#: admin/class-babilim-translations-table.php:428
-msgid "Installed"
-msgstr "Uppsett"
-
-#: admin/class-babilim-translations-table.php:473
-msgid "Plugins"
-msgstr "Viðbætur"
-
-#: admin/class-babilim-translations-table.php:474
-msgid "Themes"
-msgstr "Þemu"
-
-#: admin/class-babilim-translations-table.php:499
-msgid "All languages"
-msgstr "Öll tungumál"
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
 #, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] "%d til uppsetningar"
-msgstr[1] "%d til uppsetningar"
+msgid "Could not back up %s before replacing it."
+msgstr "Ekki tókst að taka afrit af %s áður en henni var skipt út."
 
-#: admin/class-babilim-translations-table.php:511
-msgid "Language:"
-msgstr "Tungumál:"
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
+msgid "Could not create the package archive."
+msgstr "Ekki tókst að búa til pakkasafnið."
 
-#: admin/class-babilim-translations-table.php:547
-msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "Magnaðgerðir gilda um öll samsvarandi tungumál hverrar valinnar einingar."
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "Ekki tókst að ákvarða virkar einingar; núverandi sameinaða skráin var látin óbreytt."
 
-#: admin/class-babilim-translations-table.php:548
-msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "Magnaðgerðir gilda aðeins um valið tungumál hverrar valinnar einingar."
+#: includes/class-babilim-default-index.php:400
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "Ekki tókst að ákvarða uppsettar viðbætur/þemu; hreinsun sleppt, engu var eytt."
 
-#. translators: %s: the component's version number.
-#: admin/class-babilim-translations-table.php:572
+#: admin/class-babilim-admin.php:4689
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "Ekki tókst að hlaða fullum lista yfir WordPress.org staðfærslur frá þjónustunni, því er ekki hægt að bæta við öðru tungumáli núna."
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
 #, php-format
-msgid "Version %s"
-msgstr "Útgáfa %s"
+msgid "Could not move %s into place."
+msgstr "Ekki tókst að færa %s á sinn stað."
 
-#. translators: %s: the theme's version number.
-#: admin/class-babilim-translations-table.php:575
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:989
 #, php-format
-msgid "Theme · %s"
-msgstr "Þema · %s"
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "Ekki tókst að færa sameinuðu skrána fyrir '%s' á sinn stað; fyrri skráin sem var í notkun (ef einhver) var fjarlægð frekar en að skilja hana eftir hálfuppfærða. Engin viðbót fyrir sjálfgefið textalén er veitt fyrir þessa staðfærslu fyrr en næsta vel heppnaða endurbygging."
 
-#. translators: %s: the plugin's version number.
-#: admin/class-babilim-translations-table.php:578
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
 #, php-format
-msgid "Plugin · %s"
-msgstr "Viðbót · %s"
+msgid "Could not open zip: %s"
+msgstr "Ekki tókst að opna zip: %s"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:635
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
 #, php-format
-msgid "Remove the %2$s translation of %1$s from this site?"
-msgstr "Fjarlægja þýðinguna %2$s fyrir %1$s af þessum vef?"
+msgid "Could not prepare %s for rollback."
+msgstr "Ekki tókst að undirbúa %s fyrir afturköllun."
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:638
+#. translators: %s: the filename that could not be read back after it was moved into place.
+#: includes/class-babilim-installer.php:1656
 #, php-format
-msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "Færa %2$s þýðinguna á %1$s til baka í fyrri smíð?"
+msgid "Could not read %s back after moving it into place."
+msgstr "Ekki tókst að lesa %s aftur eftir að hún var færð á sinn stað."
 
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-translations-table.php:731
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
 #, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+msgid "Could not read: %s"
+msgstr "Ekki tókst að lesa: %s"
 
-#. translators: 1: action name such as Remove, 2: component name, 3: language name.
-#: admin/class-babilim-translations-table.php:734
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4579
 #, php-format
-msgid "%1$s: %2$s (%3$s)"
-msgstr "%1$s: %2$s (%3$s)"
+msgid "Could not restore the purchase: %s"
+msgstr "Ekki tókst að endurheimta kaupin: %s"
 
-#: includes/class-babilim-api-client.php:102
-msgid "The registration challenge is not in the expected form."
-msgstr "Skráningaráskorunin er ekki á væntanlegu sniði."
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4615
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "Ekki tókst að sýna nýjan endurheimtarkóða: %s"
 
-#: includes/class-babilim-api-client.php:212
-msgid "That is not a valid build identifier."
-msgstr "Þetta er ekki gilt smíðakenni."
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "Ekki tókst að undirbúa %s"
 
-#: includes/class-babilim-api-client.php:309
-msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Neita að skrifa utan tungumálaskrámöppu Babilim."
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "Ekki tókst að undirbúa default/%s"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3979
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "Ekki tókst að hefja greiðslu: %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "Ekki tókst að staðfesta fjölda færslna fyrir %s"
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
 msgstr "Ekki tókst að skrifa niðurhalaða pakkann á diskinn."
 
-#. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:605
+#: includes/class-babilim-default-index.php:950
+msgid "Could not write the staged merged index."
+msgstr "Ekki tókst að skrifa undirbúnu sameinuðu skrána."
+
+#: admin/class-babilim-admin.php:1547
+#: admin/class-babilim-admin.php:4245
+#: admin/class-babilim-admin.php:4986
+msgid "Current translation"
+msgstr "Núverandi þýðing"
+
+#: admin/class-babilim-admin.php:3883
+msgid "Custom overrides"
+msgstr "Sérsniðnar yfirskriftir"
+
+#: admin/class-babilim-admin.php:4924
+msgid "Danger zone"
+msgstr "Hættusvæði"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "Fjöldi færslna í sjálfgefnu viðbótinni passar ekki."
+
+#: admin/class-babilim-admin.php:3894
+msgid "Delete all Babilim data on uninstall"
+msgstr "Eyða öllum Babilim gögnum við fjarlægingu"
+
+#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim"
+msgstr "Gera Babilim óvirkt"
+
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Gera Babilim óvirkt? Uppsettar þýðingar eru varðveittar en engar frekari athuganir eða niðurhal fara fram."
+
+#: admin/class-babilim-admin.php:2545
+msgid "Don't share"
+msgstr "Don't share"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:453
+msgid "Download"
+msgstr "Sækja"
+
+#: admin/class-babilim-admin.php:961
+msgid "Downloaded and installed."
+msgstr "Sótt og uppsett."
+
+#: admin/class-babilim-cell.php:366
+msgid "Downloading…"
+msgstr "Sæki…"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
+#: admin/class-babilim-admin.php:4761
 #, php-format
-msgid "Unexpected HTTP %d response."
-msgstr "Óvænt HTTP-svar %d."
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "Niðurhal: %1$d/%2$d (%3$s)"
 
-#: includes/class-babilim-consent.php:72
-msgid "This site's URL, so the service can verify you own it."
-msgstr "Vefslóð þessa vefs, svo þjónustan geti staðfest að þú eigir hann."
+#: admin/class-babilim-admin.php:3722
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "Framlag hverrar einingar til viðbótar fyrir sjálfgefið textalén hverrar staðfærslu."
 
-#: includes/class-babilim-consent.php:77
-msgid "Your WordPress version, to serve compatible translation files."
-msgstr "WordPress-útgáfa þín, til að afhenda samhæfðar þýðingarskrár."
+#: admin/class-babilim-admin.php:3072
+msgid "Enable Babilim"
+msgstr "Virkja Babilim"
 
-#: includes/class-babilim-consent.php:82
-msgid "Your PHP version, for compatibility."
-msgstr "PHP-útgáfa þín, vegna samhæfni."
+#: admin/class-babilim-admin.php:3072
+msgid "Enabling…"
+msgstr "Verið er að virkja…"
 
-#: includes/class-babilim-consent.php:87
-msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
-msgstr "Útgáfa þessarar viðbótar sjálfrar, svo þjónustan geti beðið þig um að uppfæra hana ef hún er of gömul til að eiga samskipti við hana."
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "enska (Bandaríkin)"
 
-#: includes/class-babilim-consent.php:92
-msgid "This site's configured locale."
-msgstr "Stillt staðfærsla þessa vefs."
+#: admin/class-babilim-admin.php:3727
+msgid "Entries"
+msgstr "Færslur"
 
-#: includes/class-babilim-consent.php:97
-msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "Sérhver staðfærsla í notkun á þessum vef (staðfærsla vefsins, uppsettir tungumálapakkar, staðfærslur notenda og þær sem þú bætir við handvirkt). Engin staðfærsla er meðhöndluð öðruvísi en önnur."
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "Fjöldi færslna passar ekki fyrir %s"
 
-#: includes/class-babilim-consent.php:101
-msgid "(a public key generated for this site)"
-msgstr "(opinber lykill sem var búinn til fyrir þennan vef)"
-
-#: includes/class-babilim-consent.php:102
-msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
-msgstr "Opinber uppsetningarlykill þessa vefs, notaður til að sanna að beiðnir komi í raun frá þessum vef. Aðeins opinberi helmingurinn er sendur."
+#: admin/class-babilim-admin.php:3878
+msgid "Error reports"
+msgstr "Villutilkynningar"
 
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "Sérhver uppsett viðbót/þema: slug, útgáfa, textalén, hvort það er skráð á wp.org, eigin innbyggðar staðfærslur og fyrir hvaða staðfærslur þú hefur þegar sett upp Babilim-þýðingu."
 
-#: includes/class-babilim-consent.php:116
-msgid "(generic codes and coordinates only)"
-msgstr "(aðeins almennir kóðar og hnit)"
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "Sérhver staðfærsla í notkun á þessum vef (staðfærsla vefsins, uppsettir tungumálapakkar, staðfærslur notenda og þær sem þú bætir við handvirkt). Engin staðfærsla er meðhöndluð öðruvísi en önnur."
 
-#: includes/class-babilim-consent.php:117
-msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "Allt að 20 biðandi greiningaratburðir (t.d. skrá sem féll á heildarleikaprófun), hver með aðeins kóða, einingu og staðfærslu, og aldrei neitt textaefni eða þýddan texta."
+#: admin/class-babilim-admin.php:4798
+msgid "Excluded"
+msgstr "Undanskilið"
 
-#. translators: %s: the invalid locale code.
-#: includes/class-babilim-default-index.php:109
-#: includes/class-babilim-installer.php:949
+#: admin/class-babilim-admin.php:3429
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "Skrár með önnur heiti eða endingar eru ekki teknar með, né heldur möppurnar uploads, cache, logs, backup, data, vendor, node_modules og languages, faldar skrár eða skrár með nöfn sem samsvara algengum mynstrum fyrir skrár með viðkvæmum upplýsingum (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Kóðaskrár geta samt innihaldið texta eða gögn sem þú vilt ekki deila; athugaðu þær ef þú ert í vafa. Þjónustan fjarlægir sömu tegundir skráa aftur við móttöku."
+
+#: admin/class-babilim-admin.php:4450
+msgid "Free"
+msgstr "Ókeypis"
+
+#: admin/class-babilim-admin.php:4754
+msgid "Free-plan slots"
+msgstr "Pláss í ókeypis þjónustuleið"
+
+#: admin/class-babilim-admin.php:3834
+msgid "General"
+msgstr "Almennt"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1933
 #, php-format
-msgid "Unsafe locale: %s"
-msgstr "Óörugg staðfærsla: %s"
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "Ef kveikt er á þessu eyðir fjarlæging einnig auðkenni þessa vefs. Ekki er hægt að endurheimta greidda leyfið sem tengt er þessum vef sjálfkrafa eftir það; þú þyrftir að hafa samband við þjónustuver Babilim á %s til að fá það aftur."
+
+#: admin/class-babilim-admin.php:4797
+msgid "Included"
+msgstr "Innifalið"
+
+#: admin/class-babilim-admin.php:3726
+msgid "Included in index"
+msgstr "Innifalið í skránni"
+
+#: admin/class-babilim-admin.php:3868
+msgid "Install available translations automatically"
+msgstr "Setja upp tiltækar þýðingar sjálfvirkt"
+
+#: admin/class-babilim-translations-table.php:470
+msgid "Installed"
+msgstr "Uppsett"
+
+#: admin/class-babilim-admin.php:3905
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "Uppsettar þýðingar eru varðveittar en engar frekari athuganir eða niðurhal fara fram."
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:323
+#, php-format
+msgid "Installed · %s"
+msgstr "Uppsett · %s"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:283
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "Uppsett · smíðað fyrir %1$s, þessi vefur er með %2$s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+#, php-format
+msgid "Installed · built for %s"
+msgstr "Uppsett · smíðað fyrir %s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+#, php-format
+msgid "Installed · built for %s, all free-plan slots for this site are used"
+msgstr "Uppsett · smíðað fyrir %s, öll pláss í ókeypis þjónustuleið fyrir þennan vef eru í notkun"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "Uppsett · smíðað fyrir %s, ný útgáfa mistókst"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+#, php-format
+msgid "Installed · built for %s, new version not covered by the free service plan"
+msgstr "Uppsett · smíðað fyrir %s, ný útgáfa er ekki innifalin í ókeypis þjónustuleið"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "Uppsett · smíðað fyrir %s, ný útgáfa á áætlun"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "Uppsett · smíðað fyrir %s, nýja útgáfan er þýdd…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+msgid "Installed · built for a different version"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+msgid "Installed · built for a different version, all free-plan slots for this site are used"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu, öll pláss í ókeypis þjónustuleið fyrir þennan vef eru í notkun"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+msgid "Installed · built for a different version, new version failed"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa mistókst"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+msgid "Installed · built for a different version, new version not covered by the free service plan"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa er ekki innifalin í ókeypis þjónustuleið"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu, ný útgáfa er tímasett"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "Uppsett · smíðað fyrir aðra útgáfu, nýja útgáfan er í þýðingu…"
+
+#: admin/class-babilim-admin.php:3431
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "Hún er geymd hjá hýsingaraðila þjónustunnar og unnin af gervigreindarlíkönum til að búa til þýðinguna."
+
+#: admin/class-babilim-admin.php:3885
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "Halda eigin þýðingaryfirskriftum mínum þegar öllu er eytt eða þessi viðbót er fjarlægð."
+
+#: admin/class-babilim-admin.php:3725
+#: admin/class-babilim-admin.php:4256
+#: admin/class-babilim-admin.php:4795
+msgid "Language"
+msgstr "Tungumál"
+
+#: admin/class-babilim-translations-table.php:553
+msgid "Language:"
+msgstr "Tungumál:"
+
+#: admin/class-babilim-admin.php:3864
+msgid "Languages"
+msgstr "Tungumál"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:3061
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "Tungumál sem fundust á þessari vefsíðu: %s."
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:4844
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "Síðasta hreinsun %1$s: %2$d nýmerkt, %3$d skrám eytt, %4$d færslum fjarlægðum."
+
+#: admin/class-babilim-admin.php:4891
+msgid "Maintenance"
+msgstr "Viðhald"
+
+#: admin/class-babilim-admin.php:4822
+msgid "Maintenance status is not available right now."
+msgstr "Staða viðhalds er ekki tiltæk núna."
 
 #. translators: %s: the technical reason the manifest is unavailable.
 #: includes/class-babilim-default-index.php:112
@@ -1463,190 +912,56 @@ msgstr "Óörugg staðfærsla: %s"
 msgid "Manifest unavailable: %s"
 msgstr "Manifest ekki tiltækt: %s"
 
-#: includes/class-babilim-default-index.php:134
-msgid "Could not determine active components; the existing merged index was left unchanged."
-msgstr "Ekki tókst að ákvarða virkar einingar; núverandi sameinaða skráin var látin óbreytt."
+#: admin/class-babilim-admin.php:3259
+msgid "Negation reversed"
+msgstr "Neitun snúið við"
 
-#: includes/class-babilim-default-index.php:400
-msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "Ekki tókst að ákvarða uppsettar viðbætur/þemu; hreinsun sleppt, engu var eytt."
+#: admin/class-babilim-admin.php:3754
+msgid "No"
+msgstr "Nei"
 
-#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
-#: includes/class-babilim-default-index.php:532
+#: admin/class-babilim-admin.php:1003
+msgid "No build is available to download for this locale."
+msgstr "Engin útgáfa er tiltæk til niðurhals fyrir þessa staðfærslu."
+
+#: admin/class-babilim-admin.php:4851
+msgid "No cleanup has run yet."
+msgstr "Engin hreinsun hefur verið keyrð enn."
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:430
 #, php-format
-msgid "Sweep aborted without orphaning anything: %s."
-msgstr "Hreinsun hætt án þess að nokkuð yrði munaðarlaust: %s."
+msgid "No components match these filters. %s"
+msgstr "Engar einingar passa við þessar síur. %s"
 
-#: includes/class-babilim-default-index.php:624
-msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "Hreinsunin keyrði, en ekki var hægt að skrá allar breytingar hennar í þýðingaskrána; næsta hreinsun reynir aftur."
+#: admin/class-babilim-admin.php:3165
+msgid "No components synced yet."
+msgstr "Engar einingar hafa verið samstilltar enn."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:746
-msgctxt "component kind in the sweep brake message"
-msgid "theme"
-msgstr "þema"
+#: admin/class-babilim-admin.php:4240
+msgid "No installed translation matches."
+msgstr "Engin uppsett þýðing passar."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:749
-msgctxt "component kind in the sweep brake message"
-msgid "plugin"
-msgstr "viðbót"
+#: admin/class-babilim-admin.php:4673
+msgid "No language is managed yet."
+msgstr "Ekkert tungumál er í umsjón enn."
 
-#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
-#: includes/class-babilim-default-index.php:755
-#, php-format
-msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "það myndi gera sérhverja stýrða einingu af gerðinni %1$s munaðarlausa (%2$d af %2$d)"
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "Engin bíðandi áskorun fyrir þetta nonce."
 
-#. translators: 1: components that would be orphaned, 2: components managed in total.
-#: includes/class-babilim-default-index.php:762
-#, php-format
-msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "það myndi gera %1$d af %2$d stýrðum einingum munaðarlausar (meira en helming)"
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "Engin bíðandi áskorun til að staðfesta."
 
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:874
-#, php-format
-msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "Sameinaða skráin fyrir '%s' var endurbyggð, en þýðingaskráin gat ekki skráð hana; næsta endurbygging reynir aftur."
+#: admin/class-babilim-translations-table.php:424
+msgid "No plugins or themes found."
+msgstr "Engar viðbætur eða þemu fundust."
 
-#: includes/class-babilim-default-index.php:950
-msgid "Could not write the staged merged index."
-msgstr "Ekki tókst að skrifa undirbúnu sameinuðu skrána."
-
-#: includes/class-babilim-default-index.php:958
-msgid "Re-parsed entry count did not match the built index."
-msgstr "Fjöldi færslna eftir endurtúlkun passaði ekki við byggðu skrána."
-
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:989
-#, php-format
-msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "Ekki tókst að færa sameinuðu skrána fyrir '%s' á sinn stað; fyrri skráin sem var í notkun (ef einhver) var fjarlægð frekar en að skilja hana eftir hálfuppfærða. Engin viðbót fyrir sjálfgefið textalén er veitt fyrir þessa staðfærslu fyrr en næsta vel heppnaða endurbygging."
-
-#. translators: %s: the zip file path that could not be opened.
-#: includes/class-babilim-installer.php:147
-#, php-format
-msgid "Could not open zip: %s"
-msgstr "Ekki tókst að opna zip: %s"
-
-#: includes/class-babilim-installer.php:150
-msgid "Zip has no manifest.json."
-msgstr "Zip-skráin hefur enga manifest.json."
-
-#: includes/class-babilim-installer.php:161
-msgid "manifest.json in the zip is not valid JSON."
-msgstr "manifest.json í zip-skránni er ekki gilt JSON."
-
-#. translators: %s: the manifest.json field that did not match.
-#: includes/class-babilim-installer.php:165
-#, php-format
-msgid "manifest.json's '%s' does not match the expected value."
-msgstr "'%s' í manifest.json samsvarar ekki væntanlegu gildi."
-
-#: includes/class-babilim-installer.php:249
-#: includes/class-babilim-installer.php:254
-msgid "Another installation is running; try again in a moment."
-msgstr "Önnur uppsetning er í gangi; reyndu aftur eftir augnablik."
-
-#. translators: %s: the invalid server_build_id value.
-#: includes/class-babilim-installer.php:296
-#, php-format
-msgid "Not a valid server_build_id: %s"
-msgstr "Ekki gilt server_build_id: %s"
-
-#. translators: 1: the package manifest's own kind. 2: the requested kind.
-#: includes/class-babilim-installer.php:311
-#, php-format
-msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "Tegund '%1$s' í manifest pakkans samsvarar ekki umbeðinni tegund '%2$s'."
-
-#. translators: 1: the package's text domain. 2: this site's text domain for the component.
-#: includes/class-babilim-installer.php:346
-#, php-format
-msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "Textalén pakkans '%1$s' samsvarar ekki eintaki þessa vefs af einingunni ('%2$s', þannig að hann var ekki settur upp."
-
-#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
-#: includes/class-babilim-installer.php:364
-#, php-format
-msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "Uppgefið lén '%1$s' samsvarar hvorki slug '%2$s' í manifest pakkans né text_domain '%3$s'."
-
-#. translators: %s: the invalid slug.
-#: includes/class-babilim-installer.php:372
-#, php-format
-msgid "Unsafe slug: %s"
-msgstr "Óöruggt slug: %s"
-
-#. translators: %s: the invalid text domain.
-#: includes/class-babilim-installer.php:375
-#, php-format
-msgid "Unsafe text_domain: %s"
-msgstr "Óöruggt text_domain: %s"
-
-#. translators: %s: the expected .mo filename for the package's own text domain.
-#: includes/class-babilim-installer.php:413
-#, php-format
-msgid "The package has no %s for its own text domain."
-msgstr "Pakkinn hefur ekkert %s fyrir eigið textalén."
-
-#. translators: %s: the manifest.json field that is missing or invalid.
-#: includes/class-babilim-installer.php:470
-#, php-format
-msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json vantar eða hefur ógilt '%s'."
-
-#: includes/class-babilim-installer.php:474
-msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json vantar eða hefur ógilt 'entries'."
-
-#: includes/class-babilim-installer.php:477
-msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json vantar eða er með ógilt 'files'."
-
-#: includes/class-babilim-installer.php:480
-msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json vantar eða er með ógilt 'extra_domains'."
-
-#: includes/class-babilim-installer.php:483
-msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json vantar eða er með ógilt 'build_no'."
-
-#: includes/class-babilim-installer.php:486
-msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "'server_build_id' í manifest.json er ekki gilt build-auðkenni."
-
-#: includes/class-babilim-installer.php:489
-msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "'contract' í manifest.json er ekki gild útgáfustrengur."
-
-#: includes/class-babilim-installer.php:492
-msgid "manifest.json's 'status' must be 'published'."
-msgstr "Reiturinn „status“ í manifest.json verður að hafa gildið „published“."
-
-#: includes/class-babilim-installer.php:495
-msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "'kind' í manifest.json verður að vera 'plugin' eða 'theme'."
-
-#: includes/class-babilim-installer.php:498
-msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json er með ógilt 'default_domain_entries'."
-
-#: includes/class-babilim-installer.php:501
-msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json er með ógilt 'default_domain_files'."
-
-#. translators: %s: the expected-manifest field that is missing or invalid.
-#: includes/class-babilim-installer.php:524
-#, php-format
-msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest vantar eða er með ógilt '%s'."
-
-#: includes/class-babilim-installer.php:528
-msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "'server_build_id' í expected_manifest er ekki gilt build-auðkenni."
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "Engin fyrri útgáfa til að snúa aftur til."
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1657,17 +972,788 @@ msgstr "'server_build_id' í expected_manifest er ekki gilt build-auðkenni."
 msgid "No record for %s"
 msgstr "Engin færsla fyrir %s"
 
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "Ekkert vefauðkenni er skráð sem hægt er að endurnýja aðgangstákn fyrir."
+
+#: admin/class-babilim-admin.php:3748
+msgid "No — component inactive"
+msgstr "Nei — eining óvirk"
+
+#: admin/class-babilim-admin.php:3752
+msgid "No — component removed"
+msgstr "Nei — eining fjarlægð"
+
+#: admin/class-babilim-admin.php:3750
+msgid "No — installed version differs from the active one"
+msgstr "Nei — uppsetta útgáfan er önnur en sú virka"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "Ekki gilt server_build_id: %s"
+
+#: admin/class-babilim-cell.php:145
+msgid "Not covered by the free service plan"
+msgstr "Ekki innifalið í ókeypis þjónustuleið"
+
+#: admin/class-babilim-cell.php:127
+msgid "Not installed"
+msgstr "Ekki uppsett"
+
+#: admin/class-babilim-admin.php:4429
+msgid "Not registered yet"
+msgstr "Ekki skráð enn"
+
+#: admin/class-babilim-cell.php:152
+msgid "Not supported"
+msgstr "Ekki studd"
+
+#: admin/class-babilim-admin.php:4431
+msgid "Not verified"
+msgstr "Ekki staðfest"
+
+#: admin/class-babilim-admin.php:1555
+#: admin/class-babilim-admin.php:4250
+#: admin/class-babilim-admin.php:4990
+msgid "Note (optional)"
+msgstr "Athugasemd (valfrjálst)"
+
+#: admin/class-babilim-admin.php:3569
+msgid "Nothing to choose."
+msgstr "Ekkert til að velja."
+
+#: admin/class-babilim-admin.php:3506
+msgid "Nothing to confirm."
+msgstr "Ekkert til að staðfesta."
+
+#: admin/class-babilim-admin.php:3895
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "Slökkt sjálfgefið: ef viðbótinni er eytt er auðkenni þessa vefsvæðis varðveitt svo hægt sé að endurnýta það við enduruppsetningu."
+
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
 msgstr "Ein eða fleiri afgreiddar skrár passa ekki lengur við manifest."
 
-#: includes/class-babilim-installer.php:705
-msgid "No previous build to roll back to."
-msgstr "Engin fyrri útgáfa til að snúa aftur til."
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:4461
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "Einskiptiskaup fyrir þessa vefsíðu: %1$s %2$s. Inniheldur allar framtíðaruppfærslur á þýðingum. Greiðslan fer fram í gegnum Paddle í nýjum flipa."
+
+#: admin/class-babilim-admin.php:3776
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "Aðeins netstjóri getur gert þetta, því það breytir þýðingarskrám sem öll vefsvæði á þessu neti deila."
+
+#: includes/class-babilim-packager.php:180
+msgid "Only plugins and themes can be packaged."
+msgstr "Aðeins viðbætur og þemu er hægt að pakka."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "Aðeins þegar þú staðfestir upphleðslu fyrir viðbót eða þema sem er ekki á WordPress.org: hver .php og .js skrá, hver block.json skrá og readme.txt, readme.md, style.css og theme.json í aðalmöppu þess íhlutar, sem zip, eftir að skrám sem passa við algeng leyndarmál hefur verið sleppt."
+
+#: admin/class-babilim-admin.php:2086
+msgid "Open Babilim settings"
+msgstr "Opna Babilim stillingar"
+
+#: admin/class-babilim-cell.php:150
+msgid "Original language"
+msgstr "Upprunalegt tungumál"
+
+#: admin/class-babilim-admin.php:4244
+msgid "Original string"
+msgstr "Upprunalegur strengur"
+
+#: admin/class-babilim-admin.php:4446
+msgid "Paid"
+msgstr "Greitt"
+
+#: admin/class-babilim-admin.php:4448
+msgid "Partner"
+msgstr "Samstarfsaðili"
+
+#: admin/class-babilim-admin.php:2234
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "Athugaðu hvort hægt sé að ná í vefsíðuna þína af internetinu og reyndu svo aftur."
+
+#: admin/class-babilim-admin.php:1445
+msgid "Please choose a category for this report."
+msgstr "Veldu flokk fyrir þessa tilkynningu."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Plugin"
+msgstr "Viðbót"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:620
+#, php-format
+msgid "Plugin · %s"
+msgstr "Viðbót · %s"
+
+#: admin/class-babilim-translations-table.php:515
+msgid "Plugins"
+msgstr "Viðbætur"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:4252
+msgid "Preview"
+msgstr "Forskoðun"
+
+#: admin/class-babilim-admin.php:4589
+msgid "Purchase restored. This site is now licensed."
+msgstr "Kaupin voru endurheimt. Þessi vefsíða er nú með leyfi."
+
+#: includes/class-babilim-default-index.php:958
+msgid "Re-parsed entry count did not match the built index."
+msgstr "Fjöldi færslna eftir endurtúlkun passaði ekki við byggðu skrána."
+
+#: admin/class-babilim-admin.php:2257
+msgid "Re-verify"
+msgstr "Staðfesta aftur"
+
+#: admin/class-babilim-admin.php:4902
+msgid "Rebuild index now"
+msgstr "Endurbyggja atriðaskrána núna"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Neita að skrifa utan tungumálaskrámöppu Babilim."
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "Í skráningarsvarinu vantaði nauðsynlega reiti."
+
+#: admin/class-babilim-admin.php:2320
+msgid "Registration restarted."
+msgstr "Skráning hófst að nýju."
+
+#: admin/class-babilim-admin.php:3499
+#: admin/class-babilim-admin.php:3563
+#: admin/class-babilim-translations-table.php:733
+msgid "Remove"
+msgstr "Fjarlægja"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed"
+msgstr "Fjarlægja allt sem Babilim setti upp"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Fjarlægja allt sem Babilim setti upp? Þetta eyðir öllum tungumálaskrám sem Babilim setti upp fyrir allar viðbætur og þemu á þessum vef."
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:677
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "Fjarlægja þýðinguna %2$s fyrir %1$s af þessum vef?"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2729
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "%d uppsett eining fjarlægð."
+msgstr[1] "%d uppsettar einingar fjarlægðar."
+
+#: admin/class-babilim-cell.php:214
+msgid "Removed after a failed integrity check"
+msgstr "Fjarlægt eftir misheppnaða heildarleikaprófun"
+
+#: admin/class-babilim-admin.php:1147
+msgid "Removed."
+msgstr "Fjarlægt."
+
+#: admin/class-babilim-admin.php:4932
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "Fjarlægir allar tungumálaskrár sem Babilim hefur sett upp fyrir allar viðbætur og þemu á þessum vef."
+
+#: admin/class-babilim-admin.php:3565
+#: admin/class-babilim-admin.php:4954
+#: admin/class-babilim-translations-table.php:735
+msgid "Report a problem"
+msgstr "Tilkynna vandamál"
+
+#: admin/class-babilim-admin.php:4087
+#: admin/class-babilim-admin.php:4235
+msgid "Report translation"
+msgstr "Tilkynna þýðingu"
+
+#: admin/class-babilim-cell.php:371
+msgid "Request newer translation"
+msgstr "Biðja um nýrri þýðingu"
+
+#: admin/class-babilim-cell.php:371
+#: admin/class-babilim-translations-table.php:455
+msgid "Request translation"
+msgstr "Biðja um þýðingu"
+
+#: admin/class-babilim-translations-table.php:469
+msgid "Requestable"
+msgstr "Hægt að biðja um"
+
+#: admin/class-babilim-cell.php:373
+msgid "Requesting…"
+msgstr "Bið um…"
+
+#: admin/class-babilim-admin.php:3800
+msgid "Restart registration"
+msgstr "Hefja skráningu aftur"
+
+#: admin/class-babilim-admin.php:4520
+msgid "Restore code"
+msgstr "Endurheimtarkóði"
+
+#: admin/class-babilim-admin.php:4521
+msgid "Restore purchase"
+msgstr "Endurheimta kaup"
+
+#: admin/class-babilim-cell.php:369
+msgid "Retry request"
+msgstr "Reyna beiðni aftur"
+
+#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3562
+#: admin/class-babilim-translations-table.php:732
+msgid "Roll back"
+msgstr "Afturkalla"
+
+#: admin/class-babilim-admin.php:3564
+#: admin/class-babilim-translations-table.php:734
+msgid "Roll back and report"
+msgstr "Afturkalla og tilkynna"
+
+#: admin/class-babilim-admin.php:4995
+msgid "Roll back and send report"
+msgstr "Afturkalla og senda tilkynningu"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:680
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "Færa %2$s þýðinguna á %1$s til baka í fyrri smíð?"
+
+#: admin/class-babilim-admin.php:1117
+msgid "Rolled back and reported."
+msgstr "Sneri til baka og tilkynnti."
+
+#: admin/class-babilim-admin.php:1058
+msgid "Rolled back to the previous build."
+msgstr "Sneri aftur í fyrri útgáfu."
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1123
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "Sneri til baka, en ekki tókst að senda tilkynninguna: %s"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "Afturköllun myndi skrifa yfir '%1$s' (%2$s), sem er nú afgreidd fyrir aðra uppsetta einingu (%3$s); engu var breytt."
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "Í svarinu við skiptingu tákns vantaði site_token."
+
+#: admin/class-babilim-admin.php:3901
+msgid "Save changes"
+msgstr "Vista breytingar"
+
+#: admin/class-babilim-cell.php:137
+msgid "Scheduled, waiting to be processed"
+msgstr "Áætlað, bíður vinnslu"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:4238
+msgid "Search"
+msgstr "Leita"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Search components"
+msgstr "Leita í einingum"
+
+#: admin/class-babilim-admin.php:4236
+msgid "Search the installed translations"
+msgstr "Leita í uppsettum þýðingum"
+
+#: admin/class-babilim-translations-table.php:440
+msgid "Select all"
+msgstr "Velja allt"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:459
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "Veldu færri einingar: að hámarki %1$d aðgerðir í hverri keyrslu (þú valdir %2$d)."
+
+#: admin/class-babilim-admin.php:4262
+#: admin/class-babilim-admin.php:4995
+msgid "Send report"
+msgstr "Senda skýrslu"
+
+#: admin/class-babilim-admin.php:4454
+msgid "Service plan"
+msgstr "Þjónustuleið"
+
+#: admin/class-babilim-admin.php:403
+#: admin/class-babilim-admin.php:3108
+#: admin/class-babilim-admin.php:3400
+msgid "Settings"
+msgstr "Stillingar"
+
+#: admin/class-babilim-admin.php:3880
+msgid "Share error reports"
+msgstr "Deila villutilkynningum"
+
+#: admin/class-babilim-admin.php:2543
+msgid "Share this report"
+msgstr "Deila þessari tilkynningu"
+
+#: admin/class-babilim-admin.php:4518
+msgid "Show a new restore code"
+msgstr "Sýna nýjan endurheimtarkóða"
+
+#: admin/class-babilim-admin.php:3875
+msgid "Show the \"Report translation\" entry in the admin toolbar"
+msgstr "Sýna „Tilkynna þýðingu“ á stjórnborðsverkfærastikunni"
+
+#: admin/class-babilim-cell.php:65
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "Sumur texti þessarar einingar er harðkóðaður af höfundi hennar og tungumálapakki getur ekki þýtt hann."
+
+#: admin/class-babilim-admin.php:4441
+msgid "Status"
+msgstr "Staða"
+
+#: admin/class-babilim-cell.php:154
+msgid "Status unknown"
+msgstr "Staða óþekkt"
+
+#: admin/class-babilim-admin.php:4259
+msgid "String context"
+msgstr "Samhengi strengs"
+
+#: admin/class-babilim-admin.php:1551
+#: admin/class-babilim-admin.php:4249
+#: admin/class-babilim-admin.php:4988
+msgid "Suggested translation"
+msgstr "Tillaga að þýðingu"
+
+#: admin/class-babilim-admin.php:4793
+msgid "Supplementary translation index"
+msgstr "Skrá yfir viðbótarþýðingar"
+
+#: admin/class-babilim-admin.php:2679
+msgid "Supplementary translation index rebuilt."
+msgstr "Viðbótarþýðingaskrá endurbyggð."
+
+#: admin/class-babilim-admin.php:4819
+msgid "Supplementary translation maintenance"
+msgstr "Viðhald viðbótarþýðinga"
+
+#: admin/class-babilim-admin.php:3721
+msgid "Supplementary translations"
+msgstr "Viðbótarþýðingar"
+
+#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
+#: includes/class-babilim-default-index.php:532
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "Hreinsun hætt án þess að nokkuð yrði munaðarlaust: %s."
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2697
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "Hreinsun lokið: %d skrá eytt."
+msgstr[1] "Hreinsun lokið: %d skrám eytt."
+
+#: admin/class-babilim-admin.php:4908
+msgid "Sweep now"
+msgstr "Skanna núna"
+
+#: admin/class-babilim-admin.php:2341
+#: admin/class-babilim-admin.php:2415
+msgid "Sync complete."
+msgstr "Samstillingu lokið."
+
+#: admin/class-babilim-admin.php:1403
+#: admin/class-babilim-admin.php:4266
+msgid "Thank you. Your report was sent."
+msgstr "Takk fyrir. Tilkynningin þín var send."
+
+#: admin/class-babilim-admin.php:472
+#: admin/class-babilim-admin.php:1160
+#: admin/class-babilim-admin.php:1361
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "Þessi eining er ekki uppsett á þessum vef, því er ekki hægt að biðja um þýðingu fyrir hana."
+
+#: admin/class-babilim-admin.php:4558
+msgid "That does not look like a restore code."
+msgstr "Þetta lítur ekki út eins og endurheimtarkóði."
+
+#: admin/class-babilim-admin.php:1751
+msgid "That is not a valid WordPress locale code. Nothing was saved."
+msgstr "Þetta er ekki gildur WordPress staðfærslukóði. Engu var vistað."
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "Þetta er ekki gilt smíðakenni."
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
 msgstr "Ekki tókst að skrá breytinguna í þýðingaskrána; reyndu aftur."
+
+#: includes/class-babilim-default-index.php:624
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "Hreinsunin keyrði, en ekki var hægt að skrá allar breytingar hennar í þýðingaskrána; næsta hreinsun reynir aftur."
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "Íhluturinn hefur engar skrár sem hægt er að hlaða upp."
+
+#: includes/class-babilim-packager.php:190
+msgid "The component is not inside the plugins or themes directory."
+msgstr "Einingin er ekki í viðbóta- eða þemamöppunni."
+
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
+msgid "The component's main file was not found."
+msgstr "Aðalskrá einingarinnar fannst ekki."
+
+#: includes/class-babilim-sync-installer.php:415
+msgid "The download response was missing a usable location."
+msgstr "Í niðurhalssvarinu vantaði nothæfa staðsetningu."
+
+#: admin/class-babilim-admin.php:3876
+msgid "The entry opens a panel to search the translations Babilim installed on this site and report one of them."
+msgstr "Færslan opnar glugga þar sem hægt er að leita í þýðingunum sem Babilim setti upp á þessum vef og tilkynna eina þeirra."
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1522
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "Reiturinn „%1$s“ er of langur: hann hefur %2$d stafi og hámarkið er %3$d. Engu var sent; styttu hann og reyndu aftur."
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "Uppgefið lén '%1$s' samsvarar hvorki slug '%2$s' í manifest pakkans né text_domain '%3$s'."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:874
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "Sameinaða skráin fyrir '%s' var endurbyggð, en þýðingaskráin gat ekki skráð hana; næsta endurbygging reynir aftur."
+
+#: admin/class-babilim-admin.php:3432
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "Upprunalegi textinn og þýðingarnar sem gerðar eru úr honum verða veittar öðrum vefjum sem setja upp sömu útgáfu."
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "Pakkinn tilgreinir enga aðalþýðingarskrá."
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "Pakkinn hefur ekkert %s fyrir eigið textalén."
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "Tegund '%1$s' í manifest pakkans samsvarar ekki umbeðinni tegund '%2$s'."
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "Pakkinn bjó ekki til neina nothæfa aðalþýðingarskrá."
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "Textalén pakkans '%1$s' samsvarar ekki eintaki þessa vefs af einingunni ('%2$s', þannig að hann var ekki settur upp."
+
+#: includes/class-babilim-upload.php:163
+msgid "The packaged component could not be read."
+msgstr "Ekki tókst að lesa pakkaða eininguna."
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "Skráningaráskorunin er ekki á væntanlegu sniði."
+
+#: admin/class-babilim-admin.php:4269
+msgid "The report could not be sent."
+msgstr "Ekki tókst að senda tilkynninguna."
+
+#: admin/class-babilim-admin.php:4243
+msgid "The search could not be completed."
+msgstr "Ekki tókst að ljúka leitinni."
+
+#: includes/class-babilim-site.php:847
+msgid "The service asked this site to wait before syncing again."
+msgstr "Þjónustan bað þennan vef um að bíða áður en hann samstillir aftur."
+
+#: admin/class-babilim-admin.php:2228
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "Þjónustan náði ekki sambandi við vefinn þinn. Líklega er eldveggur, öryggisviðbót eða regla hjá vefhýsingu að loka á beiðnina; leyfðu beiðnir til /wp-json/babilim/v1/challenge."
+
+#: includes/class-babilim-upload.php:64
+#: includes/class-babilim-upload.php:69
+msgid "The service's upload offer was incomplete."
+msgstr "Upphleðslutilboð þjónustunnar var ófullnægjandi."
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "Textalénið '%1$s' (%2$s) er þegar í notkun fyrir aðra uppsetta einingu (%3$s); ekkert var sett upp."
+
+#: admin/class-babilim-admin.php:3430
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "Innsendingin er geymd þar til þú biður Babilim um að eyða henni."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Theme"
+msgstr "Þema"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:617
+#, php-format
+msgid "Theme · %s"
+msgstr "Þema · %s"
+
+#: admin/class-babilim-translations-table.php:516
+msgid "Themes"
+msgstr "Þemu"
+
+#: admin/class-babilim-admin.php:3450
+#: includes/class-babilim-upload.php:145
+msgid "There is no upload in progress."
+msgstr "Engin innsending er í gangi."
+
+#: admin/class-babilim-admin.php:3422
+#: includes/class-babilim-upload.php:96
+msgid "There is no upload waiting for confirmation."
+msgstr "Engin innsending bíður staðfestingar."
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:3399
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "Þetta eru tungumálin sem þessi vefur notar. Þú getur breytt þeim í %s."
+
+#: admin/class-babilim-admin.php:4260
+msgid "These fields will be sent:"
+msgstr "Þessir reitir verða sendir:"
+
+#: admin/class-babilim-admin.php:1452
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "Þessi útgáfa er ekki ein af þeim sem þessi vefur þekkir núna fyrir þessa einingu og staðfærslu."
+
+#: admin/class-babilim-admin.php:1364
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "Þessi eining tilgreinir ekki útgáfunúmer, því er ekki hægt að biðja um þýðingu fyrir hana."
+
+#: includes/class-babilim-upload.php:112
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "Þessi eining er stærri en þjónustan tekur við og því er ekki hægt að hlaða henni upp."
+
+#: admin/class-babilim-admin.php:1205
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "Þessari einingu var þegar hlaðið upp. Babilim er að athuga hana núna."
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1371
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "Útgáfunúmer þessarar einingar er lengra en %d stafir, sem Babilim ræður ekki við, því er ekki hægt að biðja um þýðingu fyrir hana."
+
+#: admin/class-babilim-admin.php:4518
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "Þetta gefur út nýjan endurheimtarkóða og sá fyrri hættir að virka. Halda áfram?"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1993
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Þetta net hefur of marga vefi til að hægt sé að athuga þá einn og einn og sumir þeirra gætu verið stilltir á að eyða Babilim auðkenni sínu þegar viðbótinni er eytt. Þá væri ekki hægt að endurheimta greidda leyfið sem tengt er slíkum vef sjálfkrafa; þú þyrftir að hafa samband við þjónustuver Babilim á %s. Til að halda auðkennunum skaltu ýta á Hætta við, taka hakið af „Eyða öllum Babilim gögnum við fjarlægingu“ í Babilim stillingum hvers vefs og afvirkja aftur. Afvirkja samt?"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "Útgáfa þessarar viðbótar sjálfrar, svo þjónustan geti beðið þig um að uppfæra hana ef hún er of gömul til að eiga samskipti við hana."
+
+#: admin/class-babilim-admin.php:1438
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "Þessi skýrsla nefnir hvorki gilda viðbót eða þema né staðfærslu."
+
+#: admin/class-babilim-admin.php:1467
+msgid "This report does not name an installed string."
+msgstr "Þessi skýrsla tilgreinir ekki Nafn uppsetts textastrengs."
+
+#: admin/class-babilim-admin.php:1449
+msgid "This report is missing a valid build to report against."
+msgstr "Þessa tilkynningu vantar gilda útgáfu til að tilkynna um."
+
+#: admin/class-babilim-admin.php:2542
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "Þessi tilkynning verður birt opinberlega á GitHub og þriðju aðilar kunna að geyma hana."
+
+#: admin/class-babilim-admin.php:4572
+msgid "This restore code was not recognised for this site."
+msgstr "Þessi endurheimtarkóði þekktist ekki fyrir þennan vef."
+
+#: admin/class-babilim-admin.php:3793
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "Þetta vefsvæði er þegar með virka skráningu sem ekki er lengur hægt að endurheimta sjálfkrafa."
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:911
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "Þessi vefur er með %1$d einingar á %2$d tungumálum, sem krefst %3$d athugunarlota; Babilim getur séð um í mesta lagi %4$d í hverri keyrslu. Fækkaðu stýrðum tungumálum í stillingum eða gerðu ónotuð viðbætur og þemu óvirk, og ýttu síðan á Athuga aftur núna."
+
+#: admin/class-babilim-admin.php:4612
+msgid "This site has no purchase to show a code for."
+msgstr "Engin kaup eru tengd þessum vef sem hægt er að sýna kóða fyrir."
+
+#: admin/class-babilim-admin.php:3974
+msgid "This site is already licensed. Reload the page."
+msgstr "Þetta vefsvæði er þegar með leyfi. Endurhlaðið síðuna."
+
+#: admin/class-babilim-admin.php:3966
+#: admin/class-babilim-admin.php:4564
+#: admin/class-babilim-admin.php:4604
+#: includes/class-babilim-site.php:857
+#: includes/class-babilim-sync-installer.php:405
+msgid "This site is not registered with Babilim yet."
+msgstr "Þetta vefsvæði hefur ekki enn verið skráð hjá Babilim."
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:2278
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "Þessi vefsíða er stærri en þjónustan tekur við í einni samstillingu, því var sumu sleppt: %1$d einingum og %2$d tungumálum."
+
+#: admin/class-babilim-admin.php:3870
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "Þetta vefsvæði er hluti af fjölsetursneti sem setur ekki upp nýjar þýðingar sjálfkrafa. Þýðingar sem þegar eru uppsettar eru áfram uppfærðar."
+
+#: admin/class-babilim-admin.php:2307
+msgid "This site is verified."
+msgstr "Þessi vefur er staðfestur."
+
+#: admin/class-babilim-admin.php:4576
+msgid "This site must be verified first."
+msgstr "Fyrst þarf að staðfesta þennan vef."
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "Vefslóð þessa vefs, svo þjónustan geti staðfest að þú eigir hann."
+
+#: includes/class-babilim-site.php:1483
+msgid "This site's address is too long for Babilim to register."
+msgstr "Vistfang þessa vefs er of langt til að Babilim geti skráð það."
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "Stillt staðfærsla þessa vefs."
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "Opinber uppsetningarlykill þessa vefs, notaður til að sanna að beiðnir komi í raun frá þessum vef. Aðeins opinberi helmingurinn er sendur."
+
+#: includes/class-babilim-site.php:1486
+msgid "This site's locale code is not one Babilim can register."
+msgstr "Staðfærslukóði þessa vefs er ekki einn sem Babilim getur skráð."
+
+#: admin/class-babilim-admin.php:4267
+msgid "This string can't be reported from this site."
+msgstr "Ekki er hægt að tilkynna þessa textastreng frá þessu vefsvæði."
+
+#: admin/class-babilim-admin.php:1475
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "Þessi textastrengur er ekki meðal þýðinga sem eru uppsettar á þessu vefsvæði. Leitaðu aftur og veldu hann af listanum."
+
+#: admin/class-babilim-admin.php:1478
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "Þessi þýðing var uppfærð eftir að þú leitaðir. Leitaðu aftur og veldu textastrenginn af nýja listanum."
+
+#: admin/class-babilim-admin.php:3426
+msgid "To translate this component, Babilim needs its source."
+msgstr "Til að þýða þessa einingu þarf Babilim frumkóða hennar."
+
+#: admin/class-babilim-admin.php:4574
+msgid "Too many attempts. Try again tomorrow."
+msgstr "Of margar tilraunir. Reyndu aftur á morgun."
+
+#: admin/class-babilim-admin.php:4268
+msgid "Too many reports today. Try again tomorrow."
+msgstr "Of margar tilkynningar í dag. Reyndu aftur á morgun."
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "Of margar beiðnir."
+
+#: admin/class-babilim-admin.php:3873
+msgid "Toolbar"
+msgstr "Verkfærastika"
+
+#: admin/class-babilim-cell.php:139
+msgid "Translating…"
+msgstr "Þýði…"
+
+#: admin/class-babilim-admin.php:3261
+msgid "Translation does not load"
+msgstr "Þýðing hleðst ekki"
+
+#: admin/class-babilim-cell.php:141
+msgid "Translation failed"
+msgstr "Þýðing mistókst"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3888
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "Þýðingarskrár sem þú setur í %s hafa alltaf forgang yfir skrár frá Babilim. Þær eru varðveittar nema þú afhakir þetta."
+
+#: admin/class-babilim-admin.php:1183
+msgid "Translation requested."
+msgstr "Beðið um þýðingu."
+
+#: admin/class-babilim-admin.php:394
+#: admin/class-babilim-admin.php:395
+#: admin/class-babilim-translations-table.php:442
+msgid "Translations"
+msgstr "Þýðingar"
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:4254
+msgid "Type"
+msgstr "Gerð"
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:4242
+msgid "Type at least 2 characters to search."
+msgstr "Sláðu inn að minnsta kosti 2 stafi til að leita."
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:605
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "Óvænt HTTP-svar %d."
+
+#: admin/class-babilim-admin.php:3892
+msgid "Uninstall"
+msgstr "Fjarlæging"
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1681,33 +1767,189 @@ msgstr "Óþekkt tegund: %s"
 msgid "Unsafe domain: %s"
 msgstr "Óöruggt lén: %s"
 
-#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1022
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
 #, php-format
-msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "Textalénið '%1$s' (%2$s) er þegar í notkun fyrir aðra uppsetta einingu (%3$s); ekkert var sett upp."
+msgid "Unsafe locale: %s"
+msgstr "Óörugg staðfærsla: %s"
 
-#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1075
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
 #, php-format
-msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "Afturköllun myndi skrifa yfir '%1$s' (%2$s), sem er nú afgreidd fyrir aðra uppsetta einingu (%3$s); engu var breytt."
+msgid "Unsafe slug: %s"
+msgstr "Óöruggt slug: %s"
 
-#. translators: %s: the filename missing from the zip.
-#: includes/class-babilim-installer.php:1167
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
 #, php-format
-msgid "Zip is missing expected file: %s"
-msgstr "Zip-skrána vantar væntanlega skrá: %s"
+msgid "Unsafe text_domain: %s"
+msgstr "Óöruggt text_domain: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1171
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "Allt að 20 biðandi greiningaratburðir (t.d. skrá sem féll á heildarleikaprófun), hver með aðeins kóða, einingu og staðfærslu, og aldrei neitt textaefni eða þýddan texta."
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:454
+msgid "Update"
+msgstr "Uppfæra"
+
+#: admin/class-babilim-cell.php:187
+#: admin/class-babilim-cell.php:189
+msgid "Update available"
+msgstr "Uppfærsla í boði"
+
+#: admin/class-babilim-translations-table.php:468
+msgid "Updates"
+msgstr "Uppfærslur"
+
+#: admin/class-babilim-cell.php:366
+msgid "Updating…"
+msgstr "Uppfæri…"
+
+#: admin/class-babilim-admin.php:4457
+msgid "Upgrade this site"
+msgstr "Uppfæra þennan vef"
+
+#: admin/class-babilim-admin.php:3435
+msgid "Upload and request"
+msgstr "Senda inn og óska eftir þýðingu"
+
+#: admin/class-babilim-admin.php:1254
+msgid "Upload cancelled."
+msgstr "Hætt við upphleðslu."
+
+#: admin/class-babilim-admin.php:1286
+msgid "Upload complete — translation requested."
+msgstr "Upphleðslu lokið — beðið um þýðingu."
+
+#: admin/class-babilim-cell.php:121
+msgid "Upload expired before it finished"
+msgstr "Innsendingin rann út áður en henni lauk"
+
+#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:269
+#: admin/class-babilim-cell.php:271
+msgid "Upload in progress — continue or cancel"
+msgstr "Innsending í gangi — haltu áfram eða hættu við"
+
+#: admin/class-babilim-admin.php:3420
+msgid "Upload this component?"
+msgstr "Senda þessa einingu inn?"
+
+#: admin/class-babilim-cell.php:118
+msgid "Upload was not accepted"
+msgstr "Innsendingin var ekki samþykkt"
+
+#: admin/class-babilim-admin.php:3448
+msgid "Uploading"
+msgstr "Sendi inn"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:3453
 #, php-format
-msgid "sha256 mismatch for %s"
-msgstr "sha256 stemmir ekki fyrir %s"
+msgid "Uploading part %1$d of %2$d…"
+msgstr "Sendi hluta %1$d af %2$d…"
 
-#: includes/class-babilim-installer.php:1181
-msgid "The package declares no main translation file."
-msgstr "Pakkinn tilgreinir enga aðalþýðingarskrá."
+#: admin/class-babilim-admin.php:3435
+msgid "Uploading…"
+msgstr "Sendi inn…"
+
+#: admin/class-babilim-admin.php:4433
+msgid "Verified"
+msgstr "Staðfest"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "Í staðfestingarsvarinu vantaði site_token."
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:614
+#, php-format
+msgid "Version %s"
+msgstr "Útgáfa %s"
+
+#: admin/class-babilim-admin.php:4641
+msgid "What is sent when Babilim checks this site"
+msgstr "Hvað er sent þegar Babilim athugar þessa vefsíðu"
+
+#: admin/class-babilim-admin.php:3068
+msgid "What is sent when you enable Babilim"
+msgstr "Hvað er sent þegar þú virkjar Babilim"
+
+#: admin/class-babilim-admin.php:3881
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "Þegar eitthvað bilar í Babilim skaltu senda villutilkynningu til Babilim-þjónustunnar svo hægt sé að birta hana sem opinbert vandamál á GitHub. Tilkynningin er send sem komandi frá þessu vefsvæði, með sömu auðkenningu og allar aðrar beiðnir til Babilim-þjónustunnar. Þjónustan birtir aðeins villukóðann og útgáfur sem opinbert vandamál á GitHub; opinbera vandamálið inniheldur hvorki vistfang vefsvæðis, efni né skráarslóðir. Slökkt sjálfgefið."
+
+#: admin/class-babilim-admin.php:1559
+#: admin/class-babilim-admin.php:4992
+msgid "Where you saw this (optional)"
+msgstr "Hvar þú sást þetta (valfrjálst)"
+
+#: admin/class-babilim-admin.php:3869
+msgid "While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "Á meðan kveikt er á þessu eru þýðingar sem þjónustan skráir sem tiltækar fyrir tungumálin sem þú sérð um settar upp við samstillingu tvisvar á dag."
+
+#: admin/class-babilim-cell.php:105
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-admin.php:3255
+msgid "Wrong for this context"
+msgstr "Rangt í þessu samhengi"
+
+#: admin/class-babilim-admin.php:3249
+msgid "Wrong meaning"
+msgstr "Röng merking"
+
+#: admin/class-babilim-admin.php:3257
+msgid "Wrong plural form"
+msgstr "Rangt fleirtölusnið"
+
+#: admin/class-babilim-admin.php:3251
+msgid "Wrong term"
+msgstr "Rangt hugtak"
+
+#: admin/class-babilim-admin.php:3731
+msgid "Yes"
+msgstr "Já"
+
+#: admin/class-babilim-admin.php:430
+#: admin/class-babilim-admin.php:839
+msgid "You are not allowed to do this."
+msgstr "Þú hefur ekki heimild til að gera þetta."
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "PHP-útgáfa þín, vegna samhæfni."
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "WordPress-útgáfa þín, til að afhenda samhæfðar þýðingarskrár."
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:4626
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "Nýi endurheimtarkóðinn þinn: %s. Geymdu hann á öruggum stað — fyrri kóðinn virkar ekki lengur."
+
+#: admin/class-babilim-admin.php:4261
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "Tilkynningin þín er unnin sjálfvirkt af AI-líkönum og getur bætt þessa þýðingu fyrir önnur vefsvæði."
+
+#: admin/class-babilim-admin.php:2232
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "Vefurinn þinn svaraði, en ekki með því sem búist var við. Önnur viðbót gæti verið að endurskrifa REST API, eða endapunkturinn gæti verið í skyndiminni; undanskildu /wp-json/babilim/v1/challenge frá skyndiminni og endurskrifun."
+
+#: admin/class-babilim-admin.php:2230
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "Vefsíðan þín var of lengi að svara. Reyndu aftur síðar og athugaðu hvort vefhýsingin sé of hæg eða yfirhlaðin."
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "Zip-skráin hefur enga manifest.json."
 
 #. translators: %s: the filename missing from the zip's default-domain supplement.
 #: includes/class-babilim-installer.php:1187
@@ -1715,85 +1957,15 @@ msgstr "Pakkinn tilgreinir enga aðalþýðingarskrá."
 msgid "Zip is missing expected default file: %s"
 msgstr "Zip-skrána vantar væntanlega sjálfgefna skrá: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1191
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
 #, php-format
-msgid "sha256 mismatch for default/%s"
-msgstr "sha256 stemmir ekki fyrir default/%s"
+msgid "Zip is missing expected file: %s"
+msgstr "Zip-skrána vantar væntanlega skrá: %s"
 
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1214
-#: includes/class-babilim-installer.php:1279
-#: includes/class-babilim-installer.php:1312
-#, php-format
-msgid "Could not stage %s"
-msgstr "Ekki tókst að undirbúa %s"
-
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1221
-#, php-format
-msgid "Could not stage default/%s"
-msgstr "Ekki tókst að undirbúa default/%s"
-
-#. translators: %s: the .mo filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1263
-#, php-format
-msgid "Entry count mismatch for %s"
-msgstr "Fjöldi færslna passar ekki fyrir %s"
-
-#. translators: %s: the .mo filename whose entry count could not be verified.
-#: includes/class-babilim-installer.php:1272
-#, php-format
-msgid "Could not verify entry count for %s"
-msgstr "Ekki tókst að staðfesta fjölda færslna fyrir %s"
-
-#. translators: %s: the .l10n.php filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1293
-#, php-format
-msgid "l10n.php entry count mismatch for %s"
-msgstr "Fjöldi færslna í l10n.php stemmir ekki fyrir %s"
-
-#: includes/class-babilim-installer.php:1324
-msgid "Default supplement entry count mismatch."
-msgstr "Fjöldi færslna í sjálfgefnu viðbótinni passar ekki."
-
-#: includes/class-babilim-installer.php:1336
-msgid "The package produced no servable main translation file."
-msgstr "Pakkinn bjó ekki til neina nothæfa aðalþýðingarskrá."
-
-#. translators: %s: the filename that could not be prepared for rollback.
-#: includes/class-babilim-installer.php:1628
-#, php-format
-msgid "Could not prepare %s for rollback."
-msgstr "Ekki tókst að undirbúa %s fyrir afturköllun."
-
-#. translators: %s: the filename that could not be backed up.
-#: includes/class-babilim-installer.php:1644
-#, php-format
-msgid "Could not back up %s before replacing it."
-msgstr "Ekki tókst að taka afrit af %s áður en henni var skipt út."
-
-#. translators: %s: the filename that could not be moved into place.
-#: includes/class-babilim-installer.php:1650
-#, php-format
-msgid "Could not move %s into place."
-msgstr "Ekki tókst að færa %s á sinn stað."
-
-#. translators: %s: the filename that could not be read back after it was moved into place.
-#: includes/class-babilim-installer.php:1656
-#, php-format
-msgid "Could not read %s back after moving it into place."
-msgstr "Ekki tókst að lesa %s aftur eftir að hún var færð á sinn stað."
-
-#: includes/class-babilim-locale-label.php:53
-msgid "English (United States)"
-msgstr "enska (Bandaríkin)"
-
-#. translators: %s: the technical reason the manifest is unavailable.
-#: includes/class-babilim-manifest.php:546
-#, php-format
-msgid "Babilim_Manifest is unavailable: %s"
-msgstr "Babilim_Manifest er ekki tiltækt: %s"
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json hefur óvænta uppbyggingu"
 
 #. translators: %s: the underlying filesystem error message.
 #: includes/class-babilim-manifest.php:587
@@ -1801,296 +1973,147 @@ msgstr "Babilim_Manifest er ekki tiltækt: %s"
 msgid "could not read _manifest.json: %s"
 msgstr "gat ekki lesið _manifest.json: %s"
 
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest vantar eða er með ógilt '%s'."
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' í expected_manifest er ekki gilt build-auðkenni."
+
 #. translators: %s: the underlying JSON parser error message.
 #: includes/class-babilim-manifest.php:601
 #, php-format
 msgid "failed to parse _manifest.json: %s"
 msgstr "Tókst ekki að þátta _manifest.json: %s"
 
-#: includes/class-babilim-manifest.php:608
-msgid "_manifest.json has an unexpected structure"
-msgstr "_manifest.json hefur óvænta uppbyggingu"
+#. translators: 1: components that would be orphaned, 2: components managed in total.
+#: includes/class-babilim-default-index.php:762
+#, php-format
+msgid "it would orphan %1$d of %2$d managed components (more than half)"
+msgstr "það myndi gera %1$d af %2$d stýrðum einingum munaðarlausar (meira en helming)"
 
-#: includes/class-babilim-packager.php:106
-#: includes/class-babilim-packager.php:115
-#: includes/class-babilim-packager.php:138
-msgid "Could not create the package archive."
-msgstr "Ekki tókst að búa til pakkasafnið."
+#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
+#: includes/class-babilim-default-index.php:755
+#, php-format
+msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
+msgstr "það myndi gera sérhverja stýrða einingu af gerðinni %1$s munaðarlausa (%2$d af %2$d)"
 
-#: includes/class-babilim-packager.php:125
-msgid "A file in the component could not be read, so it was not packaged."
-msgstr "Ekki tókst að lesa skrá í einingunni og hún var því ekki pökkuð."
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "Fjöldi færslna í l10n.php stemmir ekki fyrir %s"
 
-#: includes/class-babilim-packager.php:180
-msgid "Only plugins and themes can be packaged."
-msgstr "Aðeins viðbætur og þemu er hægt að pakka."
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json er með ógilt 'default_domain_entries'."
 
-#: includes/class-babilim-packager.php:185
-#: includes/class-babilim-packager.php:194
-msgid "The component's main file was not found."
-msgstr "Aðalskrá einingarinnar fannst ekki."
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json er með ógilt 'default_domain_files'."
 
-#: includes/class-babilim-packager.php:190
-msgid "The component is not inside the plugins or themes directory."
-msgstr "Einingin er ekki í viðbóta- eða þemamöppunni."
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "manifest.json í zip-skránni er ekki gilt JSON."
 
-#: includes/class-babilim-site.php:348
-#: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1271
-msgid "Babilim ran out of time for this step and will continue on the next check."
-msgstr "Tíminn sem Babilim hafði til að ljúka þessu skrefi rann út og Babilim heldur áfram við næstu athugun."
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json vantar eða hefur ógilt '%s'."
 
-#: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:315
-msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
-msgstr "Babilim gat ekki staðfest þennan vef, því er engu hlaðið niður eða sett upp fyrr en staðfesting tekst."
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json vantar eða er með ógilt 'build_no'."
 
-#: includes/class-babilim-site.php:530
-#: includes/class-babilim-site.php:643
-msgid "Registration response was missing required fields."
-msgstr "Í skráningarsvarinu vantaði nauðsynlega reiti."
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json vantar eða hefur ógilt 'entries'."
 
-#: includes/class-babilim-site.php:536
-#: includes/class-babilim-site.php:650
-msgid "No pending challenge to verify."
-msgstr "Engin bíðandi áskorun til að staðfesta."
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json vantar eða er með ógilt 'extra_domains'."
 
-#: includes/class-babilim-site.php:574
-msgid "Verify response was missing site_token."
-msgstr "Í staðfestingarsvarinu vantaði site_token."
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json vantar eða er með ógilt 'files'."
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "Ekkert vefauðkenni er skráð sem hægt er að endurnýja aðgangstákn fyrir."
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "'%s' í manifest.json samsvarar ekki væntanlegu gildi."
 
-#: includes/class-babilim-site.php:744
-msgid "Rotate-token response was missing site_token."
-msgstr "Í svarinu við skiptingu tákns vantaði site_token."
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "'contract' í manifest.json er ekki gild útgáfustrengur."
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "'kind' í manifest.json verður að vera 'plugin' eða 'theme'."
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' í manifest.json er ekki gilt build-auðkenni."
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "Reiturinn „status“ í manifest.json verður að hafa gildið „published“."
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
 msgstr "nonce verður að vera sextándakerfisstrengur."
 
-#: includes/class-babilim-site.php:805
-msgid "No pending challenge for this nonce."
-msgstr "Engin bíðandi áskorun fyrir þetta nonce."
+#: admin/class-babilim-admin.php:3235
+msgid "per day"
+msgstr "á dag"
 
-#: includes/class-babilim-site.php:808
-msgid "Too many requests."
-msgstr "Of margar beiðnir."
+#: admin/class-babilim-admin.php:4520
+msgid "rc_…"
+msgstr "rc_…"
 
-#: includes/class-babilim-site.php:847
-msgid "The service asked this site to wait before syncing again."
-msgstr "Þjónustan bað þennan vef um að bíða áður en hann samstillir aftur."
-
-#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
-#: includes/class-babilim-site.php:911
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
 #, php-format
-msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "Þessi vefur er með %1$d einingar á %2$d tungumálum, sem krefst %3$d athugunarlota; Babilim getur séð um í mesta lagi %4$d í hverri keyrslu. Fækkaðu stýrðum tungumálum í stillingum eða gerðu ónotuð viðbætur og þemu óvirk, og ýttu síðan á Athuga aftur núna."
+msgid "sha256 mismatch for %s"
+msgstr "sha256 stemmir ekki fyrir %s"
 
-#: includes/class-babilim-site.php:987
-msgid "Babilim could not finish checking this site."
-msgstr "Babilim gat ekki lokið við að athuga þennan vef."
-
-#: includes/class-babilim-site.php:1483
-msgid "This site's address is too long for Babilim to register."
-msgstr "Vistfang þessa vefs er of langt til að Babilim geti skráð það."
-
-#: includes/class-babilim-site.php:1486
-msgid "This site's locale code is not one Babilim can register."
-msgstr "Staðfærslukóði þessa vefs er ekki einn sem Babilim getur skráð."
-
-#: includes/class-babilim-sync-installer.php:329
-msgid "The download response was missing a usable location."
-msgstr "Í niðurhalssvarinu vantaði nothæfa staðsetningu."
-
-#: includes/class-babilim-upload.php:64
-#: includes/class-babilim-upload.php:69
-msgid "The service's upload offer was incomplete."
-msgstr "Upphleðslutilboð þjónustunnar var ófullnægjandi."
-
-#: includes/class-babilim-upload.php:112
-msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "Þessi eining er stærri en þjónustan tekur við og því er ekki hægt að hlaða henni upp."
-
-#: includes/class-babilim-upload.php:163
-msgid "The packaged component could not be read."
-msgstr "Ekki tókst að lesa pakkaða eininguna."
-
-#: includes/class-babilim-upload.php:293
-msgid "A part of the upload kept failing, so the upload was cancelled."
-msgstr "Hluti upphleðslunnar mistókst ítrekað og hætt var við upphleðsluna."
-
-#. translators: %s: the file path that could not be read.
-#: includes/class-babilim-wp-fs.php:91
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
 #, php-format
-msgid "Could not read: %s"
-msgstr "Ekki tókst að lesa: %s"
+msgid "sha256 mismatch for default/%s"
+msgstr "sha256 stemmir ekki fyrir default/%s"
 
-#: admin/class-babilim-cell.php:146
-msgid "Original language"
-msgstr "Upprunalegt tungumál"
+#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:749
+msgctxt "component kind in the sweep brake message"
+msgid "plugin"
+msgstr "viðbót"
 
-#: admin/class-babilim-admin.php:2156
-msgid "This report will be posted publicly on GitHub and may be kept by third parties."
-msgstr "Þessi tilkynning verður birt opinberlega á GitHub og þriðju aðilar kunna að geyma hana."
+#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:746
+msgctxt "component kind in the sweep brake message"
+msgid "theme"
+msgstr "þema"
 
-#: admin/class-babilim-admin.php:2157
-msgid "Share this report"
-msgstr "Deila þessari tilkynningu"
+#. translators: a problem report category: none of the other listed kinds of problem applies.
+#: admin/class-babilim-admin.php:3264
+msgctxt "problem report category"
+msgid "Other"
+msgstr "Annað"
 
-#: admin/class-babilim-admin.php:2158
-msgid "Always share"
-msgstr "Always share"
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Available"
+msgstr "Tiltæk"
 
-#: admin/class-babilim-admin.php:2159
-msgid "Don't share"
-msgstr "Don't share"
-
-#: admin/class-babilim-admin.php:3424
-msgid "Error reports"
-msgstr "Villutilkynningar"
-
-#: admin/class-babilim-admin.php:3426
-msgid "Share error reports"
-msgstr "Deila villutilkynningum"
-
-#. translators: %d: number of error reports waiting for the owner's decision.
-#: admin/class-babilim-admin.php:2136
-#, php-format
-msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgstr[0] "%d tilkynning bíður. „Always share“ og „Don't share“ gilda um þær allar."
-msgstr[1] "%d tilkynningar bíða. „Always share“ og „Don't share“ gilda um þær allar."
-
-#: admin/class-babilim-admin.php:3621
-#: admin/class-babilim-admin.php:3657
-msgid "Report translation"
-msgstr "Tilkynna þýðingu"
-
-#: admin/class-babilim-admin.php:3658
-msgid "Search the installed translations"
-msgstr "Leita í uppsettum þýðingum"
-
-#. translators: Button label (a verb): runs the search of installed translations.
-#: admin/class-babilim-admin.php:3660
-msgid "Search"
-msgstr "Leita"
-
-#: admin/class-babilim-admin.php:3661
-msgid "Babilim has not installed any translation for this language."
-msgstr "Babilim hefur ekki sett upp neina þýðingu fyrir þetta tungumál."
-
-#: admin/class-babilim-admin.php:3662
-msgid "No installed translation matches."
-msgstr "Engin uppsett þýðing passar."
-
-#: admin/class-babilim-admin.php:3665
-msgid "The search could not be completed."
-msgstr "Ekki tókst að ljúka leitinni."
-
-#. translators: Button label (a verb): selects this string as the one to report.
-#: admin/class-babilim-admin.php:3669
-msgid "Choose"
-msgstr "Velja"
-
-#. translators: Heading of the step that shows the report before it is sent.
-#: admin/class-babilim-admin.php:3674
-msgid "Preview"
-msgstr "Forskoðun"
-
-#: admin/class-babilim-admin.php:3682
-msgid "These fields will be sent:"
-msgstr "Þessir reitir verða sendir:"
-
-#. translators: Button label (a verb): closes the report panel.
-#: admin/class-babilim-admin.php:3687
-msgid "Close"
-msgstr "Loka"
-
-#: admin/class-babilim-admin.php:3689
-msgid "This string can't be reported from this site."
-msgstr "Ekki er hægt að tilkynna þessa textastreng frá þessu vefsvæði."
-
-#: admin/class-babilim-admin.php:3690
-msgid "Too many reports today. Try again tomorrow."
-msgstr "Of margar tilkynningar í dag. Reyndu aftur á morgun."
-
-#: admin/class-babilim-admin.php:3691
-msgid "The report could not be sent."
-msgstr "Ekki tókst að senda tilkynninguna."
-
-#. translators: Field label (a noun): whether the component is a plugin or a theme.
-#: admin/class-babilim-admin.php:3676
-msgid "Type"
-msgstr "Gerð"
-
-#. translators: Field label (a noun): the identifier of the translation package version the string came from.
-#: admin/class-babilim-admin.php:3680
-msgid "Build"
-msgstr "Útgáfa"
-
-#: admin/class-babilim-admin.php:2131
-msgid "Babilim hit an error. Share an error report?"
-msgstr "Babilim rakst á villu. Deila villutilkynningu?"
-
-#: admin/class-babilim-admin.php:3427
-msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
-msgstr "Þegar eitthvað bilar í Babilim skaltu senda villutilkynningu til Babilim-þjónustunnar svo hægt sé að birta hana sem opinbert vandamál á GitHub. Tilkynningin er send sem komandi frá þessu vefsvæði, með sömu auðkenningu og allar aðrar beiðnir til Babilim-þjónustunnar. Þjónustan birtir aðeins villukóðann og útgáfur sem opinbert vandamál á GitHub; opinbera vandamálið inniheldur hvorki vistfang vefsvæðis, efni né skráarslóðir. Slökkt sjálfgefið."
-
-#: admin/class-babilim-admin.php:3683
-msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
-msgstr "Tilkynningin þín er unnin sjálfvirkt af AI-líkönum og getur bætt þessa þýðingu fyrir önnur vefsvæði."
-
-#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
-#: admin/class-babilim-admin.php:3664
-msgid "Type at least 2 characters to search."
-msgstr "Sláðu inn að minnsta kosti 2 stafi til að leita."
-
-#: admin/class-babilim-admin.php:2629
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "Hægt er að setja upp tiltækar þýðingar með einum smelli og biðja um þær sem vantar. Eftir það eru nýjar þýðingar og uppfærslur settar upp sjálfkrafa. Babilim-þjónustan ákveður hvaða tiltækar þýðingar má setja upp sjálfkrafa. Í ókeypis áskrift leyfir hún yfirleitt aðeins viðbætur og þemu sem þegar eru með Babilim-þýðingu uppsetta á þessu vefsvæði, svo að sjálfvirkar uppsetningar taki ekki upp nýtt laust ókeypis pláss."
-
-#: admin/class-babilim-admin.php:3420
-msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "Babilim-þjónustan ákveður hvaða tiltækar þýðingar má setja upp sjálfkrafa. Í ókeypis áskrift leyfir hún yfirleitt aðeins viðbætur og þemu sem þegar eru með Babilim-þýðingu uppsetta á þessu vefsvæði, svo að sjálfvirkar uppsetningar taki ekki upp nýtt laust ókeypis pláss."
-
-#: admin/class-babilim-admin.php:1387
-msgid "This report does not name an installed string."
-msgstr "Þessi skýrsla tilgreinir ekki Nafn uppsetts textastrengs."
-
-#: admin/class-babilim-admin.php:1395
-msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
-msgstr "Þessi textastrengur er ekki meðal þýðinga sem eru uppsettar á þessu vefsvæði. Leitaðu aftur og veldu hann af listanum."
-
-#: admin/class-babilim-admin.php:1398
-msgid "This translation was updated since you searched. Search again and pick the string from the new list."
-msgstr "Þessi þýðing var uppfærð eftir að þú leitaðir. Leitaðu aftur og veldu textastrenginn af nýja listanum."
-
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2986
-#, php-format
-msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
-msgstr "Babilim mun hlaða upp þessum skrám úr %1$s (útgáfa %2$s): hverri .php og .js skrá, hverri block.json skrá og readme.txt, readme.md, style.css og theme.json í aðalmöppu þess. Þær eru notaðar til að finna textann sem þarf að þýða og til að bera kennsl á viðbótina eða þemað."
-
-#: admin/class-babilim-admin.php:2987
-msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
-msgstr "Skrár með önnur heiti eða endingar eru ekki teknar með, né heldur möppurnar uploads, cache, logs, backup, data, vendor, node_modules og languages, faldar skrár eða skrár með nöfn sem samsvara algengum mynstrum fyrir skrár með viðkvæmum upplýsingum (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Kóðaskrár geta samt innihaldið texta eða gögn sem þú vilt ekki deila; athugaðu þær ef þú ert í vafa. Þjónustan fjarlægir sömu tegundir skráa aftur við móttöku."
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
-msgstr "Aðeins þegar þú staðfestir upphleðslu fyrir viðbót eða þema sem er ekki á WordPress.org: hver .php og .js skrá, hver block.json skrá og readme.txt, readme.md, style.css og theme.json í aðalmöppu þess íhlutar, sem zip, eftir að skrám sem passa við algeng leyndarmál hefur verið sleppt."
-
-#: includes/class-babilim-packager.php:132
-msgid "The component has no files that can be uploaded."
-msgstr "Íhluturinn hefur engar skrár sem hægt er að hlaða upp."
-
-#: includes/class-babilim-packager.php:110
-msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
-msgstr "Babilim gat ekki staðfest tímabundna möppu utan vefsins, þannig að íhlutnum var ekki pakkað og engu var hlaðið upp. Skilgreindu BABILIM_TEMP_DIR í wp-config.php sem skrifanlega möppu utan rótarmöppu vefsins (til dæmis möppu við hliðina á, en ekki inni í, opinberri möppu vefsvæðisins þíns), eða biddu vefhýsinguna þína um slíka."
-
-#: includes/class-babilim-upload.php:191
-msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
-msgstr "Babilim var uppfært á meðan þessi upphleðsla beið. Gamla pakkanum var hent; staðfestu upphleðsluna aftur."
+#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:201
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Installed"
+msgstr "Uppsett"

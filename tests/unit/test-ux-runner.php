@@ -39,6 +39,30 @@ class Test_Ux_Runner extends TestCase {
 		$script = (string) file_get_contents( dirname( __DIR__, 2 ) . '/tests/playground/run-ux-flow.sh' );
 		$this->assertMatchesRegularExpression( '/grep -q \'\^FAIL\'/', $script, 'any FAIL line makes the run fail' );
 		$this->assertMatchesRegularExpression( '/! -s "\$\{RESULTS\}"/', $script, 'an empty results file makes the run fail' );
-		$this->assertMatchesRegularExpression( '/-s "\$\{RESULTS\}" \] \|\| grep -q \'\^FAIL\' "\$\{RESULTS\}"; then\s+status=1\s+fi\s+exit "\$\{status\}"\s*$/', $script, 'status=1 on a FAIL or empty file, and it is the exit code' );
+		$this->assertMatchesRegularExpression( self::EXIT_BLOCK, $script, 'status=1 on a FAIL or empty file, then (with only comment lines between) status=1 when no line is a PASS, and the status is the exit code' );
+	}
+
+	/**
+	 * The runner's closing block, as one piece: the FAIL/empty rule, nothing
+	 * but `#` comment lines, the all-SKIP rule, then the exit. Anything else
+	 * between the two rules (say `status=0`) could turn a failed run green.
+	 */
+	private const EXIT_BLOCK = '/if \[ ! -s "\$\{RESULTS\}" \] \|\| grep -q \'\^FAIL\' "\$\{RESULTS\}"; then\n	status=1\nfi\n(?:#[^\n]*\n)*if \[ -s "\$\{RESULTS\}" \] && ! grep -q \'\^PASS\' "\$\{RESULTS\}"; then\n	echo "[^"\n]+" >&2\n	status=1\nfi\nexit "\$\{status\}"\s*$/';
+
+	/**
+	 * EXIT_BLOCK rejects the closing block with a line slipped in between
+	 * the two rules, or with either rule's status=1 dropped.
+	 */
+	public function test_the_exit_block_check_rejects_a_line_between_the_rules(): void {
+		$script = (string) file_get_contents( dirname( __DIR__, 2 ) . '/tests/playground/run-ux-flow.sh' );
+		$this->assertMatchesRegularExpression( self::EXIT_BLOCK, $script );
+		$skip_rule = "if [ -s \"\${RESULTS}\" ] && ! grep -q '^PASS'";
+		$this->assertSame( 1, substr_count( $script, $skip_rule ) );
+		$inserted = str_replace( $skip_rule, "status=0\n" . $skip_rule, $script );
+		$this->assertDoesNotMatchRegularExpression( self::EXIT_BLOCK, $inserted, 'status=0 between the two rules' );
+		$first = "grep -q '^FAIL' \"\${RESULTS}\"; then\n	status=1\n";
+		$this->assertSame( 1, substr_count( $script, $first ) );
+		$this->assertDoesNotMatchRegularExpression( self::EXIT_BLOCK, str_replace( $first, "grep -q '^FAIL' \"\${RESULTS}\"; then\n	:\n", $script ), 'the FAIL rule sets nothing' );
+		$this->assertDoesNotMatchRegularExpression( self::EXIT_BLOCK, str_replace( "	status=1\nfi\nexit", "	:\nfi\nexit", $script ), 'the all-SKIP rule sets nothing' );
 	}
 }

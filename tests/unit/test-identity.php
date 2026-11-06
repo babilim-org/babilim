@@ -53,23 +53,36 @@ final class Test_Identity extends TestCase {
 	}
 
 	public function test_finish_verify_writes_the_identity_in_one_option_write(): void {
+		// Counted on the hooks a real write fires once (add_option_* for a
+		// new option, update_option_* for a changed one); sanitize_option
+		// runs twice when an option is first added, as in core.
 		$writes = array();
-		add_filter(
-			'sanitize_option_babilim_identity',
-			static function ( $value ) use ( &$writes ) {
+		add_action(
+			'add_option_babilim_identity',
+			static function ( $name, $value ) use ( &$writes ) {
 				$writes[] = $value;
-				return $value;
-			}
+			},
+			10,
+			2
+		);
+		add_action(
+			'update_option_babilim_identity',
+			static function ( $old, $value ) use ( &$writes ) {
+				$writes[] = $value;
+			},
+			10,
+			2
 		);
 		$legacy = array();
 		foreach ( array( 'babilim_site_id', 'babilim_site_token' ) as $name ) {
-			add_filter(
-				"sanitize_option_{$name}",
-				static function ( $value ) use ( &$legacy, $name ) {
-					$legacy[] = $name;
-					return $value;
-				}
-			);
+			foreach ( array( "add_option_{$name}", "update_option_{$name}" ) as $hook ) {
+				add_action(
+					$hook,
+					static function () use ( &$legacy, $name ) {
+						$legacy[] = $name;
+					}
+				);
+			}
 		}
 		list( $site ) = $this->make_site( array( $this->registered(), $this->verified( 'tok_one' ) ) );
 

@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.1.0\n"
+"Project-Id-Version: Babilim 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: mya\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-01T01:09:04+00:00\n"
-"PO-Revision-Date: 2026-11-01T01:09:04+00:00\n"
+"POT-Creation-Date: 2026-11-05T19:51:01+00:00\n"
+"PO-Revision-Date: 2026-11-05T19:51:01+00:00\n"
 "Language: my_MM\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Babilim\n"
@@ -16,64 +16,292 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:338
-#: admin/class-babilim-admin.php:339
-#: admin/class-babilim-admin.php:2614
-#: admin/class-babilim-admin.php:2668
+#: admin/class-babilim-admin.php:378
+#: admin/class-babilim-admin.php:379
+#: admin/class-babilim-admin.php:3051
+#: admin/class-babilim-admin.php:3105
 msgid "Babilim"
 msgstr "Babilim"
 
 #. Description of the plugin
 #: babilim.php
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
-msgstr "သင့်ဆိုက်တွင် ထည့်သွင်းပြီးသား ပလပ်ဂင်များနှင့် ဘောင်ဒီဇိုင်းများအတွက် ပျောက်ဆုံးနေသော ဘာသာပြန်ချက်များကို ဖြည့်ပေးသည်။"
+msgstr "သင့်ဆိုက်တွင် ထည့်သွင်းထားပြီးသော ပလပ်ဂင်များနှင့် ထီးမ်များအတွက် ပျောက်ဆုံးနေသော ဘာသာပြန်ဆိုမှုများကို ဖြည့်စွက်ပေးသည်။"
 
-#: admin/class-babilim-admin.php:354
-#: admin/class-babilim-admin.php:355
-#: admin/class-babilim-translations-table.php:400
-msgid "Translations"
-msgstr "ဘာသာပြန်ချက်များ"
+#: admin/class-babilim-admin.php:1274
+msgid "That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list."
+msgstr "ထိုအပ်လုဒ် စခရင်သည် ခေတ်နောက်ကျနေပါသည်- ထိုအချိန်မှစ၍ အခြားအပ်လုဒ်တစ်ခုကို ပြင်ဆင်ပြီးဖြစ်သည်။ မည်သည့်အရာမျှ မပို့ရသေးပါ။ လက်ရှိအပ်လုဒ်ကို ဘာသာပြန်ဆိုမှု စာရင်းမှ ပြန်လည်စစ်ဆေးပါ။"
 
-#: admin/class-babilim-admin.php:362
-msgid "Babilim Settings"
-msgstr "Babilim ဆက်တင်များ"
+#: admin/class-babilim-admin.php:3067
+msgid "The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim."
+msgstr "အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်သည် ဆိုက်တစ်ခုစီအတွက် ပလပ်ဂင်များနှင့် ထီးမ်များအတွက် ကွက် (slot) အရေအတွက် ကန့်သတ်ချက်ကို ပေးထားသည်။ အသုံးပြုနေသော ကွက်များကို Babilim ကို ဖွင့်ပြီးနောက် ဆက်တင်များတွင် ပြသည်။"
 
-#: admin/class-babilim-admin.php:363
-#: admin/class-babilim-admin.php:2671
-#: admin/class-babilim-admin.php:2960
-msgid "Settings"
-msgstr "ဆက်တင်များ"
-
-#: admin/class-babilim-admin.php:390
-#: admin/class-babilim-admin.php:789
-msgid "You are not allowed to do this."
-msgstr "သင့်အား ဤလုပ်ဆောင်ချက်ကို ခွင့်မပြုပါ။"
-
-#. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:419
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:62
 #, php-format
-msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
-msgstr "အစိတ်အပိုင်း ပိုနည်းနည်း ရွေးပါ။ တစ်ကြိမ်လုပ်ဆောင်ရာတွင် အများဆုံး %1$d ခုသာ ရနိုင်သည် (သင်ရွေးထားသည်မှာ %2$d ခု)။"
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "ဘာသာပြန်ဆိုမှု တောင်းဆိုခြင်းဖြင့် ဤပလပ်ဂင် သို့မဟုတ် ထီးမ်ကို ဤဆိုက်အတွက် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်၏ ကွက် (slot) တစ်ခုပေါ်တွင် ထားရှိသည် (ကန့်သတ်ချက်မှာ ထီးမ်များအတွက် %1$d ဖြစ်ပြီး ပလပ်ဂင်များအတွက် %2$d ဖြစ်သည်)၊ ၎င်းတွင် ကွက်ရှိပြီးသားမဟုတ်လျှင်ဖြစ်သည်။ ကွက်သည် အသုံးပြုထားသည့်အတိုင်း ဆက်ရှိနေပြီး ဘာသာပြန်ဆိုမှု မအောင်မြင်ခြင်းဖြင့် ၎င်းကို မလွှတ်ပေးပါ။"
 
-#: admin/class-babilim-admin.php:432
-#: admin/class-babilim-admin.php:1110
-#: admin/class-babilim-admin.php:1281
-msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "ထိုအစိတ်အပိုင်းကို ဤဆိုက်တွင် ထည့်သွင်းမထားသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
+#: admin/class-babilim-translations-table.php:67
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "ဘာသာပြန်ဆိုမှု တောင်းဆိုခြင်းဖြင့် ဤပလပ်ဂင် သို့မဟုတ် ထီးမ်ကို ဤဆိုက်အတွက် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်၏ ကွက် (slot) တစ်ခုပေါ်တွင် ထားရှိသည်၊ ၎င်းတွင် ကွက်ရှိပြီးသားမဟုတ်လျှင်ဖြစ်သည်။ ကွက်သည် အသုံးပြုထားသည့်အတိုင်း ဆက်ရှိနေပြီး ဘာသာပြန်ဆိုမှု မအောင်မြင်ခြင်းဖြင့် ၎င်းကို မလွှတ်ပေးပါ။"
 
-#: admin/class-babilim-admin.php:911
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:80
+#, php-format
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "ဤပလပ်ဂင် သို့မဟုတ် ထီးမ်သည် ဤဆိုက်အတွက် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်၏ ကွက် (slot) တစ်ခုပေါ်တွင် မရှိသေးလျှင် ဘာသာပြန်ဆိုမှု တောင်းဆိုခြင်းဖြင့် ၎င်းကို ကွက်တစ်ခုပေါ်တွင် ထားရှိမည် (ကန့်သတ်ချက်မှာ ထီးမ်များအတွက် %1$d ဖြစ်ပြီး ပလပ်ဂင်များအတွက် %2$d ဖြစ်သည်)။ ကွက်သည် အသုံးပြုထားသည့်အတိုင်း ဆက်ရှိနေပြီး ဘာသာပြန်ဆိုမှု မအောင်မြင်ခြင်းဖြင့် ၎င်းကို မလွှတ်ပေးပါ။ ဆက်လုပ်မလား။"
+
+#: admin/class-babilim-translations-table.php:85
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "ဤပလပ်ဂင် သို့မဟုတ် ထီးမ်သည် ဤဆိုက်အတွက် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်၏ ကွက် (slot) တစ်ခုပေါ်တွင် မရှိသေးလျှင် ဘာသာပြန်ဆိုမှု တောင်းဆိုခြင်းဖြင့် ၎င်းကို ကွက်တစ်ခုပေါ်တွင် ထားရှိမည်။ ကွက်သည် အသုံးပြုထားသည့်အတိုင်း ဆက်ရှိနေပြီး ဘာသာပြန်ဆိုမှု မအောင်မြင်ခြင်းဖြင့် ၎င်းကို မလွှတ်ပေးပါ။ ဆက်လုပ်မလား။"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1974
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "ဤကွန်ရက်ရှိ ဆိုက် %1$d ခုသည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ ၎င်း၏ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားပါသည်။ ထိုအခါ ထိုဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %2$s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ထိုဆိုက်၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
+msgstr[1] "ဤကွန်ရက်ရှိ ဆိုက် %1$d ခုသည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ ၎င်းတို့၏ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားပါသည်။ ထိုအခါ ထိုဆိုက်များနှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်များကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %2$s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားများကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ဆိုက်တစ်ခုချင်းစီ၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:3206
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s။"
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:3301
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s ဆောင်ရွက်ရန် မရှိပါ။"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:773
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:776
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:3575
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s။ ဘာသာစကားကို ရွေးပါ။"
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:3194
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d ခု မအောင်မြင်ပါ"
+msgstr[1] "%d ခု မအောင်မြင်ပါ"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:3198
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d ခု မကြိုးစားရသေးပါ"
+msgstr[1] "%d ခု မကြိုးစားရသေးပါ"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2522
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "အစီရင်ခံစာ %d ခု စောင့်ဆိုင်းနေသည်။ \"အမြဲမျှဝေရန်\" နှင့် \"မမျှဝေပါနှင့်\" သည် ၎င်းတို့အားလုံးကို သက်ရောက်သည်။"
+msgstr[1] "အစီရင်ခံစာ %d ခု စောင့်ဆိုင်းနေသည်။ \"အမြဲမျှဝေရန်\" နှင့် \"မမျှဝေပါနှင့်\" သည် ၎င်းတို့အားလုံးကို သက်ရောက်သည်။"
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:3190
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d ခု ကျော်သွားသည်"
+msgstr[1] "%d ခု ကျော်သွားသည်"
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:3186
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d ခု အောင်မြင်သည်"
+msgstr[1] "%d ခု အောင်မြင်သည်"
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:544
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "ထည့်သွင်းရန် %d ခု"
+msgstr[1] "ထည့်သွင်းရန် %d ခု"
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(ဤဆိုက်အတွက် ဖန်တီးထားသော အများသုံး သော့)"
+
+#: admin/class-babilim-admin.php:4670
+msgid "(detected)"
+msgstr "(တွေ့ရှိထားသည်)"
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(ယေဘုယျ ကုဒ်များနှင့် သြဒီနိတ်များသာ)"
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:4830
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "%1$s တွင် ရှင်းလင်းမှုကို ခေတ္တရပ်ထားသည်- %2$s။ မည်သည့်အရာမျှ မဖျက်ခဲ့ပါ။"
+
+#: includes/class-babilim-packager.php:125
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "အစိတ်အပိုင်းအတွင်းရှိ ဖိုင်တစ်ခုကို ဖတ်၍ မရသဖြင့် ပက်ကေ့ဂျ်ထုပ်ပိုးမထားပါ။"
+
+#: admin/class-babilim-admin.php:2386
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "PHP တောင်းဆိုမှုကို တစ်ကြိမ်လျှင် တစ်ခုသာ ဆောင်ရွက်ပေးသော ဟို့စ်သည် ဤအဆင့်ကို မပြီးစီးနိုင်ပါ။"
+
+#: includes/class-babilim-upload.php:293
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "အပ်လုဒ်၏ အစိတ်အပိုင်းတစ်ခု ဆက်တိုက် မအောင်မြင်သဖြင့် အပ်လုဒ်ကို ပယ်ဖျက်လိုက်သည်။"
+
+#: admin/class-babilim-admin.php:1377
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "ဤဆိုက်တွင် ထိုဘာသာစကားအတွက် ဘာသာပြန်ချက်ကို ယခု မတောင်းဆိုနိုင်ပါ။"
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:4862
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "%1$s တွင် ဘာသာပြန်အညွှန်း ရေးသွင်းမှုတစ်ခုသည် အခြားတောင်းဆိုမှုတစ်ခုနှင့် ပဋိပက္ခဖြစ်ပြီး (%2$s) မအသုံးချခဲ့ပါ။ နောက်ဆုံးဗားရှင်းကို ထားရှိထားပါသည်။"
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:4875
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "%1$s တွင် ဘာသာပြန်အညွှန်း ရေးသွင်းမှု (%2$s) ကို မပြီးမြောက်နိုင်ဘဲ မအသုံးချခဲ့ပါ (%3$s)။"
+
+#: admin/class-babilim-admin.php:3898
+msgid "Account"
+msgstr "အကောင့်"
+
+#: admin/class-babilim-admin.php:4682
+msgid "Add another language"
+msgstr "နောက်ထပ်ဘာသာစကား ထည့်ရန်"
+
+#: admin/class-babilim-admin.php:3835
+msgid "Advanced"
+msgstr "အဆင့်မြင့်"
+
+#: admin/class-babilim-translations-table.php:466
+#: admin/class-babilim-translations-table.php:514
+msgid "All"
+msgstr "အားလုံး"
+
+#: admin/class-babilim-cell.php:143
+msgid "All free-plan slots for this site are used"
+msgstr "ဤဆိုက်အတွက် အခမဲ့ အစီအစဉ် ခွင့်ပြုအရေအတွက် အားလုံးကို အသုံးပြုပြီးပါပြီ"
+
+#: admin/class-babilim-translations-table.php:541
+msgid "All languages"
+msgstr "ဘာသာစကားအားလုံး"
+
+#: admin/class-babilim-admin.php:4800
+msgid "Already in WordPress core"
+msgstr "WordPress core တွင် ပါဝင်ပြီးဖြစ်သည်"
+
+#: admin/class-babilim-admin.php:961
 msgid "Already installed."
 msgstr "ထည့်သွင်းပြီးသားဖြစ်သည်။"
 
-#: admin/class-babilim-admin.php:911
-msgid "Downloaded and installed."
-msgstr "ဒေါင်းလုဒ်လုပ်ပြီး ထည့်သွင်းပြီးပါပြီ။"
+#: admin/class-babilim-admin.php:2544
+msgid "Always share"
+msgstr "အမြဲမျှဝေရန်"
 
-#: admin/class-babilim-admin.php:934
-#: admin/class-babilim-admin.php:1275
-#: admin/class-babilim-admin.php:1353
-#: admin/class-babilim-admin.php:1954
-#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "အခြား ထည့်သွင်းမှုတစ်ခု လုပ်ဆောင်နေသည်။ ခဏအကြာတွင် ထပ်စမ်းပါ။"
+
+#: admin/class-babilim-admin.php:3866
+msgid "Automatic installs"
+msgstr "အလိုအလျောက် ထည့်သွင်းခြင်း"
+
+#: admin/class-babilim-admin.php:2731
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "အလိုအလျောက် ထည့်သွင်းခြင်းကို ယခု ပိတ်ထားပါပြီ၊ လိုချင်ပါက ဆက်တင်များတွင် ပြန်ဖွင့်နိုင်ပါသည်။"
+
+#: admin/class-babilim-translations-table.php:467
+msgid "Available"
+msgstr "ရရှိနိုင်သည်"
+
+#: admin/class-babilim-admin.php:3066
+msgid "Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "ရရှိနိုင်သော ဘာသာပြန်ချက်များကို တစ်ချက်နှိပ်ရုံဖြင့် ထည့်သွင်းနိုင်ပြီး မရှိသေးသော ဘာသာပြန်ချက်များကို တောင်းဆိုနိုင်သည်။ အလိုအလျောက် ထည့်သွင်းမှုများ ဖွင့်ထားစဉ်တွင် သင်စီမံသော ဘာသာစကားများအတွက် ဝန်ဆောင်မှုက ရရှိနိုင်သည်ဟု ဖော်ပြထားသော ဘာသာပြန်ချက်များကို တစ်ရက်နှစ်ကြိမ် ထပ်တူကိုက်ညီစေခြင်းအတွင်း ထည့်သွင်းပေးသည်။"
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:326
+#, php-format
+msgid "Available · %s"
+msgstr "ရရှိနိုင်သည် · %s"
+
+#: admin/class-babilim-admin.php:402
+msgid "Babilim Settings"
+msgstr "Babilim ဆက်တင်များ"
+
+#: admin/class-babilim-admin.php:4677
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim သည် ဤနေရာတွင် အမှန်ခြစ်ထားသော ဘာသာစကားတိုင်းအတွက် ဘာသာပြန်ဆိုမှုများ ထည့်ပေးသည်။"
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim သည် ဝက်ဘ်ဆိုက်အပြင်ဘက်ရှိ ယာယီ ဖိုလ်ဒါကို အတည်မပြုနိုင်သဖြင့် အစိတ်အပိုင်းကို ပက်ကေ့ဂျ်မလုပ်ခဲ့ဘဲ ဘာမျှ အပ်လုဒ်မလုပ်ခဲ့ပါ။ wp-config.php တွင် BABILIM_TEMP_DIR ကို ဝက်ဘ် ရူတ်ပြင်ပရှိ ရေးသားနိုင်သော ဖိုလ်ဒါအဖြစ် သတ်မှတ်ပါ (ဥပမာ သင့်ဆိုက်၏ အများသုံးဒိုင်ရက်ထရီထဲတွင် မဟုတ်ဘဲ ၎င်းနှင့်ယှဉ်လျက်ရှိသော ဖိုလ်ဒါ) သို့မဟုတ် သင့်ဟို့စ်ထံမှ တောင်းခံပါ။"
+
+#: includes/class-babilim-site.php:987
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim သည် ဤဆိုက်ကို စစ်ဆေးမှု မပြီးစီးနိုင်ခဲ့ပါ။"
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:2381
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim ဖွင့်ခြင်းကို မပြီးစီးနိုင်ခဲ့ပါ (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:3792
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim သည် ဤဆိုက်ကို အတည်ပြုခြင်း မပြီးစီးနိုင်ခဲ့ပါ (ဝန်ဆောင်မှုမှ ပြန်လည်ချိတ်ဆက်၍ မရခဲ့ပါ)။ မှတ်ပုံတင်ခြင်းကို ခေတ္တရပ်ထားသည်။"
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:401
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim သည် ဤဆိုက်ကို အတည်မပြုနိုင်ခဲ့သဖြင့် အတည်ပြုမှု အောင်မြင်သည်အထိ မည်သည့်အရာကိုမျှ ဒေါင်းလုဒ် သို့မဟုတ် ထည့်သွင်းမည်မဟုတ်ပါ။"
+
+#: admin/class-babilim-admin.php:2216
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim သည် ဤဆိုက်ကို အတည်ပြု၍ မရခဲ့သဖြင့် မည်သည့်အရာမျှ ဒေါင်းလုဒ်လုပ်ခြင်း သို့မဟုတ် ထည့်သွင်းခြင်း မပြုလုပ်ပါ။"
+
+#: admin/class-babilim-admin.php:3053
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim သည် ဤဆိုက်ရှိ သင့်ဘာသာစကားအတွက် ဘာသာပြန်မရှိသော ပလပ်ဂင်များနှင့် အခွံများ (themes) ကို ရှာဖွေပြီး တစ်ခုစီအတွက် ဘာသာပြန်တစ်ခု ထည့်သွင်းပေးပါသည်။"
+
+#: admin/class-babilim-admin.php:984
+#: admin/class-babilim-admin.php:1355
+#: admin/class-babilim-admin.php:1433
+#: admin/class-babilim-admin.php:2335
+#: admin/class-babilim-admin.php:2665
 #: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
@@ -82,1371 +310,592 @@ msgstr "ဒေါင်းလုဒ်လုပ်ပြီး ထည့်သ�
 msgid "Babilim has not been enabled for this site yet."
 msgstr "ဤဆိုက်အတွက် Babilim ကို မဖွင့်ရသေးပါ။"
 
-#: admin/class-babilim-admin.php:953
-msgid "No build is available to download for this locale."
-msgstr "ဤဘာသာစကားအတွက် ဒေါင်းလုဒ်လုပ်ရန် build မရရှိနိုင်ပါ။"
+#: admin/class-babilim-admin.php:4239
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim သည် ဤဘာသာစကားအတွက် ဘာသာပြန်ချက် မည်သည့်အရာမျှ မထည့်သွင်းထားပါ။"
 
-#: admin/class-babilim-admin.php:1008
-msgid "Rolled back to the previous build."
-msgstr "ယခင် build သို့ နောက်ပြန်လှည့်ပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1067
-msgid "Rolled back and reported."
-msgstr "နောက်ပြန်လှည့်ပြီး အစီရင်ခံပြီးပါပြီ။"
-
-#. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1073
-#, php-format
-msgid "Rolled back, but the report could not be sent: %s"
-msgstr "နောက်ပြန်လှည့်ပြီးပါပြီ၊ သို့သော် အစီရင်ခံစာကို ပို့၍မရပါ- %s"
-
-#: admin/class-babilim-admin.php:1097
-msgid "Removed."
-msgstr "ဖယ်ရှားပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1133
-msgid "Translation requested."
-msgstr "ဘာသာပြန်ချက် တောင်းဆိုပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1155
-msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်ပြီးဖြစ်ပါသည်။ Babilim က ယခု စစ်ဆေးနေပါသည်။"
-
-#: admin/class-babilim-admin.php:1195
-msgid "Upload cancelled."
-msgstr "အပ်လုဒ်ကို ပယ်ဖျက်လိုက်သည်။"
-
-#: admin/class-babilim-admin.php:1206
-msgid "Upload complete — translation requested."
-msgstr "အပ်လုဒ် ပြီးစီးပါပြီ — ဘာသာပြန်ချက် တောင်းဆိုပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1284
-msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "ဤအစိတ်အပိုင်းတွင် ဗားရှင်းနံပါတ် မဖော်ပြထားသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
-
-#. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1291
-#, php-format
-msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "ဤအစိတ်အပိုင်း၏ ဗားရှင်းနံပါတ်သည် %d လုံးထက် ပိုရှည်နေပြီး Babilim မှ ကိုင်တွယ်၍မရသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
-
-#: admin/class-babilim-admin.php:1297
-msgid "A translation cannot be requested for that locale on this site right now."
-msgstr "ဤဆိုက်တွင် ထိုဘာသာစကားအတွက် ဘာသာပြန်ချက်ကို ယခု မတောင်းဆိုနိုင်ပါ။"
-
-#: admin/class-babilim-admin.php:1323
-#: admin/class-babilim-admin.php:3688
-msgid "Thank you. Your report was sent."
-msgstr "ကျေးဇူးတင်ပါသည်။ သင့်အစီရင်ခံစာကို ပို့ပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1358
-msgid "This report does not name a valid plugin or theme and locale."
-msgstr "ဤအစီရင်ခံစာတွင် မှန်ကန်သော ပလပ်ဂင် သို့မဟုတ် ဘောင်ဒီဇိုင်းနှင့် ဘာသာစကားကို မဖော်ပြထားပါ။"
-
-#: admin/class-babilim-admin.php:1365
-msgid "Please choose a category for this report."
-msgstr "ဤအစီရင်ခံစာအတွက် အမျိုးအစားတစ်ခု ရွေးပါ။"
-
-#: admin/class-babilim-admin.php:1369
-msgid "This report is missing a valid build to report against."
-msgstr "ဤအစီရင်ခံစာတွင် အစီရင်ခံရန် မှန်ကန်သော build မရှိပါ။"
-
-#: admin/class-babilim-admin.php:1372
-msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "ဤ build သည် ဤအစိတ်အပိုင်း/ဘာသာစကားအတွက် ဤဆိုက်က လက်ရှိ သိရှိထားသော build မဟုတ်ပါ။"
-
-#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1442
-#, php-format
-msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
-msgstr "အကွက် \"%1$s\" သည် ရှည်လွန်းသည်- စာလုံး %2$d လုံးရှိပြီး ကန့်သတ်ချက်မှာ %3$d ဖြစ်သည်။ ဘာမျှ မပို့ရသေးပါ၊ အတိုချုံ့ပြီး ထပ်ကြိုးစားပါ။"
-
-#: admin/class-babilim-admin.php:3666
-msgid "Original string"
-msgstr "မူရင်းစာကြောင်း"
-
-#: admin/class-babilim-admin.php:3681
-msgid "String context"
-msgstr "စာကြောင်း၏ ဆက်စပ်အကြောင်းအရာ"
-
-#: admin/class-babilim-admin.php:1467
-#: admin/class-babilim-admin.php:3667
-#: admin/class-babilim-admin.php:4406
-msgid "Current translation"
-msgstr "လက်ရှိ ဘာသာပြန်ချက်"
-
-#: admin/class-babilim-admin.php:1471
-#: admin/class-babilim-admin.php:3671
-#: admin/class-babilim-admin.php:4408
-msgid "Suggested translation"
-msgstr "အကြံပြုထားသော ဘာသာပြန်ချက်"
-
-#: admin/class-babilim-admin.php:1475
-#: admin/class-babilim-admin.php:3672
-#: admin/class-babilim-admin.php:4410
-msgid "Note (optional)"
-msgstr "မှတ်ချက် (ရွေးချယ်နိုင်သည်)"
-
-#: admin/class-babilim-admin.php:1479
-#: admin/class-babilim-admin.php:4412
-msgid "Where you saw this (optional)"
-msgstr "ဤအရာကို ဘယ်နေရာတွင် တွေ့ခဲ့သနည်း (ရွေးချယ်နိုင်သည်)"
-
-#. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1542
-#, php-format
-msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
-msgstr "Babilim ထပ်တူကျမှုကို ဝန်ဆောင်မှုက ယာယီနှောင့်နှေးစေထားသည် (ကန့်သတ်ချက်ကျော်လွန်)။ %s ပြီးနောက် ထပ်ကြိုးစားမည်။"
-
-#: admin/class-babilim-admin.php:1576
-msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "၎င်းသည် မှန်ကန်သော WordPress ဘာသာစကားကုဒ် မဟုတ်ပါ။ ဘာမှ မသိမ်းဆည်းခဲ့ပါ။"
-
-#: admin/class-babilim-admin.php:1619
-msgid "Settings saved."
-msgstr "ဆက်တင်များ သိမ်းဆည်းပြီးပါပြီ။"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1681
-#, php-format
-msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "ဤအရာကို ဖွင့်ထားပါက ဖြုတ်သည့်အခါ ဤဆိုက်၏ အထောက်အထားကိုလည်း ဖျက်ပစ်ပါမည်။ ထို့နောက် ဤဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ ပြန်ရလိုပါက %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1697
-#, php-format
-msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "ပလပ်ဂင်ကို ဖျက်သည့်အခါ ဤဆိုက်၏ အထောက်အထားကို ဖျက်ရန် Babilim ကို သတ်မှတ်ထားပါသည်။ ထိုအခါ ဤဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
-
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1722
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] "ဤကွန်ရက်ရှိ ဆိုက် %1$d ခုသည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ ၎င်း၏ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားပါသည်။ ထိုအခါ ထိုဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %2$s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ထိုဆိုက်၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
-msgstr[1] "ဤကွန်ရက်ရှိ ဆိုက် %1$d ခုသည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ ၎င်းတို့၏ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားပါသည်။ ထိုအခါ ထိုဆိုက်များနှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်များကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %2$s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားများကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ဆိုက်တစ်ခုချင်းစီ၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1741
-#, php-format
-msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "ဤကွန်ရက်တွင် ဆိုက်များ အလွန်များသဖြင့် တစ်ခုချင်း စစ်ဆေး၍ မရပါ၊ ၎င်းတို့အနက် အချို့သည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားနိုင်ပါသည်။ ထိုအခါ ထိုဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားများကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ဆိုက်တစ်ခုချင်းစီ၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
-
-#: admin/class-babilim-admin.php:1830
-msgid "Open Babilim settings"
-msgstr "Babilim ဆက်တင်များကို ဖွင့်ရန်"
-
-#: admin/class-babilim-admin.php:1835
-msgid "Babilim could not verify this site, so nothing is downloaded or installed."
-msgstr "Babilim သည် ဤဆိုက်ကို အတည်ပြု၍ မရခဲ့သဖြင့် မည်သည့်အရာမျှ ဒေါင်းလုဒ်လုပ်ခြင်း သို့မဟုတ် ထည့်သွင်းခြင်း မပြုလုပ်ပါ။"
-
-#: admin/class-babilim-admin.php:1847
-msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "ဝန်ဆောင်မှုသည် သင့်ဆိုက်သို့ ချိတ်ဆက်၍ မရခဲ့ပါ။ ဖိုင်ယာဝေါ၊ လုံခြုံရေးပလပ်ဂင် သို့မဟုတ် ဟို့စ်စည်းမျဉ်းတစ်ခုက တောင်းဆိုမှုကို ပိတ်ဆို့နေနိုင်ပါသည်။ /wp-json/babilim/v1/challenge သို့ တောင်းဆိုမှုများကို ခွင့်ပြုပေးပါ။"
-
-#: admin/class-babilim-admin.php:1849
-msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
-msgstr "သင့်ဆိုက်က တုံ့ပြန်ရာတွင် အချိန်ကြာလွန်းပါသည်။ နောက်မှ ထပ်ကြိုးစားပါ၊ ဟို့စ်သည် နှေးကွေးခြင်း သို့မဟုတ် ဝန်ပိနေခြင်း မရှိစေရန်လည်း စစ်ဆေးပါ။"
-
-#: admin/class-babilim-admin.php:1851
-msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "သင့်ဆိုက်က တုံ့ပြန်ခဲ့သော်လည်း မျှော်လင့်ထားသည့်အတိုင်း မဟုတ်ပါ။ REST API ကို အခြားပလပ်ဂင်တစ်ခုက ပြင်ရေးထားနိုင်ပါသည် သို့မဟုတ် ထို endpoint ကို cache လုပ်ထားနိုင်ပါသည်။ /wp-json/babilim/v1/challenge ကို caching နှင့် rewriting မှ ဖယ်ထုတ်ပေးပါ။"
-
-#: admin/class-babilim-admin.php:1853
-msgid "Please check that your site can be reached from the internet, then try again."
-msgstr "သင့်ဆိုက်ကို အင်တာနက်မှ ချိတ်ဆက်နိုင်ကြောင်း စစ်ဆေးပြီး ထပ်ကြိုးစားပါ။"
-
-#: admin/class-babilim-admin.php:1876
-msgid "Re-verify"
-msgstr "ပြန်လည်အတည်ပြုရန်"
-
-#. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1897
-#, php-format
-msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "ဤဆိုက်သည် ဝန်ဆောင်မှုက တစ်ကြိမ်ထပ်တူပြုရာတွင် လက်ခံသည့် အရွယ်အစားထက် ကျော်လွန်နေသဖြင့် အချို့အရာများ ချန်လှပ်ခံရသည်- အစိတ်အပိုင်း %1$d ခုနှင့် ဘာသာစကား %2$d ခု။"
-
-#: admin/class-babilim-admin.php:1926
-msgid "This site is verified."
-msgstr "ဤဆိုက်ကို အတည်ပြုပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1939
-msgid "Registration restarted."
-msgstr "မှတ်ပုံတင်ခြင်းကို ပြန်လည်စတင်ပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1960
-#: admin/class-babilim-admin.php:2034
-msgid "Sync complete."
-msgstr "ထပ်တူကျအောင်လုပ်ခြင်း ပြီးစီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:1995
-msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
-msgstr "Babilim သည် ဤဆိုက်ကို ဖွင့်ကာ စစ်ဆေးနေပါသည်… ဤစာမျက်နှာကို ပြန်လည်ရယူပါ သို့မဟုတ် အချိန်ဇယားဆွဲထားသော စစ်ဆေးမှု ပြီးဆုံးသည်အထိ စောင့်ပါ။"
-
-#. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:2000
-#, php-format
-msgid "Babilim could not finish enabling (%1$s): %2$s"
-msgstr "Babilim ဖွင့်ခြင်းကို မပြီးစီးနိုင်ခဲ့ပါ (%1$s): %2$s"
-
-#: admin/class-babilim-admin.php:2005
-msgid "A host that serves only one PHP request at a time cannot complete this step."
-msgstr "PHP တောင်းဆိုမှုကို တစ်ကြိမ်လျှင် တစ်ခုသာ ဆောင်ရွက်ပေးသော ဟို့စ်သည် ဤအဆင့်ကို မပြီးစီးနိုင်ပါ။"
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2026
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] "Babilim ကို ဖွင့်ထားပါသည်- ဤဆိုက်ကို အတည်ပြုပြီးဖြစ်ပြီး အစိတ်အပိုင်း %d ခု တွေ့ရှိခဲ့ပါသည်။"
-msgstr[1] "Babilim ကို ဖွင့်ထားပါသည်- ဤဆိုက်ကို အတည်ပြုပြီးဖြစ်ပြီး အစိတ်အပိုင်း %d ခု တွေ့ရှိခဲ့ပါသည်။"
-
-#: admin/class-babilim-admin.php:2111
-msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
-msgstr "Babilim ကို ပိတ်ထားပါသည်။ နောက်ထပ် မည်သည့်အရာမျှ မပို့တော့ပါ။ ထည့်သွင်းပြီးသော ဘာသာပြန်များ ဆက်လက်အလုပ်လုပ်ပါမည်။"
-
-#: admin/class-babilim-admin.php:2243
-msgid "Supplementary translation index rebuilt."
-msgstr "ဖြည့်စွက် ဘာသာပြန်ချက် အညွှန်းကို ပြန်လည်တည်ဆောက်ပြီးပါပြီ။"
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2261
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] "စစ်ဆေးရှင်းလင်းမှု ပြီးစီးပါပြီ- ဖိုင် %d ခု ဖျက်ပြီးပါပြီ။"
-msgstr[1] "စစ်ဆေးရှင်းလင်းမှု ပြီးစီးပါပြီ- ဖိုင် %d ခု ဖျက်ပြီးပါပြီ။"
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2293
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] "ထည့်သွင်းထားသော အစိတ်အပိုင်း %d ခုကို ဖယ်ရှားပြီးပါပြီ။"
-msgstr[1] "ထည့်သွင်းထားသော အစိတ်အပိုင်း %d ခုကို ဖယ်ရှားပြီးပါပြီ။"
-
-#: admin/class-babilim-admin.php:2295
-msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "အလိုအလျောက် ထည့်သွင်းခြင်းကို ယခု ပိတ်ထားပါပြီ၊ လိုချင်ပါက ဆက်တင်များတွင် ပြန်ဖွင့်နိုင်ပါသည်။"
-
-#: admin/class-babilim-admin.php:2616
-msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
-msgstr "Babilim သည် ဤဆိုက်ရှိ သင့်ဘာသာစကားအတွက် ဘာသာပြန်မရှိသော ပလပ်ဂင်များနှင့် အခွံများ (themes) ကို ရှာဖွေပြီး တစ်ခုစီအတွက် ဘာသာပြန်တစ်ခု ထည့်သွင်းပေးပါသည်။"
-
-#. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2624
-#, php-format
-msgid "Languages found on this site: %s."
-msgstr "ဤဆိုက်တွင် တွေ့ရှိသော ဘာသာစကားများ- %s။"
-
-#: admin/class-babilim-admin.php:2630
-msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "အခမဲ့ အစီအစဉ်သည် အရေအတွက် အကန့်အသတ်ရှိသော ပလပ်ဂင်များနှင့် အပြင်အဆင်များကိုသာ ပံ့ပိုးပေးပါသည်။ Babilim ကို ဖွင့်ပြီးနောက် သင့်အတွက် သတ်မှတ်ထားသော ကိုတာအတိအကျကို ဆက်တင်များတွင် ဖော်ပြပါမည်။"
-
-#: admin/class-babilim-admin.php:2631
-msgid "What is sent when you enable Babilim"
-msgstr "Babilim ကို ဖွင့်သည့်အခါ ပို့သော အချက်အလက်များ"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enabling…"
-msgstr "ဖွင့်နေသည်…"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enable Babilim"
-msgstr "Babilim ကို ဖွင့်ရန်"
-
-#: admin/class-babilim-admin.php:2636
-msgid "By clicking Enable, you agree to send the information listed above to Babilim."
-msgstr "Enable ကိုနှိပ်ခြင်းဖြင့် အထက်တွင်ဖော်ပြထားသော အချက်အလက်များကို Babilim သို့ ပို့ရန် သဘောတူပါသည်။"
-
-#: admin/class-babilim-admin.php:2670
-#: admin/class-babilim-admin.php:2718
-#: admin/class-babilim-admin.php:4313
-msgid "Check again now"
-msgstr "ယခု ထပ်မံစစ်ဆေးရန်"
+#: admin/class-babilim-admin.php:2517
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim တွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။ အမှားအစီရင်ခံစာကို မျှဝေမလား။"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2685
+#: admin/class-babilim-admin.php:3122
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
 msgstr[0] "သင်၏ နောက်ဆုံးလာရောက်မှုနောက်ပိုင်း Babilim က ဘာသာပြန်ချက် %d ခုကို အလိုအလျောက် ထည့်သွင်းခဲ့ပါသည်။"
 msgstr[1] "သင်၏ နောက်ဆုံးလာရောက်မှုနောက်ပိုင်း Babilim က ဘာသာပြန်ချက် %d ခုကို အလိုအလျောက် ထည့်သွင်းခဲ့ပါသည်။"
 
+#: admin/class-babilim-admin.php:2492
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim ကို ပိတ်ထားပါသည်။ နောက်ထပ် မည်သည့်အရာမျှ မပို့တော့ပါ။ ထည့်သွင်းပြီးသော ဘာသာပြန်များ ဆက်လက်အလုပ်လုပ်ပါမည်။"
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2407
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim ကို ဖွင့်ထားပါသည်- ဤဆိုက်ကို အတည်ပြုပြီးဖြစ်ပြီး အစိတ်အပိုင်း %d ခု တွေ့ရှိခဲ့ပါသည်။"
+msgstr[1] "Babilim ကို ဖွင့်ထားပါသည်- ဤဆိုက်ကို အတည်ပြုပြီးဖြစ်ပြီး အစိတ်အပိုင်း %d ခု တွေ့ရှိခဲ့ပါသည်။"
+
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2711
+#: admin/class-babilim-admin.php:3148
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim သည် ဤဆိုက်ကို ဖွင့်ကာ စစ်ဆေးနေပါသည်… (နောက်ဆုံးကြိုးစားမှု- %s)"
 
-#: admin/class-babilim-admin.php:2715
-msgid "Check again"
-msgstr "ထပ်မံစစ်ဆေးရန်"
-
-#: admin/class-babilim-admin.php:2728
-msgid "No components synced yet."
-msgstr "အစိတ်အပိုင်း မည်သည့်အရာမျှ မထပ်တူပြုရသေးပါ။"
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2749
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] "%d ခု အောင်မြင်သည်"
-msgstr[1] "%d ခု အောင်မြင်သည်"
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2753
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] "%d ခု ကျော်သွားသည်"
-msgstr[1] "%d ခု ကျော်သွားသည်"
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2757
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] "%d ခု မအောင်မြင်ပါ"
-msgstr[1] "%d ခု မအောင်မြင်ပါ"
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2761
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] "%d ခု မကြိုးစားရသေးပါ"
-msgstr[1] "%d ခု မကြိုးစားရသေးပါ"
-
-#. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2766
-#, php-format
-msgid "%1$s nothing to do."
-msgstr "%1$s ဆောင်ရွက်ရန် မရှိပါ။"
-
-#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2769
-#, php-format
-msgid "%1$s %2$s."
-msgstr "%1$s %2$s။"
-
-#: admin/class-babilim-admin.php:2781
-msgid "Bulk download:"
-msgstr "အစုလိုက် ဒေါင်းလုဒ်-"
-
-#: admin/class-babilim-admin.php:2783
-msgid "Bulk update:"
-msgstr "အစုလိုက် အပ်ဒိတ်လုပ်ခြင်း-"
-
-#: admin/class-babilim-admin.php:2785
-msgid "Bulk request:"
-msgstr "အစုလိုက် တောင်းဆိုခြင်း-"
-
-#: admin/class-babilim-admin.php:2798
-msgid "per day"
-msgstr "တစ်ရက်လျှင်"
-
-#: admin/class-babilim-admin.php:2812
-msgid "Wrong meaning"
-msgstr "အဓိပ္ပာယ် မှားနေသည်"
-
-#: admin/class-babilim-admin.php:2814
-msgid "Wrong term"
-msgstr "ဝေါဟာရ မှားနေသည်"
-
-#: admin/class-babilim-admin.php:2816
-msgid "Broken placeholder"
-msgstr "နေရာယူစာလုံး ပျက်နေသည်"
-
-#: admin/class-babilim-admin.php:2818
-msgid "Wrong for this context"
-msgstr "ဤအကြောင်းအရာအတွက် မမှန်ကန်ပါ"
-
-#: admin/class-babilim-admin.php:2820
-msgid "Wrong plural form"
-msgstr "အများကိန်းပုံစံ မမှန်ကန်ပါ"
-
-#: admin/class-babilim-admin.php:2822
-msgid "Negation reversed"
-msgstr "ငြင်းဆိုချက် ပြောင်းပြန်ဖြစ်နေသည်"
-
-#: admin/class-babilim-admin.php:2824
-msgid "Translation does not load"
-msgstr "ဘာသာပြန်ချက်ကို မတင်နိုင်ပါ"
-
-#. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2827
-msgctxt "problem report category"
-msgid "Other"
-msgstr "အခြား"
-
-#. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2864
-#, php-format
-msgid "%1$s (%2$s): %3$s"
-msgstr "%1$s (%2$s): %3$s"
-
-#: admin/class-babilim-admin.php:2899
-msgid "Continuing…"
-msgstr "ဆက်လုပ်နေသည်…"
-
-#. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2902
-#, php-format
-msgid "Continue next batch (%d left)"
-msgstr "နောက်အစုကို ဆက်လုပ်ရန် (%d ကျန်သည်)"
-
-#: admin/class-babilim-admin.php:2952
-msgid "Search components"
-msgstr "အစိတ်အပိုင်းများ ရှာဖွေရန်"
-
-#. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2959
-#, php-format
-msgid "These are the languages this site uses. You can change them in %s."
-msgstr "ဤသည်မှာ ဤဝဘ်ဆိုက်အသုံးပြုသော ဘာသာစကားများ ဖြစ်သည်။ ၎င်းတို့ကို %s တွင် ပြောင်းလဲနိုင်သည်။"
-
-#: admin/class-babilim-admin.php:2978
-msgid "Upload this component?"
-msgstr "ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်မလား။"
-
-#: admin/class-babilim-admin.php:2980
-#: includes/class-babilim-upload.php:96
-msgid "There is no upload waiting for confirmation."
-msgstr "အတည်ပြုရန် စောင့်ဆိုင်းနေသော အပ်လုဒ် မရှိပါ။"
-
-#: admin/class-babilim-admin.php:2980
-#: admin/class-babilim-admin.php:3007
-#: admin/class-babilim-admin.php:3685
-msgid "Back"
-msgstr "နောက်သို့"
-
-#: admin/class-babilim-admin.php:2984
-msgid "To translate this component, Babilim needs its source."
-msgstr "ဤအစိတ်အပိုင်းကို ဘာသာပြန်ရန် Babilim သည် ၎င်း၏ အရင်းအမြစ်ကို လိုအပ်သည်။"
-
-#: admin/class-babilim-admin.php:2988
-msgid "The upload is kept until you ask Babilim to delete it."
-msgstr "အပ်လုဒ်ထားသော အကြောင်းအရာကို ဖျက်ပေးရန် Babilim ထံ သင်မတောင်းဆိုမချင်း ၎င်းကို သိမ်းဆည်းထားမည်။"
-
-#: admin/class-babilim-admin.php:2989
-msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
-msgstr "၎င်းကို ဝန်ဆောင်မှု၏ ဟို့စ်တင်းပေးသူက သိမ်းဆည်းထားပြီး ဘာသာပြန်ချက်ထုတ်လုပ်ရန် AI မော်ဒယ်များဖြင့် လုပ်ဆောင်သည်။"
-
-#: admin/class-babilim-admin.php:2990
-msgid "The original text and the translations made from it will be provided to other sites that install the same version."
-msgstr "မူရင်းစာသားနှင့် ၎င်းမှ ပြုလုပ်ထားသော ဘာသာပြန်ချက်များကို ဗားရှင်းတူ ထည့်သွင်းသော အခြားဝဘ်ဆိုက်များသို့ ပေးအပ်မည်။"
-
-#: admin/class-babilim-admin.php:2991
-msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "ဆက်လက်လုပ်ဆောင်ခြင်းဖြင့် ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်ပိုင်ခွင့် ရှိကြောင်း အတည်ပြုပါသည်။"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Upload and request"
-msgstr "အပ်လုဒ်လုပ်ပြီး တောင်းဆိုရန်"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Uploading…"
-msgstr "အပ်လုဒ်လုပ်နေသည်…"
-
-#: admin/class-babilim-admin.php:2993
-#: admin/class-babilim-admin.php:3012
-#: admin/class-babilim-admin.php:3049
-#: admin/class-babilim-admin.php:3106
-msgid "Cancel"
-msgstr "မလုပ်တော့ပါ"
-
-#: admin/class-babilim-admin.php:3005
-msgid "Uploading"
-msgstr "အပ်လုဒ်လုပ်နေသည်"
-
-#: admin/class-babilim-admin.php:3007
-#: includes/class-babilim-upload.php:145
-msgid "There is no upload in progress."
-msgstr "လုပ်ဆောင်နေသော အပ်လုဒ် မရှိပါ။"
-
-#. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:3010
-#, php-format
-msgid "Uploading part %1$d of %2$d…"
-msgstr "အပိုင်း %2$d ခုအနက် %1$d ကို အပ်လုဒ်လုပ်နေသည်…"
-
-#: admin/class-babilim-admin.php:3011
-msgid "Continue"
-msgstr "ဆက်လုပ်ရန်"
-
-#: admin/class-babilim-admin.php:3051
-msgid "Confirm"
-msgstr "အတည်ပြုရန်"
-
-#: admin/class-babilim-admin.php:3054
-#: admin/class-babilim-admin.php:3118
-#: admin/class-babilim-translations-table.php:691
-msgid "Remove"
-msgstr "ဖယ်ရှားရန်"
-
-#: admin/class-babilim-admin.php:3058
-#: admin/class-babilim-admin.php:3117
-#: admin/class-babilim-translations-table.php:690
-msgid "Roll back"
-msgstr "နောက်ပြန်ရုပ်သိမ်းရန်"
-
-#: admin/class-babilim-admin.php:3061
-msgid "Nothing to confirm."
-msgstr "အတည်ပြုစရာ မရှိပါ။"
-
-#: admin/class-babilim-admin.php:3107
-msgid "Choose a language"
-msgstr "ဘာသာစကားတစ်ခု ရွေးပါ"
-
-#: admin/class-babilim-admin.php:3119
-#: admin/class-babilim-translations-table.php:692
-msgid "Roll back and report"
-msgstr "နောက်ပြန်ရုပ်သိမ်းပြီး တိုင်ကြားရန်"
-
-#: admin/class-babilim-admin.php:3120
-#: admin/class-babilim-admin.php:4374
-#: admin/class-babilim-translations-table.php:693
-msgid "Report a problem"
-msgstr "ပြဿနာတစ်ခု တင်ပြရန်"
-
-#: admin/class-babilim-admin.php:3124
-msgid "Nothing to choose."
-msgstr "ရွေးချယ်စရာ မရှိပါ။"
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3130
-#, php-format
-msgid "%1$s: %2$s. Choose the language."
-msgstr "%1$s: %2$s။ ဘာသာစကားကို ရွေးပါ။"
-
-#: admin/class-babilim-admin.php:3276
-msgid "Supplementary translations"
-msgstr "ဖြည့်စွက် ဘာသာပြန်ချက်များ"
-
-#: admin/class-babilim-admin.php:3277
-msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "အစိတ်အပိုင်းတစ်ခုချင်းစီ၏ ဘာသာစကားတစ်ခုစီ၏ မျှဝေထားသော default-domain ဖြည့်စွက်ချက်သို့ ပံ့ပိုးမှု။"
-
-#: admin/class-babilim-admin.php:3279
-#: admin/class-babilim-admin.php:3677
-#: admin/class-babilim-translations-table.php:399
-msgid "Component"
-msgstr "အစိတ်အပိုင်း"
-
-#: admin/class-babilim-admin.php:3280
-#: admin/class-babilim-admin.php:3678
-#: admin/class-babilim-admin.php:4215
-msgid "Language"
-msgstr "ဘာသာစကား"
-
-#: admin/class-babilim-admin.php:3281
-msgid "Included in index"
-msgstr "အညွှန်းတွင် ပါဝင်သည်"
-
-#: admin/class-babilim-admin.php:3282
-msgid "Entries"
-msgstr "ထည့်သွင်းမှုများ"
-
-#: admin/class-babilim-admin.php:3283
-#: admin/class-babilim-admin.php:4219
-msgid "Conflicting keys"
-msgstr "ကွဲလွဲနေသော ကီးများ"
-
-#: admin/class-babilim-admin.php:3286
-msgid "Yes"
-msgstr "ဟုတ်ကဲ့"
-
-#: admin/class-babilim-admin.php:3303
-msgid "No — component inactive"
-msgstr "မဟုတ်ပါ — အစိတ်အပိုင်း မလုပ်ဆောင်ပါ"
-
-#: admin/class-babilim-admin.php:3305
-msgid "No — installed version differs from the active one"
-msgstr "မဟုတ်ပါ — ထည့်သွင်းထားသောဗားရှင်းသည် အသုံးပြုနေသည့်ဗားရှင်းနှင့် ကွဲပြားသည်"
-
-#: admin/class-babilim-admin.php:3307
-msgid "No — component removed"
-msgstr "မဟုတ်ပါ — အစိတ်အပိုင်း ဖယ်ရှားပြီး"
-
-#: admin/class-babilim-admin.php:3309
-msgid "No"
-msgstr "မဟုတ်ပါ"
-
-#: admin/class-babilim-admin.php:3331
-msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "ဤကွန်ရက်ရှိ ဆိုက်အားလုံးမှ မျှဝေသုံးစွဲသော ဘာသာပြန်ဖိုင်များကို ပြောင်းလဲစေသောကြောင့် ကွန်ရက် စီမံခန့်ခွဲသူသာ ဤလုပ်ဆောင်ချက်ကို လုပ်ဆောင်နိုင်သည်။"
-
-#: admin/class-babilim-admin.php:3347
-msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
-msgstr "Babilim သည် ဤဆိုက်ကို အတည်ပြုခြင်း မပြီးစီးနိုင်ခဲ့ပါ (ဝန်ဆောင်မှုမှ ပြန်လည်ချိတ်ဆက်၍ မရခဲ့ပါ)။ မှတ်ပုံတင်ခြင်းကို ခေတ္တရပ်ထားသည်။"
-
-#: admin/class-babilim-admin.php:3348
-msgid "This site already has an active registration that can no longer be recovered automatically."
-msgstr "ဤဆိုက်တွင် အလိုအလျောက် ပြန်လည်ရယူ၍ မရတော့သော အသုံးပြုနေဆဲ မှတ်ပုံတင်မှု ရှိပြီးသားဖြစ်သည်။"
-
-#: admin/class-babilim-admin.php:3355
-msgid "Restart registration"
-msgstr "မှတ်ပုံတင်ခြင်းကို ပြန်စရန်"
-
-#: admin/class-babilim-admin.php:3382
-msgid "Babilim settings"
-msgstr "Babilim ဆက်တင်များ"
-
-#: admin/class-babilim-admin.php:3389
-msgid "General"
-msgstr "အထွေထွေ"
-
-#: admin/class-babilim-admin.php:3390
-msgid "Advanced"
-msgstr "အဆင့်မြင့်"
-
-#: admin/class-babilim-admin.php:3415
-msgid "Languages"
-msgstr "ဘာသာစကားများ"
-
-#: admin/class-babilim-admin.php:3417
-msgid "Automatic installs"
-msgstr "အလိုအလျောက် ထည့်သွင်းခြင်း"
-
-#: admin/class-babilim-admin.php:3419
-msgid "Install available translations automatically"
-msgstr "ရရှိနိုင်သော ဘာသာပြန်ချက်များကို အလိုအလျောက် ထည့်သွင်းရန်"
-
-#: admin/class-babilim-admin.php:3421
-msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
-msgstr "ဤဆိုက်သည် ဘာသာပြန်အသစ်များကို အလိုအလျောက် မထည့်သွင်းသော multisite ကွန်ရက်၏ အစိတ်အပိုင်းဖြစ်သည်။ ထည့်သွင်းပြီးသား ဘာသာပြန်များကိုမူ ဆက်လက် အပ်ဒိတ်လုပ်မည်။"
-
-#: admin/class-babilim-admin.php:3429
-msgid "Custom overrides"
-msgstr "စိတ်ကြိုက် အစားထိုးသတ်မှတ်ချက်များ"
-
-#: admin/class-babilim-admin.php:3431
-msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "အားလုံးကို ရှင်းလင်းချိန် သို့မဟုတ် ဤပလပ်ဂင်ကို ဖယ်ရှားချိန်တွင် ကျွန်ုပ်၏ ကိုယ်ပိုင် ဘာသာပြန် အစားထိုးသတ်မှတ်ချက်များကို ထားရှိရန်။"
-
-#. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3434
-#, php-format
-msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "သင် %s တွင် ထားသော ဘာသာပြန်ဖိုင်များသည် Babilim ၏ ဖိုင်များထက် အမြဲ ဦးစားပေးခံရသည်။ ဤအမှန်ခြစ်ကို မဖြုတ်မချင်း ထိန်းသိမ်းထားမည်။"
-
-#: admin/class-babilim-admin.php:3438
-msgid "Uninstall"
-msgstr "ဖယ်ရှားခြင်း"
-
-#: admin/class-babilim-admin.php:3440
-msgid "Delete all Babilim data on uninstall"
-msgstr "ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်"
-
-#: admin/class-babilim-admin.php:3441
-msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "မူလအတိုင်း ပိတ်ထားသည်- ပလပ်ဂင်ကို ဖျက်လျှင် ဤဆိုက်၏ အထောက်အထားကို ထိန်းသိမ်းထားသောကြောင့် ပြန်ထည့်သွင်းလျှင် ပြန်သုံးနိုင်သည်။"
-
-#: admin/class-babilim-admin.php:3444
-msgid "Account"
-msgstr "အကောင့်"
-
-#: admin/class-babilim-admin.php:3447
-msgid "Save changes"
-msgstr "အပြောင်းအလဲများကို သိမ်းရန်"
-
-#: admin/class-babilim-admin.php:3450
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim"
-msgstr "Babilim ကို ပိတ်ရန်"
-
-#: admin/class-babilim-admin.php:3451
-msgid "Installed translations are kept, but no further checks or downloads will run."
-msgstr "ထည့်သွင်းထားသော ဘာသာပြန်များကို ထားရှိမည်ဖြစ်ပြီး နောက်ထပ် စစ်ဆေးမှု သို့မဟုတ် ဒေါင်းလုဒ်များ မလုပ်ဆောင်တော့ပါ။"
-
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Babilim ကို ပိတ်မလား။ ထည့်သွင်းထားသော ဘာသာပြန်များကို ထားရှိမည်ဖြစ်ပြီး နောက်ထပ် စစ်ဆေးမှု သို့မဟုတ် ဒေါင်းလုဒ်များ မလုပ်ဆောင်တော့ပါ။"
-
-#: admin/class-babilim-admin.php:3511
-#: admin/class-babilim-admin.php:3986
-#: admin/class-babilim-admin.php:4026
-#: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:319
-msgid "This site is not registered with Babilim yet."
-msgstr "ဤဆိုက်ကို Babilim တွင် မှတ်ပုံမတင်ရသေးပါ။"
-
-#: admin/class-babilim-admin.php:3519
-msgid "This site is already licensed. Reload the page."
-msgstr "ဤဆိုက်တွင် လိုင်စင် ရှိပြီးသားဖြစ်သည်။ စာမျက်နှာကို ပြန်လည်ဖွင့်ပါ။"
-
-#: admin/class-babilim-admin.php:3521
-#: admin/class-babilim-admin.php:3532
-msgid "Checkout is not available for this site right now."
-msgstr "ဤဆိုက်အတွက် ငွေပေးချေမှု (checkout) ကို ယခု မရရှိနိုင်ပါ။"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3524
-#, php-format
-msgid "Could not start checkout: %s"
-msgstr "ငွေပေးချေမှု (checkout) ကို စတင်၍ မရခဲ့ပါ- %s"
-
-#: admin/class-babilim-admin.php:3848
+#: admin/class-babilim-admin.php:2376
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim သည် ဤဆိုက်ကို ဖွင့်ကာ စစ်ဆေးနေပါသည်… ဤစာမျက်နှာကို ပြန်လည်ရယူပါ သို့မဟုတ် အချိန်ဇယားဆွဲထားသော စစ်ဆေးမှု ပြီးဆုံးသည်အထိ စောင့်ပါ။"
+
+#: admin/class-babilim-admin.php:4426
 msgid "Babilim is not enabled."
 msgstr "Babilim ကို မဖွင့်ထားပါ။"
 
-#: admin/class-babilim-admin.php:3851
-msgid "Not registered yet"
-msgstr "မှတ်ပုံမတင်ရသေးပါ"
-
-#: admin/class-babilim-admin.php:3853
-msgid "Not verified"
-msgstr "အတည်မပြုရသေးပါ"
-
-#: admin/class-babilim-admin.php:3855
-msgid "Verified"
-msgstr "အတည်ပြုပြီး"
-
-#: admin/class-babilim-admin.php:3863
-msgid "Status"
-msgstr "အခြေအနေ"
-
-#: admin/class-babilim-admin.php:3868
-msgid "Licensed"
-msgstr "လိုင်စင်ရှိသည်"
-
-#: admin/class-babilim-admin.php:3870
-msgid "Partner"
-msgstr "မိတ်ဖက်"
-
-#: admin/class-babilim-admin.php:3872
-msgid "Free"
-msgstr "အခမဲ့"
-
-#: admin/class-babilim-admin.php:3876
-msgid "License"
-msgstr "လိုင်စင်"
-
-#: admin/class-babilim-admin.php:3879
-#: admin/class-babilim-translations-table.php:865
-msgid "Upgrade this site"
-msgstr "ဤဆိုက်ကို အဆင့်မြှင့်ရန်"
-
-#. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3883
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1949
 #, php-format
-msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
-msgstr "ဤဝဘ်ဆိုက်အတွက် တစ်ကြိမ်ဝယ်ယူမှု- %1$s %2$s။ အနာဂတ် ဘာသာပြန်ဆိုမှု အပ်ဒိတ်အားလုံး ပါဝင်သည်။ ငွေပေးချေမှုကို Paddle က တဘ်အသစ်တွင် ကိုင်တွယ်သည်။"
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "ပလပ်ဂင်ကို ဖျက်သည့်အခါ ဤဆိုက်၏ အထောက်အထားကို ဖျက်ရန် Babilim ကို သတ်မှတ်ထားပါသည်။ ထိုအခါ ဤဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
 
-#: admin/class-babilim-admin.php:3940
-msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "၎င်းသည် ပြန်လည်ရယူရေးကုဒ်အသစ်ကို ထုတ်ပေးပြီး ယခင်ကုဒ်သည် အလုပ်မလုပ်တော့ပါ။ ဆက်လက်လုပ်ဆောင်မလား။"
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:939
+#: includes/class-babilim-site.php:1271
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Babilim သည် ဤအဆင့်အတွက် အချိန်ပြည့်သွားသဖြင့် နောက်တစ်ကြိမ် စစ်ဆေးချိန်တွင် ဆက်လုပ်ပါမည်။"
 
-#: admin/class-babilim-admin.php:3940
-msgid "Show a new restore code"
-msgstr "ပြန်လည်ရယူရေးကုဒ်အသစ် ပြပါ"
+#: admin/class-babilim-admin.php:3827
+msgid "Babilim settings"
+msgstr "Babilim ဆက်တင်များ"
 
-#: admin/class-babilim-admin.php:3942
-msgid "rc_…"
-msgstr "rc_…"
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1622
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "Babilim ထပ်တူကျမှုကို ဝန်ဆောင်မှုက ယာယီနှောင့်နှေးစေထားသည် (ကန့်သတ်ချက်ကျော်လွန်)။ %s ပြီးနောက် ထပ်ကြိုးစားမည်။"
 
-#: admin/class-babilim-admin.php:3942
-msgid "Restore code"
-msgstr "ပြန်လည်ရယူရေးကုဒ်"
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "ဤအပ်လုဒ်ကို စောင့်ဆိုင်းနေစဉ် Babilim ကို အပ်ဒိတ်လုပ်ခဲ့သည်။ ဟောင်းသော ပက်ကေ့ဂျ်ကို ပယ်ဖျက်လိုက်ပြီး အပ်လုဒ်ကို ထပ်မံအတည်ပြုပါ။"
 
-#: admin/class-babilim-admin.php:3943
-msgid "Restore purchase"
-msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူရန်"
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:3428
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim သည် %1$s (ဗားရှင်း %2$s) မှ ဤဖိုင်များကို အပ်လုဒ်လုပ်မည်- .php နှင့် .js ဖိုင်အားလုံး၊ block.json ဖိုင်အားလုံး၊ ၎င်း၏ အဓိက ဖိုလ်ဒါရှိ readme.txt၊ readme.md၊ style.css နှင့် theme.json။ ၎င်းတို့ကို ဘာသာပြန်ရန်လိုအပ်သော စာသားကို ရှာဖွေရန်နှင့် ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်ကို ဖော်ထုတ်ရန် အသုံးပြုသည်။"
 
-#: admin/class-babilim-admin.php:3944
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest ကို မရရှိနိုင်ပါ- %s"
+
+#: admin/class-babilim-admin.php:3422
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:4263
+msgid "Back"
+msgstr "နောက်သို့"
+
+#: admin/class-babilim-admin.php:4522
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "ဤဒိုမိန်းအတွက် လိုင်စင်ကို ယခင်က ဝယ်ယူဖူးပါသလား။ ငွေရှင်းချိန်တွင် ရရှိခဲ့သော ပြန်လည်ရယူရေးကုဒ်ကို ထည့်သွင်းပါ။"
 
-#: admin/class-babilim-admin.php:3980
-msgid "That does not look like a restore code."
-msgstr "၎င်းသည် ပြန်လည်ရယူရေးကုဒ်နှင့် မတူပါ။"
+#: admin/class-babilim-admin.php:3253
+msgid "Broken placeholder"
+msgstr "နေရာယူစာလုံး ပျက်နေသည်"
 
-#: admin/class-babilim-admin.php:3994
-msgid "This restore code was not recognised for this site."
-msgstr "ဤပြန်လည်ရယူရေးကုဒ်ကို ဤဆိုက်အတွက် မသိရှိပါ။"
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:4258
+msgid "Build"
+msgstr "ဘီလ်ဒ်"
 
-#: admin/class-babilim-admin.php:3996
-msgid "Too many attempts. Try again tomorrow."
-msgstr "ကြိုးစားမှု များလွန်းသည်။ မနက်ဖြန် ထပ်ကြိုးစားပါ။"
-
-#: admin/class-babilim-admin.php:3998
-msgid "This site must be verified first."
-msgstr "ဤဝဘ်ဆိုက်ကို ဦးစွာ အတည်ပြုရမည်။"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4001
-#, php-format
-msgid "Could not restore the purchase: %s"
-msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူ၍ မရပါ- %s"
-
-#: admin/class-babilim-admin.php:4011
-msgid "Purchase restored. This site is now licensed."
-msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူပြီးပါပြီ။ ဤဝဘ်ဆိုက်တွင် လိုင်စင်ရှိပါပြီ။"
-
-#: admin/class-babilim-admin.php:4034
-msgid "This site has no purchase to show a code for."
-msgstr "ဤဝဘ်ဆိုက်တွင် ကုဒ်ပြရန် ဝယ်ယူမှု မရှိပါ။"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4037
-#, php-format
-msgid "Could not show a new restore code: %s"
-msgstr "ပြန်လည်ရယူရေးကုဒ် အသစ်ကို ပြသ၍မရပါ- %s"
-
-#. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:4048
-#, php-format
-msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
-msgstr "သင့်ပြန်လည်ရယူရေးကုဒ် အသစ်- %s။ ၎င်းကို လုံခြုံသောနေရာတွင် သိမ်းထားပါ — ယခင်ကုဒ်သည် မလုပ်ဆောင်နိုင်တော့ပါ။"
-
-#: admin/class-babilim-admin.php:4063
-msgid "What is sent when Babilim checks this site"
-msgstr "Babilim က ဤဝဘ်ဆိုက်ကို စစ်ဆေးသောအခါ ပို့သည့်အချက်အလက်များ"
-
-#: admin/class-babilim-admin.php:4092
-msgid "(detected)"
-msgstr "(တွေ့ရှိထားသည်)"
-
-#: admin/class-babilim-admin.php:4095
-msgid "No language is managed yet."
-msgstr "စီမံခန့်ခွဲထားသော ဘာသာစကား မရှိသေးပါ။"
-
-#: admin/class-babilim-admin.php:4097
-msgid "Babilim adds translations for every language checked here."
-msgstr "Babilim သည် ဤနေရာတွင် အမှန်ခြစ်ထားသော ဘာသာစကားတိုင်းအတွက် ဘာသာပြန်ဆိုမှုများ ထည့်ပေးသည်။"
-
-#: admin/class-babilim-admin.php:4102
-msgid "Add another language"
-msgstr "နောက်ထပ်ဘာသာစကား ထည့်ရန်"
-
-#: admin/class-babilim-admin.php:4103
-msgid "Choose a language…"
-msgstr "ဘာသာစကားတစ်ခု ရွေးပါ…"
-
-#: admin/class-babilim-admin.php:4109
-msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "ဝန်ဆောင်မှုမှ WordPress.org ဒေသသတ်မှတ်ချက်စာရင်း အပြည့်အစုံကို မရယူနိုင်သဖြင့် ယခုအချိန်တွင် အခြားဘာသာစကား ထည့်၍ မရပါ။"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Theme"
-msgstr "အပြင်အဆင်"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Plugin"
-msgstr "ပလပ်ဂင်"
-
-#: admin/class-babilim-admin.php:4174
-msgid "Free quota"
-msgstr "အခမဲ့ ကိုတာ"
-
-#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:4181
-#, php-format
-msgid "Downloads: %1$d/%2$d (%3$s)"
-msgstr "ဒေါင်းလုဒ်များ- %1$d/%2$d (%3$s)"
-
-#: admin/class-babilim-admin.php:4213
-msgid "Supplementary translation index"
-msgstr "ဖြည့်စွက် ဘာသာပြန်ချက် အညွှန်း"
-
-#: admin/class-babilim-admin.php:4216
+#: admin/class-babilim-admin.php:4796
 msgid "Built"
 msgstr "တည်ဆောက်ပြီး"
 
-#: admin/class-babilim-admin.php:4217
-msgid "Included"
-msgstr "ထည့်သွင်းထားသည်"
+#: admin/class-babilim-translations-table.php:590
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "အစုလိုက် လုပ်ဆောင်ချက်များသည် ရွေးထားသော အစိတ်အပိုင်းတစ်ခုစီ၏ ရွေးထားသော ဘာသာစကားကိုသာ သက်ရောက်သည်။"
 
-#: admin/class-babilim-admin.php:4218
-msgid "Excluded"
-msgstr "ဖယ်ထုတ်ထားသည်"
+#: admin/class-babilim-translations-table.php:589
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "အစုလိုက် လုပ်ဆောင်ချက်များသည် ရွေးထားသော အစိတ်အပိုင်းတစ်ခုစီ၏ ကိုက်ညီသော ဘာသာစကားအားလုံးကို သက်ရောက်သည်။"
 
-#: admin/class-babilim-admin.php:4220
-msgid "Already in WordPress core"
-msgstr "WordPress core တွင် ပါဝင်ပြီးဖြစ်သည်"
+#: admin/class-babilim-admin.php:3218
+msgid "Bulk download:"
+msgstr "အစုလိုက် ဒေါင်းလုဒ်-"
 
-#: admin/class-babilim-admin.php:4239
-msgid "Supplementary translation maintenance"
-msgstr "ဖြည့်စွက် ဘာသာပြန်ဆိုမှု ထိန်းသိမ်းမှု"
+#: admin/class-babilim-admin.php:3222
+msgid "Bulk request:"
+msgstr "အစုလိုက် တောင်းဆိုခြင်း-"
 
-#: admin/class-babilim-admin.php:4242
-msgid "Maintenance status is not available right now."
-msgstr "ထိန်းသိမ်းမှု အခြေအနေကို ယခု မရရှိနိုင်ပါ။"
-
-#. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:4250
-#, php-format
-msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "%1$s တွင် ရှင်းလင်းမှုကို ခေတ္တရပ်ထားသည်- %2$s။ မည်သည့်အရာမျှ မဖျက်ခဲ့ပါ။"
-
-#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:4264
-#, php-format
-msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "%1$s တွင် နောက်ဆုံး ရှင်းလင်းမှု- အသစ်အမှတ်အသား %2$d ခု၊ ဖျက်ပြီးဖိုင် %3$d ခု၊ ဖယ်ရှားပြီးမှတ်တမ်း %4$d ခု။"
-
-#: admin/class-babilim-admin.php:4271
-msgid "No cleanup has run yet."
-msgstr "ရှင်းလင်းမှု မလုပ်ရသေးပါ။"
-
-#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:4282
-#, php-format
-msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
-msgstr "%1$s တွင် ဘာသာပြန်အညွှန်း ရေးသွင်းမှုတစ်ခုသည် အခြားတောင်းဆိုမှုတစ်ခုနှင့် ပဋိပက္ခဖြစ်ပြီး (%2$s) မအသုံးချခဲ့ပါ။ နောက်ဆုံးဗားရှင်းကို ထားရှိထားပါသည်။"
-
-#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:4295
-#, php-format
-msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
-msgstr "%1$s တွင် ဘာသာပြန်အညွှန်း ရေးသွင်းမှု (%2$s) ကို မပြီးမြောက်နိုင်ဘဲ မအသုံးချခဲ့ပါ (%3$s)။"
-
-#: admin/class-babilim-admin.php:4311
-msgid "Maintenance"
-msgstr "ပြုပြင်ထိန်းသိမ်းမှု"
-
-#: admin/class-babilim-admin.php:4322
-msgid "Rebuild index now"
-msgstr "အညွှန်းကို ယခုပြန်လည်တည်ဆောက်ရန်"
-
-#: admin/class-babilim-admin.php:4328
-msgid "Sweep now"
-msgstr "ယခု စစ်ဆေးရှင်းလင်းရန်"
-
-#: admin/class-babilim-admin.php:4344
-msgid "Danger zone"
-msgstr "အန္တရာယ်ရှိဇုန်"
-
-#: admin/class-babilim-admin.php:4352
-msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
-msgstr "ဤဆိုက်ရှိ ပလပ်ဂင်နှင့် အပြင်အဆင်တိုင်းအတွက် Babilim ထည့်သွင်းထားသော ဘာသာစကားဖိုင်အားလုံးကို ဖယ်ရှားပါသည်။"
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
-msgstr "Babilim ထည့်သွင်းထားသမျှ အားလုံးကို ဖယ်ရှားမလား။ ၎င်းသည် ဤဆိုက်ရှိ ပလပ်ဂင်နှင့် အပြင်အဆင်တိုင်းအတွက် ထည့်သွင်းထားသော ဘာသာစကားဖိုင်အားလုံးကို ဖျက်ပါမည်။"
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed"
-msgstr "Babilim ထည့်သွင်းထားသမျှ အားလုံးကို ဖယ်ရှားရန်"
-
-#: admin/class-babilim-admin.php:3670
-#: admin/class-babilim-admin.php:4398
-msgid "Category"
-msgstr "အမျိုးအစား"
-
-#: admin/class-babilim-admin.php:4400
-msgid "Choose a category…"
-msgstr "အမျိုးအစားတစ်ခု ရွေးပါ…"
-
-#: admin/class-babilim-admin.php:4415
-msgid "Roll back and send report"
-msgstr "ပြန်လှည့်ပြီး အစီရင်ခံစာ ပို့ရန်"
-
-#: admin/class-babilim-admin.php:3684
-#: admin/class-babilim-admin.php:4415
-msgid "Send report"
-msgstr "အစီရင်ခံစာ ပို့ရန်"
-
-#: admin/class-babilim-cell.php:65
-msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "ဤအစိတ်အပိုင်း၏ စာသားအချို့ကို ရေးသားသူက တိုက်ရိုက်ထည့်သွင်းထားသောကြောင့် ဘာသာစကား ပက်ကေ့ချ်ဖြင့် ဘာသာမပြန်နိုင်ပါ။"
-
-#: admin/class-babilim-cell.php:105
-msgid "WordPress.org"
-msgstr "WordPress.org"
-
-#: admin/class-babilim-cell.php:108
-msgid "Bundled with the theme"
-msgstr "အပြင်အဆင်နှင့်အတူ ပါဝင်သည်"
+#: admin/class-babilim-admin.php:3220
+msgid "Bulk update:"
+msgstr "အစုလိုက် အပ်ဒိတ်လုပ်ခြင်း-"
 
 #: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "ပလပ်ဂင်နှင့်အတူ ပါဝင်သည်"
 
-#: admin/class-babilim-cell.php:118
-msgid "Upload was not accepted"
-msgstr "အပ်လုဒ်ကို လက်မခံပါ"
+#: admin/class-babilim-cell.php:108
+msgid "Bundled with the theme"
+msgstr "အပြင်အဆင်နှင့်အတူ ပါဝင်သည်"
 
-#: admin/class-babilim-cell.php:121
-msgid "Upload expired before it finished"
-msgstr "မပြီးမီ အပ်လုဒ် သက်တမ်းကုန်သွားသည်"
+#: admin/class-babilim-admin.php:3073
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "Enable ကိုနှိပ်ခြင်းဖြင့် အထက်တွင်ဖော်ပြထားသော အချက်အလက်များကို Babilim သို့ ပို့ရန် သဘောတူပါသည်။"
 
-#: admin/class-babilim-cell.php:123
-msgid "No translation"
-msgstr "ဘာသာပြန်ချက် မရှိပါ"
+#: admin/class-babilim-admin.php:3433
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "ဆက်လက်လုပ်ဆောင်ခြင်းဖြင့် ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်ပိုင်ခွင့် ရှိကြောင်း အတည်ပြုပါသည်။"
 
-#: admin/class-babilim-cell.php:129
-#: admin/class-babilim-cell.php:131
-#: admin/class-babilim-cell.php:265
-#: admin/class-babilim-cell.php:267
-msgid "Upload in progress — continue or cancel"
-msgstr "အပ်လုဒ် လုပ်ဆောင်နေသည် — ဆက်လုပ်ပါ သို့မဟုတ် ပယ်ဖျက်ပါ"
+#: admin/class-babilim-admin.php:3436
+#: admin/class-babilim-admin.php:3456
+#: admin/class-babilim-admin.php:3494
+#: admin/class-babilim-admin.php:3551
+msgid "Cancel"
+msgstr "မလုပ်တော့ပါ"
 
-#: admin/class-babilim-cell.php:133
-msgid "Scheduled, waiting to be processed"
-msgstr "အချိန်ဇယားဆွဲထားပြီး လုပ်ဆောင်ရန် စောင့်ဆိုင်းနေသည်"
+#: admin/class-babilim-admin.php:4248
+#: admin/class-babilim-admin.php:4978
+msgid "Category"
+msgstr "အမျိုးအစား"
 
-#: admin/class-babilim-cell.php:135
-msgid "Translating…"
-msgstr "ဘာသာပြန်နေသည်…"
+#: admin/class-babilim-admin.php:3152
+msgid "Check again"
+msgstr "ထပ်မံစစ်ဆေးရန်"
 
-#: admin/class-babilim-cell.php:137
-msgid "Translation failed"
-msgstr "ဘာသာပြန်ခြင်း မအောင်မြင်ပါ"
+#: admin/class-babilim-admin.php:3107
+#: admin/class-babilim-admin.php:3155
+#: admin/class-babilim-admin.php:4893
+msgid "Check again now"
+msgstr "ယခု ထပ်မံစစ်ဆေးရန်"
 
-#: admin/class-babilim-cell.php:139
-msgid "Free quota used"
-msgstr "အသုံးပြုပြီးသော အခမဲ့ ကိုတာ"
+#: admin/class-babilim-admin.php:3976
+#: admin/class-babilim-admin.php:3987
+msgid "Checkout is not available for this site right now."
+msgstr "ဤဆိုက်အတွက် ငွေပေးချေမှု (checkout) ကို ယခု မရရှိနိုင်ပါ။"
 
-#: admin/class-babilim-cell.php:141
-msgid "Needs a paid license"
-msgstr "အခပေးလိုင်စင် လိုအပ်သည်"
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:4247
+msgid "Choose"
+msgstr "ရွေးချယ်ရန်"
 
-#: admin/class-babilim-cell.php:148
-msgid "Not supported"
-msgstr "မပံ့ပိုးပါ"
+#: admin/class-babilim-admin.php:4980
+msgid "Choose a category…"
+msgstr "အမျိုးအစားတစ်ခု ရွေးပါ…"
 
-#: admin/class-babilim-cell.php:150
-msgid "Status unknown"
-msgstr "အခြေအနေ မသိရပါ"
+#: admin/class-babilim-admin.php:3552
+msgid "Choose a language"
+msgstr "ဘာသာစကားတစ်ခု ရွေးပါ"
 
-#: admin/class-babilim-cell.php:170
-#: admin/class-babilim-cell.php:197
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Installed"
-msgstr "ထည့်သွင်းပြီး"
+#: admin/class-babilim-admin.php:4683
+msgid "Choose a language…"
+msgstr "ဘာသာစကားတစ်ခု ရွေးပါ…"
 
-#: admin/class-babilim-cell.php:183
-#: admin/class-babilim-cell.php:185
-msgid "Update available"
-msgstr "အပ်ဒိတ် ရနိုင်ပါသည်"
-
-#: admin/class-babilim-cell.php:210
-msgid "Removed after a failed integrity check"
-msgstr "ခိုင်မာမှု စစ်ဆေးခြင်း မအောင်မြင်သဖြင့် ဖယ်ရှားခဲ့သည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-#, php-format
-msgid "Installed · built for %s, new version scheduled"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို အချိန်ဇယားဆွဲထားသည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-msgid "Installed · built for a different version, new version scheduled"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို အချိန်ဇယားဆွဲထားသည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-#, php-format
-msgid "Installed · built for %s, translating the new version…"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို ဘာသာပြန်နေသည်…"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-msgid "Installed · built for a different version, translating the new version…"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို ဘာသာပြန်နေသည်…"
-
-#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:279
-#, php-format
-msgid "Installed · built for %1$s, this site has %2$s"
-msgstr "ထည့်သွင်းပြီး · %1$s အတွက် ပြုလုပ်ထားသည်၊ ဤဆိုက်တွင် %2$s ရှိသည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-#, php-format
-msgid "Installed · built for %s"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-msgid "Installed · built for a different version"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-#, php-format
-msgid "Installed · built for %s, new version failed"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် ဘီလ်ဒ်လုပ်ထားသည်၊ ဗားရှင်းအသစ် မအောင်မြင်ပါ"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-msgid "Installed · built for a different version, new version failed"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ဘီလ်ဒ်လုပ်ထားသည်၊ ဗားရှင်းအသစ် မအောင်မြင်ပါ"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-#, php-format
-msgid "Installed · built for %s, new version needs a paid license"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် တည်ဆောက်ထားသည်၊ ဗားရှင်းအသစ်သည် အခပေးလိုင်စင် လိုအပ်သည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် တည်ဆောက်ထားသည်၊ ဗားရှင်းအသစ်သည် အခပေးလိုင်စင် လိုအပ်သည်"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-#, php-format
-msgid "Installed · built for %s, free quota used"
-msgstr "ထည့်သွင်းပြီး · %s အတွက် တည်ဆောက်ထားသည်၊ အခမဲ့ ကိုတာ ကုန်ပြီ"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-msgid "Installed · built for a different version, free quota used"
-msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် တည်ဆောက်ထားသည်၊ အခမဲ့ ကိုတာ ကုန်ပြီ"
-
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Available"
-msgstr "ရရှိနိုင်သည်"
-
-#. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:319
-#, php-format
-msgid "Installed · %s"
-msgstr "ထည့်သွင်းပြီး · %s"
-
-#. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:322
-#, php-format
-msgid "Available · %s"
-msgstr "ရရှိနိုင်သည် · %s"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:412
-msgid "Update"
-msgstr "အပ်ဒိတ်လုပ်ရန်"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:411
-msgid "Download"
-msgstr "ဒေါင်းလုဒ်လုပ်ရန်"
-
-#: admin/class-babilim-cell.php:362
-msgid "Updating…"
-msgstr "အပ်ဒိတ်လုပ်နေသည်…"
-
-#: admin/class-babilim-cell.php:362
-msgid "Downloading…"
-msgstr "ဒေါင်းလုဒ်လုပ်နေသည်…"
-
-#: admin/class-babilim-cell.php:365
-msgid "Retry request"
-msgstr "တောင်းဆိုမှုကို ထပ်ကြိုးစားရန်"
-
-#: admin/class-babilim-cell.php:367
-msgid "Request newer translation"
-msgstr "ပိုသစ်သော ဘာသာပြန်ဆိုမှု တောင်းဆိုရန်"
-
-#: admin/class-babilim-cell.php:367
-#: admin/class-babilim-translations-table.php:413
-msgid "Request translation"
-msgstr "ဘာသာပြန်ရန် တောင်းဆိုရန်"
-
-#: admin/class-babilim-cell.php:369
-msgid "Requesting…"
-msgstr "တောင်းဆိုနေသည်…"
-
-#: admin/class-babilim-translations-table.php:35
-msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "ဤအစိတ်အပိုင်းသည် အခမဲ့ နေရာတစ်ခုကို အသုံးပြုထားပြီးဖြစ်ခြင်း မရှိပါက ဘာသာပြန်ချက် တောင်းဆိုခြင်းသည် သင်၏ အခမဲ့ နေရာများထဲမှ တစ်ခုကို အသုံးပြုမည်။ ဘာသာပြန်မအောင်မြင်ပါက နေရာကို ပြန်မပေးပါ။"
-
-#: admin/class-babilim-translations-table.php:42
-msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "ဤအစိတ်အပိုင်းသည် သင်၏ အခမဲ့ နေရာများထဲမှ တစ်ခုကို မသုံးသေးပါက ဘာသာပြန်ချက် တောင်းဆိုခြင်းသည် တစ်ခုကို အသုံးပြုမည်။ ဘာသာပြန်မအောင်မြင်ပါက နေရာကို ပြန်မပေးပါ။ ဆက်လုပ်မလား။"
-
-#: admin/class-babilim-translations-table.php:382
-msgid "No plugins or themes found."
-msgstr "ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်များ မတွေ့ပါ။"
-
-#: admin/class-babilim-translations-table.php:386
+#: admin/class-babilim-translations-table.php:428
 msgid "Clear filters"
 msgstr "စစ်ထုတ်မှုများ ရှင်းလင်းရန်"
 
-#. translators: %s: a "Clear filters" link.
-#: admin/class-babilim-translations-table.php:388
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:4265
+msgid "Close"
+msgstr "ပိတ်ရန်"
+
+#: admin/class-babilim-admin.php:3724
+#: admin/class-babilim-admin.php:4255
+#: admin/class-babilim-translations-table.php:441
+msgid "Component"
+msgstr "အစိတ်အပိုင်း"
+
+#: admin/class-babilim-admin.php:3496
+msgid "Confirm"
+msgstr "အတည်ပြုရန်"
+
+#: admin/class-babilim-admin.php:3728
+#: admin/class-babilim-admin.php:4799
+msgid "Conflicting keys"
+msgstr "ကွဲလွဲနေသော ကီးများ"
+
+#: admin/class-babilim-admin.php:3455
+msgid "Continue"
+msgstr "ဆက်လုပ်ရန်"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:3339
 #, php-format
-msgid "No components match these filters. %s"
-msgstr "ဤစစ်ထုတ်မှုများနှင့် ကိုက်ညီသော အစိတ်အပိုင်း မရှိပါ။ %s"
+msgid "Continue next batch (%d left)"
+msgstr "နောက်အစုကို ဆက်လုပ်ရန် (%d ကျန်သည်)"
 
-#: admin/class-babilim-translations-table.php:398
-msgid "Select all"
-msgstr "အားလုံး ရွေးရန်"
+#: admin/class-babilim-admin.php:3336
+msgid "Continuing…"
+msgstr "ဆက်လုပ်နေသည်…"
 
-#: admin/class-babilim-translations-table.php:424
-#: admin/class-babilim-translations-table.php:472
-msgid "All"
-msgstr "အားလုံး"
-
-#: admin/class-babilim-translations-table.php:425
-msgid "Available"
-msgstr "ရရှိနိုင်သည်"
-
-#: admin/class-babilim-translations-table.php:426
-msgid "Updates"
-msgstr "အပ်ဒိတ်များ"
-
-#: admin/class-babilim-translations-table.php:427
-msgid "Requestable"
-msgstr "တောင်းဆိုနိုင်သည်"
-
-#: admin/class-babilim-translations-table.php:428
-msgid "Installed"
-msgstr "ထည့်သွင်းပြီး"
-
-#: admin/class-babilim-translations-table.php:473
-msgid "Plugins"
-msgstr "ပလပ်ဂင်များ"
-
-#: admin/class-babilim-translations-table.php:474
-msgid "Themes"
-msgstr "အပြင်အဆင်များ"
-
-#: admin/class-babilim-translations-table.php:499
-msgid "All languages"
-msgstr "ဘာသာစကားအားလုံး"
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
 #, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] "ထည့်သွင်းရန် %d ခု"
-msgstr[1] "ထည့်သွင်းရန် %d ခု"
+msgid "Could not back up %s before replacing it."
+msgstr "%s ကို အစားထိုးမီ အရန်ကူးယူ၍ မရပါ။"
 
-#: admin/class-babilim-translations-table.php:511
-msgid "Language:"
-msgstr "ဘာသာစကား -"
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
+msgid "Could not create the package archive."
+msgstr "ပက်ကေ့ချ် ဖိုင်ပေါင်းချုပ်ကို မဖန်တီးနိုင်ပါ။"
 
-#: admin/class-babilim-translations-table.php:547
-msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "အစုလိုက် လုပ်ဆောင်ချက်များသည် ရွေးထားသော အစိတ်အပိုင်းတစ်ခုစီ၏ ကိုက်ညီသော ဘာသာစကားအားလုံးကို သက်ရောက်သည်။"
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "အသုံးပြုနေသော အစိတ်အပိုင်းများကို ဆုံးဖြတ်၍ မရနိုင်ပါ။ ရှိပြီးသား ပေါင်းစပ်ညွှန်းကိန်းကို မပြောင်းလဲဘဲ ထားခဲ့သည်။"
 
-#: admin/class-babilim-translations-table.php:548
-msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "အစုလိုက် လုပ်ဆောင်ချက်များသည် ရွေးထားသော အစိတ်အပိုင်းတစ်ခုစီ၏ ရွေးထားသော ဘာသာစကားကိုသာ သက်ရောက်သည်။"
+#: includes/class-babilim-default-index.php:400
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "ထည့်သွင်းထားသော ပလပ်ဂင်/ဒီဇိုင်းပုံစံများကို ဆုံးဖြတ်၍ မရနိုင်ပါ။ စစ်ဆေးရှင်းလင်းမှုကို ကျော်လိုက်ပြီး မည်သည့်အရာမျှ မဖျက်ခဲ့ပါ။"
 
-#. translators: %s: the component's version number.
-#: admin/class-babilim-translations-table.php:572
+#: admin/class-babilim-admin.php:4689
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "ဝန်ဆောင်မှုမှ WordPress.org ဒေသသတ်မှတ်ချက်စာရင်း အပြည့်အစုံကို မရယူနိုင်သဖြင့် ယခုအချိန်တွင် အခြားဘာသာစကား ထည့်၍ မရပါ။"
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
 #, php-format
-msgid "Version %s"
-msgstr "ဗားရှင်း %s"
+msgid "Could not move %s into place."
+msgstr "%s ကို နေရာတွင် ရွှေ့ထား၍ မရပါ။"
 
-#. translators: %s: the theme's version number.
-#: admin/class-babilim-translations-table.php:575
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:989
 #, php-format
-msgid "Theme · %s"
-msgstr "အပြင်အဆင် · %s"
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "'%s' အတွက် ပေါင်းစည်းထားသော အညွှန်းကို နေရာတွင် ရွှေ့၍ မရပါ။ ယခင်ပံ့ပိုးထားသော အညွှန်း (ရှိခဲ့လျှင်) ကို တစ်ဝက်တစ်ပျက် မဖြစ်စေရန် ဖယ်ရှားလိုက်ပါသည်။ နောက်တစ်ကြိမ် ပြန်လည်တည်ဆောက်မှု အောင်မြင်သည်အထိ ဤဘာသာစကားအတွက် default-domain ဖြည့်စွက်ချက် မပံ့ပိုးပါ။"
 
-#. translators: %s: the plugin's version number.
-#: admin/class-babilim-translations-table.php:578
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
 #, php-format
-msgid "Plugin · %s"
-msgstr "ပလပ်ဂင် · %s"
+msgid "Could not open zip: %s"
+msgstr "zip ကို ဖွင့်၍ မရနိုင်ပါ: %s"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:635
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
 #, php-format
-msgid "Remove the %2$s translation of %1$s from this site?"
-msgstr "%1$s ၏ %2$s ဘာသာပြန်ဆိုမှုကို ဤဆိုက်မှ ဖယ်ရှားမလား။"
+msgid "Could not prepare %s for rollback."
+msgstr "%s ကို နောက်ပြန်လှည့်ရန် ပြင်ဆင်၍ မရပါ။"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:638
+#. translators: %s: the filename that could not be read back after it was moved into place.
+#: includes/class-babilim-installer.php:1656
 #, php-format
-msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "%1$s ၏ %2$s ဘာသာပြန်ဆိုမှုကို ယခင်ဘီလ်ဒ်သို့ ပြန်ပြောင်းမလား။"
+msgid "Could not read %s back after moving it into place."
+msgstr "%s ကို နေရာတွင် ရွှေ့ပြီးနောက် ပြန်ဖတ်၍ မရပါ။"
 
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-translations-table.php:731
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
 #, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+msgid "Could not read: %s"
+msgstr "ဖတ်၍ မရပါ- %s"
 
-#. translators: 1: action name such as Remove, 2: component name, 3: language name.
-#: admin/class-babilim-translations-table.php:734
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4579
 #, php-format
-msgid "%1$s: %2$s (%3$s)"
-msgstr "%1$s: %2$s (%3$s)"
+msgid "Could not restore the purchase: %s"
+msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူ၍ မရပါ- %s"
 
-#: includes/class-babilim-api-client.php:102
-msgid "The registration challenge is not in the expected form."
-msgstr "မှတ်ပုံတင်ခြင်း စိန်ခေါ်မှုသည် မျှော်လင့်ထားသော ပုံစံမဟုတ်ပါ။"
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4615
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "ပြန်လည်ရယူရေးကုဒ် အသစ်ကို ပြသ၍မရပါ- %s"
 
-#: includes/class-babilim-api-client.php:212
-msgid "That is not a valid build identifier."
-msgstr "၎င်းသည် မှန်ကန်သော ဘီလ်ဒ် သတ်မှတ်အမှတ် မဟုတ်ပါ။"
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "%s ကို stage မလုပ်နိုင်ပါ"
 
-#: includes/class-babilim-api-client.php:309
-msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Babilim ဘာသာစကားဖိုင် ဒိုင်ရက်ထရီပြင်ပသို့ ရေးသားရန် ငြင်းပယ်သည်။"
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "default/%s ကို stage မလုပ်နိုင်ပါ"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3979
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "ငွေပေးချေမှု (checkout) ကို စတင်၍ မရခဲ့ပါ- %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "%s အတွက် ဘာသာပြန်စာသား အရေအတွက်ကို အတည်မပြုနိုင်ပါ"
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
 msgstr "ဒေါင်းလုဒ်လုပ်ထားသော ပက်ကေ့ချ်ကို ဒစ်ခ်သို့ ရေးသား၍ မရနိုင်ပါ။"
 
-#. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:605
+#: includes/class-babilim-default-index.php:950
+msgid "Could not write the staged merged index."
+msgstr "အဆင့်ခွဲ ပေါင်းစည်းထားသော အညွှန်းကို ရေး၍ မရပါ။"
+
+#: admin/class-babilim-admin.php:1547
+#: admin/class-babilim-admin.php:4245
+#: admin/class-babilim-admin.php:4986
+msgid "Current translation"
+msgstr "လက်ရှိ ဘာသာပြန်ချက်"
+
+#: admin/class-babilim-admin.php:3883
+msgid "Custom overrides"
+msgstr "စိတ်ကြိုက် အစားထိုးသတ်မှတ်ချက်များ"
+
+#: admin/class-babilim-admin.php:4924
+msgid "Danger zone"
+msgstr "အန္တရာယ်ရှိဇုန်"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "ပုံသေဖြည့်စွက်ဖိုင်၏ ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ။"
+
+#: admin/class-babilim-admin.php:3894
+msgid "Delete all Babilim data on uninstall"
+msgstr "ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်"
+
+#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim"
+msgstr "Babilim ကို ပိတ်ရန်"
+
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Babilim ကို ပိတ်မလား။ ထည့်သွင်းထားသော ဘာသာပြန်များကို ထားရှိမည်ဖြစ်ပြီး နောက်ထပ် စစ်ဆေးမှု သို့မဟုတ် ဒေါင်းလုဒ်များ မလုပ်ဆောင်တော့ပါ။"
+
+#: admin/class-babilim-admin.php:2545
+msgid "Don't share"
+msgstr "မမျှဝေပါနှင့်"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:453
+msgid "Download"
+msgstr "ဒေါင်းလုဒ်လုပ်ရန်"
+
+#: admin/class-babilim-admin.php:961
+msgid "Downloaded and installed."
+msgstr "ဒေါင်းလုဒ်လုပ်ပြီး ထည့်သွင်းပြီးပါပြီ။"
+
+#: admin/class-babilim-cell.php:366
+msgid "Downloading…"
+msgstr "ဒေါင်းလုဒ်လုပ်နေသည်…"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
+#: admin/class-babilim-admin.php:4761
 #, php-format
-msgid "Unexpected HTTP %d response."
-msgstr "မမျှော်လင့်ထားသော HTTP %d တုံ့ပြန်မှု။"
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "ဒေါင်းလုဒ်များ- %1$d/%2$d (%3$s)"
 
-#: includes/class-babilim-consent.php:72
-msgid "This site's URL, so the service can verify you own it."
-msgstr "ဤဆိုက်၏ URL ဖြစ်ပြီး ၎င်းကို သင်ပိုင်ဆိုင်ကြောင်း ဝန်ဆောင်မှုက အတည်ပြုနိုင်ရန် ဖြစ်သည်။"
+#: admin/class-babilim-admin.php:3722
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "အစိတ်အပိုင်းတစ်ခုချင်းစီ၏ ဘာသာစကားတစ်ခုစီ၏ မျှဝေထားသော default-domain ဖြည့်စွက်ချက်သို့ ပံ့ပိုးမှု။"
 
-#: includes/class-babilim-consent.php:77
-msgid "Your WordPress version, to serve compatible translation files."
-msgstr "သင်၏ WordPress ဗားရှင်း ဖြစ်ပြီး တွဲဖက်သုံးနိုင်သော ဘာသာပြန်ဖိုင်များ ပေးပို့ရန် ဖြစ်သည်။"
+#: admin/class-babilim-admin.php:3072
+msgid "Enable Babilim"
+msgstr "Babilim ကို ဖွင့်ရန်"
 
-#: includes/class-babilim-consent.php:82
-msgid "Your PHP version, for compatibility."
-msgstr "သင်၏ PHP ဗားရှင်း ဖြစ်ပြီး တွဲဖက်အသုံးပြုနိုင်မှုအတွက် ဖြစ်သည်။"
+#: admin/class-babilim-admin.php:3072
+msgid "Enabling…"
+msgstr "ဖွင့်နေသည်…"
 
-#: includes/class-babilim-consent.php:87
-msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
-msgstr "ဤပလပ်ဂင်၏ ဗားရှင်း ဖြစ်ပြီး ဝန်ဆောင်မှုနှင့် ဆက်သွယ်၍မရနိုင်အောင် ဟောင်းနွမ်းလွန်းနေပါက ၎င်းကို အပ်ဒိတ်လုပ်ရန် ဝန်ဆောင်မှုက သင့်အား အသိပေးနိုင်ရန် ဖြစ်သည်။"
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "အင်္ဂလိပ် (အမေရိကန်ပြည်ထောင်စု)"
 
-#: includes/class-babilim-consent.php:92
-msgid "This site's configured locale."
-msgstr "ဤဆိုက်၏ သတ်မှတ်ထားသော ဒေသဆိုင်ရာ ဘာသာစကား။"
+#: admin/class-babilim-admin.php:3727
+msgid "Entries"
+msgstr "ထည့်သွင်းမှုများ"
 
-#: includes/class-babilim-consent.php:97
-msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "ဤဆိုက်တွင် အသုံးပြုနေသော ဒေသဆိုင်ရာ ဘာသာစကားအားလုံး (ဆိုက်၏ locale၊ ထည့်သွင်းထားသော ဘာသာစကားပက်ကေ့ချ်များ၊ အသုံးပြုသူ locale များနှင့် သင်ကိုယ်တိုင် ထည့်သွင်းသည့် အရာများ)။ မည်သည့် locale ကိုမျှ အခြားတစ်ခုနှင့် ကွဲပြားစွာ မဆက်ဆံပါ။"
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "%s အတွက် ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ"
 
-#: includes/class-babilim-consent.php:101
-msgid "(a public key generated for this site)"
-msgstr "(ဤဆိုက်အတွက် ဖန်တီးထားသော အများသုံး သော့)"
-
-#: includes/class-babilim-consent.php:102
-msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
-msgstr "ဤဆိုက်၏ ထည့်သွင်းမှု အများသုံးသော့ ဖြစ်ပြီး တောင်းဆိုမှုများသည် ဤဆိုက်မှ အမှန်တကယ် လာကြောင်း သက်သေပြရန် အသုံးပြုသည်။ အများသုံးအပိုင်းကိုသာ ပေးပို့သည်။"
+#: admin/class-babilim-admin.php:3878
+msgid "Error reports"
+msgstr "အမှားအစီရင်ခံစာများ"
 
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "ထည့်သွင်းထားသော ပလပ်ဂင်/အပြင်အဆင်တိုင်း၏ slug၊ ဗားရှင်း၊ စာသား ဒိုမိန်း(များ)၊ wp.org စာရင်းတွင် ပါမပါ၊ ၎င်း၏ ပါဝင်သော ဒေသဘာသာစကားများနှင့် Babilim ဘာသာပြန်ချက် ထည့်သွင်းပြီးသော ဒေသများ။"
 
-#: includes/class-babilim-consent.php:116
-msgid "(generic codes and coordinates only)"
-msgstr "(ယေဘုယျ ကုဒ်များနှင့် သြဒီနိတ်များသာ)"
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "ဤဆိုက်တွင် အသုံးပြုနေသော ဒေသဆိုင်ရာ ဘာသာစကားအားလုံး (ဆိုက်၏ locale၊ ထည့်သွင်းထားသော ဘာသာစကားပက်ကေ့ချ်များ၊ အသုံးပြုသူ locale များနှင့် သင်ကိုယ်တိုင် ထည့်သွင်းသည့် အရာများ)။ မည်သည့် locale ကိုမျှ အခြားတစ်ခုနှင့် ကွဲပြားစွာ မဆက်ဆံပါ။"
 
-#: includes/class-babilim-consent.php:117
-msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "ဆိုင်းငံ့ထားသော ရောဂါရှာဖွေရေး ဖြစ်ရပ်များ အများဆုံး ၂၀ (ဥပမာ ခိုင်မာမှု စစ်ဆေးခြင်း မအောင်မြင်သောဖိုင်)၊ တစ်ခုစီတွင် ကုဒ်၊ အစိတ်အပိုင်းနှင့် ဒေသသာ ပါပြီး စာကြောင်းအကြောင်းအရာ သို့မဟုတ် ဘာသာပြန်စာသား လုံးဝ မပါပါ။"
+#: admin/class-babilim-admin.php:4798
+msgid "Excluded"
+msgstr "ဖယ်ထုတ်ထားသည်"
 
-#. translators: %s: the invalid locale code.
-#: includes/class-babilim-default-index.php:109
-#: includes/class-babilim-installer.php:949
+#: admin/class-babilim-admin.php:3429
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "အခြားအမည် သို့မဟုတ် ဖိုင်အမျိုးအစားရှိသော ဖိုင်များကို မထည့်သွင်းပါ။ uploads၊ cache၊ logs၊ backup၊ data၊ vendor၊ node_modules နှင့် languages ဖိုလ်ဒါများ၊ ဝှက်ထားသောဖိုင်များ၊ သို့မဟုတ် လျှို့ဝှက်ချက်များနှင့် တူသော အမည်ရှိသည့်ဖိုင်များ (wp-config*, .env*, *.sql, *.log, *.pem, *.key) ကိုလည်း မထည့်သွင်းပါ။ ကုဒ်ဖိုင်များတွင် မျှဝေလိုမည့်မဟုတ်သော စာသား သို့မဟုတ် ဒေတာ ရှိနိုင်သေးသဖြင့် မသေချာပါက စစ်ဆေးပါ။ ဝန်ဆောင်မှုသည် ရောက်ရှိချိန်တွင် ထိုအမျိုးအစားများကို ထပ်မံဖယ်ရှားသည်။"
+
+#: admin/class-babilim-admin.php:4450
+msgid "Free"
+msgstr "အခမဲ့"
+
+#: admin/class-babilim-admin.php:4754
+msgid "Free-plan slots"
+msgstr "အခမဲ့ အစီအစဉ် ခွင့်ပြုအရေအတွက်"
+
+#: admin/class-babilim-admin.php:3834
+msgid "General"
+msgstr "အထွေထွေ"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1933
 #, php-format
-msgid "Unsafe locale: %s"
-msgstr "မလုံခြုံသော locale: %s"
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "ဤအရာကို ဖွင့်ထားပါက ဖြုတ်သည့်အခါ ဤဆိုက်၏ အထောက်အထားကိုလည်း ဖျက်ပစ်ပါမည်။ ထို့နောက် ဤဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ ပြန်ရလိုပါက %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။"
+
+#: admin/class-babilim-admin.php:4797
+msgid "Included"
+msgstr "ထည့်သွင်းထားသည်"
+
+#: admin/class-babilim-admin.php:3726
+msgid "Included in index"
+msgstr "အညွှန်းတွင် ပါဝင်သည်"
+
+#: admin/class-babilim-admin.php:3868
+msgid "Install available translations automatically"
+msgstr "ရရှိနိုင်သော ဘာသာပြန်ချက်များကို အလိုအလျောက် ထည့်သွင်းရန်"
+
+#: admin/class-babilim-translations-table.php:470
+msgid "Installed"
+msgstr "ထည့်သွင်းပြီး"
+
+#: admin/class-babilim-admin.php:3905
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "ထည့်သွင်းထားသော ဘာသာပြန်များကို ထားရှိမည်ဖြစ်ပြီး နောက်ထပ် စစ်ဆေးမှု သို့မဟုတ် ဒေါင်းလုဒ်များ မလုပ်ဆောင်တော့ပါ။"
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:323
+#, php-format
+msgid "Installed · %s"
+msgstr "ထည့်သွင်းပြီး · %s"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:283
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "ထည့်သွင်းပြီး · %1$s အတွက် ပြုလုပ်ထားသည်၊ ဤဆိုက်တွင် %2$s ရှိသည်"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+#, php-format
+msgid "Installed · built for %s"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+#, php-format
+msgid "Installed · built for %s, all free-plan slots for this site are used"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဤဆိုက်အတွက် အခမဲ့ အစီအစဉ် ခွင့်ပြုအရေအတွက် အားလုံးကို အသုံးပြုပြီးပါပြီ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ဘီလ်ဒ်လုပ်ထားသည်၊ ဗားရှင်းအသစ် မအောင်မြင်ပါ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+#, php-format
+msgid "Installed · built for %s, new version not covered by the free service plan"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်သည် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်တွင် မပါဝင်ပါ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို အချိန်ဇယားဆွဲထားသည်"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "ထည့်သွင်းပြီး · %s အတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို ဘာသာပြန်နေသည်…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+msgid "Installed · built for a different version"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+msgid "Installed · built for a different version, all free-plan slots for this site are used"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဤဆိုက်အတွက် အခမဲ့ အစီအစဉ် ခွင့်ပြုအရေအတွက် အားလုံးကို အသုံးပြုပြီးပါပြီ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+msgid "Installed · built for a different version, new version failed"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ဘီလ်ဒ်လုပ်ထားသည်၊ ဗားရှင်းအသစ် မအောင်မြင်ပါ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+msgid "Installed · built for a different version, new version not covered by the free service plan"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်သည် အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်တွင် မပါဝင်ပါ"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို အချိန်ဇယားဆွဲထားသည်"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "ထည့်သွင်းပြီး · မတူညီသော ဗားရှင်းအတွက် ပြုလုပ်ထားသည်၊ ဗားရှင်းအသစ်ကို ဘာသာပြန်နေသည်…"
+
+#: admin/class-babilim-admin.php:3431
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "၎င်းကို ဝန်ဆောင်မှု၏ ဟို့စ်တင်းပေးသူက သိမ်းဆည်းထားပြီး ဘာသာပြန်ချက်ထုတ်လုပ်ရန် AI မော်ဒယ်များဖြင့် လုပ်ဆောင်သည်။"
+
+#: admin/class-babilim-admin.php:3885
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "အားလုံးကို ရှင်းလင်းချိန် သို့မဟုတ် ဤပလပ်ဂင်ကို ဖယ်ရှားချိန်တွင် ကျွန်ုပ်၏ ကိုယ်ပိုင် ဘာသာပြန် အစားထိုးသတ်မှတ်ချက်များကို ထားရှိရန်။"
+
+#: admin/class-babilim-admin.php:3725
+#: admin/class-babilim-admin.php:4256
+#: admin/class-babilim-admin.php:4795
+msgid "Language"
+msgstr "ဘာသာစကား"
+
+#: admin/class-babilim-translations-table.php:553
+msgid "Language:"
+msgstr "ဘာသာစကား -"
+
+#: admin/class-babilim-admin.php:3864
+msgid "Languages"
+msgstr "ဘာသာစကားများ"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:3061
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "ဤဆိုက်တွင် တွေ့ရှိသော ဘာသာစကားများ- %s။"
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:4844
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "%1$s တွင် နောက်ဆုံး ရှင်းလင်းမှု- အသစ်အမှတ်အသား %2$d ခု၊ ဖျက်ပြီးဖိုင် %3$d ခု၊ ဖယ်ရှားပြီးမှတ်တမ်း %4$d ခု။"
+
+#: admin/class-babilim-admin.php:4891
+msgid "Maintenance"
+msgstr "ပြုပြင်ထိန်းသိမ်းမှု"
+
+#: admin/class-babilim-admin.php:4822
+msgid "Maintenance status is not available right now."
+msgstr "ထိန်းသိမ်းမှု အခြေအနေကို ယခု မရရှိနိုင်ပါ။"
 
 #. translators: %s: the technical reason the manifest is unavailable.
 #: includes/class-babilim-default-index.php:112
@@ -1463,190 +912,56 @@ msgstr "မလုံခြုံသော locale: %s"
 msgid "Manifest unavailable: %s"
 msgstr "မန်နီဖက်စ် မရနိုင်ပါ- %s"
 
-#: includes/class-babilim-default-index.php:134
-msgid "Could not determine active components; the existing merged index was left unchanged."
-msgstr "အသုံးပြုနေသော အစိတ်အပိုင်းများကို ဆုံးဖြတ်၍ မရနိုင်ပါ။ ရှိပြီးသား ပေါင်းစပ်ညွှန်းကိန်းကို မပြောင်းလဲဘဲ ထားခဲ့သည်။"
+#: admin/class-babilim-admin.php:3259
+msgid "Negation reversed"
+msgstr "ငြင်းဆိုချက် ပြောင်းပြန်ဖြစ်နေသည်"
 
-#: includes/class-babilim-default-index.php:400
-msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "ထည့်သွင်းထားသော ပလပ်ဂင်/ဒီဇိုင်းပုံစံများကို ဆုံးဖြတ်၍ မရနိုင်ပါ။ စစ်ဆေးရှင်းလင်းမှုကို ကျော်လိုက်ပြီး မည်သည့်အရာမျှ မဖျက်ခဲ့ပါ။"
+#: admin/class-babilim-admin.php:3754
+msgid "No"
+msgstr "မဟုတ်ပါ"
 
-#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
-#: includes/class-babilim-default-index.php:532
+#: admin/class-babilim-admin.php:1003
+msgid "No build is available to download for this locale."
+msgstr "ဤဘာသာစကားအတွက် ဒေါင်းလုဒ်လုပ်ရန် build မရရှိနိုင်ပါ။"
+
+#: admin/class-babilim-admin.php:4851
+msgid "No cleanup has run yet."
+msgstr "ရှင်းလင်းမှု မလုပ်ရသေးပါ။"
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:430
 #, php-format
-msgid "Sweep aborted without orphaning anything: %s."
-msgstr "မည်သည့်အရာကိုမျှ မပိုင်ရှင်မဲ့စေဘဲ စစ်ဆေးရှင်းလင်းမှုကို ရပ်ဆိုင်းလိုက်သည်- %s။"
+msgid "No components match these filters. %s"
+msgstr "ဤစစ်ထုတ်မှုများနှင့် ကိုက်ညီသော အစိတ်အပိုင်း မရှိပါ။ %s"
 
-#: includes/class-babilim-default-index.php:624
-msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "ရှင်းလင်းမှု လုပ်ဆောင်ခဲ့သော်လည်း ပြောင်းလဲမှုအချို့ကို ဘာသာပြန်ချက် အညွှန်းတွင် မှတ်တမ်းမတင်နိုင်ခဲ့ပါ။ နောက်ရှင်းလင်းမှုတွင် ပြန်ကြိုးစားမည်။"
+#: admin/class-babilim-admin.php:3165
+msgid "No components synced yet."
+msgstr "အစိတ်အပိုင်း မည်သည့်အရာမျှ မထပ်တူပြုရသေးပါ။"
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:746
-msgctxt "component kind in the sweep brake message"
-msgid "theme"
-msgstr "အပြင်အဆင်"
+#: admin/class-babilim-admin.php:4240
+msgid "No installed translation matches."
+msgstr "ကိုက်ညီသော ထည့်သွင်းထားသည့် ဘာသာပြန်ချက် မရှိပါ။"
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:749
-msgctxt "component kind in the sweep brake message"
-msgid "plugin"
-msgstr "ပလပ်ဂင်"
+#: admin/class-babilim-admin.php:4673
+msgid "No language is managed yet."
+msgstr "စီမံခန့်ခွဲထားသော ဘာသာစကား မရှိသေးပါ။"
 
-#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
-#: includes/class-babilim-default-index.php:755
-#, php-format
-msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "၎င်းသည် စီမံခန့်ခွဲထားသော %1$s အစိတ်အပိုင်းအားလုံးကို ပိုင်ရှင်မဲ့ဖြစ်စေပါမည် (%2$d ခုအနက် %2$d ခု)"
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "ဤ nonce အတွက် ဆိုင်းငံ့ထားသည့် စိန်ခေါ်မှု မရှိပါ။"
 
-#. translators: 1: components that would be orphaned, 2: components managed in total.
-#: includes/class-babilim-default-index.php:762
-#, php-format
-msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "၎င်းသည် စီမံခန့်ခွဲထားသော အစိတ်အပိုင်း %2$d ခုအနက် %1$d ခုကို ပိုင်ရှင်မဲ့ဖြစ်စေပါမည် (တစ်ဝက်ထက် ပိုများသည်)"
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "အတည်ပြုရန် ဆိုင်းငံ့ထားသည့် စိန်ခေါ်မှု မရှိပါ။"
 
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:874
-#, php-format
-msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "'%s' အတွက် ပေါင်းစည်းထားသော အညွှန်းကို ပြန်လည်တည်ဆောက်ပြီးပါပြီ၊ သို့သော် ဘာသာပြန်ချက် အညွှန်းတွင် မှတ်တမ်းတင်၍ မရပါ။ နောက်တစ်ကြိမ် ပြန်လည်တည်ဆောက်ချိန်တွင် ထပ်မံကြိုးစားပါမည်။"
+#: admin/class-babilim-translations-table.php:424
+msgid "No plugins or themes found."
+msgstr "ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်များ မတွေ့ပါ။"
 
-#: includes/class-babilim-default-index.php:950
-msgid "Could not write the staged merged index."
-msgstr "အဆင့်ခွဲ ပေါင်းစည်းထားသော အညွှန်းကို ရေး၍ မရပါ။"
-
-#: includes/class-babilim-default-index.php:958
-msgid "Re-parsed entry count did not match the built index."
-msgstr "ပြန်လည်ဖတ်ရှုခွဲခြမ်းစိတ်ဖြာထားသော ထည့်သွင်းမှုအရေအတွက်သည် တည်ဆောက်ထားသော ညွှန်းကိန်းနှင့် မကိုက်ညီပါ။"
-
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:989
-#, php-format
-msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "'%s' အတွက် ပေါင်းစည်းထားသော အညွှန်းကို နေရာတွင် ရွှေ့၍ မရပါ။ ယခင်ပံ့ပိုးထားသော အညွှန်း (ရှိခဲ့လျှင်) ကို တစ်ဝက်တစ်ပျက် မဖြစ်စေရန် ဖယ်ရှားလိုက်ပါသည်။ နောက်တစ်ကြိမ် ပြန်လည်တည်ဆောက်မှု အောင်မြင်သည်အထိ ဤဘာသာစကားအတွက် default-domain ဖြည့်စွက်ချက် မပံ့ပိုးပါ။"
-
-#. translators: %s: the zip file path that could not be opened.
-#: includes/class-babilim-installer.php:147
-#, php-format
-msgid "Could not open zip: %s"
-msgstr "zip ကို ဖွင့်၍ မရနိုင်ပါ: %s"
-
-#: includes/class-babilim-installer.php:150
-msgid "Zip has no manifest.json."
-msgstr "Zip တွင် manifest.json မရှိပါ။"
-
-#: includes/class-babilim-installer.php:161
-msgid "manifest.json in the zip is not valid JSON."
-msgstr "Zip အတွင်းရှိ manifest.json သည် မှန်ကန်သော JSON မဟုတ်ပါ။"
-
-#. translators: %s: the manifest.json field that did not match.
-#: includes/class-babilim-installer.php:165
-#, php-format
-msgid "manifest.json's '%s' does not match the expected value."
-msgstr "manifest.json ၏ '%s' သည် မျှော်မှန်းတန်ဖိုးနှင့် မကိုက်ညီပါ။"
-
-#: includes/class-babilim-installer.php:249
-#: includes/class-babilim-installer.php:254
-msgid "Another installation is running; try again in a moment."
-msgstr "အခြား ထည့်သွင်းမှုတစ်ခု လုပ်ဆောင်နေသည်။ ခဏအကြာတွင် ထပ်စမ်းပါ။"
-
-#. translators: %s: the invalid server_build_id value.
-#: includes/class-babilim-installer.php:296
-#, php-format
-msgid "Not a valid server_build_id: %s"
-msgstr "မှန်ကန်သော server_build_id မဟုတ်ပါ- %s"
-
-#. translators: 1: the package manifest's own kind. 2: the requested kind.
-#: includes/class-babilim-installer.php:311
-#, php-format
-msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "ပက်ကေ့ဂျ် မန်နီဖက်စ်၏ အမျိုးအစား '%1$s' သည် တောင်းဆိုထားသော အမျိုးအစား '%2$s' နှင့် မကိုက်ညီပါ။"
-
-#. translators: 1: the package's text domain. 2: this site's text domain for the component.
-#: includes/class-babilim-installer.php:346
-#, php-format
-msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "ပက်ကေ့ဂျ်၏ စာသား ဒိုမိန်း '%1$s' သည် ဤဆိုက်ရှိ အစိတ်အပိုင်း မိတ္တူ ('%2$s') နှင့် မကိုက်ညီသဖြင့် ထည့်သွင်းမထားပါ။"
-
-#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
-#: includes/class-babilim-installer.php:364
-#, php-format
-msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "ပေးထားသော ဒိုမိန်း '%1$s' သည် ပက်ကေ့ဂျ် မန်နီဖက်စ်၏ slug '%2$s' သို့မဟုတ် text_domain '%3$s' နှင့် မကိုက်ညီပါ။"
-
-#. translators: %s: the invalid slug.
-#: includes/class-babilim-installer.php:372
-#, php-format
-msgid "Unsafe slug: %s"
-msgstr "မလုံခြုံသော slug: %s"
-
-#. translators: %s: the invalid text domain.
-#: includes/class-babilim-installer.php:375
-#, php-format
-msgid "Unsafe text_domain: %s"
-msgstr "မလုံခြုံသော text_domain: %s"
-
-#. translators: %s: the expected .mo filename for the package's own text domain.
-#: includes/class-babilim-installer.php:413
-#, php-format
-msgid "The package has no %s for its own text domain."
-msgstr "ပက်ကေ့ဂျ်တွင် ၎င်း၏ကိုယ်ပိုင် စာသား ဒိုမိန်းအတွက် %s မရှိပါ။"
-
-#. translators: %s: the manifest.json field that is missing or invalid.
-#: includes/class-babilim-installer.php:470
-#, php-format
-msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json တွင် '%s' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:474
-msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json တွင် 'entries' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:477
-msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json တွင် 'files' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:480
-msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json တွင် 'extra_domains' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:483
-msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json တွင် 'build_no' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:486
-msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "manifest.json ၏ 'server_build_id' သည် မှန်ကန်သော build id မဟုတ်ပါ။"
-
-#: includes/class-babilim-installer.php:489
-msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "manifest.json ၏ 'contract' သည် မှန်ကန်သော ဗားရှင်း စာကြောင်း မဟုတ်ပါ။"
-
-#: includes/class-babilim-installer.php:492
-msgid "manifest.json's 'status' must be 'published'."
-msgstr "manifest.json ၏ 'status' သည် 'published' ဖြစ်ရပါမည်။"
-
-#: includes/class-babilim-installer.php:495
-msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "manifest.json ၏ 'kind' သည် 'plugin' သို့မဟုတ် 'theme' ဖြစ်ရပါမည်။"
-
-#: includes/class-babilim-installer.php:498
-msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json တွင် 'default_domain_entries' မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:501
-msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json တွင် 'default_domain_files' မမှန်ကန်ပါ။"
-
-#. translators: %s: the expected-manifest field that is missing or invalid.
-#: includes/class-babilim-installer.php:524
-#, php-format
-msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest တွင် '%s' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
-
-#: includes/class-babilim-installer.php:528
-msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "expected_manifest ၏ 'server_build_id' သည် မှန်ကန်သော build id မဟုတ်ပါ။"
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "နောက်ပြန်လှည့်ရန် ယခင် build မရှိပါ။"
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1657,17 +972,788 @@ msgstr "expected_manifest ၏ 'server_build_id' သည် မှန်ကန်�
 msgid "No record for %s"
 msgstr "%s အတွက် မှတ်တမ်း မရှိပါ"
 
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "တိုကင်ပြောင်းရန်အတွက် ဖိုင်တွင် မှတ်တမ်းတင်ထားသော ဆိုက် ID မရှိပါ။"
+
+#: admin/class-babilim-admin.php:3748
+msgid "No — component inactive"
+msgstr "မဟုတ်ပါ — အစိတ်အပိုင်း မလုပ်ဆောင်ပါ"
+
+#: admin/class-babilim-admin.php:3752
+msgid "No — component removed"
+msgstr "မဟုတ်ပါ — အစိတ်အပိုင်း ဖယ်ရှားပြီး"
+
+#: admin/class-babilim-admin.php:3750
+msgid "No — installed version differs from the active one"
+msgstr "မဟုတ်ပါ — ထည့်သွင်းထားသောဗားရှင်းသည် အသုံးပြုနေသည့်ဗားရှင်းနှင့် ကွဲပြားသည်"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "မှန်ကန်သော server_build_id မဟုတ်ပါ- %s"
+
+#: admin/class-babilim-cell.php:145
+msgid "Not covered by the free service plan"
+msgstr "အခမဲ့ ဝန်ဆောင်မှု အစီအစဉ်တွင် မပါဝင်ပါ"
+
+#: admin/class-babilim-cell.php:127
+msgid "Not installed"
+msgstr "မထည့်သွင်းရသေးပါ"
+
+#: admin/class-babilim-admin.php:4429
+msgid "Not registered yet"
+msgstr "မှတ်ပုံမတင်ရသေးပါ"
+
+#: admin/class-babilim-cell.php:152
+msgid "Not supported"
+msgstr "မပံ့ပိုးပါ"
+
+#: admin/class-babilim-admin.php:4431
+msgid "Not verified"
+msgstr "အတည်မပြုရသေးပါ"
+
+#: admin/class-babilim-admin.php:1555
+#: admin/class-babilim-admin.php:4250
+#: admin/class-babilim-admin.php:4990
+msgid "Note (optional)"
+msgstr "မှတ်ချက် (ရွေးချယ်နိုင်သည်)"
+
+#: admin/class-babilim-admin.php:3569
+msgid "Nothing to choose."
+msgstr "ရွေးချယ်စရာ မရှိပါ။"
+
+#: admin/class-babilim-admin.php:3506
+msgid "Nothing to confirm."
+msgstr "အတည်ပြုစရာ မရှိပါ။"
+
+#: admin/class-babilim-admin.php:3895
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "မူလအတိုင်း ပိတ်ထားသည်- ပလပ်ဂင်ကို ဖျက်လျှင် ဤဆိုက်၏ အထောက်အထားကို ထိန်းသိမ်းထားသောကြောင့် ပြန်ထည့်သွင်းလျှင် ပြန်သုံးနိုင်သည်။"
+
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
 msgstr "ပံ့ပိုးထားသော ဖိုင်တစ်ခု သို့မဟုတ် တစ်ခုထက်ပိုသည် မန်နီဖက်စ်နှင့် မကိုက်ညီတော့ပါ။"
 
-#: includes/class-babilim-installer.php:705
-msgid "No previous build to roll back to."
-msgstr "နောက်ပြန်လှည့်ရန် ယခင် build မရှိပါ။"
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:4461
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "ဤဝဘ်ဆိုက်အတွက် တစ်ကြိမ်ဝယ်ယူမှု- %1$s %2$s။ အနာဂတ် ဘာသာပြန်ဆိုမှု အပ်ဒိတ်အားလုံး ပါဝင်သည်။ ငွေပေးချေမှုကို Paddle က တဘ်အသစ်တွင် ကိုင်တွယ်သည်။"
+
+#: admin/class-babilim-admin.php:3776
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "ဤကွန်ရက်ရှိ ဆိုက်အားလုံးမှ မျှဝေသုံးစွဲသော ဘာသာပြန်ဖိုင်များကို ပြောင်းလဲစေသောကြောင့် ကွန်ရက် စီမံခန့်ခွဲသူသာ ဤလုပ်ဆောင်ချက်ကို လုပ်ဆောင်နိုင်သည်။"
+
+#: includes/class-babilim-packager.php:180
+msgid "Only plugins and themes can be packaged."
+msgstr "ပလပ်ဂင်နှင့် အပြင်အဆင်များကိုသာ ပက်ကေ့ချ်ပြုလုပ်နိုင်သည်။"
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "WordPress.org တွင် မရှိသော ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်အတွက် အပ်လုဒ်ကို သင်အတည်ပြုမှသာ- .php နှင့် .js ဖိုင်အားလုံး၊ block.json ဖိုင်အားလုံးနှင့် ထိုအစိတ်အပိုင်း၏ အဓိက ဖိုလ်ဒါရှိ readme.txt၊ readme.md၊ style.css နှင့် theme.json တို့ကို ပို့မည်။ မပို့မီ အမည်များက အသုံးများသော လျှို့ဝှက်အချက်အလက်ပါဝင်သည့် ဖိုင်အမည်ပုံစံများနှင့် ကိုက်ညီသော ဖိုင်များကို ဖယ်ထုတ်ပြီး ကျန်ဖိုင်များကို zip အဖြစ် ထုပ်ပိုးမည်။"
+
+#: admin/class-babilim-admin.php:2086
+msgid "Open Babilim settings"
+msgstr "Babilim ဆက်တင်များကို ဖွင့်ရန်"
+
+#: admin/class-babilim-cell.php:150
+msgid "Original language"
+msgstr "မူရင်း ဘာသာစကား"
+
+#: admin/class-babilim-admin.php:4244
+msgid "Original string"
+msgstr "မူရင်းစာကြောင်း"
+
+#: admin/class-babilim-admin.php:4446
+msgid "Paid"
+msgstr "ပေးချေရသော"
+
+#: admin/class-babilim-admin.php:4448
+msgid "Partner"
+msgstr "မိတ်ဖက်"
+
+#: admin/class-babilim-admin.php:2234
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "သင့်ဆိုက်ကို အင်တာနက်မှ ချိတ်ဆက်နိုင်ကြောင်း စစ်ဆေးပြီး ထပ်ကြိုးစားပါ။"
+
+#: admin/class-babilim-admin.php:1445
+msgid "Please choose a category for this report."
+msgstr "ဤအစီရင်ခံစာအတွက် အမျိုးအစားတစ်ခု ရွေးပါ။"
+
+#: admin/class-babilim-admin.php:4747
+msgid "Plugin"
+msgstr "ပလပ်ဂင်"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:620
+#, php-format
+msgid "Plugin · %s"
+msgstr "ပလပ်ဂင် · %s"
+
+#: admin/class-babilim-translations-table.php:515
+msgid "Plugins"
+msgstr "ပလပ်ဂင်များ"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:4252
+msgid "Preview"
+msgstr "နမူနာကြည့်ရန်"
+
+#: admin/class-babilim-admin.php:4589
+msgid "Purchase restored. This site is now licensed."
+msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူပြီးပါပြီ။ ဤဝဘ်ဆိုက်တွင် လိုင်စင်ရှိပါပြီ။"
+
+#: includes/class-babilim-default-index.php:958
+msgid "Re-parsed entry count did not match the built index."
+msgstr "ပြန်လည်ဖတ်ရှုခွဲခြမ်းစိတ်ဖြာထားသော ထည့်သွင်းမှုအရေအတွက်သည် တည်ဆောက်ထားသော ညွှန်းကိန်းနှင့် မကိုက်ညီပါ။"
+
+#: admin/class-babilim-admin.php:2257
+msgid "Re-verify"
+msgstr "ပြန်လည်အတည်ပြုရန်"
+
+#: admin/class-babilim-admin.php:4902
+msgid "Rebuild index now"
+msgstr "အညွှန်းကို ယခုပြန်လည်တည်ဆောက်ရန်"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Babilim ဘာသာစကားဖိုင် ဒိုင်ရက်ထရီပြင်ပသို့ ရေးသားရန် ငြင်းပယ်သည်။"
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "စာရင်းသွင်းမှု တုံ့ပြန်ချက်တွင် လိုအပ်သော အကွက်များ ပျောက်နေသည်။"
+
+#: admin/class-babilim-admin.php:2320
+msgid "Registration restarted."
+msgstr "မှတ်ပုံတင်ခြင်းကို ပြန်လည်စတင်ပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:3499
+#: admin/class-babilim-admin.php:3563
+#: admin/class-babilim-translations-table.php:733
+msgid "Remove"
+msgstr "ဖယ်ရှားရန်"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed"
+msgstr "Babilim ထည့်သွင်းထားသမျှ အားလုံးကို ဖယ်ရှားရန်"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Babilim ထည့်သွင်းထားသမျှ အားလုံးကို ဖယ်ရှားမလား။ ၎င်းသည် ဤဆိုက်ရှိ ပလပ်ဂင်နှင့် အပြင်အဆင်တိုင်းအတွက် ထည့်သွင်းထားသော ဘာသာစကားဖိုင်အားလုံးကို ဖျက်ပါမည်။"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:677
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "%1$s ၏ %2$s ဘာသာပြန်ဆိုမှုကို ဤဆိုက်မှ ဖယ်ရှားမလား။"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2729
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "ထည့်သွင်းထားသော အစိတ်အပိုင်း %d ခုကို ဖယ်ရှားပြီးပါပြီ။"
+msgstr[1] "ထည့်သွင်းထားသော အစိတ်အပိုင်း %d ခုကို ဖယ်ရှားပြီးပါပြီ။"
+
+#: admin/class-babilim-cell.php:214
+msgid "Removed after a failed integrity check"
+msgstr "ခိုင်မာမှု စစ်ဆေးခြင်း မအောင်မြင်သဖြင့် ဖယ်ရှားခဲ့သည်"
+
+#: admin/class-babilim-admin.php:1147
+msgid "Removed."
+msgstr "ဖယ်ရှားပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:4932
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "ဤဆိုက်ရှိ ပလပ်ဂင်နှင့် အပြင်အဆင်တိုင်းအတွက် Babilim ထည့်သွင်းထားသော ဘာသာစကားဖိုင်အားလုံးကို ဖယ်ရှားပါသည်။"
+
+#: admin/class-babilim-admin.php:3565
+#: admin/class-babilim-admin.php:4954
+#: admin/class-babilim-translations-table.php:735
+msgid "Report a problem"
+msgstr "ပြဿနာတစ်ခု တင်ပြရန်"
+
+#: admin/class-babilim-admin.php:4087
+#: admin/class-babilim-admin.php:4235
+msgid "Report translation"
+msgstr "ဘာသာပြန်ချက်ကို အစီရင်ခံရန်"
+
+#: admin/class-babilim-cell.php:371
+msgid "Request newer translation"
+msgstr "ပိုသစ်သော ဘာသာပြန်ဆိုမှု တောင်းဆိုရန်"
+
+#: admin/class-babilim-cell.php:371
+#: admin/class-babilim-translations-table.php:455
+msgid "Request translation"
+msgstr "ဘာသာပြန်ရန် တောင်းဆိုရန်"
+
+#: admin/class-babilim-translations-table.php:469
+msgid "Requestable"
+msgstr "တောင်းဆိုနိုင်သည်"
+
+#: admin/class-babilim-cell.php:373
+msgid "Requesting…"
+msgstr "တောင်းဆိုနေသည်…"
+
+#: admin/class-babilim-admin.php:3800
+msgid "Restart registration"
+msgstr "မှတ်ပုံတင်ခြင်းကို ပြန်စရန်"
+
+#: admin/class-babilim-admin.php:4520
+msgid "Restore code"
+msgstr "ပြန်လည်ရယူရေးကုဒ်"
+
+#: admin/class-babilim-admin.php:4521
+msgid "Restore purchase"
+msgstr "ဝယ်ယူမှုကို ပြန်လည်ရယူရန်"
+
+#: admin/class-babilim-cell.php:369
+msgid "Retry request"
+msgstr "တောင်းဆိုမှုကို ထပ်ကြိုးစားရန်"
+
+#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3562
+#: admin/class-babilim-translations-table.php:732
+msgid "Roll back"
+msgstr "နောက်ပြန်ရုပ်သိမ်းရန်"
+
+#: admin/class-babilim-admin.php:3564
+#: admin/class-babilim-translations-table.php:734
+msgid "Roll back and report"
+msgstr "နောက်ပြန်ရုပ်သိမ်းပြီး တိုင်ကြားရန်"
+
+#: admin/class-babilim-admin.php:4995
+msgid "Roll back and send report"
+msgstr "ပြန်လှည့်ပြီး အစီရင်ခံစာ ပို့ရန်"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:680
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "%1$s ၏ %2$s ဘာသာပြန်ဆိုမှုကို ယခင်ဘီလ်ဒ်သို့ ပြန်ပြောင်းမလား။"
+
+#: admin/class-babilim-admin.php:1117
+msgid "Rolled back and reported."
+msgstr "နောက်ပြန်လှည့်ပြီး အစီရင်ခံပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:1058
+msgid "Rolled back to the previous build."
+msgstr "ယခင် build သို့ နောက်ပြန်လှည့်ပြီးပါပြီ။"
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1123
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "နောက်ပြန်လှည့်ပြီးပါပြီ၊ သို့သော် အစီရင်ခံစာကို ပို့၍မရပါ- %s"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "နောက်ပြန်လှည့်ပါက '%1$s' (%2$s) ကို ထပ်ရေးမိမည်ဖြစ်ပြီး ၎င်းကို ထည့်သွင်းထားသော အခြားအစိတ်အပိုင်း (%3$s) အတွက် ယခု ပံ့ပိုးထားပါသည်။ ဘာမျှ မပြောင်းလဲခဲ့ပါ။"
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "တိုကင်အသစ်လဲလှယ်မှု တုံ့ပြန်ချက်တွင် site_token မပါဝင်ပါ။"
+
+#: admin/class-babilim-admin.php:3901
+msgid "Save changes"
+msgstr "အပြောင်းအလဲများကို သိမ်းရန်"
+
+#: admin/class-babilim-cell.php:137
+msgid "Scheduled, waiting to be processed"
+msgstr "အချိန်ဇယားဆွဲထားပြီး လုပ်ဆောင်ရန် စောင့်ဆိုင်းနေသည်"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:4238
+msgid "Search"
+msgstr "ရှာဖွေရန်"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Search components"
+msgstr "အစိတ်အပိုင်းများ ရှာဖွေရန်"
+
+#: admin/class-babilim-admin.php:4236
+msgid "Search the installed translations"
+msgstr "ထည့်သွင်းထားသော ဘာသာပြန်ချက်များကို ရှာဖွေရန်"
+
+#: admin/class-babilim-translations-table.php:440
+msgid "Select all"
+msgstr "အားလုံး ရွေးရန်"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:459
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "အစိတ်အပိုင်း ပိုနည်းနည်း ရွေးပါ။ တစ်ကြိမ်လုပ်ဆောင်ရာတွင် အများဆုံး %1$d ခုသာ ရနိုင်သည် (သင်ရွေးထားသည်မှာ %2$d ခု)။"
+
+#: admin/class-babilim-admin.php:4262
+#: admin/class-babilim-admin.php:4995
+msgid "Send report"
+msgstr "အစီရင်ခံစာ ပို့ရန်"
+
+#: admin/class-babilim-admin.php:4454
+msgid "Service plan"
+msgstr "ဝန်ဆောင်မှု အစီအစဉ်"
+
+#: admin/class-babilim-admin.php:403
+#: admin/class-babilim-admin.php:3108
+#: admin/class-babilim-admin.php:3400
+msgid "Settings"
+msgstr "ဆက်တင်များ"
+
+#: admin/class-babilim-admin.php:3880
+msgid "Share error reports"
+msgstr "အမှားအစီရင်ခံစာများကို မျှဝေရန်"
+
+#: admin/class-babilim-admin.php:2543
+msgid "Share this report"
+msgstr "ဤအစီရင်ခံစာကို မျှဝေရန်"
+
+#: admin/class-babilim-admin.php:4518
+msgid "Show a new restore code"
+msgstr "ပြန်လည်ရယူရေးကုဒ်အသစ် ပြပါ"
+
+#: admin/class-babilim-admin.php:3875
+msgid "Show the \"Report translation\" entry in the admin toolbar"
+msgstr "စီမံခန့်ခွဲရေး ကိရိယာဘားတွင် \"ဘာသာပြန်ချက်ကို တိုင်ကြားရန်\" ရွေးချယ်စရာကို ပြပါ"
+
+#: admin/class-babilim-cell.php:65
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "ဤအစိတ်အပိုင်း၏ စာသားအချို့ကို ရေးသားသူက တိုက်ရိုက်ထည့်သွင်းထားသောကြောင့် ဘာသာစကား ပက်ကေ့ချ်ဖြင့် ဘာသာမပြန်နိုင်ပါ။"
+
+#: admin/class-babilim-admin.php:4441
+msgid "Status"
+msgstr "အခြေအနေ"
+
+#: admin/class-babilim-cell.php:154
+msgid "Status unknown"
+msgstr "အခြေအနေ မသိရပါ"
+
+#: admin/class-babilim-admin.php:4259
+msgid "String context"
+msgstr "စာကြောင်း၏ ဆက်စပ်အကြောင်းအရာ"
+
+#: admin/class-babilim-admin.php:1551
+#: admin/class-babilim-admin.php:4249
+#: admin/class-babilim-admin.php:4988
+msgid "Suggested translation"
+msgstr "အကြံပြုထားသော ဘာသာပြန်ချက်"
+
+#: admin/class-babilim-admin.php:4793
+msgid "Supplementary translation index"
+msgstr "ဖြည့်စွက် ဘာသာပြန်ချက် အညွှန်း"
+
+#: admin/class-babilim-admin.php:2679
+msgid "Supplementary translation index rebuilt."
+msgstr "ဖြည့်စွက် ဘာသာပြန်ချက် အညွှန်းကို ပြန်လည်တည်ဆောက်ပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:4819
+msgid "Supplementary translation maintenance"
+msgstr "ဖြည့်စွက် ဘာသာပြန်ဆိုမှု ထိန်းသိမ်းမှု"
+
+#: admin/class-babilim-admin.php:3721
+msgid "Supplementary translations"
+msgstr "ဖြည့်စွက် ဘာသာပြန်ချက်များ"
+
+#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
+#: includes/class-babilim-default-index.php:532
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "မည်သည့်အရာကိုမျှ မပိုင်ရှင်မဲ့စေဘဲ စစ်ဆေးရှင်းလင်းမှုကို ရပ်ဆိုင်းလိုက်သည်- %s။"
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2697
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "စစ်ဆေးရှင်းလင်းမှု ပြီးစီးပါပြီ- ဖိုင် %d ခု ဖျက်ပြီးပါပြီ။"
+msgstr[1] "စစ်ဆေးရှင်းလင်းမှု ပြီးစီးပါပြီ- ဖိုင် %d ခု ဖျက်ပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:4908
+msgid "Sweep now"
+msgstr "ယခု စစ်ဆေးရှင်းလင်းရန်"
+
+#: admin/class-babilim-admin.php:2341
+#: admin/class-babilim-admin.php:2415
+msgid "Sync complete."
+msgstr "ထပ်တူကျအောင်လုပ်ခြင်း ပြီးစီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:1403
+#: admin/class-babilim-admin.php:4266
+msgid "Thank you. Your report was sent."
+msgstr "ကျေးဇူးတင်ပါသည်။ သင့်အစီရင်ခံစာကို ပို့ပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:472
+#: admin/class-babilim-admin.php:1160
+#: admin/class-babilim-admin.php:1361
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "ထိုအစိတ်အပိုင်းကို ဤဆိုက်တွင် ထည့်သွင်းမထားသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
+
+#: admin/class-babilim-admin.php:4558
+msgid "That does not look like a restore code."
+msgstr "၎င်းသည် ပြန်လည်ရယူရေးကုဒ်နှင့် မတူပါ။"
+
+#: admin/class-babilim-admin.php:1751
+msgid "That is not a valid WordPress locale code. Nothing was saved."
+msgstr "၎င်းသည် မှန်ကန်သော WordPress ဘာသာစကားကုဒ် မဟုတ်ပါ။ ဘာမှ မသိမ်းဆည်းခဲ့ပါ။"
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "၎င်းသည် မှန်ကန်သော ဘီလ်ဒ် သတ်မှတ်အမှတ် မဟုတ်ပါ။"
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
 msgstr "ပြောင်းလဲမှုကို ဘာသာပြန်ချက် အညွှန်းတွင် မှတ်တမ်းတင်၍ မရပါ။ ထပ်မံကြိုးစားပါ။"
+
+#: includes/class-babilim-default-index.php:624
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "ရှင်းလင်းမှု လုပ်ဆောင်ခဲ့သော်လည်း ပြောင်းလဲမှုအချို့ကို ဘာသာပြန်ချက် အညွှန်းတွင် မှတ်တမ်းမတင်နိုင်ခဲ့ပါ။ နောက်ရှင်းလင်းမှုတွင် ပြန်ကြိုးစားမည်။"
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "ဤအစိတ်အပိုင်းတွင် အပ်လုဒ်လုပ်နိုင်သော ဖိုင်များ မရှိပါ။"
+
+#: includes/class-babilim-packager.php:190
+msgid "The component is not inside the plugins or themes directory."
+msgstr "အစိတ်အပိုင်းသည် plugins သို့မဟုတ် themes ဖိုလ်ဒါအတွင်း မရှိပါ။"
+
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
+msgid "The component's main file was not found."
+msgstr "အစိတ်အပိုင်း၏ အဓိကဖိုင်ကို ရှာမတွေ့ပါ။"
+
+#: includes/class-babilim-sync-installer.php:415
+msgid "The download response was missing a usable location."
+msgstr "ဒေါင်းလုဒ် တုံ့ပြန်ချက်တွင် အသုံးပြုနိုင်သော တည်နေရာ ပျောက်နေသည်။"
+
+#: admin/class-babilim-admin.php:3876
+msgid "The entry opens a panel to search the translations Babilim installed on this site and report one of them."
+msgstr "ဤရွေးချယ်စရာသည် Babilim က ဤဆိုက်တွင် ထည့်သွင်းထားသော ဘာသာပြန်ချက်များကို ရှာဖွေပြီး ၎င်းတို့အနက်မှ တစ်ခုကို တိုင်ကြားနိုင်သည့် အကန့်ကို ဖွင့်ပေးသည်။"
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1522
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "အကွက် \"%1$s\" သည် ရှည်လွန်းသည်- စာလုံး %2$d လုံးရှိပြီး ကန့်သတ်ချက်မှာ %3$d ဖြစ်သည်။ ဘာမျှ မပို့ရသေးပါ၊ အတိုချုံ့ပြီး ထပ်ကြိုးစားပါ။"
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "ပေးထားသော ဒိုမိန်း '%1$s' သည် ပက်ကေ့ဂျ် မန်နီဖက်စ်၏ slug '%2$s' သို့မဟုတ် text_domain '%3$s' နှင့် မကိုက်ညီပါ။"
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:874
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "'%s' အတွက် ပေါင်းစည်းထားသော အညွှန်းကို ပြန်လည်တည်ဆောက်ပြီးပါပြီ၊ သို့သော် ဘာသာပြန်ချက် အညွှန်းတွင် မှတ်တမ်းတင်၍ မရပါ။ နောက်တစ်ကြိမ် ပြန်လည်တည်ဆောက်ချိန်တွင် ထပ်မံကြိုးစားပါမည်။"
+
+#: admin/class-babilim-admin.php:3432
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "မူရင်းစာသားနှင့် ၎င်းမှ ပြုလုပ်ထားသော ဘာသာပြန်ချက်များကို ဗားရှင်းတူ ထည့်သွင်းသော အခြားဝဘ်ဆိုက်များသို့ ပေးအပ်မည်။"
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "ပက်ကေ့ချ်တွင် ပင်မဘာသာပြန်ဖိုင်ကို မကြေညာထားပါ။"
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "ပက်ကေ့ဂျ်တွင် ၎င်း၏ကိုယ်ပိုင် စာသား ဒိုမိန်းအတွက် %s မရှိပါ။"
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "ပက်ကေ့ဂျ် မန်နီဖက်စ်၏ အမျိုးအစား '%1$s' သည် တောင်းဆိုထားသော အမျိုးအစား '%2$s' နှင့် မကိုက်ညီပါ။"
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "ပက်ကေ့ချ်မှ အသုံးပြုနိုင်သော ပင်မဘာသာပြန်ဖိုင် မထုတ်ပေးခဲ့ပါ။"
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "ပက်ကေ့ဂျ်၏ စာသား ဒိုမိန်း '%1$s' သည် ဤဆိုက်ရှိ အစိတ်အပိုင်း မိတ္တူ ('%2$s') နှင့် မကိုက်ညီသဖြင့် ထည့်သွင်းမထားပါ။"
+
+#: includes/class-babilim-upload.php:163
+msgid "The packaged component could not be read."
+msgstr "ထုပ်ပိုးထားသော အစိတ်အပိုင်းကို ဖတ်၍ မရပါ။"
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "မှတ်ပုံတင်ခြင်း စိန်ခေါ်မှုသည် မျှော်လင့်ထားသော ပုံစံမဟုတ်ပါ။"
+
+#: admin/class-babilim-admin.php:4269
+msgid "The report could not be sent."
+msgstr "အစီရင်ခံစာကို မပို့နိုင်ခဲ့ပါ။"
+
+#: admin/class-babilim-admin.php:4243
+msgid "The search could not be completed."
+msgstr "ရှာဖွေမှုကို မပြီးမြောက်နိုင်ခဲ့ပါ။"
+
+#: includes/class-babilim-site.php:847
+msgid "The service asked this site to wait before syncing again."
+msgstr "ဝန်ဆောင်မှုက ဤဆိုက်ကို ထပ်မံတစ်ပြေးညီပြုလုပ်ခြင်း မပြုမီ စောင့်ဆိုင်းရန် တောင်းဆိုထားသည်။"
+
+#: admin/class-babilim-admin.php:2228
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "ဝန်ဆောင်မှုသည် သင့်ဆိုက်သို့ ချိတ်ဆက်၍ မရခဲ့ပါ။ ဖိုင်ယာဝေါ၊ လုံခြုံရေးပလပ်ဂင် သို့မဟုတ် ဟို့စ်စည်းမျဉ်းတစ်ခုက တောင်းဆိုမှုကို ပိတ်ဆို့နေနိုင်ပါသည်။ /wp-json/babilim/v1/challenge သို့ တောင်းဆိုမှုများကို ခွင့်ပြုပေးပါ။"
+
+#: includes/class-babilim-upload.php:64
+#: includes/class-babilim-upload.php:69
+msgid "The service's upload offer was incomplete."
+msgstr "ဝန်ဆောင်မှု၏ အပ်လုဒ်ကမ်းလှမ်းချက် မပြည့်စုံပါ။"
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "စာသား ဒိုမိန်း '%1$s' (%2$s) ကို ထည့်သွင်းထားသော အခြားအစိတ်အပိုင်း (%3$s) အတွက် ပံ့ပိုးထားပြီးဖြစ်သည်။ ဘာမျှ မထည့်သွင်းခဲ့ပါ။"
+
+#: admin/class-babilim-admin.php:3430
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "အပ်လုဒ်ထားသော အကြောင်းအရာကို ဖျက်ပေးရန် Babilim ထံ သင်မတောင်းဆိုမချင်း ၎င်းကို သိမ်းဆည်းထားမည်။"
+
+#: admin/class-babilim-admin.php:4747
+msgid "Theme"
+msgstr "အပြင်အဆင်"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:617
+#, php-format
+msgid "Theme · %s"
+msgstr "အပြင်အဆင် · %s"
+
+#: admin/class-babilim-translations-table.php:516
+msgid "Themes"
+msgstr "အပြင်အဆင်များ"
+
+#: admin/class-babilim-admin.php:3450
+#: includes/class-babilim-upload.php:145
+msgid "There is no upload in progress."
+msgstr "လုပ်ဆောင်နေသော အပ်လုဒ် မရှိပါ။"
+
+#: admin/class-babilim-admin.php:3422
+#: includes/class-babilim-upload.php:96
+msgid "There is no upload waiting for confirmation."
+msgstr "အတည်ပြုရန် စောင့်ဆိုင်းနေသော အပ်လုဒ် မရှိပါ။"
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:3399
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "ဤသည်မှာ ဤဝဘ်ဆိုက်အသုံးပြုသော ဘာသာစကားများ ဖြစ်သည်။ ၎င်းတို့ကို %s တွင် ပြောင်းလဲနိုင်သည်။"
+
+#: admin/class-babilim-admin.php:4260
+msgid "These fields will be sent:"
+msgstr "ဤအကွက်များကို ပို့မည်ဖြစ်သည်-"
+
+#: admin/class-babilim-admin.php:1452
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "ဤ build သည် ဤအစိတ်အပိုင်း/ဘာသာစကားအတွက် ဤဆိုက်က လက်ရှိ သိရှိထားသော build မဟုတ်ပါ။"
+
+#: admin/class-babilim-admin.php:1364
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "ဤအစိတ်အပိုင်းတွင် ဗားရှင်းနံပါတ် မဖော်ပြထားသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
+
+#: includes/class-babilim-upload.php:112
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "ဤအစိတ်အပိုင်းသည် ဝန်ဆောင်မှုလက်ခံသည့် အရွယ်အစားထက် ကြီးသဖြင့် အပ်လုဒ်လုပ်၍ မရပါ။"
+
+#: admin/class-babilim-admin.php:1205
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်ပြီးဖြစ်ပါသည်။ Babilim က ယခု စစ်ဆေးနေပါသည်။"
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1371
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "ဤအစိတ်အပိုင်း၏ ဗားရှင်းနံပါတ်သည် %d လုံးထက် ပိုရှည်နေပြီး Babilim မှ ကိုင်တွယ်၍မရသဖြင့် ၎င်းအတွက် ဘာသာပြန်ချက် မတောင်းဆိုနိုင်ပါ။"
+
+#: admin/class-babilim-admin.php:4518
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "၎င်းသည် ပြန်လည်ရယူရေးကုဒ်အသစ်ကို ထုတ်ပေးပြီး ယခင်ကုဒ်သည် အလုပ်မလုပ်တော့ပါ။ ဆက်လက်လုပ်ဆောင်မလား။"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1993
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "ဤကွန်ရက်တွင် ဆိုက်များ အလွန်များသဖြင့် တစ်ခုချင်း စစ်ဆေး၍ မရပါ၊ ၎င်းတို့အနက် အချို့သည် ပလပ်ဂင်ကို ဖျက်သည့်အခါ Babilim အထောက်အထားကို ဖျက်ရန် သတ်မှတ်ထားနိုင်ပါသည်။ ထိုအခါ ထိုဆိုက်နှင့် ချိတ်ဆက်ထားသော အခပေးလိုင်စင်ကို အလိုအလျောက် ပြန်လည်ရယူ၍ မရနိုင်ပါ။ %s တွင် Babilim ပံ့ပိုးမှုအဖွဲ့ကို ဆက်သွယ်ရပါမည်။ အထောက်အထားများကို ထိန်းသိမ်းလိုပါက Cancel ကိုနှိပ်ပြီး ဆိုက်တစ်ခုချင်းစီ၏ Babilim ဆက်တင်များတွင် \"ဖြုတ်သည့်အခါ Babilim ဒေတာအားလုံးကို ဖျက်ရန်\" ကို အမှန်ခြစ်ဖြုတ်ကာ ပြန်လည်ပိတ်ပါ။ ဘာဖြစ်ဖြစ် ပိတ်မလား။"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "ဤပလပ်ဂင်၏ ဗားရှင်း ဖြစ်ပြီး ဝန်ဆောင်မှုနှင့် ဆက်သွယ်၍မရနိုင်အောင် ဟောင်းနွမ်းလွန်းနေပါက ၎င်းကို အပ်ဒိတ်လုပ်ရန် ဝန်ဆောင်မှုက သင့်အား အသိပေးနိုင်ရန် ဖြစ်သည်။"
+
+#: admin/class-babilim-admin.php:1438
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "ဤအစီရင်ခံစာတွင် မှန်ကန်သော ပလပ်ဂင် သို့မဟုတ် ဘောင်ဒီဇိုင်းနှင့် ဘာသာစကားကို မဖော်ပြထားပါ။"
+
+#: admin/class-babilim-admin.php:1467
+msgid "This report does not name an installed string."
+msgstr "ဤအစီရင်ခံစာတွင် ထည့်သွင်းထားသော စာကြောင်းကို မဖော်ပြထားပါ။"
+
+#: admin/class-babilim-admin.php:1449
+msgid "This report is missing a valid build to report against."
+msgstr "ဤအစီရင်ခံစာတွင် အစီရင်ခံရန် မှန်ကန်သော build မရှိပါ။"
+
+#: admin/class-babilim-admin.php:2542
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "ဤအစီရင်ခံစာကို GitHub တွင် အများသိအောင် လွှင့်တင်မည်ဖြစ်ပြီး ပြင်ပအဖွဲ့အစည်းများက သိမ်းဆည်းထားနိုင်သည်။"
+
+#: admin/class-babilim-admin.php:4572
+msgid "This restore code was not recognised for this site."
+msgstr "ဤပြန်လည်ရယူရေးကုဒ်ကို ဤဆိုက်အတွက် မသိရှိပါ။"
+
+#: admin/class-babilim-admin.php:3793
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "ဤဆိုက်တွင် အလိုအလျောက် ပြန်လည်ရယူ၍ မရတော့သော အသုံးပြုနေဆဲ မှတ်ပုံတင်မှု ရှိပြီးသားဖြစ်သည်။"
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:911
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "ဤဆိုက်တွင် ဘာသာစကား %2$d ခုအတွက် အစိတ်အပိုင်း %1$d ခု ရှိပြီး စစ်ဆေးမှုအစုအဝေး %3$d ခု လိုအပ်သည်။ Babilim သည် တစ်ကြိမ်လျှင် အများဆုံး %4$d ခုသာ ကိုင်တွယ်နိုင်သည်။ ဆက်တင်များတွင် စီမံခန့်ခွဲသော ဘာသာစကားများကို လျှော့ချပါ သို့မဟုတ် မသုံးသော ပလပ်အင်များနှင့် အပြင်အဆင်များကို ပိတ်ပါ၊ ထို့နောက် ယခု ထပ်မံစစ်ဆေးရန် ကို နှိပ်ပါ။"
+
+#: admin/class-babilim-admin.php:4612
+msgid "This site has no purchase to show a code for."
+msgstr "ဤဝဘ်ဆိုက်တွင် ကုဒ်ပြရန် ဝယ်ယူမှု မရှိပါ။"
+
+#: admin/class-babilim-admin.php:3974
+msgid "This site is already licensed. Reload the page."
+msgstr "ဤဆိုက်တွင် လိုင်စင် ရှိပြီးသားဖြစ်သည်။ စာမျက်နှာကို ပြန်လည်ဖွင့်ပါ။"
+
+#: admin/class-babilim-admin.php:3966
+#: admin/class-babilim-admin.php:4564
+#: admin/class-babilim-admin.php:4604
+#: includes/class-babilim-site.php:857
+#: includes/class-babilim-sync-installer.php:405
+msgid "This site is not registered with Babilim yet."
+msgstr "ဤဆိုက်ကို Babilim တွင် မှတ်ပုံမတင်ရသေးပါ။"
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:2278
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "ဤဆိုက်သည် ဝန်ဆောင်မှုက တစ်ကြိမ်ထပ်တူပြုရာတွင် လက်ခံသည့် အရွယ်အစားထက် ကျော်လွန်နေသဖြင့် အချို့အရာများ ချန်လှပ်ခံရသည်- အစိတ်အပိုင်း %1$d ခုနှင့် ဘာသာစကား %2$d ခု။"
+
+#: admin/class-babilim-admin.php:3870
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "ဤဆိုက်သည် ဘာသာပြန်အသစ်များကို အလိုအလျောက် မထည့်သွင်းသော multisite ကွန်ရက်၏ အစိတ်အပိုင်းဖြစ်သည်။ ထည့်သွင်းပြီးသား ဘာသာပြန်များကိုမူ ဆက်လက် အပ်ဒိတ်လုပ်မည်။"
+
+#: admin/class-babilim-admin.php:2307
+msgid "This site is verified."
+msgstr "ဤဆိုက်ကို အတည်ပြုပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:4576
+msgid "This site must be verified first."
+msgstr "ဤဝဘ်ဆိုက်ကို ဦးစွာ အတည်ပြုရမည်။"
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "ဤဆိုက်၏ URL ဖြစ်ပြီး ၎င်းကို သင်ပိုင်ဆိုင်ကြောင်း ဝန်ဆောင်မှုက အတည်ပြုနိုင်ရန် ဖြစ်သည်။"
+
+#: includes/class-babilim-site.php:1483
+msgid "This site's address is too long for Babilim to register."
+msgstr "ဤဆိုက်၏ လိပ်စာသည် Babilim မှ စာရင်းသွင်းရန် ရှည်လျားလွန်းသည်။"
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "ဤဆိုက်၏ သတ်မှတ်ထားသော ဒေသဆိုင်ရာ ဘာသာစကား။"
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "ဤဆိုက်၏ ထည့်သွင်းမှု အများသုံးသော့ ဖြစ်ပြီး တောင်းဆိုမှုများသည် ဤဆိုက်မှ အမှန်တကယ် လာကြောင်း သက်သေပြရန် အသုံးပြုသည်။ အများသုံးအပိုင်းကိုသာ ပေးပို့သည်။"
+
+#: includes/class-babilim-site.php:1486
+msgid "This site's locale code is not one Babilim can register."
+msgstr "ဤဆိုက်၏ ဒေသကုဒ်ကို Babilim မှ စာရင်းသွင်း၍ မရပါ။"
+
+#: admin/class-babilim-admin.php:4267
+msgid "This string can't be reported from this site."
+msgstr "ဤစာကြောင်းကို ဤဆိုက်မှ အစီရင်ခံ၍ မရပါ။"
+
+#: admin/class-babilim-admin.php:1475
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "ဤစာကြောင်းသည် ဤဝက်ဘ်ဆိုက်တွင် ထည့်သွင်းထားသော ဘာသာပြန်ချက်များထဲတွင် မပါဝင်ပါ။ ထပ်မံရှာဖွေပြီး စာရင်းထဲမှ ရွေးချယ်ပါ။"
+
+#: admin/class-babilim-admin.php:1478
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "သင်ရှာဖွေပြီးနောက် ဤဘာသာပြန်ချက်ကို အပ်ဒိတ်လုပ်ထားသည်။ ထပ်မံရှာဖွေပြီး စာရင်းအသစ်မှ စာကြောင်းကို ရွေးချယ်ပါ။"
+
+#: admin/class-babilim-admin.php:3426
+msgid "To translate this component, Babilim needs its source."
+msgstr "ဤအစိတ်အပိုင်းကို ဘာသာပြန်ရန် Babilim သည် ၎င်း၏ အရင်းအမြစ်ကို လိုအပ်သည်။"
+
+#: admin/class-babilim-admin.php:4574
+msgid "Too many attempts. Try again tomorrow."
+msgstr "ကြိုးစားမှု များလွန်းသည်။ မနက်ဖြန် ထပ်ကြိုးစားပါ။"
+
+#: admin/class-babilim-admin.php:4268
+msgid "Too many reports today. Try again tomorrow."
+msgstr "ယနေ့ အစီရင်ခံစာ အလွန်များနေပါသည်။ မနက်ဖြန် ထပ်ကြိုးစားပါ။"
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "တောင်းဆိုမှု များလွန်းသည်။"
+
+#: admin/class-babilim-admin.php:3873
+msgid "Toolbar"
+msgstr "ကိရိယာဘား"
+
+#: admin/class-babilim-cell.php:139
+msgid "Translating…"
+msgstr "ဘာသာပြန်နေသည်…"
+
+#: admin/class-babilim-admin.php:3261
+msgid "Translation does not load"
+msgstr "ဘာသာပြန်ချက်ကို မတင်နိုင်ပါ"
+
+#: admin/class-babilim-cell.php:141
+msgid "Translation failed"
+msgstr "ဘာသာပြန်ခြင်း မအောင်မြင်ပါ"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3888
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "သင် %s တွင် ထားသော ဘာသာပြန်ဖိုင်များသည် Babilim ၏ ဖိုင်များထက် အမြဲ ဦးစားပေးခံရသည်။ ဤအမှန်ခြစ်ကို မဖြုတ်မချင်း ထိန်းသိမ်းထားမည်။"
+
+#: admin/class-babilim-admin.php:1183
+msgid "Translation requested."
+msgstr "ဘာသာပြန်ချက် တောင်းဆိုပြီးပါပြီ။"
+
+#: admin/class-babilim-admin.php:394
+#: admin/class-babilim-admin.php:395
+#: admin/class-babilim-translations-table.php:442
+msgid "Translations"
+msgstr "ဘာသာပြန်ချက်များ"
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:4254
+msgid "Type"
+msgstr "အမျိုးအစား"
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:4242
+msgid "Type at least 2 characters to search."
+msgstr "ရှာဖွေရန် အက္ခရာ ၂ လုံးအနည်းဆုံး ရိုက်ထည့်ပါ။"
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:605
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "မမျှော်လင့်ထားသော HTTP %d တုံ့ပြန်မှု။"
+
+#: admin/class-babilim-admin.php:3892
+msgid "Uninstall"
+msgstr "ဖယ်ရှားခြင်း"
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1681,33 +1767,189 @@ msgstr "မသိသော kind: %s"
 msgid "Unsafe domain: %s"
 msgstr "မလုံခြုံသော domain: %s"
 
-#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1022
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
 #, php-format
-msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "စာသား ဒိုမိန်း '%1$s' (%2$s) ကို ထည့်သွင်းထားသော အခြားအစိတ်အပိုင်း (%3$s) အတွက် ပံ့ပိုးထားပြီးဖြစ်သည်။ ဘာမျှ မထည့်သွင်းခဲ့ပါ။"
+msgid "Unsafe locale: %s"
+msgstr "မလုံခြုံသော locale: %s"
 
-#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1075
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
 #, php-format
-msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "နောက်ပြန်လှည့်ပါက '%1$s' (%2$s) ကို ထပ်ရေးမိမည်ဖြစ်ပြီး ၎င်းကို ထည့်သွင်းထားသော အခြားအစိတ်အပိုင်း (%3$s) အတွက် ယခု ပံ့ပိုးထားပါသည်။ ဘာမျှ မပြောင်းလဲခဲ့ပါ။"
+msgid "Unsafe slug: %s"
+msgstr "မလုံခြုံသော slug: %s"
 
-#. translators: %s: the filename missing from the zip.
-#: includes/class-babilim-installer.php:1167
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
 #, php-format
-msgid "Zip is missing expected file: %s"
-msgstr "Zip တွင် လိုအပ်သောဖိုင် မပါဝင်ပါ- %s"
+msgid "Unsafe text_domain: %s"
+msgstr "မလုံခြုံသော text_domain: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1171
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "ဆိုင်းငံ့ထားသော ရောဂါရှာဖွေရေး ဖြစ်ရပ်များ အများဆုံး ၂၀ (ဥပမာ ခိုင်မာမှု စစ်ဆေးခြင်း မအောင်မြင်သောဖိုင်)၊ တစ်ခုစီတွင် ကုဒ်၊ အစိတ်အပိုင်းနှင့် ဒေသသာ ပါပြီး စာကြောင်းအကြောင်းအရာ သို့မဟုတ် ဘာသာပြန်စာသား လုံးဝ မပါပါ။"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:454
+msgid "Update"
+msgstr "အပ်ဒိတ်လုပ်ရန်"
+
+#: admin/class-babilim-cell.php:187
+#: admin/class-babilim-cell.php:189
+msgid "Update available"
+msgstr "အပ်ဒိတ် ရနိုင်ပါသည်"
+
+#: admin/class-babilim-translations-table.php:468
+msgid "Updates"
+msgstr "အပ်ဒိတ်များ"
+
+#: admin/class-babilim-cell.php:366
+msgid "Updating…"
+msgstr "အပ်ဒိတ်လုပ်နေသည်…"
+
+#: admin/class-babilim-admin.php:4457
+msgid "Upgrade this site"
+msgstr "ဤဆိုက်ကို အဆင့်မြှင့်ရန်"
+
+#: admin/class-babilim-admin.php:3435
+msgid "Upload and request"
+msgstr "အပ်လုဒ်လုပ်ပြီး တောင်းဆိုရန်"
+
+#: admin/class-babilim-admin.php:1254
+msgid "Upload cancelled."
+msgstr "အပ်လုဒ်ကို ပယ်ဖျက်လိုက်သည်။"
+
+#: admin/class-babilim-admin.php:1286
+msgid "Upload complete — translation requested."
+msgstr "အပ်လုဒ် ပြီးစီးပါပြီ — ဘာသာပြန်ချက် တောင်းဆိုပြီးပါပြီ။"
+
+#: admin/class-babilim-cell.php:121
+msgid "Upload expired before it finished"
+msgstr "မပြီးမီ အပ်လုဒ် သက်တမ်းကုန်သွားသည်"
+
+#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:269
+#: admin/class-babilim-cell.php:271
+msgid "Upload in progress — continue or cancel"
+msgstr "အပ်လုဒ် လုပ်ဆောင်နေသည် — ဆက်လုပ်ပါ သို့မဟုတ် ပယ်ဖျက်ပါ"
+
+#: admin/class-babilim-admin.php:3420
+msgid "Upload this component?"
+msgstr "ဤအစိတ်အပိုင်းကို အပ်လုဒ်လုပ်မလား။"
+
+#: admin/class-babilim-cell.php:118
+msgid "Upload was not accepted"
+msgstr "အပ်လုဒ်ကို လက်မခံပါ"
+
+#: admin/class-babilim-admin.php:3448
+msgid "Uploading"
+msgstr "အပ်လုဒ်လုပ်နေသည်"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:3453
 #, php-format
-msgid "sha256 mismatch for %s"
-msgstr "%s အတွက် sha256 မကိုက်ညီပါ"
+msgid "Uploading part %1$d of %2$d…"
+msgstr "အပိုင်း %2$d ခုအနက် %1$d ကို အပ်လုဒ်လုပ်နေသည်…"
 
-#: includes/class-babilim-installer.php:1181
-msgid "The package declares no main translation file."
-msgstr "ပက်ကေ့ချ်တွင် ပင်မဘာသာပြန်ဖိုင်ကို မကြေညာထားပါ။"
+#: admin/class-babilim-admin.php:3435
+msgid "Uploading…"
+msgstr "အပ်လုဒ်လုပ်နေသည်…"
+
+#: admin/class-babilim-admin.php:4433
+msgid "Verified"
+msgstr "အတည်ပြုပြီး"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "အတည်ပြုခြင်းတုံ့ပြန်မှုတွင် site_token မပါဝင်ပါ။"
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:614
+#, php-format
+msgid "Version %s"
+msgstr "ဗားရှင်း %s"
+
+#: admin/class-babilim-admin.php:4641
+msgid "What is sent when Babilim checks this site"
+msgstr "Babilim က ဤဝဘ်ဆိုက်ကို စစ်ဆေးသောအခါ ပို့သည့်အချက်အလက်များ"
+
+#: admin/class-babilim-admin.php:3068
+msgid "What is sent when you enable Babilim"
+msgstr "Babilim ကို ဖွင့်သည့်အခါ ပို့သော အချက်အလက်များ"
+
+#: admin/class-babilim-admin.php:3881
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "Babilim အတွင်း တစ်စုံတစ်ခု မအောင်မြင်သည့်အခါ GitHub တွင် အများသိ ပြဿနာအဖြစ် ထုတ်ပြန်နိုင်ရန် အမှားအစီရင်ခံစာကို Babilim ဝန်ဆောင်မှုသို့ ပို့ပါ။ အစီရင်ခံစာကို ဤဆိုက်မှ ပို့သကဲ့သို့ Babilim ဝန်ဆောင်မှုသို့ အခြားတောင်းဆိုမှုတိုင်းနှင့် အတူတူ အထောက်အထားစိစစ်ခြင်းဖြင့် ပို့သည်။ ဝန်ဆောင်မှုသည် အမှားကုဒ်နှင့် ဗားရှင်းများကိုသာ GitHub တွင် အများသိ ပြဿနာအဖြစ် ထုတ်ပြန်သည်။ ထိုအများသိ ပြဿနာတွင် ဆိုက်လိပ်စာ၊ အကြောင်းအရာ သို့မဟုတ် ဖိုင်လမ်းကြောင်းများ မပါဝင်ပါ။ ပုံသေအားဖြင့် ပိတ်ထားသည်။"
+
+#: admin/class-babilim-admin.php:1559
+#: admin/class-babilim-admin.php:4992
+msgid "Where you saw this (optional)"
+msgstr "ဤအရာကို ဘယ်နေရာတွင် တွေ့ခဲ့သနည်း (ရွေးချယ်နိုင်သည်)"
+
+#: admin/class-babilim-admin.php:3869
+msgid "While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "ဤအရာ ဖွင့်ထားစဉ်တွင် သင်စီမံသော ဘာသာစကားများအတွက် ဝန်ဆောင်မှုက ရရှိနိုင်သည်ဟု ဖော်ပြထားသော ဘာသာပြန်ချက်များကို တစ်ရက်နှစ်ကြိမ် ထပ်တူကိုက်ညီစေခြင်းအတွင်း ထည့်သွင်းပေးသည်။"
+
+#: admin/class-babilim-cell.php:105
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-admin.php:3255
+msgid "Wrong for this context"
+msgstr "ဤအကြောင်းအရာအတွက် မမှန်ကန်ပါ"
+
+#: admin/class-babilim-admin.php:3249
+msgid "Wrong meaning"
+msgstr "အဓိပ္ပာယ် မှားနေသည်"
+
+#: admin/class-babilim-admin.php:3257
+msgid "Wrong plural form"
+msgstr "အများကိန်းပုံစံ မမှန်ကန်ပါ"
+
+#: admin/class-babilim-admin.php:3251
+msgid "Wrong term"
+msgstr "ဝေါဟာရ မှားနေသည်"
+
+#: admin/class-babilim-admin.php:3731
+msgid "Yes"
+msgstr "ဟုတ်ကဲ့"
+
+#: admin/class-babilim-admin.php:430
+#: admin/class-babilim-admin.php:839
+msgid "You are not allowed to do this."
+msgstr "သင့်အား ဤလုပ်ဆောင်ချက်ကို ခွင့်မပြုပါ။"
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "သင်၏ PHP ဗားရှင်း ဖြစ်ပြီး တွဲဖက်အသုံးပြုနိုင်မှုအတွက် ဖြစ်သည်။"
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "သင်၏ WordPress ဗားရှင်း ဖြစ်ပြီး တွဲဖက်သုံးနိုင်သော ဘာသာပြန်ဖိုင်များ ပေးပို့ရန် ဖြစ်သည်။"
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:4626
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "သင့်ပြန်လည်ရယူရေးကုဒ် အသစ်- %s။ ၎င်းကို လုံခြုံသောနေရာတွင် သိမ်းထားပါ — ယခင်ကုဒ်သည် မလုပ်ဆောင်နိုင်တော့ပါ။"
+
+#: admin/class-babilim-admin.php:4261
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "သင့်အစီရင်ခံစာကို AI မော်ဒယ်များဖြင့် အလိုအလျောက် လုပ်ဆောင်ပြီး အခြားဆိုက်များအတွက် ဤဘာသာပြန်ချက်ကို တိုးတက်စေနိုင်သည်။"
+
+#: admin/class-babilim-admin.php:2232
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "သင့်ဆိုက်က တုံ့ပြန်ခဲ့သော်လည်း မျှော်လင့်ထားသည့်အတိုင်း မဟုတ်ပါ။ REST API ကို အခြားပလပ်ဂင်တစ်ခုက ပြင်ရေးထားနိုင်ပါသည် သို့မဟုတ် ထို endpoint ကို cache လုပ်ထားနိုင်ပါသည်။ /wp-json/babilim/v1/challenge ကို caching နှင့် rewriting မှ ဖယ်ထုတ်ပေးပါ။"
+
+#: admin/class-babilim-admin.php:2230
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "သင့်ဆိုက်က တုံ့ပြန်ရာတွင် အချိန်ကြာလွန်းပါသည်။ နောက်မှ ထပ်ကြိုးစားပါ၊ ဟို့စ်သည် နှေးကွေးခြင်း သို့မဟုတ် ဝန်ပိနေခြင်း မရှိစေရန်လည်း စစ်ဆေးပါ။"
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "Zip တွင် manifest.json မရှိပါ။"
 
 #. translators: %s: the filename missing from the zip's default-domain supplement.
 #: includes/class-babilim-installer.php:1187
@@ -1715,85 +1957,15 @@ msgstr "ပက်ကေ့ချ်တွင် ပင်မဘာသာပြ�
 msgid "Zip is missing expected default file: %s"
 msgstr "Zip တွင် လိုအပ်သော ပုံသေဖိုင် မပါဝင်ပါ- %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1191
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
 #, php-format
-msgid "sha256 mismatch for default/%s"
-msgstr "default/%s အတွက် sha256 မကိုက်ညီပါ"
+msgid "Zip is missing expected file: %s"
+msgstr "Zip တွင် လိုအပ်သောဖိုင် မပါဝင်ပါ- %s"
 
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1214
-#: includes/class-babilim-installer.php:1279
-#: includes/class-babilim-installer.php:1312
-#, php-format
-msgid "Could not stage %s"
-msgstr "%s ကို stage မလုပ်နိုင်ပါ"
-
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1221
-#, php-format
-msgid "Could not stage default/%s"
-msgstr "default/%s ကို stage မလုပ်နိုင်ပါ"
-
-#. translators: %s: the .mo filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1263
-#, php-format
-msgid "Entry count mismatch for %s"
-msgstr "%s အတွက် ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ"
-
-#. translators: %s: the .mo filename whose entry count could not be verified.
-#: includes/class-babilim-installer.php:1272
-#, php-format
-msgid "Could not verify entry count for %s"
-msgstr "%s အတွက် ဘာသာပြန်စာသား အရေအတွက်ကို အတည်မပြုနိုင်ပါ"
-
-#. translators: %s: the .l10n.php filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1293
-#, php-format
-msgid "l10n.php entry count mismatch for %s"
-msgstr "%s အတွက် l10n.php ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ"
-
-#: includes/class-babilim-installer.php:1324
-msgid "Default supplement entry count mismatch."
-msgstr "ပုံသေဖြည့်စွက်ဖိုင်၏ ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ။"
-
-#: includes/class-babilim-installer.php:1336
-msgid "The package produced no servable main translation file."
-msgstr "ပက်ကေ့ချ်မှ အသုံးပြုနိုင်သော ပင်မဘာသာပြန်ဖိုင် မထုတ်ပေးခဲ့ပါ။"
-
-#. translators: %s: the filename that could not be prepared for rollback.
-#: includes/class-babilim-installer.php:1628
-#, php-format
-msgid "Could not prepare %s for rollback."
-msgstr "%s ကို နောက်ပြန်လှည့်ရန် ပြင်ဆင်၍ မရပါ။"
-
-#. translators: %s: the filename that could not be backed up.
-#: includes/class-babilim-installer.php:1644
-#, php-format
-msgid "Could not back up %s before replacing it."
-msgstr "%s ကို အစားထိုးမီ အရန်ကူးယူ၍ မရပါ။"
-
-#. translators: %s: the filename that could not be moved into place.
-#: includes/class-babilim-installer.php:1650
-#, php-format
-msgid "Could not move %s into place."
-msgstr "%s ကို နေရာတွင် ရွှေ့ထား၍ မရပါ။"
-
-#. translators: %s: the filename that could not be read back after it was moved into place.
-#: includes/class-babilim-installer.php:1656
-#, php-format
-msgid "Could not read %s back after moving it into place."
-msgstr "%s ကို နေရာတွင် ရွှေ့ပြီးနောက် ပြန်ဖတ်၍ မရပါ။"
-
-#: includes/class-babilim-locale-label.php:53
-msgid "English (United States)"
-msgstr "အင်္ဂလိပ် (အမေရိကန်ပြည်ထောင်စု)"
-
-#. translators: %s: the technical reason the manifest is unavailable.
-#: includes/class-babilim-manifest.php:546
-#, php-format
-msgid "Babilim_Manifest is unavailable: %s"
-msgstr "Babilim_Manifest ကို မရရှိနိုင်ပါ- %s"
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json တွင် မမျှော်လင့်ထားသော ဖွဲ့စည်းပုံ ရှိနေသည်"
 
 #. translators: %s: the underlying filesystem error message.
 #: includes/class-babilim-manifest.php:587
@@ -1801,296 +1973,147 @@ msgstr "Babilim_Manifest ကို မရရှိနိုင်ပါ- %s"
 msgid "could not read _manifest.json: %s"
 msgstr "_manifest.json ကို မဖတ်နိုင်ပါ- %s"
 
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest တွင် '%s' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "expected_manifest ၏ 'server_build_id' သည် မှန်ကန်သော build id မဟုတ်ပါ။"
+
 #. translators: %s: the underlying JSON parser error message.
 #: includes/class-babilim-manifest.php:601
 #, php-format
 msgid "failed to parse _manifest.json: %s"
 msgstr "_manifest.json ကို ခွဲခြမ်းစိတ်ဖြာ၍ မရပါ- %s"
 
-#: includes/class-babilim-manifest.php:608
-msgid "_manifest.json has an unexpected structure"
-msgstr "_manifest.json တွင် မမျှော်လင့်ထားသော ဖွဲ့စည်းပုံ ရှိနေသည်"
+#. translators: 1: components that would be orphaned, 2: components managed in total.
+#: includes/class-babilim-default-index.php:762
+#, php-format
+msgid "it would orphan %1$d of %2$d managed components (more than half)"
+msgstr "၎င်းသည် စီမံခန့်ခွဲထားသော အစိတ်အပိုင်း %2$d ခုအနက် %1$d ခုကို ပိုင်ရှင်မဲ့ဖြစ်စေပါမည် (တစ်ဝက်ထက် ပိုများသည်)"
 
-#: includes/class-babilim-packager.php:106
-#: includes/class-babilim-packager.php:115
-#: includes/class-babilim-packager.php:138
-msgid "Could not create the package archive."
-msgstr "ပက်ကေ့ချ် ဖိုင်ပေါင်းချုပ်ကို မဖန်တီးနိုင်ပါ။"
+#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
+#: includes/class-babilim-default-index.php:755
+#, php-format
+msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
+msgstr "၎င်းသည် စီမံခန့်ခွဲထားသော %1$s အစိတ်အပိုင်းအားလုံးကို ပိုင်ရှင်မဲ့ဖြစ်စေပါမည် (%2$d ခုအနက် %2$d ခု)"
 
-#: includes/class-babilim-packager.php:125
-msgid "A file in the component could not be read, so it was not packaged."
-msgstr "အစိတ်အပိုင်းအတွင်းရှိ ဖိုင်တစ်ခုကို ဖတ်၍ မရသဖြင့် ပက်ကေ့ဂျ်ထုပ်ပိုးမထားပါ။"
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "%s အတွက် l10n.php ဘာသာပြန်စာသား အရေအတွက် မကိုက်ညီပါ"
 
-#: includes/class-babilim-packager.php:180
-msgid "Only plugins and themes can be packaged."
-msgstr "ပလပ်ဂင်နှင့် အပြင်အဆင်များကိုသာ ပက်ကေ့ချ်ပြုလုပ်နိုင်သည်။"
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json တွင် 'default_domain_entries' မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-packager.php:185
-#: includes/class-babilim-packager.php:194
-msgid "The component's main file was not found."
-msgstr "အစိတ်အပိုင်း၏ အဓိကဖိုင်ကို ရှာမတွေ့ပါ။"
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json တွင် 'default_domain_files' မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-packager.php:190
-msgid "The component is not inside the plugins or themes directory."
-msgstr "အစိတ်အပိုင်းသည် plugins သို့မဟုတ် themes ဖိုလ်ဒါအတွင်း မရှိပါ။"
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "Zip အတွင်းရှိ manifest.json သည် မှန်ကန်သော JSON မဟုတ်ပါ။"
 
-#: includes/class-babilim-site.php:348
-#: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1271
-msgid "Babilim ran out of time for this step and will continue on the next check."
-msgstr "Babilim သည် ဤအဆင့်အတွက် အချိန်ပြည့်သွားသဖြင့် နောက်တစ်ကြိမ် စစ်ဆေးချိန်တွင် ဆက်လုပ်ပါမည်။"
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json တွင် '%s' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:315
-msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
-msgstr "Babilim သည် ဤဆိုက်ကို အတည်မပြုနိုင်ခဲ့သဖြင့် အတည်ပြုမှု အောင်မြင်သည်အထိ မည်သည့်အရာကိုမျှ ဒေါင်းလုဒ် သို့မဟုတ် ထည့်သွင်းမည်မဟုတ်ပါ။"
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json တွင် 'build_no' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-site.php:530
-#: includes/class-babilim-site.php:643
-msgid "Registration response was missing required fields."
-msgstr "စာရင်းသွင်းမှု တုံ့ပြန်ချက်တွင် လိုအပ်သော အကွက်များ ပျောက်နေသည်။"
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json တွင် 'entries' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-site.php:536
-#: includes/class-babilim-site.php:650
-msgid "No pending challenge to verify."
-msgstr "အတည်ပြုရန် ဆိုင်းငံ့ထားသည့် စိန်ခေါ်မှု မရှိပါ။"
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json တွင် 'extra_domains' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-site.php:574
-msgid "Verify response was missing site_token."
-msgstr "အတည်ပြုခြင်းတုံ့ပြန်မှုတွင် site_token မပါဝင်ပါ။"
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json တွင် 'files' မရှိပါ သို့မဟုတ် မမှန်ကန်ပါ။"
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "တိုကင်ပြောင်းရန်အတွက် ဖိုင်တွင် မှတ်တမ်းတင်ထားသော ဆိုက် ID မရှိပါ။"
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "manifest.json ၏ '%s' သည် မျှော်မှန်းတန်ဖိုးနှင့် မကိုက်ညီပါ။"
 
-#: includes/class-babilim-site.php:744
-msgid "Rotate-token response was missing site_token."
-msgstr "တိုကင်အသစ်လဲလှယ်မှု တုံ့ပြန်ချက်တွင် site_token မပါဝင်ပါ။"
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "manifest.json ၏ 'contract' သည် မှန်ကန်သော ဗားရှင်း စာကြောင်း မဟုတ်ပါ။"
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "manifest.json ၏ 'kind' သည် 'plugin' သို့မဟုတ် 'theme' ဖြစ်ရပါမည်။"
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "manifest.json ၏ 'server_build_id' သည် မှန်ကန်သော build id မဟုတ်ပါ။"
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "manifest.json ၏ 'status' သည် 'published' ဖြစ်ရပါမည်။"
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
 msgstr "nonce သည် ဆယ့်ခြောက်အခြေပြု ကိန်းဂဏန်းစာကြောင်း ဖြစ်ရမည်။"
 
-#: includes/class-babilim-site.php:805
-msgid "No pending challenge for this nonce."
-msgstr "ဤ nonce အတွက် ဆိုင်းငံ့ထားသည့် စိန်ခေါ်မှု မရှိပါ။"
+#: admin/class-babilim-admin.php:3235
+msgid "per day"
+msgstr "တစ်ရက်လျှင်"
 
-#: includes/class-babilim-site.php:808
-msgid "Too many requests."
-msgstr "တောင်းဆိုမှု များလွန်းသည်။"
+#: admin/class-babilim-admin.php:4520
+msgid "rc_…"
+msgstr "rc_…"
 
-#: includes/class-babilim-site.php:847
-msgid "The service asked this site to wait before syncing again."
-msgstr "ဝန်ဆောင်မှုက ဤဆိုက်ကို ထပ်မံတစ်ပြေးညီပြုလုပ်ခြင်း မပြုမီ စောင့်ဆိုင်းရန် တောင်းဆိုထားသည်။"
-
-#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
-#: includes/class-babilim-site.php:911
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
 #, php-format
-msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "ဤဆိုက်တွင် ဘာသာစကား %2$d ခုအတွက် အစိတ်အပိုင်း %1$d ခု ရှိပြီး စစ်ဆေးမှုအစုအဝေး %3$d ခု လိုအပ်သည်။ Babilim သည် တစ်ကြိမ်လျှင် အများဆုံး %4$d ခုသာ ကိုင်တွယ်နိုင်သည်။ ဆက်တင်များတွင် စီမံခန့်ခွဲသော ဘာသာစကားများကို လျှော့ချပါ သို့မဟုတ် မသုံးသော ပလပ်အင်များနှင့် အပြင်အဆင်များကို ပိတ်ပါ၊ ထို့နောက် ယခု ထပ်မံစစ်ဆေးရန် ကို နှိပ်ပါ။"
+msgid "sha256 mismatch for %s"
+msgstr "%s အတွက် sha256 မကိုက်ညီပါ"
 
-#: includes/class-babilim-site.php:987
-msgid "Babilim could not finish checking this site."
-msgstr "Babilim သည် ဤဆိုက်ကို စစ်ဆေးမှု မပြီးစီးနိုင်ခဲ့ပါ။"
-
-#: includes/class-babilim-site.php:1483
-msgid "This site's address is too long for Babilim to register."
-msgstr "ဤဆိုက်၏ လိပ်စာသည် Babilim မှ စာရင်းသွင်းရန် ရှည်လျားလွန်းသည်။"
-
-#: includes/class-babilim-site.php:1486
-msgid "This site's locale code is not one Babilim can register."
-msgstr "ဤဆိုက်၏ ဒေသကုဒ်ကို Babilim မှ စာရင်းသွင်း၍ မရပါ။"
-
-#: includes/class-babilim-sync-installer.php:329
-msgid "The download response was missing a usable location."
-msgstr "ဒေါင်းလုဒ် တုံ့ပြန်ချက်တွင် အသုံးပြုနိုင်သော တည်နေရာ ပျောက်နေသည်။"
-
-#: includes/class-babilim-upload.php:64
-#: includes/class-babilim-upload.php:69
-msgid "The service's upload offer was incomplete."
-msgstr "ဝန်ဆောင်မှု၏ အပ်လုဒ်ကမ်းလှမ်းချက် မပြည့်စုံပါ။"
-
-#: includes/class-babilim-upload.php:112
-msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "ဤအစိတ်အပိုင်းသည် ဝန်ဆောင်မှုလက်ခံသည့် အရွယ်အစားထက် ကြီးသဖြင့် အပ်လုဒ်လုပ်၍ မရပါ။"
-
-#: includes/class-babilim-upload.php:163
-msgid "The packaged component could not be read."
-msgstr "ထုပ်ပိုးထားသော အစိတ်အပိုင်းကို ဖတ်၍ မရပါ။"
-
-#: includes/class-babilim-upload.php:293
-msgid "A part of the upload kept failing, so the upload was cancelled."
-msgstr "အပ်လုဒ်၏ အစိတ်အပိုင်းတစ်ခု ဆက်တိုက် မအောင်မြင်သဖြင့် အပ်လုဒ်ကို ပယ်ဖျက်လိုက်သည်။"
-
-#. translators: %s: the file path that could not be read.
-#: includes/class-babilim-wp-fs.php:91
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
 #, php-format
-msgid "Could not read: %s"
-msgstr "ဖတ်၍ မရပါ- %s"
+msgid "sha256 mismatch for default/%s"
+msgstr "default/%s အတွက် sha256 မကိုက်ညီပါ"
 
-#: admin/class-babilim-cell.php:146
-msgid "Original language"
-msgstr "မူရင်း ဘာသာစကား"
+#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:749
+msgctxt "component kind in the sweep brake message"
+msgid "plugin"
+msgstr "ပလပ်ဂင်"
 
-#: admin/class-babilim-admin.php:2156
-msgid "This report will be posted publicly on GitHub and may be kept by third parties."
-msgstr "ဤအစီရင်ခံစာကို GitHub တွင် အများသိအောင် လွှင့်တင်မည်ဖြစ်ပြီး ပြင်ပအဖွဲ့အစည်းများက သိမ်းဆည်းထားနိုင်သည်။"
+#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:746
+msgctxt "component kind in the sweep brake message"
+msgid "theme"
+msgstr "အပြင်အဆင်"
 
-#: admin/class-babilim-admin.php:2157
-msgid "Share this report"
-msgstr "ဤအစီရင်ခံစာကို မျှဝေရန်"
+#. translators: a problem report category: none of the other listed kinds of problem applies.
+#: admin/class-babilim-admin.php:3264
+msgctxt "problem report category"
+msgid "Other"
+msgstr "အခြား"
 
-#: admin/class-babilim-admin.php:2158
-msgid "Always share"
-msgstr "အမြဲမျှဝေရန်"
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Available"
+msgstr "ရရှိနိုင်သည်"
 
-#: admin/class-babilim-admin.php:2159
-msgid "Don't share"
-msgstr "မမျှဝေပါနှင့်"
-
-#: admin/class-babilim-admin.php:3424
-msgid "Error reports"
-msgstr "အမှားအစီရင်ခံစာများ"
-
-#: admin/class-babilim-admin.php:3426
-msgid "Share error reports"
-msgstr "အမှားအစီရင်ခံစာများကို မျှဝေရန်"
-
-#. translators: %d: number of error reports waiting for the owner's decision.
-#: admin/class-babilim-admin.php:2136
-#, php-format
-msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgstr[0] "အစီရင်ခံစာ %d ခု စောင့်ဆိုင်းနေသည်။ \"အမြဲမျှဝေရန်\" နှင့် \"မမျှဝေပါနှင့်\" သည် ၎င်းတို့အားလုံးကို သက်ရောက်သည်။"
-msgstr[1] "အစီရင်ခံစာ %d ခု စောင့်ဆိုင်းနေသည်။ \"အမြဲမျှဝေရန်\" နှင့် \"မမျှဝေပါနှင့်\" သည် ၎င်းတို့အားလုံးကို သက်ရောက်သည်။"
-
-#: admin/class-babilim-admin.php:3621
-#: admin/class-babilim-admin.php:3657
-msgid "Report translation"
-msgstr "ဘာသာပြန်ချက်ကို အစီရင်ခံရန်"
-
-#: admin/class-babilim-admin.php:3658
-msgid "Search the installed translations"
-msgstr "ထည့်သွင်းထားသော ဘာသာပြန်ချက်များကို ရှာဖွေရန်"
-
-#. translators: Button label (a verb): runs the search of installed translations.
-#: admin/class-babilim-admin.php:3660
-msgid "Search"
-msgstr "ရှာဖွေရန်"
-
-#: admin/class-babilim-admin.php:3661
-msgid "Babilim has not installed any translation for this language."
-msgstr "Babilim သည် ဤဘာသာစကားအတွက် ဘာသာပြန်ချက် မည်သည့်အရာမျှ မထည့်သွင်းထားပါ။"
-
-#: admin/class-babilim-admin.php:3662
-msgid "No installed translation matches."
-msgstr "ကိုက်ညီသော ထည့်သွင်းထားသည့် ဘာသာပြန်ချက် မရှိပါ။"
-
-#: admin/class-babilim-admin.php:3665
-msgid "The search could not be completed."
-msgstr "ရှာဖွေမှုကို မပြီးမြောက်နိုင်ခဲ့ပါ။"
-
-#. translators: Button label (a verb): selects this string as the one to report.
-#: admin/class-babilim-admin.php:3669
-msgid "Choose"
-msgstr "ရွေးချယ်ရန်"
-
-#. translators: Heading of the step that shows the report before it is sent.
-#: admin/class-babilim-admin.php:3674
-msgid "Preview"
-msgstr "နမူနာကြည့်ရန်"
-
-#: admin/class-babilim-admin.php:3682
-msgid "These fields will be sent:"
-msgstr "ဤအကွက်များကို ပို့မည်ဖြစ်သည်-"
-
-#. translators: Button label (a verb): closes the report panel.
-#: admin/class-babilim-admin.php:3687
-msgid "Close"
-msgstr "ပိတ်ရန်"
-
-#: admin/class-babilim-admin.php:3689
-msgid "This string can't be reported from this site."
-msgstr "ဤစာကြောင်းကို ဤဆိုက်မှ အစီရင်ခံ၍ မရပါ။"
-
-#: admin/class-babilim-admin.php:3690
-msgid "Too many reports today. Try again tomorrow."
-msgstr "ယနေ့ အစီရင်ခံစာ အလွန်များနေပါသည်။ မနက်ဖြန် ထပ်ကြိုးစားပါ။"
-
-#: admin/class-babilim-admin.php:3691
-msgid "The report could not be sent."
-msgstr "အစီရင်ခံစာကို မပို့နိုင်ခဲ့ပါ။"
-
-#. translators: Field label (a noun): whether the component is a plugin or a theme.
-#: admin/class-babilim-admin.php:3676
-msgid "Type"
-msgstr "အမျိုးအစား"
-
-#. translators: Field label (a noun): the identifier of the translation package version the string came from.
-#: admin/class-babilim-admin.php:3680
-msgid "Build"
-msgstr "ဘီလ်ဒ်"
-
-#: admin/class-babilim-admin.php:2131
-msgid "Babilim hit an error. Share an error report?"
-msgstr "Babilim တွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။ အမှားအစီရင်ခံစာကို မျှဝေမလား။"
-
-#: admin/class-babilim-admin.php:3427
-msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
-msgstr "Babilim အတွင်း တစ်စုံတစ်ခု မအောင်မြင်သည့်အခါ GitHub တွင် အများသိ ပြဿနာအဖြစ် ထုတ်ပြန်နိုင်ရန် အမှားအစီရင်ခံစာကို Babilim ဝန်ဆောင်မှုသို့ ပို့ပါ။ အစီရင်ခံစာကို ဤဆိုက်မှ ပို့သကဲ့သို့ Babilim ဝန်ဆောင်မှုသို့ အခြားတောင်းဆိုမှုတိုင်းနှင့် အတူတူ အထောက်အထားစိစစ်ခြင်းဖြင့် ပို့သည်။ ဝန်ဆောင်မှုသည် အမှားကုဒ်နှင့် ဗားရှင်းများကိုသာ GitHub တွင် အများသိ ပြဿနာအဖြစ် ထုတ်ပြန်သည်။ ထိုအများသိ ပြဿနာတွင် ဆိုက်လိပ်စာ၊ အကြောင်းအရာ သို့မဟုတ် ဖိုင်လမ်းကြောင်းများ မပါဝင်ပါ။ ပုံသေအားဖြင့် ပိတ်ထားသည်။"
-
-#: admin/class-babilim-admin.php:3683
-msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
-msgstr "သင့်အစီရင်ခံစာကို AI မော်ဒယ်များဖြင့် အလိုအလျောက် လုပ်ဆောင်ပြီး အခြားဆိုက်များအတွက် ဤဘာသာပြန်ချက်ကို တိုးတက်စေနိုင်သည်။"
-
-#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
-#: admin/class-babilim-admin.php:3664
-msgid "Type at least 2 characters to search."
-msgstr "ရှာဖွေရန် အက္ခရာ ၂ လုံးအနည်းဆုံး ရိုက်ထည့်ပါ။"
-
-#: admin/class-babilim-admin.php:2629
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "ရရှိနိုင်သော ဘာသာပြန်ချက်များကို တစ်ချက်နှိပ်ရုံဖြင့် ထည့်သွင်းနိုင်ပြီး ပျောက်ဆုံးနေသည့်များကို တောင်းဆိုနိုင်သည်။ ထို့နောက် ဘာသာပြန်ချက်အသစ်များနှင့် အပ်ဒိတ်များကို အလိုအလျောက် ထည့်သွင်းပေးသည်။ ရရှိနိုင်သော ဘာသာပြန်ချက်များထဲမှ မည်သည့်အရာကို အလိုအလျောက် ထည့်သွင်းနိုင်သည်ကို Babilim ဝန်ဆောင်မှုက ဆုံးဖြတ်သည်။ အခမဲ့ အစီအစဉ်တွင် အလိုအလျောက် ထည့်သွင်းမှုများက အခမဲ့ ထည့်သွင်းခွင့်အသစ်ကို မသုံးစေရန် ဤဝက်ဘ်ဆိုက်တွင် Babilim ဘာသာပြန်ချက် ထည့်သွင်းပြီးသား ပလပ်ဂင်များနှင့် အပြင်အဆင်များကိုသာ ပုံမှန်အားဖြင့် ခွင့်ပြုသည်။"
-
-#: admin/class-babilim-admin.php:3420
-msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "ရရှိနိုင်သော ဘာသာပြန်ချက်များထဲမှ မည်သည့်အရာကို အလိုအလျောက် ထည့်သွင်းနိုင်သည်ကို Babilim ဝန်ဆောင်မှုက ဆုံးဖြတ်သည်။ အခမဲ့ အစီအစဉ်တွင် အလိုအလျောက် ထည့်သွင်းမှုများက အခမဲ့ ထည့်သွင်းခွင့်အသစ်ကို မသုံးစေရန် ဤဝက်ဘ်ဆိုက်တွင် Babilim ဘာသာပြန်ချက် ထည့်သွင်းပြီးသား ပလပ်ဂင်များနှင့် အပြင်အဆင်များကိုသာ ပုံမှန်အားဖြင့် ခွင့်ပြုသည်။"
-
-#: admin/class-babilim-admin.php:1387
-msgid "This report does not name an installed string."
-msgstr "ဤအစီရင်ခံစာတွင် ထည့်သွင်းထားသော စာကြောင်းကို မဖော်ပြထားပါ။"
-
-#: admin/class-babilim-admin.php:1395
-msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
-msgstr "ဤစာကြောင်းသည် ဤဝက်ဘ်ဆိုက်တွင် ထည့်သွင်းထားသော ဘာသာပြန်ချက်များထဲတွင် မပါဝင်ပါ။ ထပ်မံရှာဖွေပြီး စာရင်းထဲမှ ရွေးချယ်ပါ။"
-
-#: admin/class-babilim-admin.php:1398
-msgid "This translation was updated since you searched. Search again and pick the string from the new list."
-msgstr "သင်ရှာဖွေပြီးနောက် ဤဘာသာပြန်ချက်ကို အပ်ဒိတ်လုပ်ထားသည်။ ထပ်မံရှာဖွေပြီး စာရင်းအသစ်မှ စာကြောင်းကို ရွေးချယ်ပါ။"
-
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2986
-#, php-format
-msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
-msgstr "Babilim သည် %1$s (ဗားရှင်း %2$s) မှ ဤဖိုင်များကို အပ်လုဒ်လုပ်မည်- .php နှင့် .js ဖိုင်အားလုံး၊ block.json ဖိုင်အားလုံး၊ ၎င်း၏ အဓိက ဖိုလ်ဒါရှိ readme.txt၊ readme.md၊ style.css နှင့် theme.json။ ၎င်းတို့ကို ဘာသာပြန်ရန်လိုအပ်သော စာသားကို ရှာဖွေရန်နှင့် ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်ကို ဖော်ထုတ်ရန် အသုံးပြုသည်။"
-
-#: admin/class-babilim-admin.php:2987
-msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
-msgstr "အခြားအမည် သို့မဟုတ် ဖိုင်အမျိုးအစားရှိသော ဖိုင်များကို မထည့်သွင်းပါ။ uploads၊ cache၊ logs၊ backup၊ data၊ vendor၊ node_modules နှင့် languages ဖိုလ်ဒါများ၊ ဝှက်ထားသောဖိုင်များ၊ သို့မဟုတ် လျှို့ဝှက်ချက်များနှင့် တူသော အမည်ရှိသည့်ဖိုင်များ (wp-config*, .env*, *.sql, *.log, *.pem, *.key) ကိုလည်း မထည့်သွင်းပါ။ ကုဒ်ဖိုင်များတွင် မျှဝေလိုမည့်မဟုတ်သော စာသား သို့မဟုတ် ဒေတာ ရှိနိုင်သေးသဖြင့် မသေချာပါက စစ်ဆေးပါ။ ဝန်ဆောင်မှုသည် ရောက်ရှိချိန်တွင် ထိုအမျိုးအစားများကို ထပ်မံဖယ်ရှားသည်။"
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
-msgstr "WordPress.org တွင် မရှိသော ပလပ်ဂင် သို့မဟုတ် အပြင်အဆင်အတွက် အပ်လုဒ်ကို သင်အတည်ပြုမှသာ- .php နှင့် .js ဖိုင်အားလုံး၊ block.json ဖိုင်အားလုံးနှင့် ထိုအစိတ်အပိုင်း၏ အဓိက ဖိုလ်ဒါရှိ readme.txt၊ readme.md၊ style.css နှင့် theme.json တို့ကို ပို့မည်။ မပို့မီ အမည်များက အသုံးများသော လျှို့ဝှက်အချက်အလက်ပါဝင်သည့် ဖိုင်အမည်ပုံစံများနှင့် ကိုက်ညီသော ဖိုင်များကို ဖယ်ထုတ်ပြီး ကျန်ဖိုင်များကို zip အဖြစ် ထုပ်ပိုးမည်။"
-
-#: includes/class-babilim-packager.php:132
-msgid "The component has no files that can be uploaded."
-msgstr "ဤအစိတ်အပိုင်းတွင် အပ်လုဒ်လုပ်နိုင်သော ဖိုင်များ မရှိပါ။"
-
-#: includes/class-babilim-packager.php:110
-msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
-msgstr "Babilim သည် ဝက်ဘ်ဆိုက်အပြင်ဘက်ရှိ ယာယီ ဖိုလ်ဒါကို အတည်မပြုနိုင်သဖြင့် အစိတ်အပိုင်းကို ပက်ကေ့ဂျ်မလုပ်ခဲ့ဘဲ ဘာမျှ အပ်လုဒ်မလုပ်ခဲ့ပါ။ wp-config.php တွင် BABILIM_TEMP_DIR ကို ဝက်ဘ် ရူတ်ပြင်ပရှိ ရေးသားနိုင်သော ဖိုလ်ဒါအဖြစ် သတ်မှတ်ပါ (ဥပမာ သင့်ဆိုက်၏ အများသုံးဒိုင်ရက်ထရီထဲတွင် မဟုတ်ဘဲ ၎င်းနှင့်ယှဉ်လျက်ရှိသော ဖိုလ်ဒါ) သို့မဟုတ် သင့်ဟို့စ်ထံမှ တောင်းခံပါ။"
-
-#: includes/class-babilim-upload.php:191
-msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
-msgstr "ဤအပ်လုဒ်ကို စောင့်ဆိုင်းနေစဉ် Babilim ကို အပ်ဒိတ်လုပ်ခဲ့သည်။ ဟောင်းသော ပက်ကေ့ဂျ်ကို ပယ်ဖျက်လိုက်ပြီး အပ်လုဒ်ကို ထပ်မံအတည်ပြုပါ။"
+#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:201
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Installed"
+msgstr "ထည့်သွင်းပြီး"

@@ -325,7 +325,7 @@ final class Test_L10n_Scripts extends TestCase {
 
 		$po = (string) file_get_contents( $this->tmp_repo . '/languages/babilim-zz_ZZ.po' );
 		$this->assertStringNotContainsString( 'X-Babilim-Build', $po );
-		$this->assertStringContainsString( 'Project-Id-Version: Babilim 1.1.0\n', $po );
+		$this->assertStringContainsString( 'Project-Id-Version: Babilim 1.2.0\n', $po );
 		$php = (string) file_get_contents( $this->tmp_repo . '/languages/babilim-zz_ZZ.l10n.php' );
 		$this->assertStringNotContainsString( 'X-Babilim-Build', $php );
 	}
@@ -333,7 +333,7 @@ final class Test_L10n_Scripts extends TestCase {
 	public function test_l10n_check_reports_a_header_that_carries_a_build_id(): void {
 		$locales = $this->build_fixture_locale();
 		$po      = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
-		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.1.0\n"', '"Project-Id-Version: Babilim 1.1.0\n"' . "\n" . '"X-Babilim-Build: b1\n"' );
+		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.2.0\n"', '"Project-Id-Version: Babilim 1.2.0\n"' . "\n" . '"X-Babilim-Build: b1\n"' );
 		$res = $this->run_check( $locales );
 		$this->assertSame( 1, $res['rc'], $res['stdout'] );
 		$this->assertStringContainsString( 'HEADER zz_ZZ', $res['stdout'] );
@@ -342,7 +342,7 @@ final class Test_L10n_Scripts extends TestCase {
 	public function test_l10n_check_reports_a_wrong_project_id_version(): void {
 		$locales = $this->build_fixture_locale();
 		$po      = $this->tmp_repo . '/languages/babilim-zz_ZZ.po';
-		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.1.0\n"', '"Project-Id-Version: Babilim 9.9.9\n"' );
+		$this->replace_in_file( $po, '"Project-Id-Version: Babilim 1.2.0\n"', '"Project-Id-Version: Babilim 9.9.9\n"' );
 		$res = $this->run_check( $locales );
 		$this->assertSame( 1, $res['rc'], $res['stdout'] );
 		$this->assertStringContainsString( 'HEADER zz_ZZ', $res['stdout'] );

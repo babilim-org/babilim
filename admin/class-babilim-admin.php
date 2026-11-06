@@ -94,7 +94,6 @@ final class Babilim_Admin {
 		'babilim_remove',
 		'babilim_request',
 		'babilim_feedback',
-		'babilim_save_settings',
 		'babilim_sync_now',
 		'babilim_rollback_report',
 		'babilim_rebuild_index',
@@ -114,6 +113,8 @@ final class Babilim_Admin {
 		'babilim_error_share_once',
 		'babilim_error_share_always',
 		'babilim_error_decline',
+		'babilim_error_notice_dismiss',
+		'babilim_verification_notice_dismiss',
 	);
 
 	/**
@@ -132,6 +133,37 @@ final class Babilim_Admin {
 	 * @var string
 	 */
 	public const OPTION_DELETE_DATA = 'babilim_delete_data_on_uninstall';
+
+	/**
+	 * Option holding whether the admin toolbar shows the "Report
+	 * translation" entry (a missing option reads as on).
+	 *
+	 * @var string
+	 */
+	public const OPTION_TOOLBAR_REPORT = 'babilim_toolbar_report';
+
+	/**
+	 * User option holding, per site, the fingerprint of the verification
+	 * warning this user dismissed there (`blog id => fingerprint`, see
+	 * verification_fingerprint()). Stored as a global user option (one
+	 * unprefixed meta key for the whole network, with the site as the
+	 * array key), so the network admin
+	 * (which reads the main site's record) and each site's screens agree
+	 * with each other and uninstall removes it with a single call.
+	 *
+	 * @var string
+	 */
+	public const USER_OPTION_VERIFICATION_DISMISSED = 'babilim_verification_dismissed';
+
+	/**
+	 * User option (global, `blog id => ids`) holding the ids of the
+	 * waiting error reports whose notice this user closed on that site.
+	 * The notice stays hidden until a report that is not in that list
+	 * is waiting.
+	 *
+	 * @var string
+	 */
+	public const USER_OPTION_ERROR_NOTICE_HIDDEN = 'babilim_error_notice_hidden';
 
 	/**
 	 * Whether `custom/` is kept on `babilim_purge_all`/uninstall -- see
@@ -278,6 +310,13 @@ final class Babilim_Admin {
 	private $settings_hook_suffix = '';
 
 	/**
+	 * Whether the notice close-button script was already added this request.
+	 *
+	 * @var bool
+	 */
+	private $notice_dismiss_script_added = false;
+
+	/**
 	 * @param Babilim_Fs|null        $fs        Overrides the production Babilim_Wp_Fs -- production
 	 *                                          passes Babilim::instance()'s own shared one (see
 	 *                                          Babilim::manifest()'s own docblock for why); a test
@@ -326,6 +365,7 @@ final class Babilim_Admin {
 		add_action( 'wp_ajax_babilim_license_status', array( $this, 'ajax_babilim_license_status' ) );
 		add_action( 'admin_bar_menu', array( $this, 'register_toolbar_node' ), 100 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_report_script' ) );
+		add_action( 'wp_ajax_babilim_report_panel', array( $this, 'ajax_babilim_report_panel' ) );
 		add_action( 'wp_ajax_babilim_translation_search', array( $this, 'ajax_babilim_translation_search' ) );
 		add_action( 'wp_ajax_babilim_translation_report', array( $this, 'ajax_babilim_translation_report' ) );
 	}
@@ -444,7 +484,7 @@ final class Babilim_Admin {
 	 */
 	private static function post_list( string $key ): array {
 		// sanitize_text_field() turns a nested array into '', which the strlen filter then drops, so only real strings survive.
-		return isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ? array_values( array_filter( array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ), 'strlen' ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is checked by the caller before any field is read.
+		return isset( $_POST[ $key ] ) && is_array( $_POST[ $key ] ) ? array_values( array_filter( array_map( 'sanitize_text_field', wp_unslash( $_POST[ $key ] ) ), static fn( $v ) => '' !== $v ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is checked by the caller before any field is read.
 	}
 
 	/**
@@ -584,7 +624,17 @@ final class Babilim_Admin {
 	 * @return string
 	 */
 	private static function plugins_list_js(): string {
-		return "document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[data-babilim-confirm]'):null;if(a&&!window.confirm(a.getAttribute('data-babilim-confirm'))){e.preventDefault();}});";
+		return implode(
+			"\n",
+			array(
+				"document.addEventListener('click', function (e) {",
+				"\tvar a = e.target && e.target.closest ? e.target.closest('a[data-babilim-confirm]') : null;",
+				"\tif (a && !window.confirm(a.getAttribute('data-babilim-confirm'))) {",
+				"\t\te.preventDefault();",
+				"\t}",
+				'});',
+			)
+		);
 	}
 
 	/**
@@ -1176,6 +1226,9 @@ final class Babilim_Admin {
 
 	public function dispatch_babilim_upload_confirm(): void {
 		$this->guard( 'babilim_upload_confirm', true );
+		if ( ! $this->upload_form_is_current() ) {
+			return;
+		}
 		$upload = $this->upload();
 		$result = $upload->confirm();
 		if ( $result->is_ok() ) {
@@ -1186,14 +1239,41 @@ final class Babilim_Admin {
 
 	public function dispatch_babilim_upload_step(): void {
 		$this->guard( 'babilim_upload_step', true );
+		if ( ! $this->upload_form_is_current() ) {
+			return;
+		}
 		$this->finish_upload_step( $this->upload()->step() );
 	}
 
 	public function dispatch_babilim_upload_cancel(): void {
 		$this->guard( 'babilim_upload_cancel', true );
+		if ( ! $this->upload_form_is_current() ) {
+			return;
+		}
 		$this->upload()->cancel();
 		$this->notice( 'ok', __( 'Upload cancelled.', 'babilim' ), 'success' );
 		wp_safe_redirect( self::page_url( 'translations' ) );
+	}
+
+	/**
+	 * Whether the submitted upload form was rendered for the offer that is
+	 * pending now. Another tab can replace the one pending offer after a
+	 * screen was rendered; a form from the old screen must never confirm,
+	 * send or cancel the new one. With nothing pending the action goes on
+	 * and ends on its own "nothing to do" error. When the form is stale
+	 * nothing is packaged or sent: the owner is told and sent back to the
+	 * list (the redirect is issued here).
+	 *
+	 * @return bool True when the action may go on.
+	 */
+	private function upload_form_is_current(): bool {
+		$pending = Babilim_Upload::pending();
+		if ( null === $pending || self::field( 'upload_id' ) === (string) $pending['upload_id'] ) {
+			return true;
+		}
+		$this->notice( 'upload_replaced', __( 'That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list.', 'babilim' ), 'error' );
+		wp_safe_redirect( self::page_url( 'translations' ) );
+		return false;
 	}
 
 	private function finish_upload_step( Babilim_Result $result ): void {
@@ -1560,82 +1640,254 @@ final class Babilim_Admin {
 		return Babilim_Result::ok( $response );
 	}
 
-	// -- babilim_save_settings ------------------------------------------------
-
-	public function dispatch_babilim_save_settings(): void {
-		$this->guard( 'babilim_save_settings' );
-
-		// A locale typed by the owner is checked before anything is
-		// saved: one that is not a locale code, or is longer than the
-		// service accepts, would only be dropped later without a word.
-		$new_locale = self::field( 'new_locale' );
-		$canonical = '' === $new_locale ? '' : Babilim_Inventory::canonical_locale( $new_locale );
-		if ( '' !== $new_locale && ( null === $canonical || ! Babilim_Paths::is_safe_locale( $canonical ) || ! Babilim_Contract_Limits::fits( $canonical, Babilim_Contract_Limits::LOCALE ) ) ) {
-			$this->notice(
-				'invalid_locale',
-				__( 'That is not a valid WordPress locale code. Nothing was saved.', 'babilim' ),
-				'error'
-			);
-			wp_safe_redirect( self::page_url( 'settings', array( 'tab' => 'general' ) ) );
-			return;
-		}
-
-		$submitted = self::post_list( 'locales' );
-		if ( '' !== $new_locale ) {
-			$submitted[] = (string) $canonical;
-		}
-		$submitted = array_values( array_unique( $submitted ) );
-
-		// A detected locale (see Babilim_Inventory::detected_locales())
-		// is never written into the manual list: unchecking it puts it
-		// on the stopped list instead (its installed files stay), and
-		// checking it again takes it off. Only a locale the owner added
-		// is kept as manual, so unchecking one removes it.
-		$detected = $this->inventory()->detected_locales();
-		$this->inventory()->set_disabled_locales( array_values( array_diff( $detected, $submitted ) ) );
-		$this->inventory()->set_manual_locales( array_values( array_diff( $submitted, $detected ) ) );
-
-		update_option( self::OPTION_KEEP_CUSTOM, 'on' === self::field( 'keep_custom' ) ? 1 : 0 );
-		update_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 'on' === self::field( 'auto_install' ) ? 1 : 0, false );
-		$reporter = Babilim_Error_Reporter::for_site();
-		if ( 'on' === self::field( 'share_errors' ) ) {
-			if ( ! $reporter->sharing_enabled() ) {
-				// Same effect as "Always share": what already waits is authorized.
-				$reporter->share_always();
-			}
-			update_option( Babilim_Error_Reporter::OPTION_SHARE, '1', false );
-		} else {
-			// Withdraw first, then clear, so an event captured in between
-			// is not queued under the old choice.
-			$was_sharing = $reporter->sharing_enabled();
-			update_option( Babilim_Error_Reporter::OPTION_SHARE, '0', false );
-			if ( $was_sharing ) {
-				$reporter->clear_all();
-			}
-		}
-		// Through the registered Settings API sanitizer (see register_settings()).
-		update_option( self::OPTION_DELETE_DATA, 'on' === self::field( 'delete_data_on_uninstall' ) ? 'on' : '' );
-
-		$this->notice( 'settings_saved', __( 'Settings saved.', 'babilim' ), 'success' );
-		wp_safe_redirect( self::page_url( 'settings', array( 'tab' => 'general' ) ) );
-	}
+	/**
+	 * Option group of the General settings form (Settings API): the form
+	 * posts to options.php with settings_fields( SETTINGS_GROUP ).
+	 *
+	 * @var string
+	 */
+	public const SETTINGS_GROUP = 'babilim_settings';
 
 	/**
-	 * `admin_init` callback -- registers the one option this plugin's
-	 * settings form stores through the Settings API, with its own
-	 * sanitizer, so every write path goes through the same coercion.
+	 * Option the language block of the form is saved through (see
+	 * sanitize_manual_locales()). Babilim_Inventory owns the stored list.
+	 *
+	 * @var string
+	 */
+	private const OPTION_MANUAL_LOCALES = 'babilim_manual_locales';
+
+	/**
+	 * Set while one save of the form is refused (an invalid language was
+	 * typed): every other setting of the form then keeps its stored
+	 * value, so nothing is saved.
+	 *
+	 * @var bool
+	 */
+	private $settings_rejected = false;
+
+	/**
+	 * Set while on_share_errors_updated() is acting on a change.
+	 *
+	 * @var bool
+	 */
+	private $share_hook_running = false;
+
+	/**
+	 * `admin_init` callback -- registers every field of the General
+	 * settings form with the Settings API, each with its own sanitizer,
+	 * in the order options.php saves them (the language block first, so
+	 * an invalid language can stop the rest), and the hooks for what a
+	 * change of the error-report choice has to do as well.
 	 */
 	public function register_settings(): void {
+		$settings = array(
+			self::OPTION_MANUAL_LOCALES                => array( 'array', array( $this, 'sanitize_manual_locales' ) ),
+			Babilim_Sync_Installer::OPTION_AUTO_INSTALL => array( 'integer', array( $this, 'sanitize_auto_install' ) ),
+			self::OPTION_TOOLBAR_REPORT                => array( 'integer', array( $this, 'sanitize_toolbar_report' ) ),
+			Babilim_Error_Reporter::OPTION_SHARE       => array( 'string', array( $this, 'sanitize_share_errors' ) ),
+			self::OPTION_KEEP_CUSTOM                   => array( 'integer', array( $this, 'sanitize_keep_custom' ) ),
+		);
+		$this->settings_rejected = false;
+		foreach ( $settings as $option => $setting ) {
+			register_setting(
+				self::SETTINGS_GROUP,
+				$option,
+				array(
+					'type'              => $setting[0],
+					'sanitize_callback' => $setting[1],
+					'show_in_rest'      => false,
+				)
+			);
+		}
 		register_setting(
-			'babilim_settings',
+			self::SETTINGS_GROUP,
 			self::OPTION_DELETE_DATA,
 			array(
 				'type'              => 'boolean',
 				'default'           => false,
-				'sanitize_callback' => array( self::class, 'sanitize_delete_data' ),
+				'sanitize_callback' => array( $this, 'sanitize_delete_data_setting' ),
 				'show_in_rest'      => false,
 			)
 		);
+		add_filter( 'option_page_capability_' . self::SETTINGS_GROUP, array( self::class, 'settings_capability' ) );
+		add_action( 'update_option_' . Babilim_Error_Reporter::OPTION_SHARE, array( $this, 'on_share_errors_updated' ), 10, 2 );
+		add_action( 'add_option_' . Babilim_Error_Reporter::OPTION_SHARE, array( $this, 'on_share_errors_added' ), 10, 2 );
+	}
+
+	/**
+	 * `option_page_capability_babilim_settings` filter: the capability
+	 * every other Babilim setting needs.
+	 *
+	 * @return string
+	 */
+	public static function settings_capability(): string {
+		return self::CAPABILITY;
+	}
+
+	/**
+	 * Sanitizer for the language block. From the form it gets
+	 * `{form, checked[], new}`: a typed language is checked first (one
+	 * that is not a locale code, or is longer than the service accepts,
+	 * refuses the whole save with a notice); then a detected language
+	 * (see Babilim_Inventory::detected_locales()) is never written into
+	 * the manual list -- unchecking it puts it on the stopped list
+	 * instead (its installed files stay) and checking it again takes it
+	 * off -- and only languages the owner added are returned as the
+	 * manual list. Anything else (Babilim_Inventory's own write, core
+	 * sanitizing a second time on add) is already a list and is only
+	 * filtered.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return string[]
+	 */
+	public function sanitize_manual_locales( $value ): array {
+		if ( ! is_array( $value ) || ! isset( $value['form'] ) ) {
+			return self::safe_locales( is_array( $value ) ? $value : array() );
+		}
+		$new       = is_string( $value['new'] ?? null ) ? sanitize_text_field( $value['new'] ) : '';
+		$canonical = '' === $new ? '' : Babilim_Inventory::canonical_locale( $new );
+		if ( '' !== $new && ( null === $canonical || ! Babilim_Paths::is_safe_locale( $canonical ) || ! Babilim_Contract_Limits::fits( $canonical, Babilim_Contract_Limits::LOCALE ) ) ) {
+			$this->settings_rejected = true;
+			add_settings_error( 'babilim', 'invalid_locale', __( 'That is not a valid WordPress locale code. Nothing was saved.', 'babilim' ), 'error' );
+			return $this->inventory()->manual_locales();
+		}
+		$submitted = self::safe_locales( is_array( $value['checked'] ?? null ) ? $value['checked'] : array() );
+		if ( '' !== $new ) {
+			$submitted[] = (string) $canonical;
+		}
+		$submitted = array_values( array_unique( $submitted ) );
+		$detected  = $this->inventory()->detected_locales();
+		$this->inventory()->set_disabled_locales( array_values( array_diff( $detected, $submitted ) ) );
+		return array_values( array_diff( $submitted, $detected ) );
+	}
+
+	/**
+	 * The strings of $values that are safe locale codes, in order, once each.
+	 *
+	 * @param array $values Raw values.
+	 * @return string[]
+	 */
+	private static function safe_locales( array $values ): array {
+		$locales = array();
+		foreach ( $values as $locale ) {
+			if ( is_string( $locale ) && Babilim_Paths::is_safe_locale( sanitize_text_field( $locale ) ) ) {
+				$locales[] = sanitize_text_field( $locale );
+			}
+		}
+		return array_values( array_unique( $locales ) );
+	}
+
+	/**
+	 * An on/off setting stored as 1/0: the form's `on`, or a 1 already
+	 * stored, is on; anything else (missing, an array, another word) is
+	 * off. While a save is refused, the stored value is kept.
+	 *
+	 * @param mixed  $value  Submitted value.
+	 * @param string $option Option name.
+	 * @return int|mixed
+	 */
+	private function checkbox_value( $value, string $option ) {
+		if ( $this->settings_rejected ) {
+			return get_option( $option );
+		}
+		return 'on' === $value || 1 === $value || '1' === $value ? 1 : 0;
+	}
+
+	/**
+	 * Sanitizer for the automatic-installs switch.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return int|mixed
+	 */
+	public function sanitize_auto_install( $value ) {
+		return $this->checkbox_value( $value, Babilim_Sync_Installer::OPTION_AUTO_INSTALL );
+	}
+
+	/**
+	 * Sanitizer for the toolbar entry switch.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return int|mixed
+	 */
+	public function sanitize_toolbar_report( $value ) {
+		return $this->checkbox_value( $value, self::OPTION_TOOLBAR_REPORT );
+	}
+
+	/**
+	 * Sanitizer for the keep-custom-overrides switch.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return int|mixed
+	 */
+	public function sanitize_keep_custom( $value ) {
+		return $this->checkbox_value( $value, self::OPTION_KEEP_CUSTOM );
+	}
+
+	/**
+	 * Sanitizer for the error-report choice, stored as '1'/'0'.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return string|mixed
+	 */
+	public function sanitize_share_errors( $value ) {
+		if ( $this->settings_rejected ) {
+			return get_option( Babilim_Error_Reporter::OPTION_SHARE );
+		}
+		return 'on' === $value || 1 === $value || '1' === $value ? '1' : '0';
+	}
+
+	/**
+	 * Sanitizer registered for the delete-all option (see
+	 * sanitize_delete_data()).
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return bool|mixed
+	 */
+	public function sanitize_delete_data_setting( $value ) {
+		if ( $this->settings_rejected ) {
+			return get_option( self::OPTION_DELETE_DATA );
+		}
+		return self::sanitize_delete_data( $value );
+	}
+
+	/**
+	 * `update_option_babilim_share_errors`: turning sharing on authorizes
+	 * what already waits (as "Always share" does); turning it off forgets
+	 * every waiting and authorized report. The option is written before
+	 * this runs, so an event captured in between is not queued under the
+	 * old choice.
+	 *
+	 * @param mixed $old_value Previous value.
+	 * @param mixed $value     New value.
+	 */
+	public function on_share_errors_updated( $old_value, $value ): void {
+		$was = '1' === (string) $old_value;
+		$now = '1' === (string) $value;
+		// share_always() writes the option itself: when it is the one
+		// writing, the reports are already being authorized.
+		if ( $this->share_hook_running || $was === $now || Babilim_Error_Reporter::in_share_always() ) {
+			return;
+		}
+		$this->share_hook_running = true;
+		try {
+			if ( $now ) {
+				Babilim_Error_Reporter::for_site()->share_always();
+			} else {
+				Babilim_Error_Reporter::for_site()->clear_all();
+			}
+		} finally {
+			$this->share_hook_running = false;
+		}
+	}
+
+	/**
+	 * `add_option_babilim_share_errors`: the first save of the choice.
+	 *
+	 * @param string $option Option name.
+	 * @param mixed  $value  Stored value.
+	 */
+	public function on_share_errors_added( $option, $value ): void {
+		$this->on_share_errors_updated( '0', $value );
 	}
 
 	/**
@@ -1817,18 +2069,147 @@ final class Babilim_Admin {
 		if ( ! self::can() || ! $this->consent()->granted() ) {
 			return;
 		}
-		$current = isset( $GLOBALS['hook_suffix'] ) && is_string( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
-		if ( ! in_array( $current, array( 'index.php', 'plugins.php' ), true ) ) {
+		if ( ! in_array( self::current_hook_suffix(), array( 'index.php', 'plugins.php' ), true ) ) {
 			return;
 		}
 		$warning = $this->site()->verification_warning();
 		if ( null === $warning ) {
 			return;
 		}
-		$html = '<div class="notice notice-warning"><p><strong>' . esc_html( self::verification_headline() ) . '</strong> '
+		$fingerprint = self::verification_fingerprint( $warning );
+		if ( self::dismissed_verification_fingerprint() === $fingerprint ) {
+			return;
+		}
+		$form_id = 'babilim-verification-dismiss-form';
+		$html    = '<div class="notice notice-warning is-dismissible" data-babilim-dismiss-form="' . esc_attr( $form_id ) . '"><p><strong>' . esc_html( self::verification_headline() ) . '</strong> '
 			. esc_html( self::verification_advice( $warning['reason'] ) ) . ' '
-			. '<a href="' . esc_url( self::page_url( 'settings' ) ) . '">' . esc_html__( 'Open Babilim settings', 'babilim' ) . '</a></p></div>';
+			. '<a href="' . esc_url( self::page_url( 'settings' ) ) . '">' . esc_html__( 'Open Babilim settings', 'babilim' ) . '</a></p>'
+			. $this->hidden_action_form( 'babilim_verification_notice_dismiss', $form_id, array( 'fingerprint' => $fingerprint ) )
+			. '</div>';
+		$this->enqueue_notice_dismiss_script();
 		echo wp_kses( $html, self::allowed_admin_html() );
+	}
+
+	/**
+	 * What identifies one verification warning: when it started and why.
+	 * A new reason, or a warning that was cleared and came back later,
+	 * gives a different value.
+	 *
+	 * @param array $warning Babilim_Site::verification_warning().
+	 * @return string
+	 */
+	private static function verification_fingerprint( array $warning ): string {
+		return (int) $warning['since'] . ':' . (string) $warning['reason'];
+	}
+
+	/**
+	 * The fingerprint this user dismissed on the current site, or ''.
+	 *
+	 * @return string
+	 */
+	private static function dismissed_verification_fingerprint(): string {
+		$stored = get_user_option( self::USER_OPTION_VERIFICATION_DISMISSED );
+		$mine   = is_array( $stored ) ? ( $stored[ get_current_blog_id() ] ?? '' ) : '';
+		return is_string( $mine ) ? $mine : '';
+	}
+
+	/**
+	 * Admin-post handler: hides the verification warning the user was
+	 * looking at, on this site, until the warning changes. What is stored
+	 * is the fingerprint the submitted form carries (the warning that was
+	 * on screen), not whatever the warning is when the form arrives.
+	 */
+	public function dispatch_babilim_verification_notice_dismiss(): void {
+		$this->guard( 'babilim_verification_notice_dismiss' );
+		$fingerprint = self::field( 'fingerprint' );
+		if ( 1 === preg_match( '/^\d{1,12}:[a-z_]{1,64}$/', $fingerprint ) ) {
+			$stored = get_user_option( self::USER_OPTION_VERIFICATION_DISMISSED );
+			$stored = is_array( $stored ) ? $stored : array();
+			$stored[ get_current_blog_id() ] = $fingerprint;
+			update_user_option( get_current_user_id(), self::USER_OPTION_VERIFICATION_DISMISSED, $stored, true );
+		}
+		wp_safe_redirect( self::back_url() );
+	}
+
+	/**
+	 * The current admin screen's hook suffix, or '' when core has not set one.
+	 *
+	 * @return string
+	 */
+	private static function current_hook_suffix(): string {
+		return isset( $GLOBALS['hook_suffix'] ) && is_string( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
+	}
+
+	/**
+	 * Whether this is Babilim's own screen (either page), the Dashboard
+	 * or the Plugins list: the only places Babilim shows an admin notice.
+	 *
+	 * @return bool
+	 */
+	private function on_babilim_or_core_overview_screen(): bool {
+		$current = self::current_hook_suffix();
+		if ( '' === $current ) {
+			return false;
+		}
+		$own = array_filter( array( $this->menu_hook_suffix, $this->settings_hook_suffix ), static fn( $v ) => '' !== $v );
+		return in_array( $current, array_merge( array( 'index.php', 'plugins.php' ), $own ), true );
+	}
+
+	/**
+	 * A hidden one-field admin-post form (no visible button) that a
+	 * notice's close button submits.
+	 *
+	 * @param string $action admin-post action (and nonce name).
+	 * @param string $id     Form id.
+	 * @param array<string,string> $fields Extra hidden fields, name => value.
+	 * @return string
+	 */
+	private function hidden_action_form( string $action, string $id, array $fields = array() ): string {
+		$extra = '';
+		foreach ( $fields as $name => $value ) {
+			$extra .= '<input type="hidden" name="' . esc_attr( (string) $name ) . '" value="' . esc_attr( (string) $value ) . '" />';
+		}
+		return '<form id="' . esc_attr( $id ) . '" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="hidden">'
+			. '<input type="hidden" name="action" value="' . esc_attr( $action ) . '" />'
+			. $extra
+			. wp_nonce_field( $action, '_wpnonce', true, false )
+			. '</form>';
+	}
+
+	/**
+	 * Adds the script that turns a click on a notice's close button into
+	 * a submit of the form named by its data-babilim-dismiss-form.
+	 */
+	private function enqueue_notice_dismiss_script(): void {
+		if ( $this->notice_dismiss_script_added ) {
+			return;
+		}
+		$this->notice_dismiss_script_added = true;
+		wp_register_script( 'babilim-notice-dismiss', false, array(), BABILIM_VERSION, true );
+		wp_enqueue_script( 'babilim-notice-dismiss' );
+		wp_add_inline_script( 'babilim-notice-dismiss', self::notice_dismiss_js() );
+	}
+
+	/**
+	 * @return string
+	 */
+	private static function notice_dismiss_js(): string {
+		return implode(
+			"\n",
+			array(
+				"document.addEventListener('click', function (e) {",
+				"\tvar b = e.target && e.target.closest ? e.target.closest('.notice-dismiss') : null;",
+				"\tvar n = b ? b.closest('.notice[data-babilim-dismiss-form]') : null;",
+				"\tif (!n) {",
+				"\t\treturn;",
+				"\t}",
+				"\tvar f = document.getElementById(n.getAttribute('data-babilim-dismiss-form'));",
+				"\tif (f) {",
+				"\t\tf.submit();",
+				"\t}",
+				'});',
+			)
+		);
 	}
 
 	private static function verification_headline(): string {
@@ -2120,7 +2501,7 @@ final class Babilim_Admin {
 	 * that would be sent, as text.
 	 */
 	public function render_error_consent_notice(): void {
-		if ( ! self::can() || ! $this->consent()->granted() ) {
+		if ( ! self::can() || ! $this->consent()->granted() || ! $this->on_babilim_or_core_overview_screen() ) {
 			return;
 		}
 		$reporter = Babilim_Error_Reporter::for_site();
@@ -2128,7 +2509,12 @@ final class Babilim_Admin {
 		if ( array() === $waiting ) {
 			return;
 		}
-		$html = '<div class="notice notice-warning"><p><strong>' . esc_html__( 'Babilim hit an error. Share an error report?', 'babilim' ) . '</strong></p>';
+		$ids = array_values( array_filter( array_map( static fn( $e ) => (string) ( $e['event_id'] ?? '' ), $waiting ) ) );
+		if ( array() === array_diff( $ids, self::hidden_error_event_ids() ) ) {
+			return;
+		}
+		$form_id = 'babilim-error-hide-form';
+		$html    = '<div class="notice notice-warning is-dismissible" data-babilim-dismiss-form="' . esc_attr( $form_id ) . '"><p><strong>' . esc_html__( 'Babilim hit an error. Share an error report?', 'babilim' ) . '</strong></p>';
 		if ( count( $waiting ) > 1 ) {
 			$html .= '<p>' . esc_html(
 				sprintf(
@@ -2156,10 +2542,13 @@ final class Babilim_Admin {
 			$html .= '<p>' . esc_html__( 'This report will be posted publicly on GitHub and may be kept by third parties.', 'babilim' ) . '</p><p>'
 				. $this->error_action_form( 'babilim_error_share_once', __( 'Share this report', 'babilim' ), (string) ( $event['event_id'] ?? '' ), true )
 				. ' ' . $this->error_action_form( 'babilim_error_share_always', __( 'Always share', 'babilim' ), '', false )
-				. ' ' . $this->error_action_form( 'babilim_error_decline', __( 'Don\'t share', 'babilim' ), '', false )
+				. ' ' . $this->error_action_form( 'babilim_error_decline', __( 'Don\'t share', 'babilim' ), implode( ',', $ids ), false, 'event_ids' )
 				. '</p>';
 			break; // One report at a time; the next shows after this one is answered.
 		}
+		// The close button only hides this notice (it deletes nothing).
+		$html .= $this->hidden_action_form( 'babilim_error_notice_dismiss', $form_id, array( 'fingerprint' => implode( ',', $ids ) ) );
+		$this->enqueue_notice_dismiss_script();
 		echo wp_kses( $html . '</div>', self::allowed_admin_html() );
 	}
 
@@ -2168,16 +2557,45 @@ final class Babilim_Admin {
 	 *
 	 * @param string $action   Action (and nonce) name.
 	 * @param string $label    Button text.
-	 * @param string $event_id Event the button applies to; empty for none.
+	 * @param string $event_id Event id (or, for "event_ids", the comma-separated ids) the button applies to; empty for none.
 	 * @param bool   $primary  Whether the button is the primary one.
+	 * @param string $field    Name of the hidden field that carries it.
 	 * @return string
 	 */
-	private function error_action_form( string $action, string $label, string $event_id, bool $primary ): string {
+	private function error_action_form( string $action, string $label, string $event_id, bool $primary, string $field = 'event_id' ): string {
 		$form = $this->action_form( $action, $label, $primary );
 		if ( '' === $event_id ) {
 			return $form;
 		}
-		return str_replace( '<button', '<input type="hidden" name="event_id" value="' . esc_attr( $event_id ) . '" /><button', $form );
+		return str_replace( '<button', '<input type="hidden" name="' . esc_attr( $field ) . '" value="' . esc_attr( $event_id ) . '" /><button', $form );
+	}
+
+	/**
+	 * Event ids parsed from a comma-separated request value; anything
+	 * that is not a 32-character hex id is dropped.
+	 *
+	 * @param string $raw Request value.
+	 * @return string[]
+	 */
+	private static function event_id_list( string $raw ): array {
+		$ids = array();
+		foreach ( explode( ',', $raw ) as $id ) {
+			if ( 1 === preg_match( '/^[0-9a-f]{32}$/', $id ) ) {
+				$ids[] = $id;
+			}
+		}
+		return array_slice( array_values( array_unique( $ids ) ), 0, 50 );
+	}
+
+	/**
+	 * Ids of the waiting reports whose notice this user closed on this site.
+	 *
+	 * @return string[]
+	 */
+	private static function hidden_error_event_ids(): array {
+		$stored = get_user_option( self::USER_OPTION_ERROR_NOTICE_HIDDEN );
+		$mine   = is_array( $stored ) ? ( $stored[ get_current_blog_id() ] ?? '' ) : '';
+		return is_string( $mine ) ? self::event_id_list( $mine ) : array();
 	}
 
 	/**
@@ -2201,12 +2619,30 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * Admin-post handler: forgets the waiting events, then returns to the
-	 * page the notice was on.
+	 * Admin-post handler: forgets the waiting events the notice listed
+	 * (the ids its form carries), then returns to the page the notice was
+	 * on. A report that came in after the notice was drawn is kept.
 	 */
 	public function dispatch_babilim_error_decline(): void {
 		$this->guard( 'babilim_error_decline' );
-		Babilim_Error_Reporter::for_site()->decline();
+		Babilim_Error_Reporter::for_site()->decline( self::event_id_list( self::field( 'event_ids' ) ) );
+		wp_safe_redirect( self::back_url() );
+	}
+
+	/**
+	 * Admin-post handler for the notice's close button: hides the notice
+	 * for this user, for the reports it listed. Deletes nothing and sends
+	 * nothing; the notice comes back when a newer report is waiting.
+	 */
+	public function dispatch_babilim_error_notice_dismiss(): void {
+		$this->guard( 'babilim_error_notice_dismiss' );
+		$ids = self::event_id_list( self::field( 'fingerprint' ) );
+		if ( array() !== $ids ) {
+			$stored = get_user_option( self::USER_OPTION_ERROR_NOTICE_HIDDEN );
+			$stored = is_array( $stored ) ? $stored : array();
+			$stored[ get_current_blog_id() ] = implode( ',', $ids );
+			update_user_option( get_current_user_id(), self::USER_OPTION_ERROR_NOTICE_HIDDEN, $stored, true );
+		}
 		wp_safe_redirect( self::back_url() );
 	}
 
@@ -2366,7 +2802,7 @@ final class Babilim_Admin {
 			'id'    => true,
 		);
 		return array(
-			'div'      => $common,
+			'div'      => $common + array( 'data-babilim-dismiss-form' => true ),
 			'span'     => $common + array(
 				'title'       => true,
 				'aria-label'  => true,
@@ -2477,8 +2913,8 @@ final class Babilim_Admin {
 	 */
 	public function render_current_page(): string {
 		self::reconcile_persisted_notices();
-		$page   = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
-		$screen = isset( $_GET['screen'] ) ? sanitize_key( wp_unslash( $_GET['screen'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
+		$page   = sanitize_key( self::field_get( 'page' ) );
+		$screen = sanitize_key( self::field_get( 'screen' ) );
 		if ( self::SETTINGS_SLUG === $page || 'settings' === $screen ) {
 			return $this->render_settings();
 		}
@@ -2526,7 +2962,8 @@ final class Babilim_Admin {
 		);
 		$alerts  = '';
 		$lines   = array();
-		foreach ( get_settings_errors( 'babilim' ) as $error ) {
+		// Plus what options.php reports for the settings form ("Settings saved.").
+		foreach ( array_merge( get_settings_errors( 'babilim' ), get_settings_errors( 'general' ) ) as $error ) {
 			$class = $classes[ $error['type'] ] ?? 'notice-success';
 			if ( 'notice-error' === $class || 'notice-warning' === $class ) {
 				$alerts .= '<div class="notice ' . esc_attr( $class ) . '"><p>' . esc_html( $error['message'] ) . '</p></div>';
@@ -2626,8 +3063,8 @@ final class Babilim_Admin {
 				)
 			) . '</p>';
 		}
-		$html .= '<p>' . esc_html__( 'Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.', 'babilim' ) . '</p>';
-		$html .= '<p>' . esc_html__( 'The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim.', 'babilim' ) . '</p>';
+		$html .= '<p>' . esc_html__( 'Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync.', 'babilim' ) . '</p>';
+		$html .= '<p>' . esc_html__( 'The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim.', 'babilim' ) . '</p>';
 		$html .= '<details><summary>' . esc_html__( 'What is sent when you enable Babilim', 'babilim' ) . '</summary>' . $this->render_payload_list() . '</details>';
 		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
 		$html .= '<input type="hidden" name="action" value="babilim_enable" />';
@@ -2920,8 +3357,8 @@ final class Babilim_Admin {
 	private function render_translations_table( array $state ): string {
 		$view   = isset( $_GET['view'] ) && is_string( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'all'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filter.
 		$view   = in_array( $view, array( 'available', 'updates', 'requestable', 'installed' ), true ) ? $view : 'all';
-		$locale = isset( $_GET['babilim_locale'] ) && is_string( $_GET['babilim_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['babilim_locale'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$search = isset( $_GET['s'] ) && is_string( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$locale = isset( $_GET['babilim_locale'] ) && is_string( $_GET['babilim_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['babilim_locale'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
+		$search = isset( $_GET['s'] ) && is_string( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
 		$kind   = self::kind_tab( self::field_get( 'babilim_kind' ) );
 
 		$all_items   = $this->list_items( $state );
@@ -2938,33 +3375,38 @@ final class Babilim_Admin {
 		$locales = Babilim_Locale_Label::sorted( $locales );
 
 		$free  = 'free' === (string) ( ( (array) ( $state['license'] ?? array() ) )['kind'] ?? '' );
-		$table = new Babilim_Translations_Table( Babilim_Translations_Table::filter_items( $items, $view, $locale, $search ), $counts, $view, $locale, $search, $free, $locales, $this->checkout_offered(), $kind, $kind_counts, Babilim_Translations_Table::locale_action_counts( $all_items, $search, $kind ) );
+		$table = new Babilim_Translations_Table( Babilim_Translations_Table::filter_items( $items, $view, $locale, $search ), $counts, $view, $locale, $search, $free, $locales, $kind, $kind_counts, Babilim_Translations_Table::locale_action_counts( $all_items, $search, $kind ), Babilim_Translations_Table::slot_limits( $state ) );
 		$table->prepare_items();
 
-		ob_start();
-		echo $table->kind_tabs(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with escaping helpers.
-		echo '<form method="get" id="babilim-filter"><input type="hidden" name="page" value="' . esc_attr( self::MENU_SLUG ) . '" />';
+		// Only the WP_List_Table methods that print themselves are captured;
+		// everything else is concatenated from escaping helpers.
+		$html  = $table->kind_tabs();
+		$html .= '<form method="get" id="babilim-filter"><input type="hidden" name="page" value="' . esc_attr( self::MENU_SLUG ) . '" />';
 		if ( 'all' !== $view ) {
-			echo '<input type="hidden" name="view" value="' . esc_attr( $view ) . '" />';
+			$html .= '<input type="hidden" name="view" value="' . esc_attr( $view ) . '" />';
 		}
-		echo $table->kind_field(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with escaping helpers.
+		$html .= $table->kind_field();
+		ob_start();
 		$table->views();
 		$table->search_box( __( 'Search components', 'babilim' ), 'babilim' );
+		$html .= (string) ob_get_clean();
 		if ( '' !== $locale ) {
-			echo '<input type="hidden" name="babilim_locale" value="' . esc_attr( $locale ) . '" />';
+			$html .= '<input type="hidden" name="babilim_locale" value="' . esc_attr( $locale ) . '" />';
 		}
 		$locale_links = $table->locale_links();
 		if ( '' !== $locale_links ) {
 			// translators: %s: link to the Settings page, with the text "Settings".
 			$languages_note = esc_html__( 'These are the languages this site uses. You can change them in %s.', 'babilim' );
-			echo $locale_links . '<p class="description">' . sprintf( $languages_note, '<a href="' . esc_url( self::page_url( 'settings' ) ) . '">' . esc_html__( 'Settings', 'babilim' ) . '</a>' ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with escaping helpers.
+			$html          .= $locale_links . '<p class="description">' . sprintf( $languages_note, '<a href="' . esc_url( self::page_url( 'settings' ) ) . '">' . esc_html__( 'Settings', 'babilim' ) . '</a>' ) . '</p>';
 		}
-		echo '</form>';
-		echo '<form method="post" id="babilim-translations">' . $table->kind_field(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with escaping helpers.
+		$html .= '</form>';
+		$html .= '<form method="post" id="babilim-translations">' . $table->kind_field();
 		// display() prints the bulk nonce (bulk-translations) itself.
+		ob_start();
 		$table->display();
-		echo '</form>' . $table->cell_forms() . $table->row_forms() . $this->render_checkout_form(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with escaping helpers.
-		return (string) ob_get_clean();
+		$html .= (string) ob_get_clean();
+		$html .= '</form>' . $table->cell_forms() . $table->row_forms();
+		return $html;
 	}
 
 	/**
@@ -2989,8 +3431,9 @@ final class Babilim_Admin {
 		$html .= '<li>' . esc_html__( 'It is stored by the service\'s hosting provider and processed by AI models to produce the translation.', 'babilim' ) . '</li>';
 		$html .= '<li>' . esc_html__( 'The original text and the translations made from it will be provided to other sites that install the same version.', 'babilim' ) . '</li>';
 		$html .= '<li>' . esc_html__( 'By continuing you confirm that you have the right to upload this component.', 'babilim' ) . '</li></ul>';
-		$html .= $this->upload_form( 'babilim_upload_confirm', __( 'Upload and request', 'babilim' ), true, __( 'Uploading…', 'babilim' ) );
-		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false );
+		$id    = (string) $pending['upload_id'];
+		$html .= $this->upload_form( 'babilim_upload_confirm', __( 'Upload and request', 'babilim' ), true, $id, __( 'Uploading…', 'babilim' ) );
+		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false, $id );
 		return $html . '</div>';
 	}
 
@@ -3008,15 +3451,17 @@ final class Babilim_Admin {
 		}
 		/* translators: 1: number of the part being sent, 2: total number of parts. */
 		$html .= '<p>' . esc_html( sprintf( __( 'Uploading part %1$d of %2$d…', 'babilim' ), min( (int) $pending['next'], (int) $pending['parts'] ), (int) $pending['parts'] ) ) . '</p>';
-		$html .= $this->upload_form( 'babilim_upload_step', __( 'Continue', 'babilim' ), true, '', true, max( 500, max( 0, (int) ( $pending['not_before'] ?? 0 ) - time() ) * 1000 ) );
-		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false );
+		$id    = (string) $pending['upload_id'];
+		$html .= $this->upload_form( 'babilim_upload_step', __( 'Continue', 'babilim' ), true, $id, '', true, max( 500, max( 0, (int) ( $pending['not_before'] ?? 0 ) - time() ) * 1000 ) );
+		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false, $id );
 		return $html . '</div>';
 	}
 
-	/** A one-button admin-post form for the upload screens. */
-	private function upload_form( string $action, string $label, bool $primary, string $busy_label = '', bool $autosubmit = false, int $autosubmit_delay_ms = 500 ): string {
+	/** A one-button admin-post form for the upload screens, bound to the offer it was rendered for. */
+	private function upload_form( string $action, string $label, bool $primary, string $upload_id, string $busy_label = '', bool $autosubmit = false, int $autosubmit_delay_ms = 500 ): string {
 		return '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="babilim-inline"' . ( $autosubmit ? ' data-babilim-autosubmit="1" data-babilim-autosubmit-delay="' . (int) $autosubmit_delay_ms . '"' : '' ) . '>'
 			. '<input type="hidden" name="action" value="' . esc_attr( $action ) . '" />'
+			. '<input type="hidden" name="upload_id" value="' . esc_attr( $upload_id ) . '" />'
 			. wp_nonce_field( $action, '_wpnonce', true, false )
 			. '<button type="submit" class="button' . ( $primary ? ' button-primary' : '' ) . '"' . ( '' !== $busy_label ? ' data-babilim-busy-label="' . esc_attr( $busy_label ) . '"' : '' ) . '>' . esc_html( $label ) . '</button></form> ';
 	}
@@ -3030,9 +3475,9 @@ final class Babilim_Admin {
 	 */
 	private function render_confirm(): string {
 		$op     = isset( $_GET['op'] ) && is_string( $_GET['op'] ) ? sanitize_key( wp_unslash( $_GET['op'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation; the POST it builds carries its own nonce.
-		$kind   = isset( $_GET['kind'] ) && is_string( $_GET['kind'] ) ? sanitize_key( wp_unslash( $_GET['kind'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$slug   = isset( $_GET['slug'] ) && is_string( $_GET['slug'] ) ? sanitize_text_field( wp_unslash( $_GET['slug'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$locale = isset( $_GET['locale'] ) && is_string( $_GET['locale'] ) ? sanitize_text_field( wp_unslash( $_GET['locale'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$kind   = isset( $_GET['kind'] ) && is_string( $_GET['kind'] ) ? sanitize_key( wp_unslash( $_GET['kind'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
+		$slug   = isset( $_GET['slug'] ) && is_string( $_GET['slug'] ) ? sanitize_text_field( wp_unslash( $_GET['slug'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
+		$locale = isset( $_GET['locale'] ) && is_string( $_GET['locale'] ) ? sanitize_text_field( wp_unslash( $_GET['locale'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
 		$back   = array();
 		foreach ( array( 's', 'babilim_locale' ) as $key ) {
 			$value = self::field_get( $key );
@@ -3364,7 +3809,7 @@ final class Babilim_Admin {
 	 * @return string
 	 */
 	private static function current_settings_tab(): string {
-		$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation, not a state change.
+		$tab = sanitize_key( self::field_get( 'tab' ) );
 		return 'advanced' === $tab ? 'advanced' : 'general';
 	}
 
@@ -3407,27 +3852,36 @@ final class Babilim_Admin {
 	private function render_settings_general(): string {
 		$granted = $this->consent()->granted_db();
 
-		$html  = '<form id="babilim-settings-form" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
-		$html .= '<input type="hidden" name="action" value="babilim_save_settings" />';
-		$html .= wp_nonce_field( 'babilim_save_settings', '_wpnonce', true, false );
+		// What settings_fields( SETTINGS_GROUP ) prints, with the General
+		// tab as the page options.php returns to.
+		$html  = '<form id="babilim-settings-form" method="post" action="' . esc_url( admin_url( 'options.php' ) ) . '">';
+		$html .= '<input type="hidden" name="option_page" value="' . esc_attr( self::SETTINGS_GROUP ) . '" />';
+		$html .= '<input type="hidden" name="action" value="update" />';
+		$html .= wp_nonce_field( self::SETTINGS_GROUP . '-options', '_wpnonce', false, false );
+		$html .= '<input type="hidden" name="_wp_http_referer" value="' . esc_attr( self::page_url( 'settings', array( 'tab' => 'general' ) ) ) . '" />';
 		$html .= '<table class="form-table" role="presentation"><tbody>';
 
 		$html .= '<tr><th scope="row">' . esc_html__( 'Languages', 'babilim' ) . '</th><td>' . $this->render_managed_locales() . '</td></tr>';
 
 		$html .= '<tr><th scope="row">' . esc_html__( 'Automatic installs', 'babilim' ) . '</th><td>'
-			. '<label><input type="checkbox" name="auto_install" ' . checked( (bool) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, true ), true, false ) . ' /> '
+			. '<label><input type="checkbox" name="' . esc_attr( Babilim_Sync_Installer::OPTION_AUTO_INSTALL ) . '" ' . checked( (bool) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, true ), true, false ) . ' /> '
 			. esc_html__( 'Install available translations automatically', 'babilim' ) . '</label>'
-			. '<p class="description">' . esc_html__( 'The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.', 'babilim' ) . '</p>'
+			. '<p class="description">' . esc_html__( 'While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync.', 'babilim' ) . '</p>'
 			. ( is_multisite() ? '<p class="description">' . esc_html__( 'This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated.', 'babilim' ) . '</p>' : '' )
 			. '</td></tr>';
 
+		$html .= '<tr><th scope="row">' . esc_html__( 'Toolbar', 'babilim' ) . '</th><td>'
+			. '<label><input type="checkbox" name="' . esc_attr( self::OPTION_TOOLBAR_REPORT ) . '" ' . checked( (bool) get_option( self::OPTION_TOOLBAR_REPORT, true ), true, false ) . ' /> '
+			. esc_html__( 'Show the "Report translation" entry in the admin toolbar', 'babilim' ) . '</label>'
+			. '<p class="description">' . esc_html__( 'The entry opens a panel to search the translations Babilim installed on this site and report one of them.', 'babilim' ) . '</p></td></tr>';
+
 		$html .= '<tr><th scope="row">' . esc_html__( 'Error reports', 'babilim' ) . '</th><td>'
-			. '<label><input type="checkbox" name="share_errors" ' . checked( Babilim_Error_Reporter::for_site()->sharing_enabled(), true, false ) . ' /> '
+			. '<label><input type="checkbox" name="' . esc_attr( Babilim_Error_Reporter::OPTION_SHARE ) . '" ' . checked( Babilim_Error_Reporter::for_site()->sharing_enabled(), true, false ) . ' /> '
 			. esc_html__( 'Share error reports', 'babilim' ) . '</label>'
 			. '<p class="description">' . esc_html__( 'When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default.', 'babilim' ) . '</p></td></tr>';
 
 		$html .= '<tr><th scope="row">' . esc_html__( 'Custom overrides', 'babilim' ) . '</th><td>'
-			. '<label><input type="checkbox" name="keep_custom" ' . checked( self::keep_custom_on_purge(), true, false ) . ' /> '
+			. '<label><input type="checkbox" name="' . esc_attr( self::OPTION_KEEP_CUSTOM ) . '" ' . checked( self::keep_custom_on_purge(), true, false ) . ' /> '
 			. esc_html__( 'Keep my own translation overrides when purging everything or uninstalling this plugin.', 'babilim' ) . '</label>'
 			. '<p class="description">' . sprintf(
 				/* translators: %s: folder path, shown as code. */
@@ -3436,7 +3890,7 @@ final class Babilim_Admin {
 			) . '</p></td></tr>';
 
 		$html .= '<tr><th scope="row">' . esc_html__( 'Uninstall', 'babilim' ) . '</th><td>'
-			. '<label><input type="checkbox" name="delete_data_on_uninstall" ' . checked( self::delete_data_on_uninstall(), true, false ) . ' /> '
+			. '<label><input type="checkbox" name="' . esc_attr( self::OPTION_DELETE_DATA ) . '" ' . checked( self::delete_data_on_uninstall(), true, false ) . ' /> '
 			. esc_html__( 'Delete all Babilim data on uninstall', 'babilim' ) . '</label>'
 			. '<p class="description">' . esc_html__( 'Off by default: deleting the plugin keeps this site\'s identity, so a reinstall can reuse it.', 'babilim' ) . '</p>'
 			. '<p class="description">' . esc_html( self::delete_data_risk_text() ) . '</p></td></tr>';
@@ -3480,9 +3934,10 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * The checkout form, without a button: the Upgrade buttons elsewhere
-	 * on the page point at it with their `form` attribute, so it can
-	 * sit after the other forms instead of inside one. It opens in a
+	 * The checkout form, without a button: the Upgrade button on the
+	 * Settings screen points at it with its `form` attribute, so it can
+	 * sit after the other forms instead of inside one. (The translations
+	 * screen no longer prints it: nothing there points at it.) It opens in a
 	 * new tab; the poll URL (a nonce-protected admin-ajax address) lets
 	 * the script notice when the purchase went through. No token is
 	 * ever printed.
@@ -3533,7 +3988,17 @@ final class Babilim_Admin {
 			wp_safe_redirect( self::page_url( 'settings' ) );
 			return;
 		}
-		wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the host was checked against the checkout allow-list above; it is the product website, not an allowed_redirect_hosts entry.
+		// The host passed the checkout allow-list above; let wp_safe_redirect() accept
+		// exactly that host for this one call, then take the permission back.
+		$checkout_host = (string) wp_parse_url( $url, PHP_URL_HOST );
+		$allow_host    = static function ( $hosts ) use ( $checkout_host ) {
+			$hosts   = is_array( $hosts ) ? $hosts : array();
+			$hosts[] = $checkout_host;
+			return $hosts;
+		};
+		add_filter( 'allowed_redirect_hosts', $allow_host );
+		wp_safe_redirect( $url );
+		remove_filter( 'allowed_redirect_hosts', $allow_host );
 		// No exit(): admin-post.php ends the request once the action returns, like every other handler here.
 	}
 
@@ -3602,7 +4067,8 @@ final class Babilim_Admin {
 	 * @return bool
 	 */
 	private function report_panel_available(): bool {
-		return is_admin() && self::can() && $this->consent()->granted();
+		return is_admin() && self::can() && $this->consent()->granted()
+			&& (bool) get_option( self::OPTION_TOOLBAR_REPORT, true ) && is_admin_bar_showing();
 	}
 
 	/**
@@ -3625,17 +4091,129 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * `admin_enqueue_scripts` callback: the report panel's script, only
-	 * where the toolbar entry is shown. The site token never goes here.
+	 * `admin_enqueue_scripts` callback: where the toolbar entry is shown,
+	 * a small loader with no file of its own. The panel's script and its
+	 * settings are only fetched when the entry is clicked (see
+	 * report_loader_js() and ajax_babilim_report_panel()). The site token
+	 * never goes here.
 	 */
 	public function enqueue_report_script(): void {
 		if ( ! $this->report_panel_available() ) {
 			return;
 		}
-		wp_enqueue_script( 'babilim-report', plugins_url( 'admin/js/babilim-report.js', BABILIM_FILE ), array(), BABILIM_VERSION, true );
-		wp_localize_script(
-			'babilim-report',
-			'babilimReport',
+		$config = array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'babilim_report_panel' ),
+			'src'     => plugins_url( 'admin/js/babilim-report.js', BABILIM_FILE ) . '?ver=' . BABILIM_VERSION,
+		);
+		wp_register_script( 'babilim-report-loader', false, array(), BABILIM_VERSION, true );
+		wp_enqueue_script( 'babilim-report-loader' );
+		wp_add_inline_script( 'babilim-report-loader', 'var babilimReportLoader = ' . wp_json_encode( $config ) . ';', 'before' );
+		wp_add_inline_script( 'babilim-report-loader', self::report_loader_js() );
+	}
+
+	/**
+	 * The loader: on the first click on the toolbar entry it asks
+	 * ajax_babilim_report_panel() for the panel's settings, puts them in
+	 * window.babilimReport, adds the panel's script, and once that has
+	 * loaded clicks the entry again so the panel opens. Later clicks are
+	 * left to the panel's script. When the settings or the script cannot
+	 * be loaded (an expired nonce, a network error), the loader is put
+	 * back exactly as it was -- the settings and the script it added are
+	 * removed -- and the next click tries again; the page is not reloaded
+	 * or left. The only trace is a console.error for developers (plain
+	 * English, not a user-facing string).
+	 *
+	 * @return string
+	 */
+	private static function report_loader_js(): string {
+		return implode(
+			"\n",
+			array(
+				'(function () {',
+				"\tvar cfg = window.babilimReportLoader;",
+				"\tvar state = 'idle';",
+				"\tif (!cfg) {",
+				"\t\treturn;",
+				"\t}",
+				"\tdocument.addEventListener('click', function (e) {",
+				"\t\tvar t = e.target;",
+				"\t\tvar link = t && t.closest ? t.closest('#wp-admin-bar-babilim-report > a') : null;",
+				"\t\tif (!link || 'loaded' === state) {",
+				"\t\t\treturn;",
+				"\t\t}",
+				"\t\te.preventDefault();",
+				"\t\tif ('idle' !== state) {",
+				"\t\t\treturn;",
+				"\t\t}",
+				"\t\tstate = 'loading';",
+				"\t\tvar s = null;",
+				"\t\t// When the panel cannot be loaded, undo what this click did so",
+				"\t\t// the next click tries again; nothing is shown to the user.",
+				"\t\tvar fail = function (why) {",
+				"\t\t\tif (s) {",
+				"\t\t\t\ts.remove();",
+				"\t\t\t}",
+				"\t\t\ttry {",
+				"\t\t\t\tdelete window.babilimReport;",
+				"\t\t\t} catch (ignore) {",
+				"\t\t\t\twindow.babilimReport = undefined;",
+				"\t\t\t}",
+				"\t\t\tstate = 'idle';",
+				"\t\t\tif (window.console && window.console.error) {",
+				"\t\t\t\twindow.console.error('Babilim: the report panel could not be loaded (' + why + ').');",
+				"\t\t\t}",
+				"\t\t};",
+				"\t\tvar data = new window.URLSearchParams();",
+				"\t\tdata.append('action', 'babilim_report_panel');",
+				"\t\tdata.append('_ajax_nonce', cfg.nonce);",
+				"\t\twindow.fetch(cfg.ajaxUrl, {",
+				"\t\t\tmethod: 'POST',",
+				"\t\t\tcredentials: 'same-origin',",
+				"\t\t\theaders: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+				"\t\t\tbody: data.toString()",
+				"\t\t}).then(function (r) {",
+				"\t\t\treturn r.json();",
+				"\t\t}).then(function (json) {",
+				"\t\t\tif (!json || !json.success) {",
+				"\t\t\t\tfail('settings refused');",
+				"\t\t\t\treturn;",
+				"\t\t\t}",
+				"\t\t\twindow.babilimReport = json.data;",
+				"\t\t\ts = document.createElement('script');",
+				"\t\t\ts.src = cfg.src;",
+				"\t\t\ts.onload = function () {",
+				"\t\t\t\tstate = 'loaded';",
+				"\t\t\t\tlink.click();",
+				"\t\t\t};",
+				"\t\t\ts.onerror = function () {",
+				"\t\t\t\tfail('script error');",
+				"\t\t\t};",
+				"\t\t\tdocument.body.appendChild(s);",
+				"\t\t}).catch(function () {",
+				"\t\t\tfail('request failed');",
+				"\t\t});",
+				"\t});",
+				'}());',
+			)
+		);
+	}
+
+	/**
+	 * `wp_ajax_babilim_report_panel`: the report panel's settings, asked
+	 * for by the loader on the first click. Same conditions as the
+	 * toolbar entry, minus the admin bar check (core reports no admin bar
+	 * during an ajax request). The site token never goes here.
+	 */
+	public function ajax_babilim_report_panel(): void {
+		check_ajax_referer( 'babilim_report_panel' );
+		if ( ! self::can() ) {
+			wp_send_json_error( array( 'code' => 'forbidden' ), 403 );
+		}
+		if ( ! $this->consent()->granted() || ! (bool) get_option( self::OPTION_TOOLBAR_REPORT, true ) ) {
+			wp_send_json_error( array( 'code' => 'unavailable' ) );
+		}
+		wp_send_json_success(
 			array(
 				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 				'searchNonce' => wp_create_nonce( 'babilim_translation_search' ),
@@ -3838,8 +4416,8 @@ final class Babilim_Admin {
 
 	/**
 	 * The Account cell: whether the site is verified (three states read
-	 * from the stored identity and verification warning), the free quota
-	 * and the license kind. Nothing here is decided client-side.
+	 * from the stored identity and verification warning), the free-plan
+	 * slots and the license kind. Nothing here is decided client-side.
 	 *
 	 * @return string
 	 */
@@ -3865,7 +4443,7 @@ final class Babilim_Admin {
 		if ( isset( $license['kind'] ) ) {
 			$kind = (string) $license['kind'];
 			if ( 'paid' === $kind ) {
-				$kind_label = __( 'Licensed', 'babilim' );
+				$kind_label = __( 'Paid', 'babilim' );
 			} elseif ( 'partner' === $kind ) {
 				$kind_label = __( 'Partner', 'babilim' );
 			} elseif ( 'free' === $kind ) {
@@ -3873,7 +4451,7 @@ final class Babilim_Admin {
 			} else {
 				$kind_label = $kind;
 			}
-			$html .= '<li>' . esc_html__( 'License', 'babilim' ) . ': ' . esc_html( $kind_label );
+			$html .= '<li>' . esc_html__( 'Service plan', 'babilim' ) . ': ' . esc_html( $kind_label );
 			if ( $this->checkout_offered() ) {
 				$price = (array) $state['price'];
 				$html .= ' <button type="submit" form="babilim-checkout-form" class="button button-primary">' . esc_html__( 'Upgrade this site', 'babilim' ) . '</button>'
@@ -4088,19 +4666,21 @@ final class Babilim_Admin {
 		foreach ( $rows as $locale ) {
 			$is_detected = in_array( $locale, $detected, true );
 			$checked     = ! ( $is_detected && in_array( $locale, $disabled, true ) );
-			$html       .= '<label class="babilim-inline-block babilim-mr-1em"><input type="checkbox" name="locales[]" value="' . esc_attr( $locale ) . '" ' . checked( $checked, true, false ) . ' /> '
+			$html       .= '<label class="babilim-inline-block babilim-mr-1em"><input type="checkbox" name="' . esc_attr( self::OPTION_MANUAL_LOCALES ) . '[checked][]" value="' . esc_attr( $locale ) . '" ' . checked( $checked, true, false ) . ' /> '
 				. '<span title="' . esc_attr( $locale ) . '">' . esc_html( Babilim_Locale_Label::name( $locale ) ) . '</span>' . ( $is_detected ? ' ' . esc_html__( '(detected)', 'babilim' ) : '' ) . '</label>';
 		}
 		if ( '' === $html ) {
 			$html = '<p class="description">' . esc_html__( 'No language is managed yet.', 'babilim' ) . '</p>';
 		}
+		// Marks the block as posted even with every box unchecked.
+		$html .= '<input type="hidden" name="' . esc_attr( self::OPTION_MANUAL_LOCALES ) . '[form]" value="1" />';
 		$html .= '<p class="description">' . esc_html__( 'Babilim adds translations for every language checked here.', 'babilim' ) . '</p>';
 
 		$catalog = $this->locale_catalog();
 		if ( null !== $catalog ) {
 			$options = Babilim_Locale_Label::sorted( array_diff( $catalog, $rows ) );
 			$html .= '<p><label for="babilim-new-locale">' . esc_html__( 'Add another language', 'babilim' ) . '</label> '
-				. '<select id="babilim-new-locale" name="new_locale"><option value="">' . esc_html__( 'Choose a language…', 'babilim' ) . '</option>';
+				. '<select id="babilim-new-locale" name="' . esc_attr( self::OPTION_MANUAL_LOCALES ) . '[new]"><option value="">' . esc_html__( 'Choose a language…', 'babilim' ) . '</option>';
 			foreach ( $options as $locale ) {
 				$html .= '<option value="' . esc_attr( $locale ) . '" title="' . esc_attr( $locale ) . '">' . esc_html( Babilim_Locale_Label::name( $locale ) ) . '</option>';
 			}
@@ -4156,7 +4736,7 @@ final class Babilim_Admin {
 	 * whatever the response happened to contain.
 	 *
 	 * @param array $quota     Last-synced quota, or empty before the first sync.
-	 * @param bool  $show_free Whether to show the Free quota row (free licenses only).
+	 * @param bool  $show_free Whether to show the Free-plan slots row (free licenses only).
 	 * @return string `<li>` rows.
 	 */
 	private function render_quota( array $quota, bool $show_free ): string {
@@ -4171,7 +4751,7 @@ final class Babilim_Admin {
 				}
 			}
 			if ( ! empty( $parts ) ) {
-				$html .= '<li>' . esc_html__( 'Free quota', 'babilim' ) . ': ' . esc_html( implode( ' · ', $parts ) ) . '</li>';
+				$html .= '<li>' . esc_html__( 'Free-plan slots', 'babilim' ) . ': ' . esc_html( implode( ' · ', $parts ) ) . '</li>';
 			}
 		}
 		$downloads = (array) ( $quota['downloads'] ?? array() );
@@ -4364,12 +4944,12 @@ final class Babilim_Admin {
 	 * @return string
 	 */
 	private function render_report(): string {
-		$kind         = isset( $_GET['kind'] ) ? sanitize_key( wp_unslash( $_GET['kind'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$slug         = isset( $_GET['slug'] ) ? sanitize_text_field( wp_unslash( $_GET['slug'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$locale       = isset( $_GET['locale'] ) ? sanitize_text_field( wp_unslash( $_GET['locale'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$build_id     = isset( $_GET['build_id'] ) ? sanitize_text_field( wp_unslash( $_GET['build_id'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$rollback     = '1' === ( isset( $_GET['rollback'] ) && is_string( $_GET['rollback'] ) ? sanitize_text_field( wp_unslash( $_GET['rollback'] ) ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$plural_index = isset( $_GET['plural_index'] ) ? sanitize_text_field( wp_unslash( $_GET['plural_index'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$kind         = sanitize_key( self::field_get( 'kind' ) );
+		$slug         = self::field_get( 'slug' );
+		$locale       = self::field_get( 'locale' );
+		$build_id     = self::field_get( 'build_id' );
+		$rollback     = '1' === self::field_get( 'rollback' );
+		$plural_index = self::field_get( 'plural_index' );
 
 		$html  = '<div class="wrap"><h1>' . esc_html__( 'Report a problem', 'babilim' ) . '</h1>';
 		$html .= $this->render_notices();

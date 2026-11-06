@@ -12,9 +12,11 @@
  * class only adds the download step in front of it. It never runs on a
  * page load -- the cron is its only automatic caller.
  *
- * Only builds listed in the last sync's `updates[]` are installed
- * automatically, so a locale the site owner never installed is never
- * installed behind their back; first installs stay a manual action.
+ * Builds listed in the last sync's `updates[]` are installed for locales
+ * the site already has, and builds the last sync lists as available for
+ * a managed language are installed for the first time
+ * (install_available()). Both ask the service for the file; whether it
+ * may be handed out is the service's answer, never a local rule.
  *
  * Nothing is downloaded while the site is in the verification-required
  * state (see Babilim_Site::verification_warning()), and a `403
@@ -41,6 +43,51 @@ final class Babilim_Sync_Installer {
 	 * @var string
 	 */
 	public const OPTION_FAILURES = 'babilim_auto_install_failures';
+
+	/**
+	 * Option holding `build_id => {sig, at}` for builds the service
+	 * refused to hand out (no slot, quota, license). `sig` is what the
+	 * service reported for that cell or update when it was refused (see
+	 * signature()). The build is not asked for again while the service
+	 * keeps reporting the same thing; the record is dropped when the build
+	 * is no longer offered, when the report changes, or after
+	 * REFUSAL_TTL (so a restored license that changes nothing in the
+	 * report is still tried once more).
+	 *
+	 * @var string
+	 */
+	public const OPTION_REFUSED = 'babilim_install_refused';
+
+	/**
+	 * Seconds a refusal record lasts: after this the build is asked for
+	 * once more even if the service's report did not change.
+	 *
+	 * @var int
+	 */
+	public const REFUSAL_TTL = 7 * DAY_IN_SECONDS;
+
+	/**
+	 * Outcome classes (see classify_outcome()): stop the run, a refusal by
+	 * the service (not counted, not retried), or a failure of this build.
+	 */
+	public const OUTCOME_STOP    = 'stop';
+	public const OUTCOME_REFUSED = 'refused';
+	public const OUTCOME_FAILED  = 'failed';
+
+	/**
+	 * Result codes after which nothing else would fare better right now.
+	 * The one list; Babilim_Error_Reporter::is_excluded_code() reads it.
+	 *
+	 * @var string[]
+	 */
+	public const STOP_CODES = array( 'verification_required', 'no_token', 'rate_limited' );
+
+	/**
+	 * Result codes that are the service declining to hand out a build.
+	 *
+	 * @var string[]
+	 */
+	public const REFUSAL_CODES = array( 'quota_exceeded', 'license_required', 'slot_required' );
 
 	/**
 	 * Option (bool, missing = on): install available translations
@@ -83,6 +130,17 @@ final class Babilim_Sync_Installer {
 	public const MAX_PER_RUN = 20;
 
 	/**
+	 * Upper bound on refusals per cron run, shared by updates and
+	 * available cells. A refusal does not use up MAX_PER_RUN, so without
+	 * this a run would ask for every refused build on the list; once the
+	 * service has declined this many, the run asks for nothing more.
+	 * One run is one instance: the cron builds a new one per run.
+	 *
+	 * @var int
+	 */
+	public const MAX_REFUSALS_PER_RUN = 20;
+
+	/**
 	 * @var Babilim_State
 	 */
 	private $state;
@@ -112,6 +170,13 @@ final class Babilim_Sync_Installer {
 	 */
 	private $base_url;
 
+	/**
+	 * Refusals this instance (one run) has had so far.
+	 *
+	 * @var int
+	 */
+	private $refusals = 0;
+
 	public function __construct( Babilim_State $state, Babilim_Site $site, Babilim_Installer $installer, Babilim_Http $http, Babilim_Fs $fs, string $base_url ) {
 		$this->state     = $state;
 		$this->site      = $site;
@@ -135,8 +200,9 @@ final class Babilim_Sync_Installer {
 			return $done;
 		}
 		$failures = $this->failures();
+		$refused  = $this->refused();
 		foreach ( $this->state->updates() as $update ) {
-			if ( count( $done ) >= self::MAX_PER_RUN ) {
+			if ( count( $done ) >= self::MAX_PER_RUN || $this->refusals >= self::MAX_REFUSALS_PER_RUN ) {
 				break;
 			}
 			$kind     = (string) ( $update['kind'] ?? '' );
@@ -150,7 +216,24 @@ final class Babilim_Sync_Installer {
 				continue;
 			}
 
-			$result = $this->install_build( $kind, $slug, $locale, $build_id );
+			$sig = self::signature( $update );
+			if ( $this->is_refused( $refused, $build_id, $sig ) ) {
+				continue;
+			}
+
+			$result  = $this->install_build( $kind, $slug, $locale, $build_id );
+			$outcome = self::classify_outcome( (string) $result->code() );
+			if ( $result->is_ok() ) {
+				unset( $failures[ $build_id ] );
+			} elseif ( self::OUTCOME_REFUSED === $outcome ) {
+				// The service's allowance, not this build: remember it, and
+				// neither count it nor let it use up the run.
+				$refused[ $build_id ] = array( 'sig' => $sig, 'at' => time() );
+				++$this->refusals;
+				continue;
+			} elseif ( self::OUTCOME_FAILED === $outcome ) {
+				$failures[ $build_id ] = (int) ( $failures[ $build_id ] ?? 0 ) + 1;
+			}
 			$done[] = array(
 				'kind'     => $kind,
 				'slug'     => $slug,
@@ -158,18 +241,13 @@ final class Babilim_Sync_Installer {
 				'build_id' => $build_id,
 				'result'   => $result,
 			);
-
-			$code = (string) $result->code();
-			if ( $result->is_ok() ) {
-				unset( $failures[ $build_id ] );
-			} elseif ( 'verification_required' === $code || 'no_token' === $code || 'babilim_rate_limited' === $code ) {
+			if ( self::OUTCOME_STOP === $outcome ) {
 				// Not this build's fault, and nothing else would fare
 				// better right now: stop, and do not count it.
 				break;
-			} else {
-				$failures[ $build_id ] = (int) ( $failures[ $build_id ] ?? 0 ) + 1;
 			}
 		}
+		$this->save_refused( $refused );
 		$this->save_failures( $failures );
 		return $done;
 	}
@@ -177,17 +255,18 @@ final class Babilim_Sync_Installer {
 	/**
 	 * Installs builds the last sync lists as `babilim_available` for a
 	 * managed language, so a new translation shows up without a click.
-	 * Shares MAX_PER_RUN (through $limit), the failure counters and the
-	 * early-abort rule with install_pending_updates(). Makes zero
+	 * Shares MAX_PER_RUN (through $limit), MAX_REFUSALS_PER_RUN, the
+	 * failure counters and the early-abort rule with
+	 * install_pending_updates(). Makes zero
 	 * requests without consent, with the option off, or in the
 	 * verification-required state.
 	 *
 	 * Skipped: a cell the site already has a record for, a
 	 * (kind, slug, locale) the owner removed (OPTION_SKIP), a build that
-	 * failed MAX_AUTO_ATTEMPTS times, and any cell the service did not
-	 * mark `auto_install: true`; this class never reads the license
-	 * kind. `updates[]` (install_pending_updates()) does not depend on
-	 * the flag.
+	 * failed MAX_AUTO_ATTEMPTS times, and any cell that is not
+	 * `babilim_available`. This class reads neither the
+	 * license kind nor any per-cell flag: every available cell is
+	 * requested the same way, and the service answers.
 	 *
 	 * On a multisite network nothing is installed here at all.
 	 *
@@ -211,6 +290,7 @@ final class Babilim_Sync_Installer {
 		$skip     = get_option( self::OPTION_SKIP, array() );
 		$skip     = is_array( $skip ) ? $skip : array();
 		$failures = $this->failures();
+		$refused  = $this->refused();
 
 		foreach ( (array) ( $state['components'] ?? array() ) as $component ) {
 			$kind = (string) ( $component['kind'] ?? '' );
@@ -221,14 +301,10 @@ final class Babilim_Sync_Installer {
 			foreach ( $component['locales'] as $locale => $cell ) {
 				$locale   = (string) $locale;
 				$build_id = is_array( $cell ) ? (string) ( $cell['build_id'] ?? '' ) : '';
-				if ( count( $done ) >= $limit ) {
+				if ( count( $done ) >= $limit || $this->refusals >= self::MAX_REFUSALS_PER_RUN ) {
 					break 2;
 				}
 				if ( ! is_array( $cell ) || 'babilim_available' !== ( $cell['status'] ?? '' ) || '' === $build_id || ! in_array( $locale, $locales, true ) ) {
-					continue;
-				}
-				// Only the service decides what may be installed unasked.
-				if ( true !== ( $cell['auto_install'] ?? null ) ) {
 					continue;
 				}
 				if ( isset( $skip[ "$kind:$slug:$locale" ] ) || (int) ( $failures[ $build_id ] ?? 0 ) >= self::MAX_AUTO_ATTEMPTS ) {
@@ -238,7 +314,23 @@ final class Babilim_Sync_Installer {
 					continue;
 				}
 
-				$result = $this->install_build( $kind, $slug, $locale, $build_id );
+				$sig = self::signature( $cell );
+				if ( $this->is_refused( $refused, $build_id, $sig ) ) {
+					continue;
+				}
+
+				$result  = $this->install_build( $kind, $slug, $locale, $build_id );
+				$outcome = self::classify_outcome( (string) $result->code() );
+				if ( $result->is_ok() ) {
+					unset( $failures[ $build_id ] );
+					update_option( self::OPTION_AUTO_INSTALLED, (int) get_option( self::OPTION_AUTO_INSTALLED, 0 ) + 1, false );
+				} elseif ( self::OUTCOME_REFUSED === $outcome ) {
+					$refused[ $build_id ] = array( 'sig' => $sig, 'at' => time() );
+					++$this->refusals;
+					continue;
+				} elseif ( self::OUTCOME_FAILED === $outcome ) {
+					$failures[ $build_id ] = (int) ( $failures[ $build_id ] ?? 0 ) + 1;
+				}
 				$done[] = array(
 					'kind'     => $kind,
 					'slug'     => $slug,
@@ -246,18 +338,12 @@ final class Babilim_Sync_Installer {
 					'build_id' => $build_id,
 					'result'   => $result,
 				);
-
-				$code = (string) $result->code();
-				if ( $result->is_ok() ) {
-					unset( $failures[ $build_id ] );
-					update_option( self::OPTION_AUTO_INSTALLED, (int) get_option( self::OPTION_AUTO_INSTALLED, 0 ) + 1, false );
-				} elseif ( 'verification_required' === $code || 'no_token' === $code || 'babilim_rate_limited' === $code ) {
+				if ( self::OUTCOME_STOP === $outcome ) {
 					break 2;
-				} else {
-					$failures[ $build_id ] = (int) ( $failures[ $build_id ] ?? 0 ) + 1;
 				}
 			}
 		}
+		$this->save_refused( $refused );
 		$this->save_failures( $failures );
 		return $done;
 	}
@@ -388,6 +474,115 @@ final class Babilim_Sync_Installer {
 			return Babilim_Result::error( 'verification_required', $error->get_error_message() );
 		}
 		return Babilim_Result::error( $error->get_error_code(), $error->get_error_message() );
+	}
+
+	/**
+	 * Which class a result code belongs to: OUTCOME_STOP (stop the run,
+	 * count nothing), OUTCOME_REFUSED (the service declined this build:
+	 * count nothing, do not ask again until the next sync answer, and it
+	 * uses none of the run's budget) or OUTCOME_FAILED (this build's
+	 * failure, counted). A `babilim_` prefix is ignored.
+	 *
+	 * @param string $code A result or WP_Error code.
+	 * @return string One of the OUTCOME_* constants.
+	 */
+	public static function classify_outcome( string $code ): string {
+		$code = (string) preg_replace( '/^babilim_/', '', $code );
+		if ( in_array( $code, self::STOP_CODES, true ) ) {
+			return self::OUTCOME_STOP;
+		}
+		if ( in_array( $code, self::REFUSAL_CODES, true ) ) {
+			return self::OUTCOME_REFUSED;
+		}
+		return self::OUTCOME_FAILED;
+	}
+
+	/**
+	 * What the service reported for one cell or update, as a short string:
+	 * a different value means the service changed what it says about it.
+	 *
+	 * @param array $entry A locale cell or an updates[] entry.
+	 */
+	private static function signature( array $entry ): string {
+		return implode(
+			'|',
+			array(
+				(string) ( $entry['status'] ?? 'update' ),
+				(string) ( $entry['build_id'] ?? '' ),
+				(string) ( $entry['build_no'] ?? '' ),
+				(string) ( $entry['built_for_version'] ?? $entry['version'] ?? '' ),
+			)
+		);
+	}
+
+	/**
+	 * The signatures of every build the stored state offers now (updates
+	 * and available cells), keyed by build id.
+	 *
+	 * @return array<string,string[]>
+	 */
+	private function offered_signatures(): array {
+		$offered = array();
+		foreach ( $this->state->updates() as $update ) {
+			$offered[ (string) ( $update['build_id'] ?? '' ) ][] = self::signature( $update );
+		}
+		foreach ( (array) ( $this->state->get()['components'] ?? array() ) as $component ) {
+			foreach ( (array) ( is_array( $component ) ? ( $component['locales'] ?? array() ) : array() ) as $cell ) {
+				if ( is_array( $cell ) && 'babilim_available' === ( $cell['status'] ?? '' ) ) {
+					$offered[ (string) ( $cell['build_id'] ?? '' ) ][] = self::signature( $cell );
+				}
+			}
+		}
+		return $offered;
+	}
+
+	/**
+	 * @return array<string,array{sig:string,at:int}>
+	 */
+	private function refused(): array {
+		$stored = get_option( self::OPTION_REFUSED, array() );
+		$out    = array();
+		foreach ( is_array( $stored ) ? $stored : array() as $build_id => $entry ) {
+			if ( is_array( $entry ) && isset( $entry['sig'], $entry['at'] ) && is_string( $entry['sig'] ) ) {
+				$out[ (string) $build_id ] = array( 'sig' => $entry['sig'], 'at' => (int) $entry['at'] );
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Whether the service refused $build_id while reporting the same
+	 * thing it reports now, less than REFUSAL_TTL ago.
+	 *
+	 * @param array<string,array{sig:string,at:int}> $refused  refused().
+	 * @param string                                 $build_id Build.
+	 * @param string                                 $sig      signature() of what is reported now.
+	 */
+	private function is_refused( array $refused, string $build_id, string $sig ): bool {
+		return isset( $refused[ $build_id ] )
+			&& $refused[ $build_id ]['sig'] === $sig
+			&& time() - $refused[ $build_id ]['at'] < self::REFUSAL_TTL;
+	}
+
+	/**
+	 * Persists the refusals that still apply: the build is still offered
+	 * with the same signature and the record has not expired.
+	 *
+	 * @param array<string,array{sig:string,at:int}> $refused build_id => record.
+	 */
+	private function save_refused( array $refused ): void {
+		$offered = $this->offered_signatures();
+		$keep    = array();
+		foreach ( $refused as $build_id => $entry ) {
+			if ( in_array( $entry['sig'], $offered[ $build_id ] ?? array(), true ) && time() - $entry['at'] < self::REFUSAL_TTL ) {
+				$keep[ $build_id ] = $entry;
+			}
+		}
+		if ( array() === $keep ) {
+			delete_option( self::OPTION_REFUSED );
+			return;
+		}
+		update_option( self::OPTION_REFUSED, $keep, false );
 	}
 
 	/**

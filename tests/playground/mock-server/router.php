@@ -22,6 +22,8 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/responses.php';
+
 $pkg_dir = getenv( 'BABILIM_PKG_DIR' );
 if ( false === $pkg_dir || '' === $pkg_dir ) {
 	http_response_code( 500 );
@@ -53,7 +55,7 @@ if ( 'POST' === $method && '/v1/sites' === $path ) {
 	$body  = json_decode( (string) file_get_contents( 'php://input' ), true );
 	$state = $read_state();
 	$state['registered'][] = is_array( $body ) ? (string) ( $body['install_pub'] ?? '' ) : '';
-	$site_id               = 'st_pg' . str_pad( (string) count( $state['registered'] ), 4, '0', STR_PAD_LEFT );
+	$site_id               = babilim_mock_site_id( count( $state['registered'] ) );
 	$nonce                 = bin2hex( random_bytes( 16 ) );
 	// What a real callback needs later (only used when `callback` is on).
 	$state['sites'][ $site_id ] = array(
@@ -62,13 +64,7 @@ if ( 'POST' === $method && '/v1/sites' === $path ) {
 		'nonce'    => $nonce,
 	);
 	$write_state( $state );
-	$json_reply(
-		201,
-		array(
-			'site_id'   => $site_id,
-			'challenge' => array( 'nonce' => $nonce, 'expires_at' => gmdate( 'Y-m-d\TH:i:s\Z', time() + 900 ) ),
-		)
-	);
+	$json_reply( 201, babilim_mock_register_body( count( $state['registered'] ), $nonce ) );
 	return;
 }
 
@@ -103,10 +99,10 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/([^/]+)/verify$#', (st
 		$json_reply( 403, array( 'error' => array( 'code' => 'verification_required', 'message' => 'The service could not reach this site.', 'hint' => 'Allow the challenge endpoint.', 'reason' => 'callback_unreachable' ) ) );
 		return;
 	}
-	$token             = 'tok_pg_' . count( $state['registered'] );
+	$token             = babilim_mock_token( count( $state['registered'] ) );
 	$state['tokens'][] = $token; // The only bearer values /v1/feedback and /v1/error-reports accept.
 	$write_state( $state );
-	$json_reply( 200, array( 'site_token' => $token, 'verified' => true, 'license' => array( 'kind' => 'free', 'status' => 'active' ), 'quota' => new stdClass() ) );
+	$json_reply( 200, babilim_mock_verify_body( $token ) );
 	return;
 }
 
@@ -183,102 +179,11 @@ if ( 'POST' === $method && 1 === preg_match( '#^/v1/sites/[^/]+/inventory$#', (s
 		$json_reply( (int) $step['status'], array( 'error' => array( 'code' => (string) ( $step['code'] ?? 'unavailable' ), 'message' => 'Scripted failure.', 'hint' => '' ) ) );
 		return;
 	}
-	$locales    = is_array( $body ) && is_array( $body['locales'] ?? null ) ? $body['locales'] : array();
-	$components = array();
-	$updates    = array();
-	$profile    = (string) ( $state['profile'] ?? '' );
-	foreach ( is_array( $body ) && is_array( $body['components'] ?? null ) ? $body['components'] : array() as $component ) {
-		if ( 'bulk' === $profile && 0 === strpos( (string) ( $component['slug'] ?? '' ), 'bulk-' ) ) {
-			// The bulk scenarios: every bulk-* component has a build for de_DE.
-			$slug         = (string) $component['slug'];
-			$components[] = array(
-				'kind'    => (string) ( $component['kind'] ?? 'plugin' ),
-				'slug'    => $slug,
-				'locales' => (object) array(
-					'de_DE' => array(
-						'status'       => 'babilim_available',
-						'auto_install' => true,
-						'build_id' => 'bd_' . substr( md5( $slug . 'de_DE' ), 0, 12 ),
-						'build_no' => 1,
-						'built_at' => '2026-09-20T08:00:00Z',
-					),
-				),
-			);
-			continue;
-		}
-		if ( 'list' === $profile ) {
-			// The list scenario: a few statuses per component, picked
-			// by slug, so every view of the translations list has data.
-			$slug      = (string) ( $component['slug'] ?? '' );
-			$by_slug   = array(
-				'woocommerce'  => array( 'de_DE' => 'babilim_available', 'fr_FR' => 'requestable' ),
-				'queued-demo'  => array( 'de_DE' => 'queued' ),
-				'long-name-demo' => array( 'de_DE' => 'requestable', 'zz_ZZ' => 'requestable', 'es_DO' => 'requestable' ),
-				// Installed here once the flow downloads it; built for an
-				// older version, so its line offers the longest request label.
-				'newer-demo'   => array( 'de_DE' => 'babilim_installed' ),
-			);
-			$statuses  = $by_slug[ $slug ] ?? array( 'de_DE' => 'requestable' );
-			$list_cell = array();
-			foreach ( $statuses as $locale => $status ) {
-				$list_cell[ $locale ] = array( 'status' => $status );
-				if ( 'babilim_installed' === $status ) {
-					$list_cell[ $locale ] += array(
-						'build_id'          => 'bd_' . substr( md5( $slug . $locale ), 0, 12 ),
-						'build_no'          => 1,
-						'built_at'          => '2026-09-20T08:00:00Z',
-						'built_for_version' => '0.9',
-						'newer_version'     => array( 'version' => '1.0.0', 'status' => 'requestable' ),
-					);
-				}
-				if ( 'babilim_available' === $status ) {
-					$list_cell[ $locale ] += array(
-						'build_id' => 'bd_' . substr( md5( $slug . $locale ), 0, 12 ),
-						'build_no' => 1,
-						'built_at' => '2026-09-20T08:00:00Z',
-					);
-				}
-			}
-			$components[] = array( 'kind' => (string) ( $component['kind'] ?? 'plugin' ), 'slug' => $slug, 'locales' => (object) $list_cell );
-			continue;
-		}
-		$entries = array();
-		foreach ( $locales as $locale ) {
-			$entries[ (string) $locale ] = array(
-				'status'   => 'babilim_available',
-				'build_id' => 'bd_' . substr( md5( ( $component['slug'] ?? '' ) . $locale ), 0, 12 ),
-				'build_no' => 1,
-				'built_at' => '2026-09-20T08:00:00Z',
-			);
-		}
-		$components[] = array( 'kind' => (string) ( $component['kind'] ?? 'plugin' ), 'slug' => (string) ( $component['slug'] ?? '' ), 'locales' => (object) $entries );
-		if ( 'errors' === $profile && 'errors-demo' === (string) ( $component['slug'] ?? '' ) && array() !== $locales ) {
-			// The errors profile: errors-demo always lists one pending update
-			// whose build the download endpoint refuses (see `fail_builds`), so
-			// the plugin's install step fails on every run.
-			$updates[] = array(
-				'kind'     => 'plugin',
-				'slug'     => 'errors-demo',
-				'locale'   => (string) reset( $locales ),
-				'build_id' => (string) ( $state['update_build'] ?? 'bd_0badc0de0bad' ),
-				'build_no' => 2,
-			);
-		}
-	}
+	$reply = babilim_mock_inventory_body( $body, (string) ( $state['profile'] ?? '' ), (string) ( $state['update_build'] ?? 'bd_0badc0de0bad' ) );
 	$state                    = $read_state();
-	$state['inventory_log'][] = array( 'components' => count( $components ), 'ms' => (int) round( ( microtime( true ) - $started ) * 1000 ) );
+	$state['inventory_log'][] = array( 'components' => count( $reply['components'] ), 'ms' => (int) round( ( microtime( true ) - $started ) * 1000 ) );
 	$write_state( $state );
-	$json_reply(
-		200,
-		array(
-			'components' => $components,
-			'updates'    => $updates,
-			'license'    => array( 'kind' => 'free', 'status' => 'active' ),
-			'quota'      => new stdClass(),
-			'features'   => new stdClass(),
-			'contract'   => '1.4.0',
-		)
-	);
+	$json_reply( 200, $reply );
 	return;
 }
 

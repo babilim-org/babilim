@@ -459,7 +459,7 @@ final class Test_Upload extends TestCase {
 		$cell = $this->cell();
 		$this->assertSame( 'requestable', $cell['status'] );
 		$this->assertEmpty( $cell['reason'] ?? null );
-		$this->assertSame( 'No translation', Babilim_Cell::from_entry( $cell, 'fr_FR', false, true, null )['text'] );
+		$this->assertSame( 'Not installed', Babilim_Cell::from_entry( $cell, 'fr_FR', false, true, null )['text'] );
 	}
 
 	public function test_cancel_keeps_the_top_level_reason_of_an_installed_cell(): void {

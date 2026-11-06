@@ -198,9 +198,9 @@ final class Test_Admin_Enable extends TestCase {
 
 		$this->assertCount( 0, $http->requests );
 		$this->assertStringContainsString( '<p>Languages found on this site: de_DE and fr_FR.</p>', $html );
-		$this->assertStringContainsString( '<p>Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.</p>', $html );
+		$this->assertStringContainsString( '<p>Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync.</p>', $html );
 		$this->assertStringNotContainsString( 'prepared in the background', $html );
-		$this->assertStringContainsString( '<p>The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim.</p>', $html );
+		$this->assertStringContainsString( '<p>The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim.</p>', $html );
 		$this->assertLessThan( strpos( $html, '<details>' ), strpos( $html, 'Languages found on this site' ), 'the explanation comes before the payload details' );
 	}
 
@@ -211,7 +211,7 @@ final class Test_Admin_Enable extends TestCase {
 
 		$this->assertStringNotContainsString( 'Languages found on this site', $html );
 		$this->assertStringContainsString( 'Available translations can be installed with one click, and missing ones can be requested.', $html );
-		$this->assertStringContainsString( 'The free plan covers a limited number', $html );
+		$this->assertStringContainsString( 'The free service plan gives each site a limited number of slots', $html );
 	}
 
 	public function test_the_welcome_block_escapes_language_names(): void {
@@ -569,15 +569,15 @@ final class Test_Admin_Enable extends TestCase {
 
 	public function test_saving_settings_does_not_touch_consent(): void {
 		update_option( 'babilim_consent', true );
-		$this->post( 'babilim_save_settings', array( 'consent' => '' ) );
+		$fields = babilim_test_settings_fields( array( 'consent' => '' ) );
 
-		$this->admin()->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertTrue( (bool) get_option( 'babilim_consent' ), 'a missing consent field no longer withdraws consent' );
 
 		update_option( 'babilim_consent', false );
-		$this->post( 'babilim_save_settings', array( 'consent' => 'on' ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'consent' => 'on' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertFalse( (bool) get_option( 'babilim_consent' ), 'and a consent field does not grant it' );
 	}
 

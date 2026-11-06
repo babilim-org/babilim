@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.1.0\n"
+"Project-Id-Version: Babilim 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:53:34+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:53:34+00:00\n"
+"POT-Creation-Date: 2026-11-05T19:51:11+00:00\n"
+"PO-Revision-Date: 2026-11-05T19:51:11+00:00\n"
 "Language: te\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Babilim\n"
@@ -16,64 +16,292 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:338
-#: admin/class-babilim-admin.php:339
-#: admin/class-babilim-admin.php:2614
-#: admin/class-babilim-admin.php:2668
+#: admin/class-babilim-admin.php:378
+#: admin/class-babilim-admin.php:379
+#: admin/class-babilim-admin.php:3051
+#: admin/class-babilim-admin.php:3105
 msgid "Babilim"
 msgstr "Babilim"
 
 #. Description of the plugin
 #: babilim.php
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
-msgstr "మీ సైట్‌లో ఇప్పటికే ఇన్‌స్టాల్ చేసిన ప్లగిన్‌లు మరియు థీమ్‌ల కోసం లేని అనువాదాలను పూరిస్తుంది."
+msgstr "మీ సైట్‌లో ఇప్పటికే ఇన్‌స్టాల్ చేసిన ప్లగిన్‌లు మరియు థీమ్‌లకు లేని అనువాదాలను పూరిస్తుంది."
 
-#: admin/class-babilim-admin.php:354
-#: admin/class-babilim-admin.php:355
-#: admin/class-babilim-translations-table.php:400
-msgid "Translations"
-msgstr "అనువాదాలు"
+#: admin/class-babilim-admin.php:1274
+msgid "That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list."
+msgstr "ఆ అప్‌లోడ్ స్క్రీన్ పాతది అయిపోయింది: ఆ తర్వాత మరో అప్‌లోడ్ సిద్ధం చేయబడింది. ఏమీ పంపబడలేదు. ప్రస్తుత దాన్ని అనువాదాల జాబితా నుండి సమీక్షించండి."
 
-#: admin/class-babilim-admin.php:362
-msgid "Babilim Settings"
-msgstr "Babilim సెట్టింగ్‌లు"
+#: admin/class-babilim-admin.php:3067
+msgid "The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim."
+msgstr "ఉచిత సేవా ప్లాన్ ప్రతి సైట్‌కు ప్లగిన్‌లు మరియు థీమ్‌ల కోసం పరిమిత సంఖ్యలో స్లాట్లను ఇస్తుంది; మీరు Babilim ను ప్రారంభించిన తర్వాత ఉపయోగంలో ఉన్న స్లాట్లు సెట్టింగ్‌లలో చూపబడతాయి."
 
-#: admin/class-babilim-admin.php:363
-#: admin/class-babilim-admin.php:2671
-#: admin/class-babilim-admin.php:2960
-msgid "Settings"
-msgstr "సెట్టింగ్‌లు"
-
-#: admin/class-babilim-admin.php:390
-#: admin/class-babilim-admin.php:789
-msgid "You are not allowed to do this."
-msgstr "దీన్ని చేయడానికి మీకు అనుమతి లేదు."
-
-#. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:419
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:62
 #, php-format
-msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
-msgstr "తక్కువ కాంపోనెంట్‌లను ఎంచుకోండి: ఒక్కో రన్‌కు గరిష్టంగా %1$d ఆపరేషన్లు (మీరు %2$d ఎంచుకున్నారు)."
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "అనువాదాన్ని అభ్యర్థిస్తే, ఈ ప్లగిన్ లేదా థీమ్ ఈ సైట్ కోసం ఉచిత సేవా ప్లాన్ స్లాట్లలో ఒకదానిలో చేరుతుంది (పరిమితి థీమ్‌లకు %1$d, ప్లగిన్‌లకు %2$d), అది ఇప్పటికే ఒకదానిలో లేకపోతే. స్లాట్ ఉపయోగంలోనే ఉంటుంది, అనువాదం విఫలమైనా అది ఖాళీ కాదు."
 
-#: admin/class-babilim-admin.php:432
-#: admin/class-babilim-admin.php:1110
-#: admin/class-babilim-admin.php:1281
-msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "ఆ కాంపోనెంట్ ఈ సైట్‌లో ఇన్‌స్టాల్ చేయబడలేదు, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
+#: admin/class-babilim-translations-table.php:67
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "అనువాదాన్ని అభ్యర్థిస్తే, ఈ ప్లగిన్ లేదా థీమ్ ఈ సైట్ కోసం ఉచిత సేవా ప్లాన్ స్లాట్లలో ఒకదానిలో చేరుతుంది, అది ఇప్పటికే ఒకదానిలో లేకపోతే. స్లాట్ ఉపయోగంలోనే ఉంటుంది, అనువాదం విఫలమైనా అది ఖాళీ కాదు."
 
-#: admin/class-babilim-admin.php:911
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:80
+#, php-format
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "ఈ ప్లగిన్ లేదా థీమ్ ఈ సైట్ కోసం ఉచిత సేవా ప్లాన్ స్లాట్లలో ఒకదానిలో ఇంకా లేకపోతే, అనువాదాన్ని అభ్యర్థించడం వల్ల అది ఒకదానిలో చేరుతుంది (పరిమితి థీమ్‌లకు %1$d, ప్లగిన్‌లకు %2$d). స్లాట్ ఉపయోగంలోనే ఉంటుంది, అనువాదం విఫలమైనా అది ఖాళీ కాదు. కొనసాగించాలా?"
+
+#: admin/class-babilim-translations-table.php:85
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "ఈ ప్లగిన్ లేదా థీమ్ ఈ సైట్ కోసం ఉచిత సేవా ప్లాన్ స్లాట్లలో ఒకదానిలో ఇంకా లేకపోతే, అనువాదాన్ని అభ్యర్థించడం వల్ల అది ఒకదానిలో చేరుతుంది. స్లాట్ ఉపయోగంలోనే ఉంటుంది, అనువాదం విఫలమైనా అది ఖాళీ కాదు. కొనసాగించాలా?"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1974
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "ఈ నెట్‌వర్క్‌లోని %1$d సైట్ ప్లగిన్‌ను తొలగించినప్పుడు తన Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడింది. ఆ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %2$s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపును ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ఆ సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
+msgstr[1] "ఈ నెట్‌వర్క్‌లోని %1$d సైట్‌లు ప్లగిన్‌ను తొలగించినప్పుడు తమ Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడ్డాయి. ఆ సైట్‌లకు జోడించిన చెల్లింపు లైసెన్స్‌లను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %2$s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపులను ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ప్రతి సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:3206
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:3301
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s చేయాల్సింది ఏమీ లేదు."
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:773
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:776
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:3575
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s. భాషను ఎంచుకోండి."
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:3194
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d విఫలమైంది"
+msgstr[1] "%d విఫలమయ్యాయి"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:3198
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d ఇంకా ప్రయత్నించలేదు"
+msgstr[1] "%d ఇంకా ప్రయత్నించలేదు"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2522
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "%d నివేదిక వేచి ఉంది. \"ఎల్లప్పుడూ షేర్ చేయండి\" మరియు \"షేర్ చేయవద్దు\" అవన్నింటికీ వర్తిస్తాయి."
+msgstr[1] "%d నివేదికలు వేచి ఉన్నాయి. \"ఎల్లప్పుడూ షేర్ చేయండి\" మరియు \"షేర్ చేయవద్దు\" అవన్నింటికీ వర్తిస్తాయి."
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:3190
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d దాటవేయబడింది"
+msgstr[1] "%d దాటవేయబడ్డాయి"
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:3186
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d విజయవంతమైంది"
+msgstr[1] "%d విజయవంతమయ్యాయి"
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:544
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "ఇన్‌స్టాల్ చేయడానికి %d"
+msgstr[1] "ఇన్‌స్టాల్ చేయడానికి %d"
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(ఈ సైట్ కోసం సృష్టించిన పబ్లిక్ కీ)"
+
+#: admin/class-babilim-admin.php:4670
+msgid "(detected)"
+msgstr "(గుర్తించబడింది)"
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(సాధారణ కోడ్‌లు మరియు కోఆర్డినేట్‌లు మాత్రమే)"
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:4830
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "%1$s న క్లీనప్ నిలిపివేయబడింది: %2$s. ఏదీ తొలగించబడలేదు."
+
+#: includes/class-babilim-packager.php:125
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "కాంపోనెంట్‌లోని ఒక ఫైల్‌ను చదవలేకపోయాం, కాబట్టి దానిని ప్యాకేజ్ చేయలేదు."
+
+#: admin/class-babilim-admin.php:2386
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "ఒకేసారి ఒక PHP అభ్యర్థనను మాత్రమే అందించే హోస్ట్ ఈ దశను పూర్తి చేయడం సాధ్యం కాదు."
+
+#: includes/class-babilim-upload.php:293
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "అప్‌లోడ్‌లోని ఒక భాగం పదేపదే విఫలమైంది, కాబట్టి అప్‌లోడ్ రద్దు చేయబడింది."
+
+#: admin/class-babilim-admin.php:1377
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "ఈ సైట్‌లో ప్రస్తుతం ఆ లొకేల్ కోసం అనువాదాన్ని అభ్యర్థించలేరు."
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:4862
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "%1$s న (%2$s) అనువాద సూచిక రాయడం మరొక అభ్యర్థనతో ఘర్షణ పడింది మరియు వర్తింపజేయబడలేదు; ఇటీవలి వెర్షన్ ఉంచబడింది."
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:4875
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "%1$s న (%2$s) అనువాద సూచిక రాయడం పూర్తి కాలేదు మరియు వర్తింపజేయబడలేదు (%3$s)."
+
+#: admin/class-babilim-admin.php:3898
+msgid "Account"
+msgstr "ఖాతా"
+
+#: admin/class-babilim-admin.php:4682
+msgid "Add another language"
+msgstr "మరో భాషను జోడించండి"
+
+#: admin/class-babilim-admin.php:3835
+msgid "Advanced"
+msgstr "అధునాతనం"
+
+#: admin/class-babilim-translations-table.php:466
+#: admin/class-babilim-translations-table.php:514
+msgid "All"
+msgstr "అన్నీ"
+
+#: admin/class-babilim-cell.php:143
+msgid "All free-plan slots for this site are used"
+msgstr "ఈ సైట్‌కు సంబంధించిన అన్ని ఉచిత ప్లాన్ స్లాట్‌లు ఉపయోగంలో ఉన్నాయి"
+
+#: admin/class-babilim-translations-table.php:541
+msgid "All languages"
+msgstr "అన్ని భాషలు"
+
+#: admin/class-babilim-admin.php:4800
+msgid "Already in WordPress core"
+msgstr "ఇప్పటికే WordPress కోర్‌లో ఉంది"
+
+#: admin/class-babilim-admin.php:961
 msgid "Already installed."
 msgstr "ఇప్పటికే ఇన్‌స్టాల్ చేయబడింది."
 
-#: admin/class-babilim-admin.php:911
-msgid "Downloaded and installed."
-msgstr "డౌన్‌లోడ్ చేసి ఇన్‌స్టాల్ చేయబడింది."
+#: admin/class-babilim-admin.php:2544
+msgid "Always share"
+msgstr "ఎల్లప్పుడూ షేర్ చేయండి"
 
-#: admin/class-babilim-admin.php:934
-#: admin/class-babilim-admin.php:1275
-#: admin/class-babilim-admin.php:1353
-#: admin/class-babilim-admin.php:1954
-#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "మరొక ఇన్‌స్టాలేషన్ నడుస్తోంది; కాసేపటి తర్వాత మళ్లీ ప్రయత్నించండి."
+
+#: admin/class-babilim-admin.php:3866
+msgid "Automatic installs"
+msgstr "స్వయంచాలక ఇన్‌స్టాల్‌లు"
+
+#: admin/class-babilim-admin.php:2731
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "ఆటోమేటిక్ ఇన్‌స్టాల్‌లు ఇప్పుడు ఆఫ్‌లో ఉన్నాయి; కావాలనుకుంటే సెట్టింగ్‌లలో మళ్లీ ఆన్ చేయండి."
+
+#: admin/class-babilim-translations-table.php:467
+msgid "Available"
+msgstr "అందుబాటులో ఉన్నవి"
+
+#: admin/class-babilim-admin.php:3066
+msgid "Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "అందుబాటులో ఉన్న అనువాదాలను ఒక్క క్లిక్‌తో ఇన్‌స్టాల్ చేయవచ్చు, లేని వాటిని అభ్యర్థించవచ్చు. ఆటోమేటిక్ ఇన్‌స్టాలేషన్‌లు ఆన్‌లో ఉన్నప్పుడు, మీరు నిర్వహించే భాషలకు సర్వీస్ అందుబాటులో ఉన్నట్లు జాబితా చేసిన అనువాదాలు రోజుకు రెండుసార్లు సింక్ సమయంలో ఇన్‌స్టాల్ అవుతాయి."
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:326
+#, php-format
+msgid "Available · %s"
+msgstr "అందుబాటులో ఉంది · %s"
+
+#: admin/class-babilim-admin.php:402
+msgid "Babilim Settings"
+msgstr "Babilim సెట్టింగ్‌లు"
+
+#: admin/class-babilim-admin.php:4677
+msgid "Babilim adds translations for every language checked here."
+msgstr "ఇక్కడ ఎంచుకున్న ప్రతి భాషకు Babilim అనువాదాలను జోడిస్తుంది."
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "వెబ్‌సైట్ వెలుపల ఉన్న తాత్కాలిక ఫోల్డర్‌ను Babilim నిర్ధారించలేకపోయింది, కాబట్టి కాంపోనెంట్ ప్యాకేజ్ చేయబడలేదు మరియు ఏదీ అప్‌లోడ్ కాలేదు. wp-config.phpలో BABILIM_TEMP_DIR‌ను వెబ్ రూట్ వెలుపల వ్రాయగల ఫోల్డర్‌గా నిర్వచించండి (ఉదాహరణకు మీ సైట్ పబ్లిక్ డైరెక్టరీ లోపల కాకుండా దాని పక్కనే ఉన్న ఫోల్డర్), లేదా మీ హోస్ట్‌ను అడగండి."
+
+#: includes/class-babilim-site.php:987
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim ఈ సైట్ తనిఖీని పూర్తి చేయలేకపోయింది."
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:2381
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim ప్రారంభించడం పూర్తి చేయలేకపోయింది (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:3792
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim ఈ సైట్ ధృవీకరణను పూర్తి చేయలేకపోయింది (సేవ తిరిగి సైట్‌ను చేరుకోలేకపోయింది). నమోదు నిలిపివేయబడింది."
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:401
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim ఈ సైట్‌ను ధృవీకరించలేకపోయింది, కాబట్టి ధృవీకరణ విజయవంతమయ్యే వరకు ఏదీ డౌన్‌లోడ్ లేదా ఇన్‌స్టాల్ చేయబడదు."
+
+#: admin/class-babilim-admin.php:2216
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim ఈ సైట్‌ను ధృవీకరించలేకపోయింది, కాబట్టి ఏదీ డౌన్‌లోడ్ లేదా ఇన్‌స్టాల్ కాలేదు."
+
+#: admin/class-babilim-admin.php:3053
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "మీ భాషకు అనువాదం లేని ఈ సైట్‌లోని ప్లగిన్‌లు మరియు థీమ్‌లను Babilim కనుగొని, ప్రతిదానికి ఒక అనువాదాన్ని ఇన్‌స్టాల్ చేస్తుంది."
+
+#: admin/class-babilim-admin.php:984
+#: admin/class-babilim-admin.php:1355
+#: admin/class-babilim-admin.php:1433
+#: admin/class-babilim-admin.php:2335
+#: admin/class-babilim-admin.php:2665
 #: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
@@ -82,1371 +310,592 @@ msgstr "డౌన్‌లోడ్ చేసి ఇన్‌స్టాల్ 
 msgid "Babilim has not been enabled for this site yet."
 msgstr "ఈ సైట్ కోసం Babilim ఇంకా ప్రారంభించబడలేదు."
 
-#: admin/class-babilim-admin.php:953
-msgid "No build is available to download for this locale."
-msgstr "ఈ లొకేల్ కోసం డౌన్‌లోడ్ చేయడానికి బిల్డ్ అందుబాటులో లేదు."
+#: admin/class-babilim-admin.php:4239
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim ఈ భాషకు ఎలాంటి అనువాదాన్ని ఇన్‌స్టాల్ చేయలేదు."
 
-#: admin/class-babilim-admin.php:1008
-msgid "Rolled back to the previous build."
-msgstr "మునుపటి బిల్డ్‌కు రోల్ బ్యాక్ చేయబడింది."
-
-#: admin/class-babilim-admin.php:1067
-msgid "Rolled back and reported."
-msgstr "రోల్ బ్యాక్ చేసి నివేదించబడింది."
-
-#. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1073
-#, php-format
-msgid "Rolled back, but the report could not be sent: %s"
-msgstr "రోల్ బ్యాక్ చేయబడింది, కానీ నివేదికను పంపలేకపోయాం: %s"
-
-#: admin/class-babilim-admin.php:1097
-msgid "Removed."
-msgstr "తొలగించబడింది."
-
-#: admin/class-babilim-admin.php:1133
-msgid "Translation requested."
-msgstr "అనువాదం అభ్యర్థించబడింది."
-
-#: admin/class-babilim-admin.php:1155
-msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "ఈ కాంపోనెంట్ ఇప్పటికే అప్‌లోడ్ చేయబడింది. Babilim ఇప్పుడు దీన్ని తనిఖీ చేస్తోంది."
-
-#: admin/class-babilim-admin.php:1195
-msgid "Upload cancelled."
-msgstr "అప్‌లోడ్ రద్దు చేయబడింది."
-
-#: admin/class-babilim-admin.php:1206
-msgid "Upload complete — translation requested."
-msgstr "అప్‌లోడ్ పూర్తయింది — అనువాదం అభ్యర్థించబడింది."
-
-#: admin/class-babilim-admin.php:1284
-msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "ఈ కాంపోనెంట్ వెర్షన్ నంబర్‌ను పేర్కొనలేదు, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
-
-#. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1291
-#, php-format
-msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "ఈ కాంపోనెంట్ వెర్షన్ నంబర్ %d అక్షరాల కంటే పొడవుగా ఉంది. అంత పొడవైన వెర్షన్ నంబర్‌ను Babilim నిర్వహించలేకపోతుంది, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
-
-#: admin/class-babilim-admin.php:1297
-msgid "A translation cannot be requested for that locale on this site right now."
-msgstr "ఈ సైట్‌లో ప్రస్తుతం ఆ లొకేల్ కోసం అనువాదాన్ని అభ్యర్థించలేరు."
-
-#: admin/class-babilim-admin.php:1323
-#: admin/class-babilim-admin.php:3688
-msgid "Thank you. Your report was sent."
-msgstr "ధన్యవాదాలు. మీ నివేదిక పంపబడింది."
-
-#: admin/class-babilim-admin.php:1358
-msgid "This report does not name a valid plugin or theme and locale."
-msgstr "ఈ నివేదిక చెల్లుబాటు అయ్యే ప్లగిన్ లేదా అలంకారం పేరును, లొకేల్ పేరును పేర్కొనలేదు."
-
-#: admin/class-babilim-admin.php:1365
-msgid "Please choose a category for this report."
-msgstr "దయచేసి ఈ నివేదిక కోసం ఒక వర్గాన్ని ఎంచుకోండి."
-
-#: admin/class-babilim-admin.php:1369
-msgid "This report is missing a valid build to report against."
-msgstr "ఈ నివేదికకు నివేదించడానికి చెల్లుబాటు అయ్యే బిల్డ్ లేదు."
-
-#: admin/class-babilim-admin.php:1372
-msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "ఈ కాంపోనెంట్/లొకేల్ కోసం ఈ బిల్డ్ గురించి ఈ సైట్‌కు ప్రస్తుతం తెలియదు."
-
-#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1442
-#, php-format
-msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
-msgstr "\"%1$s\" ఫీల్డ్ చాలా పొడవుగా ఉంది: దానిలో %2$d అక్షరాలు ఉన్నాయి, పరిమితి %3$d. ఏదీ పంపబడలేదు; దయచేసి దాన్ని తగ్గించి మళ్లీ ప్రయత్నించండి."
-
-#: admin/class-babilim-admin.php:3666
-msgid "Original string"
-msgstr "అసలు స్ట్రింగ్"
-
-#: admin/class-babilim-admin.php:3681
-msgid "String context"
-msgstr "స్ట్రింగ్ సందర్భం"
-
-#: admin/class-babilim-admin.php:1467
-#: admin/class-babilim-admin.php:3667
-#: admin/class-babilim-admin.php:4406
-msgid "Current translation"
-msgstr "ప్రస్తుత అనువాదం"
-
-#: admin/class-babilim-admin.php:1471
-#: admin/class-babilim-admin.php:3671
-#: admin/class-babilim-admin.php:4408
-msgid "Suggested translation"
-msgstr "సూచించిన అనువాదం"
-
-#: admin/class-babilim-admin.php:1475
-#: admin/class-babilim-admin.php:3672
-#: admin/class-babilim-admin.php:4410
-msgid "Note (optional)"
-msgstr "గమనిక (ఐచ్ఛికం)"
-
-#: admin/class-babilim-admin.php:1479
-#: admin/class-babilim-admin.php:4412
-msgid "Where you saw this (optional)"
-msgstr "మీరు దీన్ని ఎక్కడ చూశారు (ఐచ్ఛికం)"
-
-#. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1542
-#, php-format
-msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
-msgstr "సేవ ద్వారా Babilim సింక్ తాత్కాలికంగా ఆలస్యమైంది (రేట్ లిమిట్); %s తర్వాత మళ్లీ ప్రయత్నిస్తుంది."
-
-#: admin/class-babilim-admin.php:1576
-msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "అది చెల్లుబాటు అయ్యే WordPress లొకేల్ కోడ్ కాదు. ఏదీ సేవ్ చేయబడలేదు."
-
-#: admin/class-babilim-admin.php:1619
-msgid "Settings saved."
-msgstr "సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1681
-#, php-format
-msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "ఇది ఆన్‌లో ఉంటే, అన్‌ఇన్‌స్టాల్ చేసినప్పుడు ఈ సైట్ గుర్తింపు కూడా తొలగించబడుతుంది. ఈ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను తర్వాత ఆటోమేటిక్‌గా పునరుద్ధరించలేము; దాన్ని తిరిగి పొందడానికి మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1697
-#, php-format
-msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "ప్లగిన్‌ను తొలగించినప్పుడు ఈ సైట్ గుర్తింపును తొలగించేలా Babilim సెట్ చేయబడింది. అప్పుడు ఈ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపును ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
-
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1722
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] "ఈ నెట్‌వర్క్‌లోని %1$d సైట్ ప్లగిన్‌ను తొలగించినప్పుడు తన Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడింది. ఆ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %2$s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపును ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ఆ సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
-msgstr[1] "ఈ నెట్‌వర్క్‌లోని %1$d సైట్‌లు ప్లగిన్‌ను తొలగించినప్పుడు తమ Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడ్డాయి. ఆ సైట్‌లకు జోడించిన చెల్లింపు లైసెన్స్‌లను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %2$s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపులను ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ప్రతి సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1741
-#, php-format
-msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "ఈ నెట్‌వర్క్‌లో ఒక్కొక్కటిగా తనిఖీ చేయడానికి చాలా ఎక్కువ సైట్‌లు ఉన్నాయి, వాటిలో కొన్ని ప్లగిన్‌ను తొలగించినప్పుడు తమ Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడి ఉండవచ్చు. అలాంటి సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపులను ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ప్రతి సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
-
-#: admin/class-babilim-admin.php:1830
-msgid "Open Babilim settings"
-msgstr "Babilim సెట్టింగ్‌లను తెరవండి"
-
-#: admin/class-babilim-admin.php:1835
-msgid "Babilim could not verify this site, so nothing is downloaded or installed."
-msgstr "Babilim ఈ సైట్‌ను ధృవీకరించలేకపోయింది, కాబట్టి ఏదీ డౌన్‌లోడ్ లేదా ఇన్‌స్టాల్ కాలేదు."
-
-#: admin/class-babilim-admin.php:1847
-msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "సర్వీస్ మీ సైట్‌ను చేరుకోలేకపోయింది. ఫైర్‌వాల్, సెక్యూరిటీ ప్లగిన్ లేదా హోస్ట్ నియమం ఆ అభ్యర్థనను నిరోధిస్తూ ఉండవచ్చు; దయచేసి /wp-json/babilim/v1/challenge కు అభ్యర్థనలను అనుమతించండి."
-
-#: admin/class-babilim-admin.php:1849
-msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
-msgstr "మీ సైట్ స్పందించడానికి చాలా సమయం తీసుకుంది. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి, మరియు మీ హోస్ట్ మరీ నెమ్మదిగా లేదా ఓవర్‌లోడ్ అయి లేదని తనిఖీ చేయండి."
-
-#: admin/class-babilim-admin.php:1851
-msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "మీ సైట్ స్పందించింది, కానీ ఆశించినది కాదు. REST API ను మరో ప్లగిన్ మార్చి ఉండవచ్చు, లేదా ఆ ఎండ్‌పాయింట్ కాష్ అయి ఉండవచ్చు; దయచేసి /wp-json/babilim/v1/challenge ను కాషింగ్ మరియు రీరైటింగ్ నుండి మినహాయించండి."
-
-#: admin/class-babilim-admin.php:1853
-msgid "Please check that your site can be reached from the internet, then try again."
-msgstr "మీ సైట్ ఇంటర్నెట్ నుండి చేరుకోగలదో లేదో తనిఖీ చేసి, ఆపై మళ్లీ ప్రయత్నించండి."
-
-#: admin/class-babilim-admin.php:1876
-msgid "Re-verify"
-msgstr "మళ్లీ ధృవీకరించు"
-
-#. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1897
-#, php-format
-msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "ఈ సైట్ ఒకే సింక్‌లో సర్వీస్ అంగీకరించే పరిమాణాన్ని మించిపోయింది, అందువల్ల కొన్ని అంశాలు వదిలివేయబడ్డాయి: %1$d కాంపోనెంట్‌లు మరియు %2$d లొకేల్‌లు."
-
-#: admin/class-babilim-admin.php:1926
-msgid "This site is verified."
-msgstr "ఈ సైట్ ధృవీకరించబడింది."
-
-#: admin/class-babilim-admin.php:1939
-msgid "Registration restarted."
-msgstr "రిజిస్ట్రేషన్ మళ్లీ ప్రారంభమైంది."
-
-#: admin/class-babilim-admin.php:1960
-#: admin/class-babilim-admin.php:2034
-msgid "Sync complete."
-msgstr "సింక్ పూర్తయింది."
-
-#: admin/class-babilim-admin.php:1995
-msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
-msgstr "Babilim ఈ సైట్‌ను ప్రారంభించి తనిఖీ చేస్తోంది… ఈ పేజీని రీలోడ్ చేయండి లేదా షెడ్యూల్ చేసిన తనిఖీ పూర్తయ్యే వరకు వేచి ఉండండి."
-
-#. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:2000
-#, php-format
-msgid "Babilim could not finish enabling (%1$s): %2$s"
-msgstr "Babilim ప్రారంభించడం పూర్తి చేయలేకపోయింది (%1$s): %2$s"
-
-#: admin/class-babilim-admin.php:2005
-msgid "A host that serves only one PHP request at a time cannot complete this step."
-msgstr "ఒకేసారి ఒక PHP అభ్యర్థనను మాత్రమే అందించే హోస్ట్ ఈ దశను పూర్తి చేయడం సాధ్యం కాదు."
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2026
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] "Babilim ప్రారంభించబడింది: ఈ సైట్ ధృవీకరించబడింది మరియు %d కాంపోనెంట్ కనుగొనబడింది."
-msgstr[1] "Babilim ప్రారంభించబడింది: ఈ సైట్ ధృవీకరించబడింది మరియు %d కాంపోనెంట్‌లు కనుగొనబడ్డాయి."
-
-#: admin/class-babilim-admin.php:2111
-msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
-msgstr "Babilim నిలిపివేయబడింది. ఇకపై ఏదీ పంపబడదు; ఇప్పటికే ఇన్‌స్టాల్ చేసిన అనువాదాలు పని చేస్తూనే ఉంటాయి."
-
-#: admin/class-babilim-admin.php:2243
-msgid "Supplementary translation index rebuilt."
-msgstr "అదనపు అనువాద ఇండెక్స్ పునర్నిర్మించబడింది."
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2261
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] "స్వీప్ పూర్తయింది: %d ఫైల్ తొలగించబడింది."
-msgstr[1] "స్వీప్ పూర్తయింది: %d ఫైళ్లు తొలగించబడ్డాయి."
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2293
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] "ఇన్‌స్టాల్ చేసిన %d కాంపోనెంట్ తొలగించబడింది."
-msgstr[1] "ఇన్‌స్టాల్ చేసిన %d కాంపోనెంట్‌లు తొలగించబడ్డాయి."
-
-#: admin/class-babilim-admin.php:2295
-msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "ఆటోమేటిక్ ఇన్‌స్టాల్‌లు ఇప్పుడు ఆఫ్‌లో ఉన్నాయి; కావాలనుకుంటే సెట్టింగ్‌లలో మళ్లీ ఆన్ చేయండి."
-
-#: admin/class-babilim-admin.php:2616
-msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
-msgstr "మీ భాషకు అనువాదం లేని ఈ సైట్‌లోని ప్లగిన్‌లు మరియు థీమ్‌లను Babilim కనుగొని, ప్రతిదానికి ఒక అనువాదాన్ని ఇన్‌స్టాల్ చేస్తుంది."
-
-#. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2624
-#, php-format
-msgid "Languages found on this site: %s."
-msgstr "ఈ సైట్‌లో కనుగొన్న భాషలు: %s."
-
-#: admin/class-babilim-admin.php:2630
-msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "ఉచిత ప్లాన్ పరిమిత సంఖ్యలో ప్లగిన్‌లు మరియు థీమ్‌లను కవర్ చేస్తుంది; మీరు Babilim ను ప్రారంభించిన తర్వాత మీ ఖచ్చితమైన కోటా సెట్టింగ్‌లలో చూపబడుతుంది."
-
-#: admin/class-babilim-admin.php:2631
-msgid "What is sent when you enable Babilim"
-msgstr "మీరు Babilim ను ప్రారంభించినప్పుడు ఏమి పంపబడుతుంది"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enabling…"
-msgstr "ప్రారంభిస్తోంది…"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enable Babilim"
-msgstr "Babilim ను ప్రారంభించండి"
-
-#: admin/class-babilim-admin.php:2636
-msgid "By clicking Enable, you agree to send the information listed above to Babilim."
-msgstr "ప్రారంభించు క్లిక్ చేయడం ద్వారా, పైన జాబితా చేసిన సమాచారాన్ని Babilimకు పంపడానికి మీరు అంగీకరిస్తున్నారు."
-
-#: admin/class-babilim-admin.php:2670
-#: admin/class-babilim-admin.php:2718
-#: admin/class-babilim-admin.php:4313
-msgid "Check again now"
-msgstr "ఇప్పుడే మళ్లీ తనిఖీ చేయండి"
+#: admin/class-babilim-admin.php:2517
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilimలో లోపం ఏర్పడింది. లోపం నివేదికను షేర్ చేయాలా?"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2685
+#: admin/class-babilim-admin.php:3122
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
 msgstr[0] "మీ చివరి సందర్శన తర్వాత Babilim %d అనువాదాన్ని స్వయంచాలకంగా ఇన్‌స్టాల్ చేసింది."
 msgstr[1] "మీ చివరి సందర్శన తర్వాత Babilim %d అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేసింది."
 
+#: admin/class-babilim-admin.php:2492
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim నిలిపివేయబడింది. ఇకపై ఏదీ పంపబడదు; ఇప్పటికే ఇన్‌స్టాల్ చేసిన అనువాదాలు పని చేస్తూనే ఉంటాయి."
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2407
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim ప్రారంభించబడింది: ఈ సైట్ ధృవీకరించబడింది మరియు %d కాంపోనెంట్ కనుగొనబడింది."
+msgstr[1] "Babilim ప్రారంభించబడింది: ఈ సైట్ ధృవీకరించబడింది మరియు %d కాంపోనెంట్‌లు కనుగొనబడ్డాయి."
+
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2711
+#: admin/class-babilim-admin.php:3148
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim ఈ సైట్‌ను ప్రారంభించి తనిఖీ చేస్తోంది… (చివరి ప్రయత్నం: %s)"
 
-#: admin/class-babilim-admin.php:2715
-msgid "Check again"
-msgstr "మళ్లీ తనిఖీ చేయండి"
-
-#: admin/class-babilim-admin.php:2728
-msgid "No components synced yet."
-msgstr "ఇంకా కాంపోనెంట్‌లు ఏవీ సింక్ కాలేదు."
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2749
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] "%d విజయవంతమైంది"
-msgstr[1] "%d విజయవంతమయ్యాయి"
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2753
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] "%d దాటవేయబడింది"
-msgstr[1] "%d దాటవేయబడ్డాయి"
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2757
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] "%d విఫలమైంది"
-msgstr[1] "%d విఫలమయ్యాయి"
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2761
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] "%d ఇంకా ప్రయత్నించలేదు"
-msgstr[1] "%d ఇంకా ప్రయత్నించలేదు"
-
-#. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2766
-#, php-format
-msgid "%1$s nothing to do."
-msgstr "%1$s చేయాల్సింది ఏమీ లేదు."
-
-#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2769
-#, php-format
-msgid "%1$s %2$s."
-msgstr "%1$s %2$s."
-
-#: admin/class-babilim-admin.php:2781
-msgid "Bulk download:"
-msgstr "బల్క్ డౌన్‌లోడ్:"
-
-#: admin/class-babilim-admin.php:2783
-msgid "Bulk update:"
-msgstr "బల్క్ అప్‌డేట్:"
-
-#: admin/class-babilim-admin.php:2785
-msgid "Bulk request:"
-msgstr "బల్క్ అభ్యర్థన:"
-
-#: admin/class-babilim-admin.php:2798
-msgid "per day"
-msgstr "రోజుకు"
-
-#: admin/class-babilim-admin.php:2812
-msgid "Wrong meaning"
-msgstr "తప్పు అర్థం"
-
-#: admin/class-babilim-admin.php:2814
-msgid "Wrong term"
-msgstr "తప్పు పదం"
-
-#: admin/class-babilim-admin.php:2816
-msgid "Broken placeholder"
-msgstr "విరిగిన ప్లేస్‌హోల్డర్"
-
-#: admin/class-babilim-admin.php:2818
-msgid "Wrong for this context"
-msgstr "ఈ సందర్భానికి తప్పు"
-
-#: admin/class-babilim-admin.php:2820
-msgid "Wrong plural form"
-msgstr "తప్పు బహువచన రూపం"
-
-#: admin/class-babilim-admin.php:2822
-msgid "Negation reversed"
-msgstr "నిరాకరణ తిరగబడింది"
-
-#: admin/class-babilim-admin.php:2824
-msgid "Translation does not load"
-msgstr "అనువాదం లోడ్ కావడం లేదు"
-
-#. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2827
-msgctxt "problem report category"
-msgid "Other"
-msgstr "ఇతర"
-
-#. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2864
-#, php-format
-msgid "%1$s (%2$s): %3$s"
-msgstr "%1$s (%2$s): %3$s"
-
-#: admin/class-babilim-admin.php:2899
-msgid "Continuing…"
-msgstr "కొనసాగుతోంది…"
-
-#. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2902
-#, php-format
-msgid "Continue next batch (%d left)"
-msgstr "తదుపరి బ్యాచ్‌ను కొనసాగించండి (%d మిగిలి ఉన్నాయి)"
-
-#: admin/class-babilim-admin.php:2952
-msgid "Search components"
-msgstr "కాంపోనెంట్‌లను వెతకండి"
-
-#. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2959
-#, php-format
-msgid "These are the languages this site uses. You can change them in %s."
-msgstr "ఇవి ఈ సైట్ ఉపయోగించే భాషలు. మీరు వీటిని %sలో మార్చవచ్చు."
-
-#: admin/class-babilim-admin.php:2978
-msgid "Upload this component?"
-msgstr "ఈ కాంపోనెంట్‌ను అప్‌లోడ్ చేయాలా?"
-
-#: admin/class-babilim-admin.php:2980
-#: includes/class-babilim-upload.php:96
-msgid "There is no upload waiting for confirmation."
-msgstr "నిర్ధారణ కోసం వేచి ఉన్న అప్‌లోడ్ ఏదీ లేదు."
-
-#: admin/class-babilim-admin.php:2980
-#: admin/class-babilim-admin.php:3007
-#: admin/class-babilim-admin.php:3685
-msgid "Back"
-msgstr "వెనుకకు"
-
-#: admin/class-babilim-admin.php:2984
-msgid "To translate this component, Babilim needs its source."
-msgstr "ఈ కాంపోనెంట్‌ను అనువదించడానికి, Babilimకు దాని సోర్స్ అవసరం."
-
-#: admin/class-babilim-admin.php:2988
-msgid "The upload is kept until you ask Babilim to delete it."
-msgstr "మీరు దీన్ని తొలగించమని Babilimను కోరే వరకు అప్‌లోడ్ ఉంచబడుతుంది."
-
-#: admin/class-babilim-admin.php:2989
-msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
-msgstr "దీన్ని సర్వీస్ హోస్టింగ్ ప్రొవైడర్ నిల్వ చేస్తుంది, అనువాదం రూపొందించడానికి AI మోడల్స్ ప్రాసెస్ చేస్తాయి."
-
-#: admin/class-babilim-admin.php:2990
-msgid "The original text and the translations made from it will be provided to other sites that install the same version."
-msgstr "మూల పాఠ్యం మరియు దాని నుండి చేసిన అనువాదాలు అదే వెర్షన్‌ను ఇన్‌స్టాల్ చేసే ఇతర సైట్‌లకు అందించబడతాయి."
-
-#: admin/class-babilim-admin.php:2991
-msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "కొనసాగించడం ద్వారా ఈ కాంపోనెంట్‌ను అప్‌లోడ్ చేసే హక్కు మీకు ఉందని నిర్ధారిస్తున్నారు."
-
-#: admin/class-babilim-admin.php:2992
-msgid "Upload and request"
-msgstr "అప్‌లోడ్ చేసి అభ్యర్థించండి"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Uploading…"
-msgstr "అప్‌లోడ్ అవుతోంది…"
-
-#: admin/class-babilim-admin.php:2993
-#: admin/class-babilim-admin.php:3012
-#: admin/class-babilim-admin.php:3049
-#: admin/class-babilim-admin.php:3106
-msgid "Cancel"
-msgstr "రద్దు చేయండి"
-
-#: admin/class-babilim-admin.php:3005
-msgid "Uploading"
-msgstr "అప్‌లోడ్ అవుతోంది"
-
-#: admin/class-babilim-admin.php:3007
-#: includes/class-babilim-upload.php:145
-msgid "There is no upload in progress."
-msgstr "ప్రస్తుతం ఎలాంటి అప్‌లోడ్ జరగడం లేదు."
-
-#. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:3010
-#, php-format
-msgid "Uploading part %1$d of %2$d…"
-msgstr "%2$d భాగాలలో %1$dవ భాగం అప్‌లోడ్ అవుతోంది…"
-
-#: admin/class-babilim-admin.php:3011
-msgid "Continue"
-msgstr "కొనసాగించండి"
-
-#: admin/class-babilim-admin.php:3051
-msgid "Confirm"
-msgstr "నిర్ధారించండి"
-
-#: admin/class-babilim-admin.php:3054
-#: admin/class-babilim-admin.php:3118
-#: admin/class-babilim-translations-table.php:691
-msgid "Remove"
-msgstr "తొలగించండి"
-
-#: admin/class-babilim-admin.php:3058
-#: admin/class-babilim-admin.php:3117
-#: admin/class-babilim-translations-table.php:690
-msgid "Roll back"
-msgstr "రోల్ బ్యాక్ చేయండి"
-
-#: admin/class-babilim-admin.php:3061
-msgid "Nothing to confirm."
-msgstr "నిర్ధారించడానికి ఏమీ లేదు."
-
-#: admin/class-babilim-admin.php:3107
-msgid "Choose a language"
-msgstr "భాషను ఎంచుకోండి"
-
-#: admin/class-babilim-admin.php:3119
-#: admin/class-babilim-translations-table.php:692
-msgid "Roll back and report"
-msgstr "రోల్ బ్యాక్ చేసి నివేదించండి"
-
-#: admin/class-babilim-admin.php:3120
-#: admin/class-babilim-admin.php:4374
-#: admin/class-babilim-translations-table.php:693
-msgid "Report a problem"
-msgstr "సమస్యను నివేదించండి"
-
-#: admin/class-babilim-admin.php:3124
-msgid "Nothing to choose."
-msgstr "ఎంచుకోవడానికి ఏమీ లేదు."
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3130
-#, php-format
-msgid "%1$s: %2$s. Choose the language."
-msgstr "%1$s: %2$s. భాషను ఎంచుకోండి."
-
-#: admin/class-babilim-admin.php:3276
-msgid "Supplementary translations"
-msgstr "అదనపు అనువాదాలు"
-
-#: admin/class-babilim-admin.php:3277
-msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "ప్రతి భాష యొక్క షేర్డ్ డిఫాల్ట్ డొమైన్ అనుబంధానికి ప్రతి కాంపోనెంట్ అందించే సొంత భాగం."
-
-#: admin/class-babilim-admin.php:3279
-#: admin/class-babilim-admin.php:3677
-#: admin/class-babilim-translations-table.php:399
-msgid "Component"
-msgstr "కాంపోనెంట్"
-
-#: admin/class-babilim-admin.php:3280
-#: admin/class-babilim-admin.php:3678
-#: admin/class-babilim-admin.php:4215
-msgid "Language"
-msgstr "భాష"
-
-#: admin/class-babilim-admin.php:3281
-msgid "Included in index"
-msgstr "ఇండెక్స్‌లో చేర్చబడింది"
-
-#: admin/class-babilim-admin.php:3282
-msgid "Entries"
-msgstr "ఎంట్రీలు"
-
-#: admin/class-babilim-admin.php:3283
-#: admin/class-babilim-admin.php:4219
-msgid "Conflicting keys"
-msgstr "వైరుధ్యంగా ఉన్న కీలు"
-
-#: admin/class-babilim-admin.php:3286
-msgid "Yes"
-msgstr "అవును"
-
-#: admin/class-babilim-admin.php:3303
-msgid "No — component inactive"
-msgstr "కాదు — కాంపోనెంట్ నిష్క్రియంగా ఉంది"
-
-#: admin/class-babilim-admin.php:3305
-msgid "No — installed version differs from the active one"
-msgstr "కాదు — ఇన్‌స్టాల్ చేసిన వెర్షన్ యాక్టివ్ వెర్షన్‌కు భిన్నంగా ఉంది"
-
-#: admin/class-babilim-admin.php:3307
-msgid "No — component removed"
-msgstr "కాదు — కాంపోనెంట్ తొలగించబడింది"
-
-#: admin/class-babilim-admin.php:3309
-msgid "No"
-msgstr "కాదు"
-
-#: admin/class-babilim-admin.php:3331
-msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "ఇది ఈ నెట్‌వర్క్‌లోని అన్ని సైట్‌లు పంచుకునే అనువాద ఫైళ్లను మారుస్తుంది కాబట్టి, నెట్‌వర్క్ నిర్వాహకుడు మాత్రమే దీన్ని చేయగలరు."
-
-#: admin/class-babilim-admin.php:3347
-msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
-msgstr "Babilim ఈ సైట్ ధృవీకరణను పూర్తి చేయలేకపోయింది (సేవ తిరిగి సైట్‌ను చేరుకోలేకపోయింది). నమోదు నిలిపివేయబడింది."
-
-#: admin/class-babilim-admin.php:3348
-msgid "This site already has an active registration that can no longer be recovered automatically."
-msgstr "ఈ సైట్‌కు ఇప్పటికే క్రియాశీల నమోదు ఉంది, దాన్ని ఇకపై స్వయంచాలకంగా పునరుద్ధరించలేము."
-
-#: admin/class-babilim-admin.php:3355
-msgid "Restart registration"
-msgstr "నమోదును మళ్లీ ప్రారంభించండి"
-
-#: admin/class-babilim-admin.php:3382
-msgid "Babilim settings"
-msgstr "Babilim సెట్టింగ్‌లు"
-
-#: admin/class-babilim-admin.php:3389
-msgid "General"
-msgstr "సాధారణం"
-
-#: admin/class-babilim-admin.php:3390
-msgid "Advanced"
-msgstr "అధునాతనం"
-
-#: admin/class-babilim-admin.php:3415
-msgid "Languages"
-msgstr "భాషలు"
-
-#: admin/class-babilim-admin.php:3417
-msgid "Automatic installs"
-msgstr "స్వయంచాలక ఇన్‌స్టాల్‌లు"
-
-#: admin/class-babilim-admin.php:3419
-msgid "Install available translations automatically"
-msgstr "అందుబాటులో ఉన్న అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయండి"
-
-#: admin/class-babilim-admin.php:3421
-msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
-msgstr "ఈ సైట్ మల్టీసైట్ నెట్‌వర్క్‌లో భాగం, ఇది కొత్త అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయదు. ఇప్పటికే ఇన్‌స్టాల్ చేసిన అనువాదాలు మాత్రం ఇప్పటికీ అప్‌డేట్ అవుతాయి."
-
-#: admin/class-babilim-admin.php:3429
-msgid "Custom overrides"
-msgstr "అనుకూల ఓవర్‌రైడ్‌లు"
-
-#: admin/class-babilim-admin.php:3431
-msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "ప్రతిదీ తొలగించేటప్పుడు లేదా ఈ ప్లగిన్‌ను అన్‌ఇన్‌స్టాల్ చేసేటప్పుడు నా స్వంత అనువాద ఓవర్‌రైడ్‌లను ఉంచండి."
-
-#. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3434
-#, php-format
-msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "మీరు %sలో ఉంచిన అనువాద ఫైళ్లకు ఎల్లప్పుడూ Babilim ఫైళ్ల కంటే ప్రాధాన్యత ఉంటుంది. దీన్ని మీరు అన్‌చెక్ చేస్తే తప్ప అవి అలాగే ఉంటాయి."
-
-#: admin/class-babilim-admin.php:3438
-msgid "Uninstall"
-msgstr "అన్‌ఇన్‌స్టాల్"
-
-#: admin/class-babilim-admin.php:3440
-msgid "Delete all Babilim data on uninstall"
-msgstr "అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి"
-
-#: admin/class-babilim-admin.php:3441
-msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "డిఫాల్ట్‌గా ఆఫ్: ప్లగిన్‌ను తొలగించినా ఈ సైట్ గుర్తింపు ఉంటుంది, కాబట్టి మళ్లీ ఇన్‌స్టాల్ చేసినప్పుడు దాన్ని మళ్లీ ఉపయోగించవచ్చు."
-
-#: admin/class-babilim-admin.php:3444
-msgid "Account"
-msgstr "ఖాతా"
-
-#: admin/class-babilim-admin.php:3447
-msgid "Save changes"
-msgstr "మార్పులను సేవ్ చేయండి"
-
-#: admin/class-babilim-admin.php:3450
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim"
-msgstr "Babilim ను నిలిపివేయండి"
-
-#: admin/class-babilim-admin.php:3451
-msgid "Installed translations are kept, but no further checks or downloads will run."
-msgstr "ఇన్‌స్టాల్ చేసిన అనువాదాలు అలాగే ఉంటాయి, కానీ ఇకపై తనిఖీలు లేదా డౌన్‌లోడ్‌లు జరగవు."
-
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Babilim ను నిలిపివేయాలా? ఇన్‌స్టాల్ చేసిన అనువాదాలు అలాగే ఉంటాయి, కానీ ఇకపై తనిఖీలు లేదా డౌన్‌లోడ్‌లు జరగవు."
-
-#: admin/class-babilim-admin.php:3511
-#: admin/class-babilim-admin.php:3986
-#: admin/class-babilim-admin.php:4026
-#: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:319
-msgid "This site is not registered with Babilim yet."
-msgstr "ఈ సైట్ ఇంకా Babilim లో నమోదు కాలేదు."
-
-#: admin/class-babilim-admin.php:3519
-msgid "This site is already licensed. Reload the page."
-msgstr "ఈ సైట్‌కు ఇప్పటికే లైసెన్స్ ఉంది. పేజీని రీలోడ్ చేయండి."
-
-#: admin/class-babilim-admin.php:3521
-#: admin/class-babilim-admin.php:3532
-msgid "Checkout is not available for this site right now."
-msgstr "ఈ సైట్ కోసం చెక్అవుట్ ప్రస్తుతం అందుబాటులో లేదు."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3524
-#, php-format
-msgid "Could not start checkout: %s"
-msgstr "చెక్అవుట్ ప్రారంభించలేకపోయాము: %s"
-
-#: admin/class-babilim-admin.php:3848
+#: admin/class-babilim-admin.php:2376
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim ఈ సైట్‌ను ప్రారంభించి తనిఖీ చేస్తోంది… ఈ పేజీని రీలోడ్ చేయండి లేదా షెడ్యూల్ చేసిన తనిఖీ పూర్తయ్యే వరకు వేచి ఉండండి."
+
+#: admin/class-babilim-admin.php:4426
 msgid "Babilim is not enabled."
 msgstr "Babilim ప్రారంభించబడలేదు."
 
-#: admin/class-babilim-admin.php:3851
-msgid "Not registered yet"
-msgstr "ఇంకా నమోదు కాలేదు"
-
-#: admin/class-babilim-admin.php:3853
-msgid "Not verified"
-msgstr "ధృవీకరించబడలేదు"
-
-#: admin/class-babilim-admin.php:3855
-msgid "Verified"
-msgstr "ధృవీకరించబడింది"
-
-#: admin/class-babilim-admin.php:3863
-msgid "Status"
-msgstr "స్థితి"
-
-#: admin/class-babilim-admin.php:3868
-msgid "Licensed"
-msgstr "లైసెన్స్ పొందింది"
-
-#: admin/class-babilim-admin.php:3870
-msgid "Partner"
-msgstr "భాగస్వామి"
-
-#: admin/class-babilim-admin.php:3872
-msgid "Free"
-msgstr "ఉచితం"
-
-#: admin/class-babilim-admin.php:3876
-msgid "License"
-msgstr "లైసెన్స్"
-
-#: admin/class-babilim-admin.php:3879
-#: admin/class-babilim-translations-table.php:865
-msgid "Upgrade this site"
-msgstr "ఈ సైట్‌ను అప్‌గ్రేడ్ చేయండి"
-
-#. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3883
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1949
 #, php-format
-msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
-msgstr "ఈ సైట్ కోసం ఒక్కసారి కొనుగోలు: %1$s %2$s. భవిష్యత్తు అనువాద నవీకరణలన్నీ ఇందులో ఉంటాయి. చెల్లింపును Paddle కొత్త ట్యాబ్‌లో నిర్వహిస్తుంది."
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "ప్లగిన్‌ను తొలగించినప్పుడు ఈ సైట్ గుర్తింపును తొలగించేలా Babilim సెట్ చేయబడింది. అప్పుడు ఈ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపును ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
 
-#: admin/class-babilim-admin.php:3940
-msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "ఇది కొత్త పునరుద్ధరణ కోడ్‌ను జారీ చేస్తుంది మరియు మునుపటిది పని చేయడం ఆగిపోతుంది. కొనసాగించాలా?"
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:939
+#: includes/class-babilim-site.php:1271
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "ఈ దశకు Babilim కు సమయం సరిపోలేదు, తదుపరి తనిఖీలో కొనసాగిస్తుంది."
 
-#: admin/class-babilim-admin.php:3940
-msgid "Show a new restore code"
-msgstr "కొత్త పునరుద్ధరణ కోడ్‌ను చూపండి"
+#: admin/class-babilim-admin.php:3827
+msgid "Babilim settings"
+msgstr "Babilim సెట్టింగ్‌లు"
 
-#: admin/class-babilim-admin.php:3942
-msgid "rc_…"
-msgstr "rc_…"
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1622
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "సేవ ద్వారా Babilim సింక్ తాత్కాలికంగా ఆలస్యమైంది (రేట్ లిమిట్); %s తర్వాత మళ్లీ ప్రయత్నిస్తుంది."
 
-#: admin/class-babilim-admin.php:3942
-msgid "Restore code"
-msgstr "పునరుద్ధరణ కోడ్"
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "ఈ అప్‌లోడ్ వేచి ఉన్నప్పుడు Babilim అప్‌డేట్ అయింది. పాత ప్యాకేజీ తొలగించబడింది; దయచేసి అప్‌లోడ్‌ను మళ్లీ నిర్ధారించండి."
 
-#: admin/class-babilim-admin.php:3943
-msgid "Restore purchase"
-msgstr "కొనుగోలును పునరుద్ధరించండి"
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:3428
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim %1$s (వెర్షన్ %2$s) నుండి ఈ ఫైళ్లను అప్‌లోడ్ చేస్తుంది: ప్రతి .php మరియు .js ఫైల్, ప్రతి block.json ఫైల్, అలాగే దాని ప్రధాన ఫోల్డర్‌లోని readme.txt, readme.md, style.css మరియు theme.json. అనువదించాల్సిన టెక్స్ట్‌ను కనుగొనడానికి మరియు ప్లగిన్ లేదా థీమ్‌ను గుర్తించడానికి వీటిని ఉపయోగిస్తారు."
 
-#: admin/class-babilim-admin.php:3944
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest అందుబాటులో లేదు: %s"
+
+#: admin/class-babilim-admin.php:3422
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:4263
+msgid "Back"
+msgstr "వెనుకకు"
+
+#: admin/class-babilim-admin.php:4522
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "ఈ డొమైన్ కోసం ఇంతకు ముందు లైసెన్స్ కొన్నారా? చెక్అవుట్ సమయంలో మీకు అందిన పునరుద్ధరణ కోడ్‌ను నమోదు చేయండి."
 
-#: admin/class-babilim-admin.php:3980
-msgid "That does not look like a restore code."
-msgstr "ఇది పునరుద్ధరణ కోడ్‌లా కనిపించడం లేదు."
+#: admin/class-babilim-admin.php:3253
+msgid "Broken placeholder"
+msgstr "విరిగిన ప్లేస్‌హోల్డర్"
 
-#: admin/class-babilim-admin.php:3994
-msgid "This restore code was not recognised for this site."
-msgstr "ఈ పునరుద్ధరణ కోడ్ ఈ సైట్ కోసం గుర్తించబడలేదు."
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:4258
+msgid "Build"
+msgstr "బిల్డ్"
 
-#: admin/class-babilim-admin.php:3996
-msgid "Too many attempts. Try again tomorrow."
-msgstr "చాలా ప్రయత్నాలు జరిగాయి. రేపు మళ్లీ ప్రయత్నించండి."
-
-#: admin/class-babilim-admin.php:3998
-msgid "This site must be verified first."
-msgstr "ముందుగా ఈ సైట్‌ను ధృవీకరించాలి."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4001
-#, php-format
-msgid "Could not restore the purchase: %s"
-msgstr "కొనుగోలును పునరుద్ధరించలేకపోయాం: %s"
-
-#: admin/class-babilim-admin.php:4011
-msgid "Purchase restored. This site is now licensed."
-msgstr "కొనుగోలు పునరుద్ధరించబడింది. ఈ సైట్‌కు ఇప్పుడు లైసెన్స్ ఉంది."
-
-#: admin/class-babilim-admin.php:4034
-msgid "This site has no purchase to show a code for."
-msgstr "ఈ సైట్‌కు కోడ్ చూపించడానికి కొనుగోలు ఏదీ లేదు."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4037
-#, php-format
-msgid "Could not show a new restore code: %s"
-msgstr "కొత్త పునరుద్ధరణ కోడ్‌ను చూపలేకపోయాము: %s"
-
-#. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:4048
-#, php-format
-msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
-msgstr "మీ కొత్త పునరుద్ధరణ కోడ్: %s. దీన్ని సురక్షితమైన చోట ఉంచండి — మునుపటి కోడ్ ఇకపై పని చేయదు."
-
-#: admin/class-babilim-admin.php:4063
-msgid "What is sent when Babilim checks this site"
-msgstr "Babilim ఈ సైట్‌ను తనిఖీ చేసినప్పుడు ఏమి పంపబడుతుంది"
-
-#: admin/class-babilim-admin.php:4092
-msgid "(detected)"
-msgstr "(గుర్తించబడింది)"
-
-#: admin/class-babilim-admin.php:4095
-msgid "No language is managed yet."
-msgstr "ఇంకా ఏ భాషా నిర్వహించబడటం లేదు."
-
-#: admin/class-babilim-admin.php:4097
-msgid "Babilim adds translations for every language checked here."
-msgstr "ఇక్కడ ఎంచుకున్న ప్రతి భాషకు Babilim అనువాదాలను జోడిస్తుంది."
-
-#: admin/class-babilim-admin.php:4102
-msgid "Add another language"
-msgstr "మరో భాషను జోడించండి"
-
-#: admin/class-babilim-admin.php:4103
-msgid "Choose a language…"
-msgstr "భాషను ఎంచుకోండి…"
-
-#: admin/class-babilim-admin.php:4109
-msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "సేవ నుండి పూర్తి WordPress.org లొకేల్ జాబితాను లోడ్ చేయలేకపోయాము, కాబట్టి ప్రస్తుతం మరే భాషనూ జోడించలేరు."
-
-#: admin/class-babilim-admin.php:4167
-msgid "Theme"
-msgstr "అలంకారం"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Plugin"
-msgstr "ప్లగిన్"
-
-#: admin/class-babilim-admin.php:4174
-msgid "Free quota"
-msgstr "ఉచిత కోటా"
-
-#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:4181
-#, php-format
-msgid "Downloads: %1$d/%2$d (%3$s)"
-msgstr "డౌన్‌లోడ్‌లు: %1$d/%2$d (%3$s)"
-
-#: admin/class-babilim-admin.php:4213
-msgid "Supplementary translation index"
-msgstr "అదనపు అనువాద ఇండెక్స్"
-
-#: admin/class-babilim-admin.php:4216
+#: admin/class-babilim-admin.php:4796
 msgid "Built"
 msgstr "బిల్డ్ అయింది"
 
-#: admin/class-babilim-admin.php:4217
-msgid "Included"
-msgstr "చేర్చబడినవి"
+#: admin/class-babilim-translations-table.php:590
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "బల్క్ చర్యలు ఎంచుకున్న ప్రతి కాంపోనెంట్‌కు ఎంచుకున్న భాషకు మాత్రమే వర్తిస్తాయి."
 
-#: admin/class-babilim-admin.php:4218
-msgid "Excluded"
-msgstr "మినహాయించబడింది"
+#: admin/class-babilim-translations-table.php:589
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "బల్క్ చర్యలు ఎంచుకున్న ప్రతి కాంపోనెంట్‌కు సరిపోలే అన్ని భాషలకు వర్తిస్తాయి."
 
-#: admin/class-babilim-admin.php:4220
-msgid "Already in WordPress core"
-msgstr "ఇప్పటికే WordPress కోర్‌లో ఉంది"
+#: admin/class-babilim-admin.php:3218
+msgid "Bulk download:"
+msgstr "బల్క్ డౌన్‌లోడ్:"
 
-#: admin/class-babilim-admin.php:4239
-msgid "Supplementary translation maintenance"
-msgstr "అనుబంధ అనువాద నిర్వహణ"
+#: admin/class-babilim-admin.php:3222
+msgid "Bulk request:"
+msgstr "బల్క్ అభ్యర్థన:"
 
-#: admin/class-babilim-admin.php:4242
-msgid "Maintenance status is not available right now."
-msgstr "నిర్వహణ స్థితి ప్రస్తుతం అందుబాటులో లేదు."
-
-#. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:4250
-#, php-format
-msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "%1$s న క్లీనప్ నిలిపివేయబడింది: %2$s. ఏదీ తొలగించబడలేదు."
-
-#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:4264
-#, php-format
-msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "చివరి క్లీనప్ %1$s న: %2$d కొత్తగా గుర్తించబడ్డాయి, %3$d ఫైల్(లు) తొలగించబడ్డాయి, %4$d రికార్డు(లు) తీసివేయబడ్డాయి."
-
-#: admin/class-babilim-admin.php:4271
-msgid "No cleanup has run yet."
-msgstr "ఇంకా క్లీనప్ ఏదీ అమలు కాలేదు."
-
-#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:4282
-#, php-format
-msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
-msgstr "%1$s న (%2$s) అనువాద సూచిక రాయడం మరొక అభ్యర్థనతో ఘర్షణ పడింది మరియు వర్తింపజేయబడలేదు; ఇటీవలి వెర్షన్ ఉంచబడింది."
-
-#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:4295
-#, php-format
-msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
-msgstr "%1$s న (%2$s) అనువాద సూచిక రాయడం పూర్తి కాలేదు మరియు వర్తింపజేయబడలేదు (%3$s)."
-
-#: admin/class-babilim-admin.php:4311
-msgid "Maintenance"
-msgstr "నిర్వహణ"
-
-#: admin/class-babilim-admin.php:4322
-msgid "Rebuild index now"
-msgstr "ఇప్పుడే సూచికను పునర్నిర్మించండి"
-
-#: admin/class-babilim-admin.php:4328
-msgid "Sweep now"
-msgstr "ఇప్పుడే స్వీప్ చేయండి"
-
-#: admin/class-babilim-admin.php:4344
-msgid "Danger zone"
-msgstr "ప్రమాద ప్రాంతం"
-
-#: admin/class-babilim-admin.php:4352
-msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
-msgstr "ఈ సైట్‌లోని ప్రతి ప్లగిన్ మరియు అలంకారం కోసం Babilim ఇన్‌స్టాల్ చేసిన ప్రతి భాషా ఫైల్‌ను తొలగిస్తుంది."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
-msgstr "Babilim ఇన్‌స్టాల్ చేసిన ప్రతిదాన్ని తొలగించాలా? ఇది ఈ సైట్‌లోని ప్రతి ప్లగిన్ మరియు అలంకారం కోసం Babilim ఇన్‌స్టాల్ చేసిన ప్రతి భాషా ఫైల్‌ను తొలగిస్తుంది."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed"
-msgstr "Babilim ఇన్‌స్టాల్ చేసిన ప్రతిదాన్ని తొలగించండి"
-
-#: admin/class-babilim-admin.php:3670
-#: admin/class-babilim-admin.php:4398
-msgid "Category"
-msgstr "వర్గం"
-
-#: admin/class-babilim-admin.php:4400
-msgid "Choose a category…"
-msgstr "వర్గాన్ని ఎంచుకోండి…"
-
-#: admin/class-babilim-admin.php:4415
-msgid "Roll back and send report"
-msgstr "రోల్ బ్యాక్ చేసి నివేదిక పంపండి"
-
-#: admin/class-babilim-admin.php:3684
-#: admin/class-babilim-admin.php:4415
-msgid "Send report"
-msgstr "నివేదిక పంపండి"
-
-#: admin/class-babilim-cell.php:65
-msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "ఈ కాంపోనెంట్‌లోని కొంత టెక్స్ట్‌ను దాని రచయిత హార్డ్-కోడ్ చేశారు, దానిని భాషా ప్యాక్ ద్వారా అనువదించలేము."
-
-#: admin/class-babilim-cell.php:105
-msgid "WordPress.org"
-msgstr "WordPress.org"
-
-#: admin/class-babilim-cell.php:108
-msgid "Bundled with the theme"
-msgstr "అలంకారంతో పాటు వచ్చింది"
+#: admin/class-babilim-admin.php:3220
+msgid "Bulk update:"
+msgstr "బల్క్ అప్‌డేట్:"
 
 #: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "ప్లగిన్‌తో పాటు వచ్చింది"
 
-#: admin/class-babilim-cell.php:118
-msgid "Upload was not accepted"
-msgstr "అప్‌లోడ్ ఆమోదించబడలేదు"
+#: admin/class-babilim-cell.php:108
+msgid "Bundled with the theme"
+msgstr "అలంకారంతో పాటు వచ్చింది"
 
-#: admin/class-babilim-cell.php:121
-msgid "Upload expired before it finished"
-msgstr "అప్‌లోడ్ పూర్తి కాకముందే గడువు ముగిసింది"
+#: admin/class-babilim-admin.php:3073
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "ప్రారంభించు క్లిక్ చేయడం ద్వారా, పైన జాబితా చేసిన సమాచారాన్ని Babilimకు పంపడానికి మీరు అంగీకరిస్తున్నారు."
 
-#: admin/class-babilim-cell.php:123
-msgid "No translation"
-msgstr "అనువాదం లేదు"
+#: admin/class-babilim-admin.php:3433
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "కొనసాగించడం ద్వారా ఈ కాంపోనెంట్‌ను అప్‌లోడ్ చేసే హక్కు మీకు ఉందని నిర్ధారిస్తున్నారు."
 
-#: admin/class-babilim-cell.php:129
-#: admin/class-babilim-cell.php:131
-#: admin/class-babilim-cell.php:265
-#: admin/class-babilim-cell.php:267
-msgid "Upload in progress — continue or cancel"
-msgstr "అప్‌లోడ్ కొనసాగుతోంది — కొనసాగించండి లేదా రద్దు చేయండి"
+#: admin/class-babilim-admin.php:3436
+#: admin/class-babilim-admin.php:3456
+#: admin/class-babilim-admin.php:3494
+#: admin/class-babilim-admin.php:3551
+msgid "Cancel"
+msgstr "రద్దు చేయండి"
 
-#: admin/class-babilim-cell.php:133
-msgid "Scheduled, waiting to be processed"
-msgstr "షెడ్యూల్ చేయబడింది, ప్రాసెస్ కావడానికి వేచి ఉంది"
+#: admin/class-babilim-admin.php:4248
+#: admin/class-babilim-admin.php:4978
+msgid "Category"
+msgstr "వర్గం"
 
-#: admin/class-babilim-cell.php:135
-msgid "Translating…"
-msgstr "అనువదిస్తోంది…"
+#: admin/class-babilim-admin.php:3152
+msgid "Check again"
+msgstr "మళ్లీ తనిఖీ చేయండి"
 
-#: admin/class-babilim-cell.php:137
-msgid "Translation failed"
-msgstr "అనువాదం విఫలమైంది"
+#: admin/class-babilim-admin.php:3107
+#: admin/class-babilim-admin.php:3155
+#: admin/class-babilim-admin.php:4893
+msgid "Check again now"
+msgstr "ఇప్పుడే మళ్లీ తనిఖీ చేయండి"
 
-#: admin/class-babilim-cell.php:139
-msgid "Free quota used"
-msgstr "ఉచిత కోటా వినియోగించబడింది"
+#: admin/class-babilim-admin.php:3976
+#: admin/class-babilim-admin.php:3987
+msgid "Checkout is not available for this site right now."
+msgstr "ఈ సైట్ కోసం చెక్అవుట్ ప్రస్తుతం అందుబాటులో లేదు."
 
-#: admin/class-babilim-cell.php:141
-msgid "Needs a paid license"
-msgstr "చెల్లింపు లైసెన్స్ అవసరం"
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:4247
+msgid "Choose"
+msgstr "ఎంచుకోండి"
 
-#: admin/class-babilim-cell.php:148
-msgid "Not supported"
-msgstr "మద్దతు లేదు"
+#: admin/class-babilim-admin.php:4980
+msgid "Choose a category…"
+msgstr "వర్గాన్ని ఎంచుకోండి…"
 
-#: admin/class-babilim-cell.php:150
-msgid "Status unknown"
-msgstr "స్థితి తెలియదు"
+#: admin/class-babilim-admin.php:3552
+msgid "Choose a language"
+msgstr "భాషను ఎంచుకోండి"
 
-#: admin/class-babilim-cell.php:170
-#: admin/class-babilim-cell.php:197
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Installed"
-msgstr "ఇన్‌స్టాల్ చేయబడింది"
+#: admin/class-babilim-admin.php:4683
+msgid "Choose a language…"
+msgstr "భాషను ఎంచుకోండి…"
 
-#: admin/class-babilim-cell.php:183
-#: admin/class-babilim-cell.php:185
-msgid "Update available"
-msgstr "అప్‌డేట్ అందుబాటులో ఉంది"
-
-#: admin/class-babilim-cell.php:210
-msgid "Removed after a failed integrity check"
-msgstr "సమగ్రత తనిఖీ విఫలమైన తర్వాత తొలగించబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-#, php-format
-msgid "Installed · built for %s, new version scheduled"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్ షెడ్యూల్ చేయబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-msgid "Installed · built for a different version, new version scheduled"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్ షెడ్యూల్ చేయబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-#, php-format
-msgid "Installed · built for %s, translating the new version…"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్‌ను అనువదిస్తోంది…"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-msgid "Installed · built for a different version, translating the new version…"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్‌ను అనువదిస్తోంది…"
-
-#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:279
-#, php-format
-msgid "Installed · built for %1$s, this site has %2$s"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %1$s కోసం నిర్మించబడింది, ఈ సైట్‌లో %2$s ఉంది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-#, php-format
-msgid "Installed · built for %s"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-msgid "Installed · built for a different version"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-#, php-format
-msgid "Installed · built for %s, new version failed"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్ విఫలమైంది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-msgid "Installed · built for a different version, new version failed"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్ విఫలమైంది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-#, php-format
-msgid "Installed · built for %s, new version needs a paid license"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్‌కు చెల్లింపు లైసెన్స్ అవసరం"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్‌కు చెల్లింపు లైసెన్స్ అవసరం"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-#, php-format
-msgid "Installed · built for %s, free quota used"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం బిల్డ్ చేయబడింది, ఉచిత కోటా వినియోగించబడింది"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-msgid "Installed · built for a different version, free quota used"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం రూపొందించబడింది, ఉచిత కోటా ఉపయోగించబడింది"
-
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Available"
-msgstr "అందుబాటులో ఉంది"
-
-#. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:319
-#, php-format
-msgid "Installed · %s"
-msgstr "ఇన్‌స్టాల్ చేయబడింది · %s"
-
-#. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:322
-#, php-format
-msgid "Available · %s"
-msgstr "అందుబాటులో ఉంది · %s"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:412
-msgid "Update"
-msgstr "అప్‌డేట్ చేయండి"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:411
-msgid "Download"
-msgstr "డౌన్‌లోడ్ చేయండి"
-
-#: admin/class-babilim-cell.php:362
-msgid "Updating…"
-msgstr "అప్‌డేట్ అవుతోంది…"
-
-#: admin/class-babilim-cell.php:362
-msgid "Downloading…"
-msgstr "డౌన్‌లోడ్ అవుతోంది…"
-
-#: admin/class-babilim-cell.php:365
-msgid "Retry request"
-msgstr "అభ్యర్థనను మళ్లీ ప్రయత్నించండి"
-
-#: admin/class-babilim-cell.php:367
-msgid "Request newer translation"
-msgstr "కొత్త అనువాదాన్ని అభ్యర్థించండి"
-
-#: admin/class-babilim-cell.php:367
-#: admin/class-babilim-translations-table.php:413
-msgid "Request translation"
-msgstr "అనువాదాన్ని అభ్యర్థించండి"
-
-#: admin/class-babilim-cell.php:369
-msgid "Requesting…"
-msgstr "అభ్యర్థిస్తోంది…"
-
-#: admin/class-babilim-translations-table.php:35
-msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "అనువాదాన్ని అభ్యర్థిస్తే, ఈ కాంపోనెంట్ ఇప్పటికే ఒకటి ఉపయోగించకపోతే, మీ ఉచిత స్లాట్‌లలో ఒకటి ఉపయోగించబడుతుంది. విఫలమైన అనువాదం స్లాట్‌ను తిరిగి ఇవ్వదు."
-
-#: admin/class-babilim-translations-table.php:42
-msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "ఈ కాంపోనెంట్ ఇంకా మీ ఉచిత స్లాట్‌లలో ఒకదాన్ని ఉపయోగించకపోతే, అనువాదాన్ని అభ్యర్థిస్తే ఒకటి ఉపయోగించబడుతుంది. విఫలమైన అనువాదం స్లాట్‌ను తిరిగి ఇవ్వదు. కొనసాగించాలా?"
-
-#: admin/class-babilim-translations-table.php:382
-msgid "No plugins or themes found."
-msgstr "ప్లగిన్‌లు లేదా అలంకారాలు ఏవీ కనుగొనబడలేదు."
-
-#: admin/class-babilim-translations-table.php:386
+#: admin/class-babilim-translations-table.php:428
 msgid "Clear filters"
 msgstr "ఫిల్టర్‌లను క్లియర్ చేయండి"
 
-#. translators: %s: a "Clear filters" link.
-#: admin/class-babilim-translations-table.php:388
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:4265
+msgid "Close"
+msgstr "మూసివేయండి"
+
+#: admin/class-babilim-admin.php:3724
+#: admin/class-babilim-admin.php:4255
+#: admin/class-babilim-translations-table.php:441
+msgid "Component"
+msgstr "కాంపోనెంట్"
+
+#: admin/class-babilim-admin.php:3496
+msgid "Confirm"
+msgstr "నిర్ధారించండి"
+
+#: admin/class-babilim-admin.php:3728
+#: admin/class-babilim-admin.php:4799
+msgid "Conflicting keys"
+msgstr "వైరుధ్యంగా ఉన్న కీలు"
+
+#: admin/class-babilim-admin.php:3455
+msgid "Continue"
+msgstr "కొనసాగించండి"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:3339
 #, php-format
-msgid "No components match these filters. %s"
-msgstr "ఈ ఫిల్టర్‌లకు సరిపోలే కాంపోనెంట్‌లు లేవు. %s"
+msgid "Continue next batch (%d left)"
+msgstr "తదుపరి బ్యాచ్‌ను కొనసాగించండి (%d మిగిలి ఉన్నాయి)"
 
-#: admin/class-babilim-translations-table.php:398
-msgid "Select all"
-msgstr "అన్నీ ఎంచుకోండి"
+#: admin/class-babilim-admin.php:3336
+msgid "Continuing…"
+msgstr "కొనసాగుతోంది…"
 
-#: admin/class-babilim-translations-table.php:424
-#: admin/class-babilim-translations-table.php:472
-msgid "All"
-msgstr "అన్నీ"
-
-#: admin/class-babilim-translations-table.php:425
-msgid "Available"
-msgstr "అందుబాటులో ఉన్నవి"
-
-#: admin/class-babilim-translations-table.php:426
-msgid "Updates"
-msgstr "అప్‌డేట్‌లు"
-
-#: admin/class-babilim-translations-table.php:427
-msgid "Requestable"
-msgstr "అభ్యర్థించదగినవి"
-
-#: admin/class-babilim-translations-table.php:428
-msgid "Installed"
-msgstr "ఇన్‌స్టాల్ చేయబడినవి"
-
-#: admin/class-babilim-translations-table.php:473
-msgid "Plugins"
-msgstr "ప్లగిన్‌లు"
-
-#: admin/class-babilim-translations-table.php:474
-msgid "Themes"
-msgstr "అలంకారాలు"
-
-#: admin/class-babilim-translations-table.php:499
-msgid "All languages"
-msgstr "అన్ని భాషలు"
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
 #, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] "ఇన్‌స్టాల్ చేయడానికి %d"
-msgstr[1] "ఇన్‌స్టాల్ చేయడానికి %d"
+msgid "Could not back up %s before replacing it."
+msgstr "%sను భర్తీ చేసే ముందు బ్యాకప్ చేయలేకపోయాము."
 
-#: admin/class-babilim-translations-table.php:511
-msgid "Language:"
-msgstr "భాష:"
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
+msgid "Could not create the package archive."
+msgstr "ప్యాకేజీ ఆర్కైవ్‌ను సృష్టించలేకపోయాం."
 
-#: admin/class-babilim-translations-table.php:547
-msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "బల్క్ చర్యలు ఎంచుకున్న ప్రతి కాంపోనెంట్‌కు సరిపోలే అన్ని భాషలకు వర్తిస్తాయి."
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "యాక్టివ్ కాంపోనెంట్‌లను గుర్తించలేకపోయాము; ప్రస్తుత విలీన సూచిక మార్చకుండా వదిలేశాము."
 
-#: admin/class-babilim-translations-table.php:548
-msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "బల్క్ చర్యలు ఎంచుకున్న ప్రతి కాంపోనెంట్‌కు ఎంచుకున్న భాషకు మాత్రమే వర్తిస్తాయి."
+#: includes/class-babilim-default-index.php:400
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "ఇన్‌స్టాల్ చేసిన ప్లగిన్‌లు/థీమ్‌లను గుర్తించలేకపోయాము; స్వీప్ దాటవేయబడింది, ఏదీ తొలగించబడలేదు."
 
-#. translators: %s: the component's version number.
-#: admin/class-babilim-translations-table.php:572
+#: admin/class-babilim-admin.php:4689
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "సేవ నుండి పూర్తి WordPress.org లొకేల్ జాబితాను లోడ్ చేయలేకపోయాము, కాబట్టి ప్రస్తుతం మరే భాషనూ జోడించలేరు."
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
 #, php-format
-msgid "Version %s"
-msgstr "వెర్షన్ %s"
+msgid "Could not move %s into place."
+msgstr "%sను దాని స్థానంలోకి తరలించలేకపోయాము."
 
-#. translators: %s: the theme's version number.
-#: admin/class-babilim-translations-table.php:575
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:989
 #, php-format
-msgid "Theme · %s"
-msgstr "అలంకారం · %s"
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "'%s' కోసం విలీన ఇండెక్స్‌ను యథాస్థానంలోకి తరలించలేకపోయాము; మునుపటి సర్వ్ చేసిన ఇండెక్స్ (ఉంటే) సగం-నవీకరణగా మిగల్చకుండా తొలగించబడింది. తదుపరి విజయవంతమైన రీబిల్డ్ వరకు ఈ లొకేల్‌కు డిఫాల్ట్ డొమైన్ అనుబంధం అందించబడదు."
 
-#. translators: %s: the plugin's version number.
-#: admin/class-babilim-translations-table.php:578
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
 #, php-format
-msgid "Plugin · %s"
-msgstr "ప్లగిన్ · %s"
+msgid "Could not open zip: %s"
+msgstr "zip తెరవలేకపోయాము: %s"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:635
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
 #, php-format
-msgid "Remove the %2$s translation of %1$s from this site?"
-msgstr "ఈ సైట్ నుండి %1$s యొక్క %2$s భాషా అనువాదాన్ని తీసివేయాలా?"
+msgid "Could not prepare %s for rollback."
+msgstr "రోల్‌బ్యాక్ కోసం %s ను సిద్ధం చేయలేకపోయాం."
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:638
+#. translators: %s: the filename that could not be read back after it was moved into place.
+#: includes/class-babilim-installer.php:1656
 #, php-format
-msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "%1$s యొక్క %2$s అనువాదాన్ని మునుపటి బిల్డ్‌కు రోల్ బ్యాక్ చేయాలా?"
+msgid "Could not read %s back after moving it into place."
+msgstr "%s ను స్థానంలోకి తరలించిన తర్వాత తిరిగి చదవలేకపోయాం."
 
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-translations-table.php:731
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
 #, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+msgid "Could not read: %s"
+msgstr "చదవలేకపోయాం: %s"
 
-#. translators: 1: action name such as Remove, 2: component name, 3: language name.
-#: admin/class-babilim-translations-table.php:734
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4579
 #, php-format
-msgid "%1$s: %2$s (%3$s)"
-msgstr "%1$s: %2$s (%3$s)"
+msgid "Could not restore the purchase: %s"
+msgstr "కొనుగోలును పునరుద్ధరించలేకపోయాం: %s"
 
-#: includes/class-babilim-api-client.php:102
-msgid "The registration challenge is not in the expected form."
-msgstr "నమోదు ఛాలెంజ్ ఆశించిన రూపంలో లేదు."
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4615
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "కొత్త పునరుద్ధరణ కోడ్‌ను చూపలేకపోయాము: %s"
 
-#: includes/class-babilim-api-client.php:212
-msgid "That is not a valid build identifier."
-msgstr "అది చెల్లుబాటు అయ్యే బిల్డ్ ఐడెంటిఫైయర్ కాదు."
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "%sను స్టేజ్ చేయలేకపోయాము"
 
-#: includes/class-babilim-api-client.php:309
-msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Babilim భాషా ఫైల్ డైరెక్టరీ వెలుపల రాయడానికి నిరాకరిస్తోంది."
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "default/%sను స్టేజ్ చేయలేకపోయాము"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3979
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "చెక్అవుట్ ప్రారంభించలేకపోయాము: %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "%s కోసం ఎంట్రీల సంఖ్యను ధృవీకరించలేకపోయాము"
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
 msgstr "డౌన్‌లోడ్ చేసిన ప్యాకేజీని డిస్క్‌కు రాయడం సాధ్యం కాలేదు."
 
-#. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:605
+#: includes/class-babilim-default-index.php:950
+msgid "Could not write the staged merged index."
+msgstr "స్టేజ్ చేసిన విలీన ఇండెక్స్‌ను రాయలేకపోయాము."
+
+#: admin/class-babilim-admin.php:1547
+#: admin/class-babilim-admin.php:4245
+#: admin/class-babilim-admin.php:4986
+msgid "Current translation"
+msgstr "ప్రస్తుత అనువాదం"
+
+#: admin/class-babilim-admin.php:3883
+msgid "Custom overrides"
+msgstr "అనుకూల ఓవర్‌రైడ్‌లు"
+
+#: admin/class-babilim-admin.php:4924
+msgid "Danger zone"
+msgstr "ప్రమాద ప్రాంతం"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "డిఫాల్ట్ సప్లిమెంట్ ఎంట్రీల సంఖ్య సరిపోలలేదు."
+
+#: admin/class-babilim-admin.php:3894
+msgid "Delete all Babilim data on uninstall"
+msgstr "అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి"
+
+#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim"
+msgstr "Babilim ను నిలిపివేయండి"
+
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Babilim ను నిలిపివేయాలా? ఇన్‌స్టాల్ చేసిన అనువాదాలు అలాగే ఉంటాయి, కానీ ఇకపై తనిఖీలు లేదా డౌన్‌లోడ్‌లు జరగవు."
+
+#: admin/class-babilim-admin.php:2545
+msgid "Don't share"
+msgstr "షేర్ చేయవద్దు"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:453
+msgid "Download"
+msgstr "డౌన్‌లోడ్ చేయండి"
+
+#: admin/class-babilim-admin.php:961
+msgid "Downloaded and installed."
+msgstr "డౌన్‌లోడ్ చేసి ఇన్‌స్టాల్ చేయబడింది."
+
+#: admin/class-babilim-cell.php:366
+msgid "Downloading…"
+msgstr "డౌన్‌లోడ్ అవుతోంది…"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
+#: admin/class-babilim-admin.php:4761
 #, php-format
-msgid "Unexpected HTTP %d response."
-msgstr "ఊహించని HTTP %d ప్రతిస్పందన."
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "డౌన్‌లోడ్‌లు: %1$d/%2$d (%3$s)"
 
-#: includes/class-babilim-consent.php:72
-msgid "This site's URL, so the service can verify you own it."
-msgstr "ఈ సైట్ URL, తద్వారా అది మీదేనని సేవ ధృవీకరించగలదు."
+#: admin/class-babilim-admin.php:3722
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "ప్రతి భాష యొక్క షేర్డ్ డిఫాల్ట్ డొమైన్ అనుబంధానికి ప్రతి కాంపోనెంట్ అందించే సొంత భాగం."
 
-#: includes/class-babilim-consent.php:77
-msgid "Your WordPress version, to serve compatible translation files."
-msgstr "మీ WordPress వెర్షన్, అనుకూలమైన అనువాద ఫైల్‌లను అందించడానికి."
+#: admin/class-babilim-admin.php:3072
+msgid "Enable Babilim"
+msgstr "Babilim ను ప్రారంభించండి"
 
-#: includes/class-babilim-consent.php:82
-msgid "Your PHP version, for compatibility."
-msgstr "మీ PHP వెర్షన్, అనుకూలత కోసం."
+#: admin/class-babilim-admin.php:3072
+msgid "Enabling…"
+msgstr "ప్రారంభిస్తోంది…"
 
-#: includes/class-babilim-consent.php:87
-msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
-msgstr "ఈ ప్లగిన్ స్వంత వెర్షన్, ఇది సేవతో సంభాషించలేనంత పాతదైతే దాన్ని అప్‌డేట్ చేయమని సేవ చెప్పగలదు."
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "ఇంగ్లీష్ (యునైటెడ్ స్టేట్స్)"
 
-#: includes/class-babilim-consent.php:92
-msgid "This site's configured locale."
-msgstr "ఈ సైట్ కాన్ఫిగర్ చేసిన లొకేల్."
+#: admin/class-babilim-admin.php:3727
+msgid "Entries"
+msgstr "ఎంట్రీలు"
 
-#: includes/class-babilim-consent.php:97
-msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "ఈ సైట్‌లో ఉపయోగంలో ఉన్న ప్రతి లొకేల్ (సైట్ లొకేల్, ఇన్‌స్టాల్ చేసిన భాషా ప్యాక్‌లు, వాడుకరి లొకేల్‌లు, మరియు మీరు మాన్యువల్‌గా జోడించినవి). ఏ లొకేల్‌ను కూడా వేరుగా పరిగణించరు."
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "%s కోసం ఎంట్రీల సంఖ్య సరిపోలలేదు"
 
-#: includes/class-babilim-consent.php:101
-msgid "(a public key generated for this site)"
-msgstr "(ఈ సైట్ కోసం సృష్టించిన పబ్లిక్ కీ)"
-
-#: includes/class-babilim-consent.php:102
-msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
-msgstr "ఈ సైట్ ఇన్‌స్టాల్ పబ్లిక్ కీ, అభ్యర్థనలు నిజంగా ఈ సైట్ నుండే వస్తున్నాయని నిరూపించడానికి ఉపయోగిస్తారు. పబ్లిక్ భాగం మాత్రమే పంపబడుతుంది."
+#: admin/class-babilim-admin.php:3878
+msgid "Error reports"
+msgstr "లోపం నివేదికలు"
 
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "ఇన్‌స్టాల్ చేసిన ప్రతి ప్లగిన్/అలంకారం: దాని స్లగ్, వెర్షన్, టెక్స్ట్ డొమైన్(లు), అది wp.org లిస్టింగ్ కాదా, దాని స్వంత బండిల్ చేసిన లోకేల్‌లు, మరియు మీరు ఇప్పటికే ఏ లోకేల్‌లకు Babilim అనువాదాన్ని ఇన్‌స్టాల్ చేశారు."
 
-#: includes/class-babilim-consent.php:116
-msgid "(generic codes and coordinates only)"
-msgstr "(సాధారణ కోడ్‌లు మరియు కోఆర్డినేట్‌లు మాత్రమే)"
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "ఈ సైట్‌లో ఉపయోగంలో ఉన్న ప్రతి లొకేల్ (సైట్ లొకేల్, ఇన్‌స్టాల్ చేసిన భాషా ప్యాక్‌లు, వాడుకరి లొకేల్‌లు, మరియు మీరు మాన్యువల్‌గా జోడించినవి). ఏ లొకేల్‌ను కూడా వేరుగా పరిగణించరు."
 
-#: includes/class-babilim-consent.php:117
-msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "వేచివున్న గరిష్ఠంగా 20 డయాగ్నోస్టిక్ ఈవెంట్‌లు (ఉదా. సమగ్రత తనిఖీలో విఫలమైన ఫైల్), ప్రతిదీ కేవలం కోడ్, కాంపోనెంట్, లొకేల్ మాత్రమే, ఏ స్ట్రింగ్ కంటెంట్ లేదా అనువదించిన టెక్స్ట్ ఎప్పుడూ ఉండదు."
+#: admin/class-babilim-admin.php:4798
+msgid "Excluded"
+msgstr "మినహాయించబడింది"
 
-#. translators: %s: the invalid locale code.
-#: includes/class-babilim-default-index.php:109
-#: includes/class-babilim-installer.php:949
+#: admin/class-babilim-admin.php:3429
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "ఇతర పేర్లు లేదా ఎక్స్‌టెన్షన్‌లు ఉన్న ఫైళ్లు చేర్చబడవు; అలాగే uploads, cache, logs, backup, data, vendor, node_modules మరియు languages ఫోల్డర్‌లు, దాచిన ఫైళ్లు, లేదా సాధారణ రహస్య ఫైళ్లకు పేర్లు సరిపోలే ఫైళ్లు (wp-config*, .env*, *.sql, *.log, *.pem, *.key) కూడా చేర్చబడవు. కోడ్ ఫైళ్లలో కూడా మీరు పంచుకోకూడదనుకునే టెక్స్ట్ లేదా డేటా ఉండవచ్చు; సందేహం ఉంటే వాటిని తనిఖీ చేయండి. సేవ వచ్చిన తర్వాత అదే రకాల ఫైళ్లను మళ్లీ తొలగిస్తుంది."
+
+#: admin/class-babilim-admin.php:4450
+msgid "Free"
+msgstr "ఉచితం"
+
+#: admin/class-babilim-admin.php:4754
+msgid "Free-plan slots"
+msgstr "ఉచిత ప్లాన్ స్లాట్‌లు"
+
+#: admin/class-babilim-admin.php:3834
+msgid "General"
+msgstr "సాధారణం"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1933
 #, php-format
-msgid "Unsafe locale: %s"
-msgstr "సురక్షితం కాని లొకేల్: %s"
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "ఇది ఆన్‌లో ఉంటే, అన్‌ఇన్‌స్టాల్ చేసినప్పుడు ఈ సైట్ గుర్తింపు కూడా తొలగించబడుతుంది. ఈ సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను తర్వాత ఆటోమేటిక్‌గా పునరుద్ధరించలేము; దాన్ని తిరిగి పొందడానికి మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి."
+
+#: admin/class-babilim-admin.php:4797
+msgid "Included"
+msgstr "చేర్చబడినవి"
+
+#: admin/class-babilim-admin.php:3726
+msgid "Included in index"
+msgstr "ఇండెక్స్‌లో చేర్చబడింది"
+
+#: admin/class-babilim-admin.php:3868
+msgid "Install available translations automatically"
+msgstr "అందుబాటులో ఉన్న అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయండి"
+
+#: admin/class-babilim-translations-table.php:470
+msgid "Installed"
+msgstr "ఇన్‌స్టాల్ చేయబడినవి"
+
+#: admin/class-babilim-admin.php:3905
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "ఇన్‌స్టాల్ చేసిన అనువాదాలు అలాగే ఉంటాయి, కానీ ఇకపై తనిఖీలు లేదా డౌన్‌లోడ్‌లు జరగవు."
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:323
+#, php-format
+msgid "Installed · %s"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:283
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %1$s కోసం నిర్మించబడింది, ఈ సైట్‌లో %2$s ఉంది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+#, php-format
+msgid "Installed · built for %s"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+#, php-format
+msgid "Installed · built for %s, all free-plan slots for this site are used"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం రూపొందించబడింది, ఈ సైట్‌కు సంబంధించిన అన్ని ఉచిత ప్లాన్ స్లాట్‌లు ఉపయోగంలో ఉన్నాయి"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్ విఫలమైంది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+#, php-format
+msgid "Installed · built for %s, new version not covered by the free service plan"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం రూపొందించబడింది, కొత్త వెర్షన్ ఉచిత సర్వీస్ ప్లాన్‌లో చేర్చబడలేదు"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్ షెడ్యూల్ చేయబడింది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · %s కోసం నిర్మించబడింది, కొత్త వెర్షన్‌ను అనువదిస్తోంది…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+msgid "Installed · built for a different version"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+msgid "Installed · built for a different version, all free-plan slots for this site are used"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం రూపొందించబడింది, ఈ సైట్‌కు సంబంధించిన అన్ని ఉచిత ప్లాన్ స్లాట్‌లు ఉపయోగంలో ఉన్నాయి"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+msgid "Installed · built for a different version, new version failed"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్ విఫలమైంది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+msgid "Installed · built for a different version, new version not covered by the free service plan"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం రూపొందించబడింది, కొత్త వెర్షన్ ఉచిత సర్వీస్ ప్లాన్‌లో చేర్చబడలేదు"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్ షెడ్యూల్ చేయబడింది"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "ఇన్‌స్టాల్ చేయబడింది · వేరే వెర్షన్ కోసం నిర్మించబడింది, కొత్త వెర్షన్‌ను అనువదిస్తోంది…"
+
+#: admin/class-babilim-admin.php:3431
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "దీన్ని సర్వీస్ హోస్టింగ్ ప్రొవైడర్ నిల్వ చేస్తుంది, అనువాదం రూపొందించడానికి AI మోడల్స్ ప్రాసెస్ చేస్తాయి."
+
+#: admin/class-babilim-admin.php:3885
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "ప్రతిదీ తొలగించేటప్పుడు లేదా ఈ ప్లగిన్‌ను అన్‌ఇన్‌స్టాల్ చేసేటప్పుడు నా స్వంత అనువాద ఓవర్‌రైడ్‌లను ఉంచండి."
+
+#: admin/class-babilim-admin.php:3725
+#: admin/class-babilim-admin.php:4256
+#: admin/class-babilim-admin.php:4795
+msgid "Language"
+msgstr "భాష"
+
+#: admin/class-babilim-translations-table.php:553
+msgid "Language:"
+msgstr "భాష:"
+
+#: admin/class-babilim-admin.php:3864
+msgid "Languages"
+msgstr "భాషలు"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:3061
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "ఈ సైట్‌లో కనుగొన్న భాషలు: %s."
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:4844
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "చివరి క్లీనప్ %1$s న: %2$d కొత్తగా గుర్తించబడ్డాయి, %3$d ఫైల్(లు) తొలగించబడ్డాయి, %4$d రికార్డు(లు) తీసివేయబడ్డాయి."
+
+#: admin/class-babilim-admin.php:4891
+msgid "Maintenance"
+msgstr "నిర్వహణ"
+
+#: admin/class-babilim-admin.php:4822
+msgid "Maintenance status is not available right now."
+msgstr "నిర్వహణ స్థితి ప్రస్తుతం అందుబాటులో లేదు."
 
 #. translators: %s: the technical reason the manifest is unavailable.
 #: includes/class-babilim-default-index.php:112
@@ -1463,190 +912,56 @@ msgstr "సురక్షితం కాని లొకేల్: %s"
 msgid "Manifest unavailable: %s"
 msgstr "మానిఫెస్ట్ అందుబాటులో లేదు: %s"
 
-#: includes/class-babilim-default-index.php:134
-msgid "Could not determine active components; the existing merged index was left unchanged."
-msgstr "యాక్టివ్ కాంపోనెంట్‌లను గుర్తించలేకపోయాము; ప్రస్తుత విలీన సూచిక మార్చకుండా వదిలేశాము."
+#: admin/class-babilim-admin.php:3259
+msgid "Negation reversed"
+msgstr "నిరాకరణ తిరగబడింది"
 
-#: includes/class-babilim-default-index.php:400
-msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "ఇన్‌స్టాల్ చేసిన ప్లగిన్‌లు/థీమ్‌లను గుర్తించలేకపోయాము; స్వీప్ దాటవేయబడింది, ఏదీ తొలగించబడలేదు."
+#: admin/class-babilim-admin.php:3754
+msgid "No"
+msgstr "కాదు"
 
-#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
-#: includes/class-babilim-default-index.php:532
+#: admin/class-babilim-admin.php:1003
+msgid "No build is available to download for this locale."
+msgstr "ఈ లొకేల్ కోసం డౌన్‌లోడ్ చేయడానికి బిల్డ్ అందుబాటులో లేదు."
+
+#: admin/class-babilim-admin.php:4851
+msgid "No cleanup has run yet."
+msgstr "ఇంకా క్లీనప్ ఏదీ అమలు కాలేదు."
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:430
 #, php-format
-msgid "Sweep aborted without orphaning anything: %s."
-msgstr "దేన్నీ అనాథగా చేయకుండా స్వీప్ నిలిపివేయబడింది: %s."
+msgid "No components match these filters. %s"
+msgstr "ఈ ఫిల్టర్‌లకు సరిపోలే కాంపోనెంట్‌లు లేవు. %s"
 
-#: includes/class-babilim-default-index.php:624
-msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "క్లీనప్ అమలైంది, కానీ దాని కొన్ని మార్పులను అనువాద ఇండెక్స్‌లో నమోదు చేయలేకపోయాము; తదుపరి క్లీనప్ వాటిని మళ్లీ ప్రయత్నిస్తుంది."
+#: admin/class-babilim-admin.php:3165
+msgid "No components synced yet."
+msgstr "ఇంకా కాంపోనెంట్‌లు ఏవీ సింక్ కాలేదు."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:746
-msgctxt "component kind in the sweep brake message"
-msgid "theme"
-msgstr "థీమ్"
+#: admin/class-babilim-admin.php:4240
+msgid "No installed translation matches."
+msgstr "సరిపోలే ఇన్‌స్టాల్ చేసిన అనువాదం లేదు."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:749
-msgctxt "component kind in the sweep brake message"
-msgid "plugin"
-msgstr "ప్లగిన్"
+#: admin/class-babilim-admin.php:4673
+msgid "No language is managed yet."
+msgstr "ఇంకా ఏ భాషా నిర్వహించబడటం లేదు."
 
-#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
-#: includes/class-babilim-default-index.php:755
-#, php-format
-msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "ఇది నిర్వహించబడే ప్రతి %1$s కాంపోనెంట్‌ను అనాథగా చేస్తుంది (%2$dలో %2$d)"
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "ఈ నాన్స్ కోసం వేచివున్న ఛాలెంజ్ ఏదీ లేదు."
 
-#. translators: 1: components that would be orphaned, 2: components managed in total.
-#: includes/class-babilim-default-index.php:762
-#, php-format
-msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "ఇది నిర్వహించబడే %2$d కాంపోనెంట్‌లలో %1$dను అనాథగా చేస్తుంది (సగానికి పైగా)"
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "ధృవీకరించడానికి వేచివున్న ఛాలెంజ్ ఏదీ లేదు."
 
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:874
-#, php-format
-msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "'%s' కోసం విలీన ఇండెక్స్ మళ్లీ నిర్మించబడింది, కానీ అనువాద ఇండెక్స్ దాన్ని నమోదు చేయలేకపోయింది; తదుపరి రీబిల్డ్ మళ్లీ ప్రయత్నిస్తుంది."
+#: admin/class-babilim-translations-table.php:424
+msgid "No plugins or themes found."
+msgstr "ప్లగిన్‌లు లేదా అలంకారాలు ఏవీ కనుగొనబడలేదు."
 
-#: includes/class-babilim-default-index.php:950
-msgid "Could not write the staged merged index."
-msgstr "స్టేజ్ చేసిన విలీన ఇండెక్స్‌ను రాయలేకపోయాము."
-
-#: includes/class-babilim-default-index.php:958
-msgid "Re-parsed entry count did not match the built index."
-msgstr "మళ్లీ పార్స్ చేసిన ఎంట్రీల సంఖ్య నిర్మించిన సూచికతో సరిపోలలేదు."
-
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:989
-#, php-format
-msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "'%s' కోసం విలీన ఇండెక్స్‌ను యథాస్థానంలోకి తరలించలేకపోయాము; మునుపటి సర్వ్ చేసిన ఇండెక్స్ (ఉంటే) సగం-నవీకరణగా మిగల్చకుండా తొలగించబడింది. తదుపరి విజయవంతమైన రీబిల్డ్ వరకు ఈ లొకేల్‌కు డిఫాల్ట్ డొమైన్ అనుబంధం అందించబడదు."
-
-#. translators: %s: the zip file path that could not be opened.
-#: includes/class-babilim-installer.php:147
-#, php-format
-msgid "Could not open zip: %s"
-msgstr "zip తెరవలేకపోయాము: %s"
-
-#: includes/class-babilim-installer.php:150
-msgid "Zip has no manifest.json."
-msgstr "జిప్‌లో manifest.json లేదు."
-
-#: includes/class-babilim-installer.php:161
-msgid "manifest.json in the zip is not valid JSON."
-msgstr "జిప్‌లోని manifest.json చెల్లుబాటు అయ్యే JSON కాదు."
-
-#. translators: %s: the manifest.json field that did not match.
-#: includes/class-babilim-installer.php:165
-#, php-format
-msgid "manifest.json's '%s' does not match the expected value."
-msgstr "manifest.json లోని '%s' ఆశించిన విలువతో సరిపోలడం లేదు."
-
-#: includes/class-babilim-installer.php:249
-#: includes/class-babilim-installer.php:254
-msgid "Another installation is running; try again in a moment."
-msgstr "మరొక ఇన్‌స్టాలేషన్ నడుస్తోంది; కాసేపటి తర్వాత మళ్లీ ప్రయత్నించండి."
-
-#. translators: %s: the invalid server_build_id value.
-#: includes/class-babilim-installer.php:296
-#, php-format
-msgid "Not a valid server_build_id: %s"
-msgstr "చెల్లుబాటు అయ్యే server_build_id కాదు: %s"
-
-#. translators: 1: the package manifest's own kind. 2: the requested kind.
-#: includes/class-babilim-installer.php:311
-#, php-format
-msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "ప్యాకేజీ మానిఫెస్ట్ కైండ్ '%1$s' అభ్యర్థించిన కైండ్ '%2$s'తో సరిపోలలేదు."
-
-#. translators: 1: the package's text domain. 2: this site's text domain for the component.
-#: includes/class-babilim-installer.php:346
-#, php-format
-msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "ప్యాకేజీ టెక్స్ట్ డొమైన్ '%1$s' ఈ సైట్‌లోని కాంపోనెంట్ కాపీ ('%2$s')తో సరిపోలలేదు, కాబట్టి దాన్ని ఇన్‌స్టాల్ చేయలేదు."
-
-#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
-#: includes/class-babilim-installer.php:364
-#, php-format
-msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "ఇచ్చిన డొమైన్ '%1$s' ప్యాకేజీ మానిఫెస్ట్ స్వంత స్లగ్ '%2$s'తో గానీ, దాని text_domain '%3$s'తో గానీ సరిపోలలేదు."
-
-#. translators: %s: the invalid slug.
-#: includes/class-babilim-installer.php:372
-#, php-format
-msgid "Unsafe slug: %s"
-msgstr "సురక్షితం కాని స్లగ్: %s"
-
-#. translators: %s: the invalid text domain.
-#: includes/class-babilim-installer.php:375
-#, php-format
-msgid "Unsafe text_domain: %s"
-msgstr "సురక్షితం కాని text_domain: %s"
-
-#. translators: %s: the expected .mo filename for the package's own text domain.
-#: includes/class-babilim-installer.php:413
-#, php-format
-msgid "The package has no %s for its own text domain."
-msgstr "ఈ ప్యాకేజీకి దాని స్వంత టెక్స్ట్ డొమైన్ కోసం %s లేదు."
-
-#. translators: %s: the manifest.json field that is missing or invalid.
-#: includes/class-babilim-installer.php:470
-#, php-format
-msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json లో '%s' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:474
-msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json లో 'entries' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:477
-msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json లో 'files' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:480
-msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json లో 'extra_domains' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:483
-msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json లో 'build_no' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:486
-msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "manifest.json లోని 'server_build_id' చెల్లుబాటు అయ్యే బిల్డ్ ఐడి కాదు."
-
-#: includes/class-babilim-installer.php:489
-msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "manifest.json లోని 'contract' చెల్లుబాటు అయ్యే వెర్షన్ స్ట్రింగ్ కాదు."
-
-#: includes/class-babilim-installer.php:492
-msgid "manifest.json's 'status' must be 'published'."
-msgstr "manifest.json లోని 'status' తప్పనిసరిగా 'published' అయి ఉండాలి."
-
-#: includes/class-babilim-installer.php:495
-msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "manifest.json లోని 'kind' తప్పనిసరిగా 'plugin' లేదా 'theme' అయి ఉండాలి."
-
-#: includes/class-babilim-installer.php:498
-msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json లో చెల్లని 'default_domain_entries' ఉంది."
-
-#: includes/class-babilim-installer.php:501
-msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json లో చెల్లని 'default_domain_files' ఉంది."
-
-#. translators: %s: the expected-manifest field that is missing or invalid.
-#: includes/class-babilim-installer.php:524
-#, php-format
-msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest లో '%s' లేదు లేదా చెల్లనిది."
-
-#: includes/class-babilim-installer.php:528
-msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "expected_manifest లోని 'server_build_id' చెల్లుబాటు అయ్యే బిల్డ్ ఐడి కాదు."
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "రోల్‌బ్యాక్ చేయడానికి మునుపటి బిల్డ్ లేదు."
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1657,17 +972,788 @@ msgstr "expected_manifest లోని 'server_build_id' చెల్లుబ�
 msgid "No record for %s"
 msgstr "%s కోసం రికార్డ్ లేదు"
 
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "టోకెన్‌ను రొటేట్ చేయడానికి సైట్ ఐడి ఏదీ నమోదులో లేదు."
+
+#: admin/class-babilim-admin.php:3748
+msgid "No — component inactive"
+msgstr "కాదు — కాంపోనెంట్ నిష్క్రియంగా ఉంది"
+
+#: admin/class-babilim-admin.php:3752
+msgid "No — component removed"
+msgstr "కాదు — కాంపోనెంట్ తొలగించబడింది"
+
+#: admin/class-babilim-admin.php:3750
+msgid "No — installed version differs from the active one"
+msgstr "కాదు — ఇన్‌స్టాల్ చేసిన వెర్షన్ యాక్టివ్ వెర్షన్‌కు భిన్నంగా ఉంది"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "చెల్లుబాటు అయ్యే server_build_id కాదు: %s"
+
+#: admin/class-babilim-cell.php:145
+msgid "Not covered by the free service plan"
+msgstr "ఉచిత సర్వీస్ ప్లాన్‌లో చేర్చబడలేదు"
+
+#: admin/class-babilim-cell.php:127
+msgid "Not installed"
+msgstr "ఇన్‌స్టాల్ చేయలేదు"
+
+#: admin/class-babilim-admin.php:4429
+msgid "Not registered yet"
+msgstr "ఇంకా నమోదు కాలేదు"
+
+#: admin/class-babilim-cell.php:152
+msgid "Not supported"
+msgstr "మద్దతు లేదు"
+
+#: admin/class-babilim-admin.php:4431
+msgid "Not verified"
+msgstr "ధృవీకరించబడలేదు"
+
+#: admin/class-babilim-admin.php:1555
+#: admin/class-babilim-admin.php:4250
+#: admin/class-babilim-admin.php:4990
+msgid "Note (optional)"
+msgstr "గమనిక (ఐచ్ఛికం)"
+
+#: admin/class-babilim-admin.php:3569
+msgid "Nothing to choose."
+msgstr "ఎంచుకోవడానికి ఏమీ లేదు."
+
+#: admin/class-babilim-admin.php:3506
+msgid "Nothing to confirm."
+msgstr "నిర్ధారించడానికి ఏమీ లేదు."
+
+#: admin/class-babilim-admin.php:3895
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "డిఫాల్ట్‌గా ఆఫ్: ప్లగిన్‌ను తొలగించినా ఈ సైట్ గుర్తింపు ఉంటుంది, కాబట్టి మళ్లీ ఇన్‌స్టాల్ చేసినప్పుడు దాన్ని మళ్లీ ఉపయోగించవచ్చు."
+
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
 msgstr "అందించిన ఒకటి లేదా అంతకంటే ఎక్కువ ఫైళ్లు ఇకపై మానిఫెస్ట్‌తో సరిపోలడం లేదు."
 
-#: includes/class-babilim-installer.php:705
-msgid "No previous build to roll back to."
-msgstr "రోల్‌బ్యాక్ చేయడానికి మునుపటి బిల్డ్ లేదు."
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:4461
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "ఈ సైట్ కోసం ఒక్కసారి కొనుగోలు: %1$s %2$s. భవిష్యత్తు అనువాద నవీకరణలన్నీ ఇందులో ఉంటాయి. చెల్లింపును Paddle కొత్త ట్యాబ్‌లో నిర్వహిస్తుంది."
+
+#: admin/class-babilim-admin.php:3776
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "ఇది ఈ నెట్‌వర్క్‌లోని అన్ని సైట్‌లు పంచుకునే అనువాద ఫైళ్లను మారుస్తుంది కాబట్టి, నెట్‌వర్క్ నిర్వాహకుడు మాత్రమే దీన్ని చేయగలరు."
+
+#: includes/class-babilim-packager.php:180
+msgid "Only plugins and themes can be packaged."
+msgstr "ప్లగిన్‌లు మరియు థీమ్‌లను మాత్రమే ప్యాకేజ్ చేయవచ్చు."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "WordPress.orgలో లేని ప్లగిన్ లేదా థీమ్ కోసం మీరు అప్‌లోడ్‌ను నిర్ధారించినప్పుడు మాత్రమే: ప్రతి .php మరియు .js ఫైల్, ప్రతి block.json ఫైల్, అలాగే ఆ కాంపోనెంట్ ప్రధాన ఫోల్డర్‌లోని readme.txt, readme.md, style.css మరియు theme.json, సాధారణ రహస్య ఫైళ్లకు సరిపోలే ఫైళ్లను మినహాయించిన తర్వాత, zip రూపంలో."
+
+#: admin/class-babilim-admin.php:2086
+msgid "Open Babilim settings"
+msgstr "Babilim సెట్టింగ్‌లను తెరవండి"
+
+#: admin/class-babilim-cell.php:150
+msgid "Original language"
+msgstr "మూల భాష"
+
+#: admin/class-babilim-admin.php:4244
+msgid "Original string"
+msgstr "అసలు స్ట్రింగ్"
+
+#: admin/class-babilim-admin.php:4446
+msgid "Paid"
+msgstr "చెల్లింపు"
+
+#: admin/class-babilim-admin.php:4448
+msgid "Partner"
+msgstr "భాగస్వామి"
+
+#: admin/class-babilim-admin.php:2234
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "మీ సైట్ ఇంటర్నెట్ నుండి చేరుకోగలదో లేదో తనిఖీ చేసి, ఆపై మళ్లీ ప్రయత్నించండి."
+
+#: admin/class-babilim-admin.php:1445
+msgid "Please choose a category for this report."
+msgstr "దయచేసి ఈ నివేదిక కోసం ఒక వర్గాన్ని ఎంచుకోండి."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Plugin"
+msgstr "ప్లగిన్"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:620
+#, php-format
+msgid "Plugin · %s"
+msgstr "ప్లగిన్ · %s"
+
+#: admin/class-babilim-translations-table.php:515
+msgid "Plugins"
+msgstr "ప్లగిన్‌లు"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:4252
+msgid "Preview"
+msgstr "ప్రివ్యూ"
+
+#: admin/class-babilim-admin.php:4589
+msgid "Purchase restored. This site is now licensed."
+msgstr "కొనుగోలు పునరుద్ధరించబడింది. ఈ సైట్‌కు ఇప్పుడు లైసెన్స్ ఉంది."
+
+#: includes/class-babilim-default-index.php:958
+msgid "Re-parsed entry count did not match the built index."
+msgstr "మళ్లీ పార్స్ చేసిన ఎంట్రీల సంఖ్య నిర్మించిన సూచికతో సరిపోలలేదు."
+
+#: admin/class-babilim-admin.php:2257
+msgid "Re-verify"
+msgstr "మళ్లీ ధృవీకరించు"
+
+#: admin/class-babilim-admin.php:4902
+msgid "Rebuild index now"
+msgstr "ఇప్పుడే సూచికను పునర్నిర్మించండి"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Babilim భాషా ఫైల్ డైరెక్టరీ వెలుపల రాయడానికి నిరాకరిస్తోంది."
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "రిజిస్ట్రేషన్ ప్రతిస్పందనలో అవసరమైన ఫీల్డ్‌లు లేవు."
+
+#: admin/class-babilim-admin.php:2320
+msgid "Registration restarted."
+msgstr "రిజిస్ట్రేషన్ మళ్లీ ప్రారంభమైంది."
+
+#: admin/class-babilim-admin.php:3499
+#: admin/class-babilim-admin.php:3563
+#: admin/class-babilim-translations-table.php:733
+msgid "Remove"
+msgstr "తొలగించండి"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed"
+msgstr "Babilim ఇన్‌స్టాల్ చేసిన ప్రతిదాన్ని తొలగించండి"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Babilim ఇన్‌స్టాల్ చేసిన ప్రతిదాన్ని తొలగించాలా? ఇది ఈ సైట్‌లోని ప్రతి ప్లగిన్ మరియు అలంకారం కోసం Babilim ఇన్‌స్టాల్ చేసిన ప్రతి భాషా ఫైల్‌ను తొలగిస్తుంది."
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:677
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "ఈ సైట్ నుండి %1$s యొక్క %2$s భాషా అనువాదాన్ని తీసివేయాలా?"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2729
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "ఇన్‌స్టాల్ చేసిన %d కాంపోనెంట్ తొలగించబడింది."
+msgstr[1] "ఇన్‌స్టాల్ చేసిన %d కాంపోనెంట్‌లు తొలగించబడ్డాయి."
+
+#: admin/class-babilim-cell.php:214
+msgid "Removed after a failed integrity check"
+msgstr "సమగ్రత తనిఖీ విఫలమైన తర్వాత తొలగించబడింది"
+
+#: admin/class-babilim-admin.php:1147
+msgid "Removed."
+msgstr "తొలగించబడింది."
+
+#: admin/class-babilim-admin.php:4932
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "ఈ సైట్‌లోని ప్రతి ప్లగిన్ మరియు అలంకారం కోసం Babilim ఇన్‌స్టాల్ చేసిన ప్రతి భాషా ఫైల్‌ను తొలగిస్తుంది."
+
+#: admin/class-babilim-admin.php:3565
+#: admin/class-babilim-admin.php:4954
+#: admin/class-babilim-translations-table.php:735
+msgid "Report a problem"
+msgstr "సమస్యను నివేదించండి"
+
+#: admin/class-babilim-admin.php:4087
+#: admin/class-babilim-admin.php:4235
+msgid "Report translation"
+msgstr "అనువాదాన్ని నివేదించండి"
+
+#: admin/class-babilim-cell.php:371
+msgid "Request newer translation"
+msgstr "కొత్త అనువాదాన్ని అభ్యర్థించండి"
+
+#: admin/class-babilim-cell.php:371
+#: admin/class-babilim-translations-table.php:455
+msgid "Request translation"
+msgstr "అనువాదాన్ని అభ్యర్థించండి"
+
+#: admin/class-babilim-translations-table.php:469
+msgid "Requestable"
+msgstr "అభ్యర్థించదగినవి"
+
+#: admin/class-babilim-cell.php:373
+msgid "Requesting…"
+msgstr "అభ్యర్థిస్తోంది…"
+
+#: admin/class-babilim-admin.php:3800
+msgid "Restart registration"
+msgstr "నమోదును మళ్లీ ప్రారంభించండి"
+
+#: admin/class-babilim-admin.php:4520
+msgid "Restore code"
+msgstr "పునరుద్ధరణ కోడ్"
+
+#: admin/class-babilim-admin.php:4521
+msgid "Restore purchase"
+msgstr "కొనుగోలును పునరుద్ధరించండి"
+
+#: admin/class-babilim-cell.php:369
+msgid "Retry request"
+msgstr "అభ్యర్థనను మళ్లీ ప్రయత్నించండి"
+
+#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3562
+#: admin/class-babilim-translations-table.php:732
+msgid "Roll back"
+msgstr "రోల్ బ్యాక్ చేయండి"
+
+#: admin/class-babilim-admin.php:3564
+#: admin/class-babilim-translations-table.php:734
+msgid "Roll back and report"
+msgstr "రోల్ బ్యాక్ చేసి నివేదించండి"
+
+#: admin/class-babilim-admin.php:4995
+msgid "Roll back and send report"
+msgstr "రోల్ బ్యాక్ చేసి నివేదిక పంపండి"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:680
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "%1$s యొక్క %2$s అనువాదాన్ని మునుపటి బిల్డ్‌కు రోల్ బ్యాక్ చేయాలా?"
+
+#: admin/class-babilim-admin.php:1117
+msgid "Rolled back and reported."
+msgstr "రోల్ బ్యాక్ చేసి నివేదించబడింది."
+
+#: admin/class-babilim-admin.php:1058
+msgid "Rolled back to the previous build."
+msgstr "మునుపటి బిల్డ్‌కు రోల్ బ్యాక్ చేయబడింది."
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1123
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "రోల్ బ్యాక్ చేయబడింది, కానీ నివేదికను పంపలేకపోయాం: %s"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "రోల్ బ్యాక్ చేస్తే '%1$s' (%2$s) ఓవర్‌రైట్ అవుతుంది, అది ఇప్పుడు మరొక ఇన్‌స్టాల్ చేసిన కాంపోనెంట్ (%3$s) కోసం అందించబడుతోంది; ఏదీ మార్చబడలేదు."
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "టోకెన్ రొటేట్ ప్రతిస్పందనలో site_token లేదు."
+
+#: admin/class-babilim-admin.php:3901
+msgid "Save changes"
+msgstr "మార్పులను సేవ్ చేయండి"
+
+#: admin/class-babilim-cell.php:137
+msgid "Scheduled, waiting to be processed"
+msgstr "షెడ్యూల్ చేయబడింది, ప్రాసెస్ కావడానికి వేచి ఉంది"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:4238
+msgid "Search"
+msgstr "శోధించండి"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Search components"
+msgstr "కాంపోనెంట్‌లను వెతకండి"
+
+#: admin/class-babilim-admin.php:4236
+msgid "Search the installed translations"
+msgstr "ఇన్‌స్టాల్ చేసిన అనువాదాలను శోధించండి"
+
+#: admin/class-babilim-translations-table.php:440
+msgid "Select all"
+msgstr "అన్నీ ఎంచుకోండి"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:459
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "తక్కువ కాంపోనెంట్‌లను ఎంచుకోండి: ఒక్కో రన్‌కు గరిష్టంగా %1$d ఆపరేషన్లు (మీరు %2$d ఎంచుకున్నారు)."
+
+#: admin/class-babilim-admin.php:4262
+#: admin/class-babilim-admin.php:4995
+msgid "Send report"
+msgstr "నివేదిక పంపండి"
+
+#: admin/class-babilim-admin.php:4454
+msgid "Service plan"
+msgstr "సర్వీస్ ప్లాన్"
+
+#: admin/class-babilim-admin.php:403
+#: admin/class-babilim-admin.php:3108
+#: admin/class-babilim-admin.php:3400
+msgid "Settings"
+msgstr "సెట్టింగ్‌లు"
+
+#: admin/class-babilim-admin.php:3880
+msgid "Share error reports"
+msgstr "లోపం నివేదికలను షేర్ చేయండి"
+
+#: admin/class-babilim-admin.php:2543
+msgid "Share this report"
+msgstr "ఈ నివేదికను షేర్ చేయండి"
+
+#: admin/class-babilim-admin.php:4518
+msgid "Show a new restore code"
+msgstr "కొత్త పునరుద్ధరణ కోడ్‌ను చూపండి"
+
+#: admin/class-babilim-admin.php:3875
+msgid "Show the \"Report translation\" entry in the admin toolbar"
+msgstr "అడ్మిన్ టూల్‌బార్‌లో \"అనువాదాన్ని నివేదించండి\" ఎంట్రీని చూపించు"
+
+#: admin/class-babilim-cell.php:65
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "ఈ కాంపోనెంట్‌లోని కొంత టెక్స్ట్‌ను దాని రచయిత హార్డ్-కోడ్ చేశారు, దానిని భాషా ప్యాక్ ద్వారా అనువదించలేము."
+
+#: admin/class-babilim-admin.php:4441
+msgid "Status"
+msgstr "స్థితి"
+
+#: admin/class-babilim-cell.php:154
+msgid "Status unknown"
+msgstr "స్థితి తెలియదు"
+
+#: admin/class-babilim-admin.php:4259
+msgid "String context"
+msgstr "స్ట్రింగ్ సందర్భం"
+
+#: admin/class-babilim-admin.php:1551
+#: admin/class-babilim-admin.php:4249
+#: admin/class-babilim-admin.php:4988
+msgid "Suggested translation"
+msgstr "సూచించిన అనువాదం"
+
+#: admin/class-babilim-admin.php:4793
+msgid "Supplementary translation index"
+msgstr "అదనపు అనువాద ఇండెక్స్"
+
+#: admin/class-babilim-admin.php:2679
+msgid "Supplementary translation index rebuilt."
+msgstr "అదనపు అనువాద ఇండెక్స్ పునర్నిర్మించబడింది."
+
+#: admin/class-babilim-admin.php:4819
+msgid "Supplementary translation maintenance"
+msgstr "అనుబంధ అనువాద నిర్వహణ"
+
+#: admin/class-babilim-admin.php:3721
+msgid "Supplementary translations"
+msgstr "అదనపు అనువాదాలు"
+
+#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
+#: includes/class-babilim-default-index.php:532
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "దేన్నీ అనాథగా చేయకుండా స్వీప్ నిలిపివేయబడింది: %s."
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2697
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "స్వీప్ పూర్తయింది: %d ఫైల్ తొలగించబడింది."
+msgstr[1] "స్వీప్ పూర్తయింది: %d ఫైళ్లు తొలగించబడ్డాయి."
+
+#: admin/class-babilim-admin.php:4908
+msgid "Sweep now"
+msgstr "ఇప్పుడే స్వీప్ చేయండి"
+
+#: admin/class-babilim-admin.php:2341
+#: admin/class-babilim-admin.php:2415
+msgid "Sync complete."
+msgstr "సింక్ పూర్తయింది."
+
+#: admin/class-babilim-admin.php:1403
+#: admin/class-babilim-admin.php:4266
+msgid "Thank you. Your report was sent."
+msgstr "ధన్యవాదాలు. మీ నివేదిక పంపబడింది."
+
+#: admin/class-babilim-admin.php:472
+#: admin/class-babilim-admin.php:1160
+#: admin/class-babilim-admin.php:1361
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "ఆ కాంపోనెంట్ ఈ సైట్‌లో ఇన్‌స్టాల్ చేయబడలేదు, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
+
+#: admin/class-babilim-admin.php:4558
+msgid "That does not look like a restore code."
+msgstr "ఇది పునరుద్ధరణ కోడ్‌లా కనిపించడం లేదు."
+
+#: admin/class-babilim-admin.php:1751
+msgid "That is not a valid WordPress locale code. Nothing was saved."
+msgstr "అది చెల్లుబాటు అయ్యే WordPress లొకేల్ కోడ్ కాదు. ఏదీ సేవ్ చేయబడలేదు."
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "అది చెల్లుబాటు అయ్యే బిల్డ్ ఐడెంటిఫైయర్ కాదు."
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
 msgstr "మార్పును అనువాద ఇండెక్స్‌లో నమోదు చేయలేకపోయాం; దయచేసి మళ్లీ ప్రయత్నించండి."
+
+#: includes/class-babilim-default-index.php:624
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "క్లీనప్ అమలైంది, కానీ దాని కొన్ని మార్పులను అనువాద ఇండెక్స్‌లో నమోదు చేయలేకపోయాము; తదుపరి క్లీనప్ వాటిని మళ్లీ ప్రయత్నిస్తుంది."
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "ఈ కాంపోనెంట్‌లో అప్‌లోడ్ చేయగల ఫైళ్లు లేవు."
+
+#: includes/class-babilim-packager.php:190
+msgid "The component is not inside the plugins or themes directory."
+msgstr "కాంపోనెంట్ ప్లగిన్‌లు లేదా థీమ్‌ల డైరెక్టరీలో లేదు."
+
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
+msgid "The component's main file was not found."
+msgstr "కాంపోనెంట్ ప్రధాన ఫైల్ కనుగొనబడలేదు."
+
+#: includes/class-babilim-sync-installer.php:415
+msgid "The download response was missing a usable location."
+msgstr "డౌన్‌లోడ్ ప్రతిస్పందనలో ఉపయోగించదగిన స్థానం లేదు."
+
+#: admin/class-babilim-admin.php:3876
+msgid "The entry opens a panel to search the translations Babilim installed on this site and report one of them."
+msgstr "ఈ ఎంట్రీ, ఈ సైట్‌లో Babilim ఇన్‌స్టాల్ చేసిన అనువాదాలను వెతికి, వాటిలో ఒకదాన్ని నివేదించడానికి ఒక ప్యానెల్‌ను తెరుస్తుంది."
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1522
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "\"%1$s\" ఫీల్డ్ చాలా పొడవుగా ఉంది: దానిలో %2$d అక్షరాలు ఉన్నాయి, పరిమితి %3$d. ఏదీ పంపబడలేదు; దయచేసి దాన్ని తగ్గించి మళ్లీ ప్రయత్నించండి."
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "ఇచ్చిన డొమైన్ '%1$s' ప్యాకేజీ మానిఫెస్ట్ స్వంత స్లగ్ '%2$s'తో గానీ, దాని text_domain '%3$s'తో గానీ సరిపోలలేదు."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:874
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "'%s' కోసం విలీన ఇండెక్స్ మళ్లీ నిర్మించబడింది, కానీ అనువాద ఇండెక్స్ దాన్ని నమోదు చేయలేకపోయింది; తదుపరి రీబిల్డ్ మళ్లీ ప్రయత్నిస్తుంది."
+
+#: admin/class-babilim-admin.php:3432
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "మూల పాఠ్యం మరియు దాని నుండి చేసిన అనువాదాలు అదే వెర్షన్‌ను ఇన్‌స్టాల్ చేసే ఇతర సైట్‌లకు అందించబడతాయి."
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "ప్యాకేజీ ప్రధాన అనువాద ఫైల్‌ను ప్రకటించలేదు."
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "ఈ ప్యాకేజీకి దాని స్వంత టెక్స్ట్ డొమైన్ కోసం %s లేదు."
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "ప్యాకేజీ మానిఫెస్ట్ కైండ్ '%1$s' అభ్యర్థించిన కైండ్ '%2$s'తో సరిపోలలేదు."
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "ప్యాకేజీ అందించదగిన ప్రధాన అనువాద ఫైల్‌ను ఉత్పత్తి చేయలేదు."
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "ప్యాకేజీ టెక్స్ట్ డొమైన్ '%1$s' ఈ సైట్‌లోని కాంపోనెంట్ కాపీ ('%2$s')తో సరిపోలలేదు, కాబట్టి దాన్ని ఇన్‌స్టాల్ చేయలేదు."
+
+#: includes/class-babilim-upload.php:163
+msgid "The packaged component could not be read."
+msgstr "ప్యాకేజ్ చేసిన కాంపోనెంట్‌ను చదవలేకపోయాం."
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "నమోదు ఛాలెంజ్ ఆశించిన రూపంలో లేదు."
+
+#: admin/class-babilim-admin.php:4269
+msgid "The report could not be sent."
+msgstr "నివేదికను పంపలేకపోయాం."
+
+#: admin/class-babilim-admin.php:4243
+msgid "The search could not be completed."
+msgstr "శోధన పూర్తి కాలేదు."
+
+#: includes/class-babilim-site.php:847
+msgid "The service asked this site to wait before syncing again."
+msgstr "మళ్లీ సింక్ చేసే ముందు వేచి ఉండాలని సేవ ఈ సైట్‌ను కోరింది."
+
+#: admin/class-babilim-admin.php:2228
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "సర్వీస్ మీ సైట్‌ను చేరుకోలేకపోయింది. ఫైర్‌వాల్, సెక్యూరిటీ ప్లగిన్ లేదా హోస్ట్ నియమం ఆ అభ్యర్థనను నిరోధిస్తూ ఉండవచ్చు; దయచేసి /wp-json/babilim/v1/challenge కు అభ్యర్థనలను అనుమతించండి."
+
+#: includes/class-babilim-upload.php:64
+#: includes/class-babilim-upload.php:69
+msgid "The service's upload offer was incomplete."
+msgstr "సేవ యొక్క అప్‌లోడ్ ఆఫర్ అసంపూర్ణంగా ఉంది."
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "టెక్స్ట్ డొమైన్ '%1$s' (%2$s) ఇప్పటికే మరొక ఇన్‌స్టాల్ చేసిన కాంపోనెంట్ (%3$s) కోసం అందించబడుతోంది; ఏదీ ఇన్‌స్టాల్ చేయబడలేదు."
+
+#: admin/class-babilim-admin.php:3430
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "మీరు దీన్ని తొలగించమని Babilimను కోరే వరకు అప్‌లోడ్ ఉంచబడుతుంది."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Theme"
+msgstr "అలంకారం"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:617
+#, php-format
+msgid "Theme · %s"
+msgstr "అలంకారం · %s"
+
+#: admin/class-babilim-translations-table.php:516
+msgid "Themes"
+msgstr "అలంకారాలు"
+
+#: admin/class-babilim-admin.php:3450
+#: includes/class-babilim-upload.php:145
+msgid "There is no upload in progress."
+msgstr "ప్రస్తుతం ఎలాంటి అప్‌లోడ్ జరగడం లేదు."
+
+#: admin/class-babilim-admin.php:3422
+#: includes/class-babilim-upload.php:96
+msgid "There is no upload waiting for confirmation."
+msgstr "నిర్ధారణ కోసం వేచి ఉన్న అప్‌లోడ్ ఏదీ లేదు."
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:3399
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "ఇవి ఈ సైట్ ఉపయోగించే భాషలు. మీరు వీటిని %sలో మార్చవచ్చు."
+
+#: admin/class-babilim-admin.php:4260
+msgid "These fields will be sent:"
+msgstr "ఈ ఫీల్డ్‌లు పంపబడతాయి:"
+
+#: admin/class-babilim-admin.php:1452
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "ఈ కాంపోనెంట్/లొకేల్ కోసం ఈ బిల్డ్ గురించి ఈ సైట్‌కు ప్రస్తుతం తెలియదు."
+
+#: admin/class-babilim-admin.php:1364
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "ఈ కాంపోనెంట్ వెర్షన్ నంబర్‌ను పేర్కొనలేదు, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
+
+#: includes/class-babilim-upload.php:112
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "ఈ కాంపోనెంట్ సేవ అంగీకరించే పరిమితి కంటే పెద్దది, కాబట్టి దీన్ని అప్‌లోడ్ చేయలేము."
+
+#: admin/class-babilim-admin.php:1205
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "ఈ కాంపోనెంట్ ఇప్పటికే అప్‌లోడ్ చేయబడింది. Babilim ఇప్పుడు దీన్ని తనిఖీ చేస్తోంది."
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1371
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "ఈ కాంపోనెంట్ వెర్షన్ నంబర్ %d అక్షరాల కంటే పొడవుగా ఉంది. అంత పొడవైన వెర్షన్ నంబర్‌ను Babilim నిర్వహించలేకపోతుంది, కాబట్టి దాని కోసం అనువాదాన్ని అభ్యర్థించలేము."
+
+#: admin/class-babilim-admin.php:4518
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "ఇది కొత్త పునరుద్ధరణ కోడ్‌ను జారీ చేస్తుంది మరియు మునుపటిది పని చేయడం ఆగిపోతుంది. కొనసాగించాలా?"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1993
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "ఈ నెట్‌వర్క్‌లో ఒక్కొక్కటిగా తనిఖీ చేయడానికి చాలా ఎక్కువ సైట్‌లు ఉన్నాయి, వాటిలో కొన్ని ప్లగిన్‌ను తొలగించినప్పుడు తమ Babilim గుర్తింపును తొలగించేలా సెట్ చేయబడి ఉండవచ్చు. అలాంటి సైట్‌కు జోడించిన చెల్లింపు లైసెన్స్‌ను అప్పుడు స్వయంచాలకంగా పునరుద్ధరించలేరు; మీరు %s వద్ద Babilim సపోర్ట్‌ను సంప్రదించాలి. గుర్తింపులను ఉంచుకోవడానికి, రద్దు చేయి నొక్కండి, ప్రతి సైట్ Babilim సెట్టింగ్‌లలో \"అన్‌ఇన్‌స్టాల్ చేసినప్పుడు Babilim డేటా మొత్తాన్ని తొలగించండి\" ఎంపికను తీసివేసి, మళ్లీ డీయాక్టివేట్ చేయండి. అయినా డీయాక్టివేట్ చేయాలా?"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "ఈ ప్లగిన్ స్వంత వెర్షన్, ఇది సేవతో సంభాషించలేనంత పాతదైతే దాన్ని అప్‌డేట్ చేయమని సేవ చెప్పగలదు."
+
+#: admin/class-babilim-admin.php:1438
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "ఈ నివేదిక చెల్లుబాటు అయ్యే ప్లగిన్ లేదా అలంకారం పేరును, లొకేల్ పేరును పేర్కొనలేదు."
+
+#: admin/class-babilim-admin.php:1467
+msgid "This report does not name an installed string."
+msgstr "ఈ నివేదికలో ఇన్‌స్టాల్ చేసిన ఏ స్ట్రింగ్ పేరూ పేర్కొనబడలేదు."
+
+#: admin/class-babilim-admin.php:1449
+msgid "This report is missing a valid build to report against."
+msgstr "ఈ నివేదికకు నివేదించడానికి చెల్లుబాటు అయ్యే బిల్డ్ లేదు."
+
+#: admin/class-babilim-admin.php:2542
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "ఈ నివేదిక GitHubలో బహిరంగంగా పోస్ట్ చేయబడుతుంది మరియు మూడవ పక్షాలు దీన్ని ఉంచుకోవచ్చు."
+
+#: admin/class-babilim-admin.php:4572
+msgid "This restore code was not recognised for this site."
+msgstr "ఈ పునరుద్ధరణ కోడ్ ఈ సైట్ కోసం గుర్తించబడలేదు."
+
+#: admin/class-babilim-admin.php:3793
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "ఈ సైట్‌కు ఇప్పటికే క్రియాశీల నమోదు ఉంది, దాన్ని ఇకపై స్వయంచాలకంగా పునరుద్ధరించలేము."
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:911
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "ఈ సైట్‌లో %2$d భాషలలో %1$d భాగాలు ఉన్నాయి, దీనికి %3$d తనిఖీ బ్యాచ్‌లు అవసరం; Babilim ఒక్కో రన్‌లో గరిష్టంగా %4$d మాత్రమే నిర్వహించగలదు. సెట్టింగ్‌లలో నిర్వహించే భాషలను తగ్గించండి లేదా ఉపయోగించని ప్లగిన్‌లు, థీమ్‌లను నిష్క్రియం చేసి, ఆపై ఇప్పుడు మళ్లీ తనిఖీ చేయండి నొక్కండి."
+
+#: admin/class-babilim-admin.php:4612
+msgid "This site has no purchase to show a code for."
+msgstr "ఈ సైట్‌కు కోడ్ చూపించడానికి కొనుగోలు ఏదీ లేదు."
+
+#: admin/class-babilim-admin.php:3974
+msgid "This site is already licensed. Reload the page."
+msgstr "ఈ సైట్‌కు ఇప్పటికే లైసెన్స్ ఉంది. పేజీని రీలోడ్ చేయండి."
+
+#: admin/class-babilim-admin.php:3966
+#: admin/class-babilim-admin.php:4564
+#: admin/class-babilim-admin.php:4604
+#: includes/class-babilim-site.php:857
+#: includes/class-babilim-sync-installer.php:405
+msgid "This site is not registered with Babilim yet."
+msgstr "ఈ సైట్ ఇంకా Babilim లో నమోదు కాలేదు."
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:2278
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "ఈ సైట్ ఒకే సింక్‌లో సర్వీస్ అంగీకరించే పరిమాణాన్ని మించిపోయింది, అందువల్ల కొన్ని అంశాలు వదిలివేయబడ్డాయి: %1$d కాంపోనెంట్‌లు మరియు %2$d లొకేల్‌లు."
+
+#: admin/class-babilim-admin.php:3870
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "ఈ సైట్ మల్టీసైట్ నెట్‌వర్క్‌లో భాగం, ఇది కొత్త అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయదు. ఇప్పటికే ఇన్‌స్టాల్ చేసిన అనువాదాలు మాత్రం ఇప్పటికీ అప్‌డేట్ అవుతాయి."
+
+#: admin/class-babilim-admin.php:2307
+msgid "This site is verified."
+msgstr "ఈ సైట్ ధృవీకరించబడింది."
+
+#: admin/class-babilim-admin.php:4576
+msgid "This site must be verified first."
+msgstr "ముందుగా ఈ సైట్‌ను ధృవీకరించాలి."
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "ఈ సైట్ URL, తద్వారా అది మీదేనని సేవ ధృవీకరించగలదు."
+
+#: includes/class-babilim-site.php:1483
+msgid "This site's address is too long for Babilim to register."
+msgstr "ఈ సైట్ చిరునామా Babilim రిజిస్టర్ చేయడానికి చాలా పొడవుగా ఉంది."
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "ఈ సైట్ కాన్ఫిగర్ చేసిన లొకేల్."
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "ఈ సైట్ ఇన్‌స్టాల్ పబ్లిక్ కీ, అభ్యర్థనలు నిజంగా ఈ సైట్ నుండే వస్తున్నాయని నిరూపించడానికి ఉపయోగిస్తారు. పబ్లిక్ భాగం మాత్రమే పంపబడుతుంది."
+
+#: includes/class-babilim-site.php:1486
+msgid "This site's locale code is not one Babilim can register."
+msgstr "ఈ సైట్ లొకేల్ కోడ్‌ను Babilim నమోదు చేయడం సాధ్యం కాదు."
+
+#: admin/class-babilim-admin.php:4267
+msgid "This string can't be reported from this site."
+msgstr "ఈ స్ట్రింగ్‌ను ఈ సైట్ నుండి నివేదించలేరు."
+
+#: admin/class-babilim-admin.php:1475
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "ఈ స్ట్రింగ్ ఈ సైట్‌లో ఇన్‌స్టాల్ చేసిన అనువాదాలలో లేదు. మళ్లీ శోధించి, జాబితా నుండి దాన్ని ఎంచుకోండి."
+
+#: admin/class-babilim-admin.php:1478
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "మీరు శోధించినప్పటి నుండి ఈ అనువాదం అప్‌డేట్ అయింది. మళ్లీ శోధించి, కొత్త జాబితా నుండి స్ట్రింగ్‌ను ఎంచుకోండి."
+
+#: admin/class-babilim-admin.php:3426
+msgid "To translate this component, Babilim needs its source."
+msgstr "ఈ కాంపోనెంట్‌ను అనువదించడానికి, Babilimకు దాని సోర్స్ అవసరం."
+
+#: admin/class-babilim-admin.php:4574
+msgid "Too many attempts. Try again tomorrow."
+msgstr "చాలా ప్రయత్నాలు జరిగాయి. రేపు మళ్లీ ప్రయత్నించండి."
+
+#: admin/class-babilim-admin.php:4268
+msgid "Too many reports today. Try again tomorrow."
+msgstr "ఈ రోజు చాలా ఎక్కువ నివేదికలు వచ్చాయి. రేపు మళ్లీ ప్రయత్నించండి."
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "చాలా ఎక్కువ అభ్యర్థనలు."
+
+#: admin/class-babilim-admin.php:3873
+msgid "Toolbar"
+msgstr "టూల్‌బార్"
+
+#: admin/class-babilim-cell.php:139
+msgid "Translating…"
+msgstr "అనువదిస్తోంది…"
+
+#: admin/class-babilim-admin.php:3261
+msgid "Translation does not load"
+msgstr "అనువాదం లోడ్ కావడం లేదు"
+
+#: admin/class-babilim-cell.php:141
+msgid "Translation failed"
+msgstr "అనువాదం విఫలమైంది"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3888
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "మీరు %sలో ఉంచిన అనువాద ఫైళ్లకు ఎల్లప్పుడూ Babilim ఫైళ్ల కంటే ప్రాధాన్యత ఉంటుంది. దీన్ని మీరు అన్‌చెక్ చేస్తే తప్ప అవి అలాగే ఉంటాయి."
+
+#: admin/class-babilim-admin.php:1183
+msgid "Translation requested."
+msgstr "అనువాదం అభ్యర్థించబడింది."
+
+#: admin/class-babilim-admin.php:394
+#: admin/class-babilim-admin.php:395
+#: admin/class-babilim-translations-table.php:442
+msgid "Translations"
+msgstr "అనువాదాలు"
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:4254
+msgid "Type"
+msgstr "రకం"
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:4242
+msgid "Type at least 2 characters to search."
+msgstr "శోధించడానికి కనీసం 2 అక్షరాలను టైప్ చేయండి."
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:605
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "ఊహించని HTTP %d ప్రతిస్పందన."
+
+#: admin/class-babilim-admin.php:3892
+msgid "Uninstall"
+msgstr "అన్‌ఇన్‌స్టాల్"
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1681,33 +1767,189 @@ msgstr "తెలియని రకం: %s"
 msgid "Unsafe domain: %s"
 msgstr "సురక్షితం కాని డొమైన్: %s"
 
-#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1022
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
 #, php-format
-msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "టెక్స్ట్ డొమైన్ '%1$s' (%2$s) ఇప్పటికే మరొక ఇన్‌స్టాల్ చేసిన కాంపోనెంట్ (%3$s) కోసం అందించబడుతోంది; ఏదీ ఇన్‌స్టాల్ చేయబడలేదు."
+msgid "Unsafe locale: %s"
+msgstr "సురక్షితం కాని లొకేల్: %s"
 
-#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1075
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
 #, php-format
-msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "రోల్ బ్యాక్ చేస్తే '%1$s' (%2$s) ఓవర్‌రైట్ అవుతుంది, అది ఇప్పుడు మరొక ఇన్‌స్టాల్ చేసిన కాంపోనెంట్ (%3$s) కోసం అందించబడుతోంది; ఏదీ మార్చబడలేదు."
+msgid "Unsafe slug: %s"
+msgstr "సురక్షితం కాని స్లగ్: %s"
 
-#. translators: %s: the filename missing from the zip.
-#: includes/class-babilim-installer.php:1167
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
 #, php-format
-msgid "Zip is missing expected file: %s"
-msgstr "జిప్‌లో అవసరమైన ఫైల్ లేదు: %s"
+msgid "Unsafe text_domain: %s"
+msgstr "సురక్షితం కాని text_domain: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1171
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "వేచివున్న గరిష్ఠంగా 20 డయాగ్నోస్టిక్ ఈవెంట్‌లు (ఉదా. సమగ్రత తనిఖీలో విఫలమైన ఫైల్), ప్రతిదీ కేవలం కోడ్, కాంపోనెంట్, లొకేల్ మాత్రమే, ఏ స్ట్రింగ్ కంటెంట్ లేదా అనువదించిన టెక్స్ట్ ఎప్పుడూ ఉండదు."
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:454
+msgid "Update"
+msgstr "అప్‌డేట్ చేయండి"
+
+#: admin/class-babilim-cell.php:187
+#: admin/class-babilim-cell.php:189
+msgid "Update available"
+msgstr "అప్‌డేట్ అందుబాటులో ఉంది"
+
+#: admin/class-babilim-translations-table.php:468
+msgid "Updates"
+msgstr "అప్‌డేట్‌లు"
+
+#: admin/class-babilim-cell.php:366
+msgid "Updating…"
+msgstr "అప్‌డేట్ అవుతోంది…"
+
+#: admin/class-babilim-admin.php:4457
+msgid "Upgrade this site"
+msgstr "ఈ సైట్‌ను అప్‌గ్రేడ్ చేయండి"
+
+#: admin/class-babilim-admin.php:3435
+msgid "Upload and request"
+msgstr "అప్‌లోడ్ చేసి అభ్యర్థించండి"
+
+#: admin/class-babilim-admin.php:1254
+msgid "Upload cancelled."
+msgstr "అప్‌లోడ్ రద్దు చేయబడింది."
+
+#: admin/class-babilim-admin.php:1286
+msgid "Upload complete — translation requested."
+msgstr "అప్‌లోడ్ పూర్తయింది — అనువాదం అభ్యర్థించబడింది."
+
+#: admin/class-babilim-cell.php:121
+msgid "Upload expired before it finished"
+msgstr "అప్‌లోడ్ పూర్తి కాకముందే గడువు ముగిసింది"
+
+#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:269
+#: admin/class-babilim-cell.php:271
+msgid "Upload in progress — continue or cancel"
+msgstr "అప్‌లోడ్ కొనసాగుతోంది — కొనసాగించండి లేదా రద్దు చేయండి"
+
+#: admin/class-babilim-admin.php:3420
+msgid "Upload this component?"
+msgstr "ఈ కాంపోనెంట్‌ను అప్‌లోడ్ చేయాలా?"
+
+#: admin/class-babilim-cell.php:118
+msgid "Upload was not accepted"
+msgstr "అప్‌లోడ్ ఆమోదించబడలేదు"
+
+#: admin/class-babilim-admin.php:3448
+msgid "Uploading"
+msgstr "అప్‌లోడ్ అవుతోంది"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:3453
 #, php-format
-msgid "sha256 mismatch for %s"
-msgstr "%s కోసం sha256 సరిపోలలేదు"
+msgid "Uploading part %1$d of %2$d…"
+msgstr "%2$d భాగాలలో %1$dవ భాగం అప్‌లోడ్ అవుతోంది…"
 
-#: includes/class-babilim-installer.php:1181
-msgid "The package declares no main translation file."
-msgstr "ప్యాకేజీ ప్రధాన అనువాద ఫైల్‌ను ప్రకటించలేదు."
+#: admin/class-babilim-admin.php:3435
+msgid "Uploading…"
+msgstr "అప్‌లోడ్ అవుతోంది…"
+
+#: admin/class-babilim-admin.php:4433
+msgid "Verified"
+msgstr "ధృవీకరించబడింది"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "ధృవీకరణ ప్రతిస్పందనలో site_token లేదు."
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:614
+#, php-format
+msgid "Version %s"
+msgstr "వెర్షన్ %s"
+
+#: admin/class-babilim-admin.php:4641
+msgid "What is sent when Babilim checks this site"
+msgstr "Babilim ఈ సైట్‌ను తనిఖీ చేసినప్పుడు ఏమి పంపబడుతుంది"
+
+#: admin/class-babilim-admin.php:3068
+msgid "What is sent when you enable Babilim"
+msgstr "మీరు Babilim ను ప్రారంభించినప్పుడు ఏమి పంపబడుతుంది"
+
+#: admin/class-babilim-admin.php:3881
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "Babilim లోపల ఏదైనా విఫలమైనప్పుడు, దాన్ని GitHubలో పబ్లిక్ ఇష్యూగా ప్రచురించడానికి Babilim సేవకు లోపం నివేదికను పంపండి. నివేదిక ఈ సైట్ నుండి వచ్చినట్లుగా, Babilim సేవకు వెళ్లే ప్రతి ఇతర అభ్యర్థనకు ఉన్న ప్రమాణీకరణతోనే పంపబడుతుంది. సేవ లోపం కోడ్ మరియు వెర్షన్‌లను మాత్రమే GitHubలో పబ్లిక్ ఇష్యూగా ప్రచురిస్తుంది; పబ్లిక్ ఇష్యూలో సైట్ చిరునామా, కంటెంట్ లేదా ఫైల్ పాత్‌లు ఉండవు. డిఫాల్ట్‌గా ఆఫ్‌లో ఉంటుంది."
+
+#: admin/class-babilim-admin.php:1559
+#: admin/class-babilim-admin.php:4992
+msgid "Where you saw this (optional)"
+msgstr "మీరు దీన్ని ఎక్కడ చూశారు (ఐచ్ఛికం)"
+
+#: admin/class-babilim-admin.php:3869
+msgid "While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "ఇది ఆన్‌లో ఉన్నప్పుడు, మీరు నిర్వహించే భాషలకు సర్వీస్ అందుబాటులో ఉన్నట్లు జాబితా చేసిన అనువాదాలు రోజుకు రెండుసార్లు సింక్ సమయంలో ఇన్‌స్టాల్ అవుతాయి."
+
+#: admin/class-babilim-cell.php:105
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-admin.php:3255
+msgid "Wrong for this context"
+msgstr "ఈ సందర్భానికి తప్పు"
+
+#: admin/class-babilim-admin.php:3249
+msgid "Wrong meaning"
+msgstr "తప్పు అర్థం"
+
+#: admin/class-babilim-admin.php:3257
+msgid "Wrong plural form"
+msgstr "తప్పు బహువచన రూపం"
+
+#: admin/class-babilim-admin.php:3251
+msgid "Wrong term"
+msgstr "తప్పు పదం"
+
+#: admin/class-babilim-admin.php:3731
+msgid "Yes"
+msgstr "అవును"
+
+#: admin/class-babilim-admin.php:430
+#: admin/class-babilim-admin.php:839
+msgid "You are not allowed to do this."
+msgstr "దీన్ని చేయడానికి మీకు అనుమతి లేదు."
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "మీ PHP వెర్షన్, అనుకూలత కోసం."
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "మీ WordPress వెర్షన్, అనుకూలమైన అనువాద ఫైల్‌లను అందించడానికి."
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:4626
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "మీ కొత్త పునరుద్ధరణ కోడ్: %s. దీన్ని సురక్షితమైన చోట ఉంచండి — మునుపటి కోడ్ ఇకపై పని చేయదు."
+
+#: admin/class-babilim-admin.php:4261
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "మీ నివేదిక AI మోడల్స్ ద్వారా స్వయంచాలకంగా ప్రాసెస్ చేయబడుతుంది మరియు ఇతర సైట్‌ల కోసం ఈ అనువాదాన్ని మెరుగుపరచవచ్చు."
+
+#: admin/class-babilim-admin.php:2232
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "మీ సైట్ స్పందించింది, కానీ ఆశించినది కాదు. REST API ను మరో ప్లగిన్ మార్చి ఉండవచ్చు, లేదా ఆ ఎండ్‌పాయింట్ కాష్ అయి ఉండవచ్చు; దయచేసి /wp-json/babilim/v1/challenge ను కాషింగ్ మరియు రీరైటింగ్ నుండి మినహాయించండి."
+
+#: admin/class-babilim-admin.php:2230
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "మీ సైట్ స్పందించడానికి చాలా సమయం తీసుకుంది. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి, మరియు మీ హోస్ట్ మరీ నెమ్మదిగా లేదా ఓవర్‌లోడ్ అయి లేదని తనిఖీ చేయండి."
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "జిప్‌లో manifest.json లేదు."
 
 #. translators: %s: the filename missing from the zip's default-domain supplement.
 #: includes/class-babilim-installer.php:1187
@@ -1715,85 +1957,15 @@ msgstr "ప్యాకేజీ ప్రధాన అనువాద ఫైల
 msgid "Zip is missing expected default file: %s"
 msgstr "జిప్‌లో అవసరమైన డిఫాల్ట్ ఫైల్ లేదు: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1191
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
 #, php-format
-msgid "sha256 mismatch for default/%s"
-msgstr "default/%s కోసం sha256 సరిపోలలేదు"
+msgid "Zip is missing expected file: %s"
+msgstr "జిప్‌లో అవసరమైన ఫైల్ లేదు: %s"
 
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1214
-#: includes/class-babilim-installer.php:1279
-#: includes/class-babilim-installer.php:1312
-#, php-format
-msgid "Could not stage %s"
-msgstr "%sను స్టేజ్ చేయలేకపోయాము"
-
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1221
-#, php-format
-msgid "Could not stage default/%s"
-msgstr "default/%sను స్టేజ్ చేయలేకపోయాము"
-
-#. translators: %s: the .mo filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1263
-#, php-format
-msgid "Entry count mismatch for %s"
-msgstr "%s కోసం ఎంట్రీల సంఖ్య సరిపోలలేదు"
-
-#. translators: %s: the .mo filename whose entry count could not be verified.
-#: includes/class-babilim-installer.php:1272
-#, php-format
-msgid "Could not verify entry count for %s"
-msgstr "%s కోసం ఎంట్రీల సంఖ్యను ధృవీకరించలేకపోయాము"
-
-#. translators: %s: the .l10n.php filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1293
-#, php-format
-msgid "l10n.php entry count mismatch for %s"
-msgstr "%s కోసం l10n.php ఎంట్రీల సంఖ్య సరిపోలలేదు"
-
-#: includes/class-babilim-installer.php:1324
-msgid "Default supplement entry count mismatch."
-msgstr "డిఫాల్ట్ సప్లిమెంట్ ఎంట్రీల సంఖ్య సరిపోలలేదు."
-
-#: includes/class-babilim-installer.php:1336
-msgid "The package produced no servable main translation file."
-msgstr "ప్యాకేజీ అందించదగిన ప్రధాన అనువాద ఫైల్‌ను ఉత్పత్తి చేయలేదు."
-
-#. translators: %s: the filename that could not be prepared for rollback.
-#: includes/class-babilim-installer.php:1628
-#, php-format
-msgid "Could not prepare %s for rollback."
-msgstr "రోల్‌బ్యాక్ కోసం %s ను సిద్ధం చేయలేకపోయాం."
-
-#. translators: %s: the filename that could not be backed up.
-#: includes/class-babilim-installer.php:1644
-#, php-format
-msgid "Could not back up %s before replacing it."
-msgstr "%sను భర్తీ చేసే ముందు బ్యాకప్ చేయలేకపోయాము."
-
-#. translators: %s: the filename that could not be moved into place.
-#: includes/class-babilim-installer.php:1650
-#, php-format
-msgid "Could not move %s into place."
-msgstr "%sను దాని స్థానంలోకి తరలించలేకపోయాము."
-
-#. translators: %s: the filename that could not be read back after it was moved into place.
-#: includes/class-babilim-installer.php:1656
-#, php-format
-msgid "Could not read %s back after moving it into place."
-msgstr "%s ను స్థానంలోకి తరలించిన తర్వాత తిరిగి చదవలేకపోయాం."
-
-#: includes/class-babilim-locale-label.php:53
-msgid "English (United States)"
-msgstr "ఇంగ్లీష్ (యునైటెడ్ స్టేట్స్)"
-
-#. translators: %s: the technical reason the manifest is unavailable.
-#: includes/class-babilim-manifest.php:546
-#, php-format
-msgid "Babilim_Manifest is unavailable: %s"
-msgstr "Babilim_Manifest అందుబాటులో లేదు: %s"
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json నిర్మాణం అనుకోని విధంగా ఉంది"
 
 #. translators: %s: the underlying filesystem error message.
 #: includes/class-babilim-manifest.php:587
@@ -1801,296 +1973,147 @@ msgstr "Babilim_Manifest అందుబాటులో లేదు: %s"
 msgid "could not read _manifest.json: %s"
 msgstr "_manifest.json చదవలేకపోయాము: %s"
 
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest లో '%s' లేదు లేదా చెల్లనిది."
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "expected_manifest లోని 'server_build_id' చెల్లుబాటు అయ్యే బిల్డ్ ఐడి కాదు."
+
 #. translators: %s: the underlying JSON parser error message.
 #: includes/class-babilim-manifest.php:601
 #, php-format
 msgid "failed to parse _manifest.json: %s"
 msgstr "_manifest.json ను పార్స్ చేయడం విఫలమైంది: %s"
 
-#: includes/class-babilim-manifest.php:608
-msgid "_manifest.json has an unexpected structure"
-msgstr "_manifest.json నిర్మాణం అనుకోని విధంగా ఉంది"
+#. translators: 1: components that would be orphaned, 2: components managed in total.
+#: includes/class-babilim-default-index.php:762
+#, php-format
+msgid "it would orphan %1$d of %2$d managed components (more than half)"
+msgstr "ఇది నిర్వహించబడే %2$d కాంపోనెంట్‌లలో %1$dను అనాథగా చేస్తుంది (సగానికి పైగా)"
 
-#: includes/class-babilim-packager.php:106
-#: includes/class-babilim-packager.php:115
-#: includes/class-babilim-packager.php:138
-msgid "Could not create the package archive."
-msgstr "ప్యాకేజీ ఆర్కైవ్‌ను సృష్టించలేకపోయాం."
+#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
+#: includes/class-babilim-default-index.php:755
+#, php-format
+msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
+msgstr "ఇది నిర్వహించబడే ప్రతి %1$s కాంపోనెంట్‌ను అనాథగా చేస్తుంది (%2$dలో %2$d)"
 
-#: includes/class-babilim-packager.php:125
-msgid "A file in the component could not be read, so it was not packaged."
-msgstr "కాంపోనెంట్‌లోని ఒక ఫైల్‌ను చదవలేకపోయాం, కాబట్టి దానిని ప్యాకేజ్ చేయలేదు."
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "%s కోసం l10n.php ఎంట్రీల సంఖ్య సరిపోలలేదు"
 
-#: includes/class-babilim-packager.php:180
-msgid "Only plugins and themes can be packaged."
-msgstr "ప్లగిన్‌లు మరియు థీమ్‌లను మాత్రమే ప్యాకేజ్ చేయవచ్చు."
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json లో చెల్లని 'default_domain_entries' ఉంది."
 
-#: includes/class-babilim-packager.php:185
-#: includes/class-babilim-packager.php:194
-msgid "The component's main file was not found."
-msgstr "కాంపోనెంట్ ప్రధాన ఫైల్ కనుగొనబడలేదు."
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json లో చెల్లని 'default_domain_files' ఉంది."
 
-#: includes/class-babilim-packager.php:190
-msgid "The component is not inside the plugins or themes directory."
-msgstr "కాంపోనెంట్ ప్లగిన్‌లు లేదా థీమ్‌ల డైరెక్టరీలో లేదు."
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "జిప్‌లోని manifest.json చెల్లుబాటు అయ్యే JSON కాదు."
 
-#: includes/class-babilim-site.php:348
-#: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1271
-msgid "Babilim ran out of time for this step and will continue on the next check."
-msgstr "ఈ దశకు Babilim కు సమయం సరిపోలేదు, తదుపరి తనిఖీలో కొనసాగిస్తుంది."
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json లో '%s' లేదు లేదా చెల్లనిది."
 
-#: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:315
-msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
-msgstr "Babilim ఈ సైట్‌ను ధృవీకరించలేకపోయింది, కాబట్టి ధృవీకరణ విజయవంతమయ్యే వరకు ఏదీ డౌన్‌లోడ్ లేదా ఇన్‌స్టాల్ చేయబడదు."
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json లో 'build_no' లేదు లేదా చెల్లనిది."
 
-#: includes/class-babilim-site.php:530
-#: includes/class-babilim-site.php:643
-msgid "Registration response was missing required fields."
-msgstr "రిజిస్ట్రేషన్ ప్రతిస్పందనలో అవసరమైన ఫీల్డ్‌లు లేవు."
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json లో 'entries' లేదు లేదా చెల్లనిది."
 
-#: includes/class-babilim-site.php:536
-#: includes/class-babilim-site.php:650
-msgid "No pending challenge to verify."
-msgstr "ధృవీకరించడానికి వేచివున్న ఛాలెంజ్ ఏదీ లేదు."
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json లో 'extra_domains' లేదు లేదా చెల్లనిది."
 
-#: includes/class-babilim-site.php:574
-msgid "Verify response was missing site_token."
-msgstr "ధృవీకరణ ప్రతిస్పందనలో site_token లేదు."
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json లో 'files' లేదు లేదా చెల్లనిది."
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "టోకెన్‌ను రొటేట్ చేయడానికి సైట్ ఐడి ఏదీ నమోదులో లేదు."
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "manifest.json లోని '%s' ఆశించిన విలువతో సరిపోలడం లేదు."
 
-#: includes/class-babilim-site.php:744
-msgid "Rotate-token response was missing site_token."
-msgstr "టోకెన్ రొటేట్ ప్రతిస్పందనలో site_token లేదు."
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "manifest.json లోని 'contract' చెల్లుబాటు అయ్యే వెర్షన్ స్ట్రింగ్ కాదు."
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "manifest.json లోని 'kind' తప్పనిసరిగా 'plugin' లేదా 'theme' అయి ఉండాలి."
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "manifest.json లోని 'server_build_id' చెల్లుబాటు అయ్యే బిల్డ్ ఐడి కాదు."
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "manifest.json లోని 'status' తప్పనిసరిగా 'published' అయి ఉండాలి."
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
 msgstr "నాన్స్ తప్పనిసరిగా హెక్సాడెసిమల్ స్ట్రింగ్ అయి ఉండాలి."
 
-#: includes/class-babilim-site.php:805
-msgid "No pending challenge for this nonce."
-msgstr "ఈ నాన్స్ కోసం వేచివున్న ఛాలెంజ్ ఏదీ లేదు."
+#: admin/class-babilim-admin.php:3235
+msgid "per day"
+msgstr "రోజుకు"
 
-#: includes/class-babilim-site.php:808
-msgid "Too many requests."
-msgstr "చాలా ఎక్కువ అభ్యర్థనలు."
+#: admin/class-babilim-admin.php:4520
+msgid "rc_…"
+msgstr "rc_…"
 
-#: includes/class-babilim-site.php:847
-msgid "The service asked this site to wait before syncing again."
-msgstr "మళ్లీ సింక్ చేసే ముందు వేచి ఉండాలని సేవ ఈ సైట్‌ను కోరింది."
-
-#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
-#: includes/class-babilim-site.php:911
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
 #, php-format
-msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "ఈ సైట్‌లో %2$d భాషలలో %1$d భాగాలు ఉన్నాయి, దీనికి %3$d తనిఖీ బ్యాచ్‌లు అవసరం; Babilim ఒక్కో రన్‌లో గరిష్టంగా %4$d మాత్రమే నిర్వహించగలదు. సెట్టింగ్‌లలో నిర్వహించే భాషలను తగ్గించండి లేదా ఉపయోగించని ప్లగిన్‌లు, థీమ్‌లను నిష్క్రియం చేసి, ఆపై ఇప్పుడు మళ్లీ తనిఖీ చేయండి నొక్కండి."
+msgid "sha256 mismatch for %s"
+msgstr "%s కోసం sha256 సరిపోలలేదు"
 
-#: includes/class-babilim-site.php:987
-msgid "Babilim could not finish checking this site."
-msgstr "Babilim ఈ సైట్ తనిఖీని పూర్తి చేయలేకపోయింది."
-
-#: includes/class-babilim-site.php:1483
-msgid "This site's address is too long for Babilim to register."
-msgstr "ఈ సైట్ చిరునామా Babilim రిజిస్టర్ చేయడానికి చాలా పొడవుగా ఉంది."
-
-#: includes/class-babilim-site.php:1486
-msgid "This site's locale code is not one Babilim can register."
-msgstr "ఈ సైట్ లొకేల్ కోడ్‌ను Babilim నమోదు చేయడం సాధ్యం కాదు."
-
-#: includes/class-babilim-sync-installer.php:329
-msgid "The download response was missing a usable location."
-msgstr "డౌన్‌లోడ్ ప్రతిస్పందనలో ఉపయోగించదగిన స్థానం లేదు."
-
-#: includes/class-babilim-upload.php:64
-#: includes/class-babilim-upload.php:69
-msgid "The service's upload offer was incomplete."
-msgstr "సేవ యొక్క అప్‌లోడ్ ఆఫర్ అసంపూర్ణంగా ఉంది."
-
-#: includes/class-babilim-upload.php:112
-msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "ఈ కాంపోనెంట్ సేవ అంగీకరించే పరిమితి కంటే పెద్దది, కాబట్టి దీన్ని అప్‌లోడ్ చేయలేము."
-
-#: includes/class-babilim-upload.php:163
-msgid "The packaged component could not be read."
-msgstr "ప్యాకేజ్ చేసిన కాంపోనెంట్‌ను చదవలేకపోయాం."
-
-#: includes/class-babilim-upload.php:293
-msgid "A part of the upload kept failing, so the upload was cancelled."
-msgstr "అప్‌లోడ్‌లోని ఒక భాగం పదేపదే విఫలమైంది, కాబట్టి అప్‌లోడ్ రద్దు చేయబడింది."
-
-#. translators: %s: the file path that could not be read.
-#: includes/class-babilim-wp-fs.php:91
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
 #, php-format
-msgid "Could not read: %s"
-msgstr "చదవలేకపోయాం: %s"
+msgid "sha256 mismatch for default/%s"
+msgstr "default/%s కోసం sha256 సరిపోలలేదు"
 
-#: admin/class-babilim-cell.php:146
-msgid "Original language"
-msgstr "మూల భాష"
+#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:749
+msgctxt "component kind in the sweep brake message"
+msgid "plugin"
+msgstr "ప్లగిన్"
 
-#: admin/class-babilim-admin.php:2156
-msgid "This report will be posted publicly on GitHub and may be kept by third parties."
-msgstr "ఈ నివేదిక GitHubలో బహిరంగంగా పోస్ట్ చేయబడుతుంది మరియు మూడవ పక్షాలు దీన్ని ఉంచుకోవచ్చు."
+#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:746
+msgctxt "component kind in the sweep brake message"
+msgid "theme"
+msgstr "థీమ్"
 
-#: admin/class-babilim-admin.php:2157
-msgid "Share this report"
-msgstr "ఈ నివేదికను షేర్ చేయండి"
+#. translators: a problem report category: none of the other listed kinds of problem applies.
+#: admin/class-babilim-admin.php:3264
+msgctxt "problem report category"
+msgid "Other"
+msgstr "ఇతర"
 
-#: admin/class-babilim-admin.php:2158
-msgid "Always share"
-msgstr "ఎల్లప్పుడూ షేర్ చేయండి"
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Available"
+msgstr "అందుబాటులో ఉంది"
 
-#: admin/class-babilim-admin.php:2159
-msgid "Don't share"
-msgstr "షేర్ చేయవద్దు"
-
-#: admin/class-babilim-admin.php:3424
-msgid "Error reports"
-msgstr "లోపం నివేదికలు"
-
-#: admin/class-babilim-admin.php:3426
-msgid "Share error reports"
-msgstr "లోపం నివేదికలను షేర్ చేయండి"
-
-#. translators: %d: number of error reports waiting for the owner's decision.
-#: admin/class-babilim-admin.php:2136
-#, php-format
-msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgstr[0] "%d నివేదిక వేచి ఉంది. \"ఎల్లప్పుడూ షేర్ చేయండి\" మరియు \"షేర్ చేయవద్దు\" అవన్నింటికీ వర్తిస్తాయి."
-msgstr[1] "%d నివేదికలు వేచి ఉన్నాయి. \"ఎల్లప్పుడూ షేర్ చేయండి\" మరియు \"షేర్ చేయవద్దు\" అవన్నింటికీ వర్తిస్తాయి."
-
-#: admin/class-babilim-admin.php:3621
-#: admin/class-babilim-admin.php:3657
-msgid "Report translation"
-msgstr "అనువాదాన్ని నివేదించండి"
-
-#: admin/class-babilim-admin.php:3658
-msgid "Search the installed translations"
-msgstr "ఇన్‌స్టాల్ చేసిన అనువాదాలను శోధించండి"
-
-#. translators: Button label (a verb): runs the search of installed translations.
-#: admin/class-babilim-admin.php:3660
-msgid "Search"
-msgstr "శోధించండి"
-
-#: admin/class-babilim-admin.php:3661
-msgid "Babilim has not installed any translation for this language."
-msgstr "Babilim ఈ భాషకు ఎలాంటి అనువాదాన్ని ఇన్‌స్టాల్ చేయలేదు."
-
-#: admin/class-babilim-admin.php:3662
-msgid "No installed translation matches."
-msgstr "సరిపోలే ఇన్‌స్టాల్ చేసిన అనువాదం లేదు."
-
-#: admin/class-babilim-admin.php:3665
-msgid "The search could not be completed."
-msgstr "శోధన పూర్తి కాలేదు."
-
-#. translators: Button label (a verb): selects this string as the one to report.
-#: admin/class-babilim-admin.php:3669
-msgid "Choose"
-msgstr "ఎంచుకోండి"
-
-#. translators: Heading of the step that shows the report before it is sent.
-#: admin/class-babilim-admin.php:3674
-msgid "Preview"
-msgstr "ప్రివ్యూ"
-
-#: admin/class-babilim-admin.php:3682
-msgid "These fields will be sent:"
-msgstr "ఈ ఫీల్డ్‌లు పంపబడతాయి:"
-
-#. translators: Button label (a verb): closes the report panel.
-#: admin/class-babilim-admin.php:3687
-msgid "Close"
-msgstr "మూసివేయండి"
-
-#: admin/class-babilim-admin.php:3689
-msgid "This string can't be reported from this site."
-msgstr "ఈ స్ట్రింగ్‌ను ఈ సైట్ నుండి నివేదించలేరు."
-
-#: admin/class-babilim-admin.php:3690
-msgid "Too many reports today. Try again tomorrow."
-msgstr "ఈ రోజు చాలా ఎక్కువ నివేదికలు వచ్చాయి. రేపు మళ్లీ ప్రయత్నించండి."
-
-#: admin/class-babilim-admin.php:3691
-msgid "The report could not be sent."
-msgstr "నివేదికను పంపలేకపోయాం."
-
-#. translators: Field label (a noun): whether the component is a plugin or a theme.
-#: admin/class-babilim-admin.php:3676
-msgid "Type"
-msgstr "రకం"
-
-#. translators: Field label (a noun): the identifier of the translation package version the string came from.
-#: admin/class-babilim-admin.php:3680
-msgid "Build"
-msgstr "బిల్డ్"
-
-#: admin/class-babilim-admin.php:2131
-msgid "Babilim hit an error. Share an error report?"
-msgstr "Babilimలో లోపం ఏర్పడింది. లోపం నివేదికను షేర్ చేయాలా?"
-
-#: admin/class-babilim-admin.php:3427
-msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
-msgstr "Babilim లోపల ఏదైనా విఫలమైనప్పుడు, దాన్ని GitHubలో పబ్లిక్ ఇష్యూగా ప్రచురించడానికి Babilim సేవకు లోపం నివేదికను పంపండి. నివేదిక ఈ సైట్ నుండి వచ్చినట్లుగా, Babilim సేవకు వెళ్లే ప్రతి ఇతర అభ్యర్థనకు ఉన్న ప్రమాణీకరణతోనే పంపబడుతుంది. సేవ లోపం కోడ్ మరియు వెర్షన్‌లను మాత్రమే GitHubలో పబ్లిక్ ఇష్యూగా ప్రచురిస్తుంది; పబ్లిక్ ఇష్యూలో సైట్ చిరునామా, కంటెంట్ లేదా ఫైల్ పాత్‌లు ఉండవు. డిఫాల్ట్‌గా ఆఫ్‌లో ఉంటుంది."
-
-#: admin/class-babilim-admin.php:3683
-msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
-msgstr "మీ నివేదిక AI మోడల్స్ ద్వారా స్వయంచాలకంగా ప్రాసెస్ చేయబడుతుంది మరియు ఇతర సైట్‌ల కోసం ఈ అనువాదాన్ని మెరుగుపరచవచ్చు."
-
-#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
-#: admin/class-babilim-admin.php:3664
-msgid "Type at least 2 characters to search."
-msgstr "శోధించడానికి కనీసం 2 అక్షరాలను టైప్ చేయండి."
-
-#: admin/class-babilim-admin.php:2629
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "అందుబాటులో ఉన్న అనువాదాలను ఒక్క క్లిక్‌తో ఇన్‌స్టాల్ చేయవచ్చు, లేని వాటిని అభ్యర్థించవచ్చు. ఆ తర్వాత కొత్త అనువాదాలు మరియు అప్‌డేట్‌లు స్వయంచాలకంగా ఇన్‌స్టాల్ అవుతాయి. అందుబాటులో ఉన్న ఏ అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయవచ్చో Babilim సేవ నిర్ణయిస్తుంది. ఉచిత ప్లాన్‌లో, స్వయంచాలక ఇన్‌స్టాలేషన్‌లు కొత్త ఉచిత స్లాట్‌ను తీసుకోకుండా ఉండేందుకు, ఈ సైట్‌లో ఇప్పటికే Babilim అనువాదం ఇన్‌స్టాల్ అయి ఉన్న ప్లగిన్‌లు మరియు థీమ్‌లను మాత్రమే సాధారణంగా అనుమతిస్తుంది."
-
-#: admin/class-babilim-admin.php:3420
-msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "అందుబాటులో ఉన్న ఏ అనువాదాలను స్వయంచాలకంగా ఇన్‌స్టాల్ చేయవచ్చో Babilim సేవ నిర్ణయిస్తుంది. ఉచిత ప్లాన్‌లో, స్వయంచాలక ఇన్‌స్టాలేషన్‌లు కొత్త ఉచిత స్లాట్‌ను తీసుకోకుండా ఉండేందుకు, ఈ సైట్‌లో ఇప్పటికే Babilim అనువాదం ఇన్‌స్టాల్ అయి ఉన్న ప్లగిన్‌లు మరియు థీమ్‌లను మాత్రమే సాధారణంగా అనుమతిస్తుంది."
-
-#: admin/class-babilim-admin.php:1387
-msgid "This report does not name an installed string."
-msgstr "ఈ నివేదికలో ఇన్‌స్టాల్ చేసిన ఏ స్ట్రింగ్ పేరూ పేర్కొనబడలేదు."
-
-#: admin/class-babilim-admin.php:1395
-msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
-msgstr "ఈ స్ట్రింగ్ ఈ సైట్‌లో ఇన్‌స్టాల్ చేసిన అనువాదాలలో లేదు. మళ్లీ శోధించి, జాబితా నుండి దాన్ని ఎంచుకోండి."
-
-#: admin/class-babilim-admin.php:1398
-msgid "This translation was updated since you searched. Search again and pick the string from the new list."
-msgstr "మీరు శోధించినప్పటి నుండి ఈ అనువాదం అప్‌డేట్ అయింది. మళ్లీ శోధించి, కొత్త జాబితా నుండి స్ట్రింగ్‌ను ఎంచుకోండి."
-
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2986
-#, php-format
-msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
-msgstr "Babilim %1$s (వెర్షన్ %2$s) నుండి ఈ ఫైళ్లను అప్‌లోడ్ చేస్తుంది: ప్రతి .php మరియు .js ఫైల్, ప్రతి block.json ఫైల్, అలాగే దాని ప్రధాన ఫోల్డర్‌లోని readme.txt, readme.md, style.css మరియు theme.json. అనువదించాల్సిన టెక్స్ట్‌ను కనుగొనడానికి మరియు ప్లగిన్ లేదా థీమ్‌ను గుర్తించడానికి వీటిని ఉపయోగిస్తారు."
-
-#: admin/class-babilim-admin.php:2987
-msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
-msgstr "ఇతర పేర్లు లేదా ఎక్స్‌టెన్షన్‌లు ఉన్న ఫైళ్లు చేర్చబడవు; అలాగే uploads, cache, logs, backup, data, vendor, node_modules మరియు languages ఫోల్డర్‌లు, దాచిన ఫైళ్లు, లేదా సాధారణ రహస్య ఫైళ్లకు పేర్లు సరిపోలే ఫైళ్లు (wp-config*, .env*, *.sql, *.log, *.pem, *.key) కూడా చేర్చబడవు. కోడ్ ఫైళ్లలో కూడా మీరు పంచుకోకూడదనుకునే టెక్స్ట్ లేదా డేటా ఉండవచ్చు; సందేహం ఉంటే వాటిని తనిఖీ చేయండి. సేవ వచ్చిన తర్వాత అదే రకాల ఫైళ్లను మళ్లీ తొలగిస్తుంది."
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
-msgstr "WordPress.orgలో లేని ప్లగిన్ లేదా థీమ్ కోసం మీరు అప్‌లోడ్‌ను నిర్ధారించినప్పుడు మాత్రమే: ప్రతి .php మరియు .js ఫైల్, ప్రతి block.json ఫైల్, అలాగే ఆ కాంపోనెంట్ ప్రధాన ఫోల్డర్‌లోని readme.txt, readme.md, style.css మరియు theme.json, సాధారణ రహస్య ఫైళ్లకు సరిపోలే ఫైళ్లను మినహాయించిన తర్వాత, zip రూపంలో."
-
-#: includes/class-babilim-packager.php:132
-msgid "The component has no files that can be uploaded."
-msgstr "ఈ కాంపోనెంట్‌లో అప్‌లోడ్ చేయగల ఫైళ్లు లేవు."
-
-#: includes/class-babilim-packager.php:110
-msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
-msgstr "వెబ్‌సైట్ వెలుపల ఉన్న తాత్కాలిక ఫోల్డర్‌ను Babilim నిర్ధారించలేకపోయింది, కాబట్టి కాంపోనెంట్ ప్యాకేజ్ చేయబడలేదు మరియు ఏదీ అప్‌లోడ్ కాలేదు. wp-config.phpలో BABILIM_TEMP_DIR‌ను వెబ్ రూట్ వెలుపల వ్రాయగల ఫోల్డర్‌గా నిర్వచించండి (ఉదాహరణకు మీ సైట్ పబ్లిక్ డైరెక్టరీ లోపల కాకుండా దాని పక్కనే ఉన్న ఫోల్డర్), లేదా మీ హోస్ట్‌ను అడగండి."
-
-#: includes/class-babilim-upload.php:191
-msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
-msgstr "ఈ అప్‌లోడ్ వేచి ఉన్నప్పుడు Babilim అప్‌డేట్ అయింది. పాత ప్యాకేజీ తొలగించబడింది; దయచేసి అప్‌లోడ్‌ను మళ్లీ నిర్ధారించండి."
+#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:201
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Installed"
+msgstr "ఇన్‌స్టాల్ చేయబడింది"

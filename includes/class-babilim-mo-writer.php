@@ -121,7 +121,7 @@ final class Babilim_Mo_Writer {
 		if ( strlen( $bytes ) < self::HEADER_SIZE ) {
 			return null;
 		}
-		$header = @unpack( 'Vmagic/Vrevision/Vn/Vo/Vt/Vhash_size/Vh', substr( $bytes, 0, self::HEADER_SIZE ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		$header = @unpack( 'Vmagic/Vrevision/Vn/Vo/Vt/Vhash_size/Vh', substr( $bytes, 0, self::HEADER_SIZE ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- unpack() warns on a truncated string; the false return is checked right below and means "not a valid .mo".
 		if ( ! is_array( $header ) || self::MAGIC !== $header['magic'] ) {
 			return null;
 		}
@@ -131,14 +131,14 @@ final class Babilim_Mo_Writer {
 		$t     = (int) $header['t'];
 
 		for ( $i = 0; $i < $count; $i++ ) {
-			$orow = @unpack( 'Vlen/Voff', substr( $bytes, $o + $i * 8, 8 ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			$orow = @unpack( 'Vlen/Voff', substr( $bytes, $o + $i * 8, 8 ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- unpack() warns on a truncated string; the false return is checked right below and means "not a valid .mo".
 			if ( ! is_array( $orow ) ) {
 				return null;
 			}
 			if ( 0 !== (int) $orow['len'] ) {
 				continue; // Only the "" (empty msgid) entry is the header block.
 			}
-			$trow = @unpack( 'Vlen/Voff', substr( $bytes, $t + $i * 8, 8 ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+			$trow = @unpack( 'Vlen/Voff', substr( $bytes, $t + $i * 8, 8 ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- unpack() warns on a truncated string; the false return is checked right below and means "not a valid .mo".
 			if ( ! is_array( $trow ) ) {
 				return null;
 			}

@@ -78,35 +78,56 @@ final class Test_Plugin_Check extends TestCase {
 		);
 	}
 
+	/**
+	 * Every call in $code to one of $names, as `[line, name]` pairs: a
+	 * plain name followed by "(", not a method call or a declaration.
+	 *
+	 * @param string   $code  PHP source.
+	 * @param string[] $names Function names.
+	 * @return array<int,array{0:int,1:string}>
+	 */
+	private static function calls_in( string $code, array $names ): array {
+		$calls  = array();
+		$tokens = token_get_all( $code );
+		$count  = count( $tokens );
+		// PHP 8 reads `\wp_redirect` as one fully qualified name token.
+		$fq = defined( 'T_NAME_FULLY_QUALIFIED' ) ? constant( 'T_NAME_FULLY_QUALIFIED' ) : T_STRING;
+		for ( $i = 0; $i < $count; $i++ ) {
+			$t = $tokens[ $i ];
+			if ( ! is_array( $t ) || ( T_STRING !== $t[0] && $fq !== $t[0] ) || ! in_array( ltrim( $t[1], '\\' ), $names, true ) ) {
+				continue;
+			}
+			$before = $i - 1;
+			while ( $before >= 0 && is_array( $tokens[ $before ] ) && T_WHITESPACE === $tokens[ $before ][0] ) {
+				--$before;
+			}
+			if ( $before >= 0 && is_array( $tokens[ $before ] ) && in_array( $tokens[ $before ][0], array( T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_FUNCTION, T_NEW ), true ) ) {
+				continue; // A method call or a declaration.
+			}
+			$after = $i + 1;
+			while ( $after < $count && is_array( $tokens[ $after ] ) && T_WHITESPACE === $tokens[ $after ][0] ) {
+				++$after;
+			}
+			if ( '(' === ( $tokens[ $after ] ?? '' ) ) {
+				$calls[] = array( $t[2], ltrim( $t[1], '\\' ) );
+			}
+		}
+		return $calls;
+	}
+
+	public function test_a_call_is_found_however_its_name_is_written(): void {
+		$code = "<?php\nwp_redirect( \$a );\n\\wp_redirect( \$b );\n\$this->wp_redirect( \$c );\nfunction wp_redirect() {}\n\$d = 'wp_redirect';\n";
+		$this->assertSame( array( array( 2, 'wp_redirect' ), array( 3, 'wp_redirect' ) ), self::calls_in( $code, array( 'wp_redirect' ) ) );
+	}
+
 	public function test_discouraged_functions_are_only_called_with_a_justified_phpcs_ignore(): void {
 		$problems = array();
 		foreach ( $this->sources() as $file ) {
-			$lines  = file( $file ) ?: array();
-			$tokens = token_get_all( implode( '', $lines ) );
-			$count  = count( $tokens );
-			for ( $i = 0; $i < $count; $i++ ) {
-				$t = $tokens[ $i ];
-				if ( ! is_array( $t ) || T_STRING !== $t[0] || ! in_array( $t[1], self::DISCOURAGED, true ) ) {
-					continue;
-				}
-				$before = $i - 1;
-				while ( $before >= 0 && is_array( $tokens[ $before ] ) && T_WHITESPACE === $tokens[ $before ][0] ) {
-					--$before;
-				}
-				if ( $before >= 0 && is_array( $tokens[ $before ] ) && in_array( $tokens[ $before ][0], array( T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_FUNCTION, T_NEW ), true ) ) {
-					continue; // A method call or a declaration.
-				}
-				$after = $i + 1;
-				while ( $after < $count && is_array( $tokens[ $after ] ) && T_WHITESPACE === $tokens[ $after ][0] ) {
-					++$after;
-				}
-				if ( '(' !== ( $tokens[ $after ] ?? '' ) ) {
-					continue; // Not a call (e.g. a constant or a string).
-				}
-				$line = $t[2];
+			$lines = file( $file ) ?: array();
+			foreach ( self::calls_in( implode( '', $lines ), self::DISCOURAGED ) as list( $line, $name ) ) {
 				$here = $lines[ $line - 1 ] . ( $lines[ $line - 2 ] ?? '' );
 				if ( 1 !== preg_match( '/phpcs:ignore\s+\S+\s+--\s+\S/', $here ) ) {
-					$problems[] = basename( $file ) . ':' . $line . ' ' . $t[1] . '()';
+					$problems[] = basename( $file ) . ':' . $line . ' ' . $name . '()';
 				}
 			}
 		}
@@ -143,7 +164,7 @@ final class Test_Plugin_Check extends TestCase {
 	/**
 	 * Accepted forms of a superglobal read: (A) sanitize_*( wp_unslash( ... ) )
 	 * on one line; (F) array_map() the sanitizer over the unslashed array, then
-	 * drop the empty results with strlen (a nested array becomes ''); (D) the DOCUMENT_ROOT identity
+	 * drop the empty results (a nested array becomes ''); (D) the DOCUMENT_ROOT identity
 	 * read, where the unslashed value is compared with its sanitized form
 	 * through filter_var( ..., FILTER_UNSAFE_RAW ); or a bare isset()/
 	 * is_string() guard that uses no value.
@@ -155,7 +176,7 @@ final class Test_Plugin_Check extends TestCase {
 		if ( false !== strpos( $line, 'wp_unslash(' ) && 1 === preg_match( '/' . $sanitizer . '/', $line ) ) {
 			return true; // (A)
 		}
-		if ( 1 === preg_match( '/array_filter\(\s*array_map\(\s*\'sanitize_text_field\',\s*wp_unslash\(\s*\$_(GET|POST|REQUEST)\[[^\]]*\]\s*\)\s*\),\s*\'strlen\'\s*\)/', $line ) ) {
+		if ( 1 === preg_match( '/array_filter\(\s*array_map\(\s*\'sanitize_text_field\',\s*wp_unslash\(\s*\$_(GET|POST|REQUEST)\[[^\]]*\]\s*\)\s*\),\s*(\'strlen\'|static fn\( \$v \) => \'\' !== \$v)\s*\)/', $line ) ) {
 			return true; // (F)
 		}
 		if ( 1 === preg_match( '/\(string\)\s*filter_var\(\s*wp_unslash\(\s*\$_SERVER\[\s*\'DOCUMENT_ROOT\'\s*\]\s*\),\s*FILTER_UNSAFE_RAW\s*\)/', $line ) ) {
@@ -267,6 +288,31 @@ final class Test_Plugin_Check extends TestCase {
 			$problems = array_merge( $problems, self::input_problems( file( $file ) ?: array(), basename( $file ), $registered ) );
 		}
 		$this->assertSame( array(), $problems );
+	}
+
+	/**
+	 * @return array<string,array{0:string,1:bool}>
+	 */
+	public static function array_read_forms(): array {
+		$read = "array_map( 'sanitize_text_field', wp_unslash( \$_POST['x'] ) )";
+		return array(
+			'(F) with strlen'           => array( "\$a = array_filter( {$read}, 'strlen' );", true ),
+			'(F) with the empty check'  => array( "\$a = array_filter( {$read}, static fn( \$v ) => '' !== \$v );", true ),
+			'no callback'               => array( "\$a = array_filter( {$read} );", false ),
+			'identity callback'         => array( "\$a = array_filter( {$read}, static fn( \$v ) => \$v );", false ),
+			'another callback'          => array( "\$a = array_filter( {$read}, 'is_string' );", false ),
+			'not unslashed'             => array( "\$a = array_filter( array_map( 'sanitize_text_field', \$_POST['x'] ), 'strlen' );", false ),
+			'another mapper'            => array( "\$a = array_filter( array_map( 'trim', wp_unslash( \$_POST['x'] ) ), 'strlen' );", false ),
+		);
+	}
+
+	/**
+	 * Form (F) accepts exactly the two empty-dropping callbacks.
+	 *
+	 * @dataProvider array_read_forms
+	 */
+	public function test_only_the_exact_array_read_form_is_accepted( string $line, bool $accepted ): void {
+		$this->assertSame( $accepted, self::input_line_is_handled( $line ), $line );
 	}
 
 	public function test_an_unregistered_input_ignore_fails_even_beside_a_sanitized_read(): void {
@@ -383,15 +429,18 @@ final class Test_Plugin_Check extends TestCase {
 	private const ALLOWED_STYLE_ENQUEUE_PATTERN = '/^\s*wp_register_style\(\s*\'babilim-admin\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION\s*\);\s*$|^\s*wp_enqueue_style\(\s*\'babilim-admin\'\s*\);\s*$/';
 
 	/**
-	 * The scripts this plugin ships: its own admin script and the report panel script, enqueued
-	 * from its own directory with an explicit version, in the footer,
-	 * and with no dependencies; plus the file-less handle that carries the
-	 * Deactivate link's confirmation on the plugins list. Matched exactly, so any other
-	 * wp_enqueue_script()/wp_register_script() call still fails.
+	 * The scripts this plugin enqueues: its own admin script, from its
+	 * own directory with an explicit version, in the footer, and with no
+	 * dependencies; plus file-less handles that carry inline code (the
+	 * Deactivate link's confirmation on the plugins list, the notice
+	 * dismissal, and the report panel's loader, which adds the plugin's
+	 * own admin/js/babilim-report.js on the first click). Matched
+	 * exactly, so any other wp_enqueue_script()/wp_register_script()
+	 * call still fails.
 	 *
 	 * @var string
 	 */
-	private const ALLOWED_SCRIPT_ENQUEUE_PATTERN = '/^\s*wp_register_script\(\s*\'babilim-plugins-list\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-plugins-list\'\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-admin\',\s*plugins_url\(\s*\'admin\/js\/babilim-admin\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-report\',\s*plugins_url\(\s*\'admin\/js\/babilim-report\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$/';
+	private const ALLOWED_SCRIPT_ENQUEUE_PATTERN = '/^\s*wp_register_script\(\s*\'babilim-plugins-list\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-plugins-list\'\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-admin\',\s*plugins_url\(\s*\'admin\/js\/babilim-admin\.js\',\s*BABILIM_FILE\s*\),\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_register_script\(\s*\'babilim-report-loader\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-report-loader\'\s*\);\s*$|^\s*wp_register_script\(\s*\'babilim-notice-dismiss\',\s*false,\s*array\(\s*\),\s*BABILIM_VERSION,\s*true\s*\);\s*$|^\s*wp_enqueue_script\(\s*\'babilim-notice-dismiss\'\s*\);\s*$/';
 
 	public function test_no_remote_code_or_external_asset_patterns(): void {
 		$problems = array();
@@ -565,5 +614,70 @@ final class Test_Plugin_Check extends TestCase {
 			$this->assertContains( "babilim/languages/babilim-{$first}.l10n.php", $entries );
 			$this->assertNotContains( "babilim/languages/babilim-{$first}.po", $entries );
 		}
+	}
+
+	/**
+	 * Calls that must not appear in shipped PHP at all, justified or not.
+	 *
+	 * @var string[]
+	 */
+	private const FORBIDDEN_CALLS = array( 'wp_redirect' );
+
+	public function test_forbidden_calls_do_not_appear_in_shipped_php(): void {
+		$problems = array();
+		foreach ( $this->sources() as $file ) {
+			foreach ( self::calls_in( (string) file_get_contents( $file ), self::FORBIDDEN_CALLS ) as list( $line, $name ) ) {
+				$problems[] = basename( $file ) . ':' . $line . ' ' . $name . '()';
+			}
+		}
+		$this->assertSame( array(), $problems, 'use wp_safe_redirect() instead' );
+	}
+
+	/**
+	 * The `file:line` of each phpcs:ignore or phpcs:disable in $lines that
+	 * does not name its rules and give a reason after " -- " (a
+	 * phpcs:enable needs no reason).
+	 *
+	 * @param string[] $lines Source lines.
+	 * @param string   $name  File name used in the result.
+	 * @return string[]
+	 */
+	private static function directives_without_a_reason( array $lines, string $name ): array {
+		$problems = array();
+		foreach ( $lines as $n => $line ) {
+			if ( 1 !== preg_match( '/phpcs:(ignore|disable)\b/i', $line ) ) {
+				continue;
+			}
+			// One or more comma-separated rule names, then " -- reason".
+			if ( 1 !== preg_match( '/phpcs:(?:ignore|disable)\s+[\w.]+(?:\s*,\s*[\w.]+)*\s+--\s+\S/', $line ) ) {
+				$problems[] = $name . ':' . ( $n + 1 );
+			}
+		}
+		return $problems;
+	}
+
+	public function test_a_directive_without_rules_or_reason_is_found(): void {
+		$lines = array(
+			"// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filter.\n",
+			"// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- own text.\n",
+			"// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped\n",
+			"// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped\n",
+			"// phpcs:disable\n",
+			"// phpcs:ignore WordPress.DB\n",
+		);
+		$this->assertSame( array( 'f.php:4', 'f.php:5', 'f.php:6' ), self::directives_without_a_reason( $lines, 'f.php' ) );
+	}
+
+	public function test_every_phpcs_ignore_or_disable_in_shipped_php_carries_a_reason(): void {
+		$problems = array();
+		foreach ( $this->sources() as $file ) {
+			$problems = array_merge( $problems, self::directives_without_a_reason( file( $file ) ?: array(), basename( $file ) ) );
+		}
+		$this->assertSame( array(), $problems, 'every phpcs:ignore and phpcs:disable needs " -- <reason>"' );
+	}
+
+	public function test_the_admin_screen_has_no_output_escaping_ignores(): void {
+		$source = (string) file_get_contents( dirname( __DIR__, 2 ) . '/admin/class-babilim-admin.php' );
+		$this->assertStringNotContainsString( 'EscapeOutput.OutputNotEscaped', $source );
 	}
 }

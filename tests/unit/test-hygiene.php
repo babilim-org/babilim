@@ -125,4 +125,44 @@ final class Test_Hygiene extends TestCase {
 		$this->assertStringNotContainsString( 'icon-128x128.png', $text );
 		$this->assertStringNotContainsString( 'www.w3.org', $text );
 	}
+
+	/**
+	 * Every query-string read in the admin class goes through one helper
+	 * that checks is_string() first (an array value must never reach the
+	 * sanitizers).
+	 */
+	public function test_every_get_read_in_the_admin_class_checks_is_string(): void {
+		$offenders = array();
+		$reads     = 0;
+		foreach ( file( dirname( __DIR__, 2 ) . '/admin/class-babilim-admin.php' ) ?: array() as $number => $line ) {
+			preg_match_all( '/\$_GET\[\s*([^\]]+?)\s*\]/', $line, $found );
+			foreach ( array_unique( $found[1] ) as $key ) {
+				++$reads;
+				// Each key is judged on its own: this very key needs an
+				// is_string() guard on the line (another key's guard does not count).
+				if ( false === strpos( $line, 'is_string( $_GET[ ' . $key . ' ]' ) && false === strpos( $line, 'is_string( $_GET[' . $key . ']' ) ) {
+					$offenders[] = ( $number + 1 ) . ':' . $key;
+				}
+			}
+		}
+		$this->assertGreaterThan( 5, $reads, 'the scan itself finds the reads' );
+		$this->assertSame( array(), $offenders, 'read $_GET through Babilim_Admin::field_get()' );
+	}
+
+	/**
+	 * The notice scripts are handed to wp_add_inline_script() as readable
+	 * lines, not one long string.
+	 */
+	public function test_the_inline_notice_scripts_are_laid_out_over_readable_lines(): void {
+		foreach ( array( 'notice_dismiss_js', 'plugins_list_js', 'report_loader_js' ) as $name ) {
+			$method = new ReflectionMethod( Babilim_Admin::class, $name );
+			$method->setAccessible( true );
+			$js    = (string) $method->invoke( null );
+			$lines = explode( "\n", trim( $js ) );
+			$this->assertGreaterThan( 4, count( $lines ), $name );
+			foreach ( $lines as $line ) {
+				$this->assertLessThanOrEqual( 100, strlen( $line ), $name . ': ' . $line );
+			}
+		}
+	}
 }

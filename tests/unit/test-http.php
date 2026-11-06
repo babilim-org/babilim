@@ -46,6 +46,7 @@ final class Test_Http extends TestCase {
 	}
 
 	public function test_retries_once_on_a_5xx_response_when_the_caller_opts_in(): void {
+		update_option( 'babilim_consent', true );
 		$this->queue_response( $this->ok_response( 503, '{"error":{"code":"unavailable","message":"x","hint":""}}' ) );
 		$this->queue_response( $this->ok_response( 200, '{"ok":true}' ) );
 
@@ -56,12 +57,27 @@ final class Test_Http extends TestCase {
 	}
 
 	public function test_retries_at_most_once_on_repeated_5xx_when_the_caller_opts_in(): void {
+		update_option( 'babilim_consent', true );
 		$this->queue_response( $this->ok_response( 500 ) );
 		$this->queue_response( $this->ok_response( 500 ) );
 
 		( new Babilim_Wp_Http() )->request( 'GET', 'https://api.babilim.org/v1/health', array( 'retry' => true ) );
 
 		$this->assertCount( 2, $GLOBALS['babilim_test_wp_remote_requests'] );
+	}
+
+	public function test_does_not_resend_after_a_5xx_when_consent_was_withdrawn_meanwhile(): void {
+		update_option( 'babilim_consent', true );
+		$GLOBALS['babilim_test_wp_remote_hook'] = static function (): void {
+			update_option( 'babilim_consent', false ); // Withdrawn while the first request is in flight.
+		};
+		$this->queue_response( $this->ok_response( 503, '{"error":{"code":"unavailable","message":"x","hint":""}}' ) );
+		$this->queue_response( $this->ok_response( 200, '{"ok":true}' ) );
+
+		$result = ( new Babilim_Wp_Http() )->request( 'GET', 'https://api.babilim.org/v1/health', array( 'retry' => true ) );
+
+		$this->assertCount( 1, $GLOBALS['babilim_test_wp_remote_requests'] );
+		$this->assertSame( 503, wp_remote_retrieve_response_code( $result ), 'the first response is handed back' );
 	}
 
 	/**

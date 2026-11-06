@@ -38,6 +38,9 @@ final class Babilim_Error_Reporter {
 	/** @var callable */
 	private $now;
 
+	/** @var bool Whether share_always() is running right now (any instance). */
+	private static $sharing_always = false;
+
 	/**
 	 * @param callable $get_option    fn( string $name, $default ): mixed.
 	 * @param callable $update_option fn( string $name, $value ): void.
@@ -70,13 +73,16 @@ final class Babilim_Error_Reporter {
 	 * Result codes that are expected outcomes, not errors worth reporting:
 	 * quota, authorization, rate limiting, verification, withdrawn consent,
 	 * the owner cancelling, and the service's normal answers about a build
-	 * (license needed, not available, plugin too old, capacity, busy). A `babilim_` prefix is ignored.
+	 * (license needed, no free-plan slot, not available, plugin too old, capacity, busy). A `babilim_` prefix is ignored.
 	 *
 	 * @param string $code A result or WP_Error code.
 	 */
 	public static function is_excluded_code( string $code ): bool {
 		$code = (string) preg_replace( '/^babilim_/', '', $code );
-		return in_array( $code, array( 'quota_exceeded', 'unauthorized', 'rate_limited', 'verification_required', 'no_token', 'no_consent', 'cancelled', 'canceled', 'license_required', 'not_available', 'plugin_outdated', 'capacity_exhausted', 'install_busy' ), true );
+		// The installer's own stop and refusal codes come from one list
+		// (Babilim_Sync_Installer); the rest are listed here.
+		$own = array( 'unauthorized', 'no_consent', 'cancelled', 'canceled', 'not_available', 'plugin_outdated', 'capacity_exhausted', 'install_busy' );
+		return in_array( $code, array_merge( $own, Babilim_Sync_Installer::STOP_CODES, Babilim_Sync_Installer::REFUSAL_CODES ), true );
 	}
 
 	/**
@@ -166,6 +172,7 @@ final class Babilim_Error_Reporter {
 	 * Turns sharing on and authorizes every event now waiting.
 	 */
 	public function share_always(): void {
+		self::$sharing_always = true;
 		try {
 			$queue = $this->events( self::OPTION_QUEUE );
 			foreach ( $this->events( self::OPTION_AWAITING ) as $event ) {
@@ -176,15 +183,42 @@ final class Babilim_Error_Reporter {
 			$this->write( self::OPTION_AWAITING, array() );
 		} catch ( \Throwable $e ) {
 			unset( $e );
+		} finally {
+			self::$sharing_always = false;
 		}
 	}
 
 	/**
-	 * The owner declined: forget the waiting events.
+	 * Whether share_always() is in progress -- so a hook on the share
+	 * option it writes (see Babilim_Admin::on_share_errors_updated())
+	 * does not run it again inside itself.
 	 */
-	public function decline(): void {
+	public static function in_share_always(): bool {
+		return self::$sharing_always;
+	}
+
+	/**
+	 * The owner declined: forget the waiting events they were shown.
+	 * Events that came in after the notice was drawn stay waiting.
+	 *
+	 * @param string[] $event_ids The events listed on the notice that was answered.
+	 */
+	public function decline( array $event_ids ): void {
 		try {
-			$this->write( self::OPTION_AWAITING, array() );
+			if ( array() === $event_ids ) {
+				return;
+			}
+			$this->write(
+				self::OPTION_AWAITING,
+				array_values(
+					array_filter(
+						$this->events( self::OPTION_AWAITING ),
+						static function ( array $event ) use ( $event_ids ): bool {
+							return ! in_array( $event['event_id'], $event_ids, true );
+						}
+					)
+				)
+			);
 		} catch ( \Throwable $e ) {
 			unset( $e );
 		}

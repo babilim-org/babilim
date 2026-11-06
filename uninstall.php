@@ -20,8 +20,11 @@
  * Babilim-managed language file under `WP_LANG_DIR/babilim/` -- served
  * files, `default/` supplements, history and the manifest. The site
  * owner's "Keep my own translation overrides" setting decides whether `custom/`
- * (and the root's guard files) stay. The plugin stores no user or post
- * meta. Nothing outside `WP_LANG_DIR/babilim/` is touched (core's own
+ * (and the root's guard files) stay. The plugin stores no post meta and
+ * two user meta keys (`babilim_verification_dismissed` and
+ * `babilim_error_notice_hidden`, the notices each user closed, one value
+ * per site, no table prefix); the cleanup below deletes them for every user. Nothing
+ * outside `WP_LANG_DIR/babilim/` is touched (core's own
  * `WP_LANG_DIR/plugins` and `themes` included), and no request is made
  * to the service.
  *
@@ -106,6 +109,7 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		delete_option( 'babilim_verification_warning' );
 		delete_option( 'babilim_sync_last_error' );
 		delete_option( 'babilim_auto_install_failures' );
+		delete_option( 'babilim_install_refused' );
 		delete_option( 'babilim_auto_install' );
 		delete_option( 'babilim_auto_install_skip' );
 		delete_option( 'babilim_auto_installed' );
@@ -149,6 +153,10 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		delete_option( 'babilim_manual_locales' );
 		delete_option( 'babilim_disabled_locales' );
 		delete_option( 'babilim_keep_custom_on_purge' );
+		delete_option( 'babilim_toolbar_report' );
+		// Every user's dismissed verification notices (one unprefixed key holding a value per site).
+		delete_metadata( 'user', 0, 'babilim_verification_dismissed', '', true );
+		delete_metadata( 'user', 0, 'babilim_error_notice_hidden', '', true );
 		delete_option( 'babilim_locale_names' );
 		delete_transient( 'babilim_meta_locales_cache' );
 		delete_transient( 'babilim_meta_locales_failed' );

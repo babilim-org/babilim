@@ -35,7 +35,11 @@ final class Babilim_Wp_Http implements Babilim_Http {
 		$args['timeout'] = $args['timeout'] ?? self::TIMEOUT;
 
 		$response = wp_remote_request( $url, $args );
-		if ( $retry && self::is_server_error( $response ) ) {
+		// The consent is read again before the resend (the same check
+		// Babilim_Api_Client::transport() makes before every request):
+		// withdrawing it while the first attempt was in flight stops the
+		// second one, and the first response is handed back.
+		if ( $retry && self::is_server_error( $response ) && ( new Babilim_Consent() )->granted_db() ) {
 			$response = wp_remote_request( $url, $args );
 		}
 		return $response;

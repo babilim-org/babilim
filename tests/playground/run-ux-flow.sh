@@ -11,11 +11,15 @@
 #
 # BABILIM_UX_PG_ARGS adds arguments to the Playground server command (for
 # example --workers=1).
-# BABILIM_UX_SCENARIOS (default "enable settings") limits which scenarios run.
+# BABILIM_UX_SCENARIOS (default "enable settings") limits which scenarios run;
+# seam (it needs a real service; see run-seam.sh) and l10n (it needs the zh_TW
+# site of run-neutral-ux-flow.sh) are not run here and leave a SKIP line in the
+# results instead.
 #
 # Needs Playwright on NODE_PATH (checked first; "FAIL infra playwright
 # missing" and exit 1 otherwise). Exits non-zero when any result line is a
-# FAIL or the results file is empty. Each scenario (with and without the admin
+# FAIL, the results file is empty, or it holds no PASS at all (only SKIP
+# lines: nothing was tested). Each scenario (with and without the admin
 # script) gets its own clean boot. Every process started here is stopped by
 # recorded PID, and the script prints whether anything is left.
 
@@ -136,13 +140,31 @@ boot_server() {
 }
 
 for scenario in ${BABILIM_UX_SCENARIOS:-enable settings}; do
+if [ "${scenario}" = seam ]; then
+	# seam talks to a real local instance of the service, never this mock:
+	# only run-seam.sh runs it. Said in the results, not counted as a pass.
+	echo "SKIP browser-seam runs only through run-seam.sh, against a real local service" >> "${RESULTS}"
+	continue
+fi
+if [ "${scenario}" = l10n ]; then
+	# l10n needs a zh_TW site, its expected strings and a debug.log check
+	# that only the neutral runner sets up. Said in the results, not a pass.
+	echo "SKIP browser-l10n runs only through run-neutral-ux-flow.sh, which sets up the zh_TW site" >> "${RESULTS}"
+	continue
+fi
 MOUNT_FIXTURES=()
 case "${scenario}" in
-list | rowactions | l10n)
+list | rowactions | noquota)
 	fixture_plugin woocommerce "WooCommerce"
 	fixture_plugin queued-demo "Queued Demo"
 	fixture_plugin newer-demo "Newer Demo"
 	fixture_plugin long-name-demo "A Remarkably Long Plugin Name That Has To Wrap Instead Of Being Cut Off In The List"
+	;;
+bulk)
+	# bulk-a ... bulk-l, the same set the neutral runner creates.
+	for letter in a b c d e f g h i j k l; do
+		fixture_plugin "bulk-${letter}" "Bulk ${letter}"
+	done
 	;;
 report)
 	fixture_plugin report-demo "Report Demo"
@@ -165,6 +187,14 @@ MUPHP
 	MOUNT_FIXTURES+=("--mount=${WORK}/mu:/wordpress/wp-content/mu-plugins")
 	fixture_plugin errors-demo "Errors Demo"
 	;;
+notices)
+	# Administrator-only URLs that seed and read back the plugin's own state
+	# (see the file's header). Test infrastructure only.
+	mkdir -p "${WORK}/mu"
+	cp "${SCRIPT_DIR}/mu-plugins/e2e-notices.php" "${WORK}/mu/e2e-notices.php"
+	MOUNT_FIXTURES+=("--mount=${WORK}/mu:/wordpress/wp-content/mu-plugins")
+	fixture_plugin errors-demo "Errors Demo"
+	;;
 esac
 for flag in "" "--no-js"; do
 	if ! boot_server; then
@@ -172,12 +202,23 @@ for flag in "" "--no-js"; do
 		kill_tree "$(cat "${WORK}/server.pid" 2>/dev/null)"
 		continue
 	fi
-	# The list, rowactions and l10n scenarios need the mock's "list" profile
+	# The list and rowactions scenarios need the mock's "list" profile
 	# and the two packages its Download buttons fetch (same as the neutral runner).
 	profile=""
 	case "${scenario}" in
-	list | rowactions | l10n) profile=',"profile":"list"' ;;
+	list | rowactions) profile=',"profile":"list"' ;;
 	errconsent) profile=',"profile":"errors","fail_builds":["bd_0badc0de0bad"]' ;;
+	notices) profile=',"profile":"errors"' ;;
+	noquota) profile=',"profile":"noquota"' ;;
+	bulk)
+		# bulk-e answers its download with a 500; every download waits a little.
+		profile=",\"profile\":\"bulk\",\"download_delay\":0.3,\"fail_builds\":[\"bd_$(printf '%s' bulk-ede_DE | md5sum | cut -c1-12)\"]"
+		for letter in a b c d e f g h i j k l; do
+			build="bd_$(printf '%s' "bulk-${letter}de_DE" | md5sum | cut -c1-12)"
+			printf '{"server_build_id":"%s","kind":"plugin","slug":"bulk-%s","locale":"de_DE","version":"1.0.0","entries":{"Cart":"Warenkorb"}}' "${build}" "${letter}" > "${WORK}/pkg-spec.json"
+			php "${SCRIPT_DIR}/mock-server/build-package.php" "${WORK}/pkgs/${build}.zip" "${WORK}/pkg-spec.json" > /dev/null
+		done
+		;;
 	esac
 	if [ "${scenario}" = report ]; then
 		# The pack the report panel searches: one plain string and one with a
@@ -217,6 +258,12 @@ if [ -z "${left}" ]; then echo "clean" >&2; else echo "still running:${left}" >&
 # The exit code is the result: any FAIL line, or no results at all, is a failure.
 status=0
 if [ ! -s "${RESULTS}" ] || grep -q '^FAIL' "${RESULTS}"; then
+	status=1
+fi
+# Only SKIP lines (say only seam was asked for) means nothing was tested:
+# that is not a pass either.
+if [ -s "${RESULTS}" ] && ! grep -q '^PASS' "${RESULTS}"; then
+	echo "nothing was tested: every result is a SKIP" >&2
 	status=1
 fi
 exit "${status}"

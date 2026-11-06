@@ -1,9 +1,10 @@
 <?php
 /**
  * Proves that the published 1.0.1 sync installer, unchanged except for its
- * class name, makes the same install decisions from a 1.10.0 inventory
- * response (which carries `auto_install` on some cells) as from the same
- * response without that key, as a 1.9.0 service would send it.
+ * class name, makes the same install decisions from a 1.11.0 inventory
+ * response (which carries `auto_install` on every `babilim_available`
+ * cell) as from the same response without that key, as a 1.9.0 service
+ * would send it.
  */
 
 declare(strict_types=1);
@@ -35,7 +36,7 @@ final class Babilim_Test_Legacy_Http implements Babilim_Http {
 
 final class Test_Legacy_Sync_Installer extends TestCase {
 
-	private const FIXTURE = 'inventory-1.10.0-auto-install.json';
+	private const FIXTURE = 'inventory-1.11.0-available.json';
 
 	/** @var array<string,string> */
 	private $zip = array();
@@ -48,7 +49,7 @@ final class Test_Legacy_Sync_Installer extends TestCase {
 		return dirname( __DIR__ ) . '/fixtures/' . $name;
 	}
 
-	/** @return array The 1.10.0 response body. */
+	/** @return array The 1.11.0 response body. */
 	private function load_new_body(): array {
 		return json_decode( (string) file_get_contents( $this->fixture_path( self::FIXTURE ) ), true );
 	}
@@ -179,11 +180,11 @@ final class Test_Legacy_Sync_Installer extends TestCase {
 		return array( $map, $urls );
 	}
 
-	public function test_a_1_0_1_installer_makes_the_same_install_decisions_from_a_1_10_0_response_as_from_a_1_9_0_one(): void {
+	public function test_a_1_0_1_installer_makes_the_same_install_decisions_from_a_1_11_0_response_as_from_a_1_9_0_one(): void {
 		foreach ( array( false, true ) as $with_record ) {
 			$new = $this->load_new_body();
 			$old = $this->strip_auto_install( $new );
-			$this->assertNotSame( $old, $new, 'the 1.10.0 fixture carries auto_install' );
+			$this->assertNotSame( $old, $new, 'the 1.11.0 fixture carries auto_install' );
 
 			$from_old = $this->decisions( 'Babilim_Legacy_Sync_Installer', $old, $with_record );
 			$from_new = $this->decisions( 'Babilim_Legacy_Sync_Installer', $new, $with_record );

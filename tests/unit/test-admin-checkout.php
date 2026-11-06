@@ -148,6 +148,15 @@ final class Test_Admin_Checkout extends TestCase {
 		$this->assertStringContainsString( 'USD 8.99', $this->el( $x, '//span[@class="description"][contains(.,"One-time purchase")]' )->textContent );
 	}
 
+	public function test_the_translations_screen_has_no_checkout_form_even_when_settings_offers_one(): void {
+		$this->seed();
+		$this->assertSame( 1, $this->xpath( $this->page( 'babilim-settings' ) )->query( '//form[@id="babilim-checkout-form"]' )->length, 'control: checkout is offered' );
+		$x = $this->xpath( $this->page( 'babilim' ) );
+		$this->assertSame( 0, $x->query( '//form[@id="babilim-checkout-form"]' )->length );
+		$this->assertSame( 0, $x->query( '//input[@name="action"][@value="babilim_checkout"]' )->length );
+		$this->assertSame( 0, $x->query( '//*[@form="babilim-checkout-form"]' )->length );
+	}
+
 	public function test_no_price_in_state_means_no_upgrade_button_or_form(): void {
 		$this->seed( 'free', null );
 		foreach ( array( 'babilim-settings', 'babilim' ) as $slug ) {
@@ -166,27 +175,26 @@ final class Test_Admin_Checkout extends TestCase {
 		}
 	}
 
-	public function test_paid_site_shows_licensed_and_no_upgrade_button(): void {
+	public function test_paid_site_shows_the_paid_plan_and_no_upgrade_button(): void {
 		$this->seed( 'paid' );
 		$x = $this->xpath( $this->page( 'babilim-settings' ) );
-		$this->assertSame( 1, $x->query( '//li[contains(.,"License: Licensed")]' )->length );
+		$this->assertSame( 1, $x->query( '//li[contains(.,"Service plan: Paid")]' )->length );
 		$this->assertSame( 0, $x->query( '//button[normalize-space()="Upgrade this site"]' )->length );
 		$this->assertSame( 0, $x->query( '//form[@id="babilim-checkout-form"]' )->length );
 	}
 
 	public function test_partner_and_free_license_kinds_have_their_own_labels(): void {
 		$this->seed( 'partner' );
-		$this->assertSame( 1, $this->xpath( $this->page( 'babilim-settings' ) )->query( '//li[contains(.,"License: Partner")]' )->length );
+		$this->assertSame( 1, $this->xpath( $this->page( 'babilim-settings' ) )->query( '//li[contains(.,"Service plan: Partner")]' )->length );
 		$this->seed( 'free' );
-		$this->assertSame( 1, $this->xpath( $this->page( 'babilim-settings' ) )->query( '//li[contains(.,"License: Free")]' )->length );
+		$this->assertSame( 1, $this->xpath( $this->page( 'babilim-settings' ) )->query( '//li[contains(.,"Service plan: Free")]' )->length );
 	}
 
-	public function test_license_required_and_quota_cells_get_an_upgrade_button_on_the_list(): void {
+	public function test_license_required_and_quota_cells_have_no_upgrade_button_on_the_list(): void {
 		foreach ( array( 'license_required', 'quota_exceeded' ) as $cell ) {
 			$this->seed( 'free', array( 'amount' => '8.99', 'currency' => 'USD' ), $cell );
 			$x = $this->xpath( $this->page( 'babilim' ) );
-			$this->assertSame( 1, $x->query( '//button[@form="babilim-checkout-form"][contains(@class,"button-link")][normalize-space()="Upgrade this site"]' )->length, $cell );
-			$this->assertSame( 1, $x->query( '//form[@id="babilim-checkout-form"]' )->length, $cell );
+			$this->assertSame( 0, $x->query( '//table//button[@form="babilim-checkout-form"]' )->length, $cell );
 		}
 	}
 
@@ -237,6 +245,9 @@ final class Test_Admin_Checkout extends TestCase {
 		$this->assertStringContainsString( '/v1/sites/st_test/checkout', $http->requests[0]['url'] );
 		$redirects = $GLOBALS['babilim_test_redirects'];
 		$this->assertSame( self::CHECKOUT_URL, end( $redirects )['location'] );
+		// The host is allowed only for the redirect call itself.
+		$this->assertContains( 'pay.babilim.org', end( $redirects )['allowed_hosts'] );
+		$this->assertNotContains( 'pay.babilim.org', apply_filters( 'allowed_redirect_hosts', array() ) );
 	}
 
 	/**

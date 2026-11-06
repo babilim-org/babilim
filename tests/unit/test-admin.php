@@ -265,21 +265,22 @@ final class Test_Admin extends TestCase {
 
 	public function test_action_handler_without_a_nonce_calls_wp_die_and_makes_no_change(): void {
 		update_option( 'babilim_consent', true );
-		$_POST    = array( 'action' => 'babilim_save_settings', 'consent' => '' );
-		$_REQUEST = $_POST;
+		update_option( 'babilim_auto_install', 1 );
+		$fields = babilim_test_settings_fields( array( 'consent' => '' ) ) + array( '_wpnonce' => 'forged' );
 
 		$admin = $this->admin();
 		try {
-			$admin->dispatch_babilim_save_settings();
+			babilim_test_submit_settings( $admin, $fields );
 			$this->fail( 'Expected wp_die() to be reached.' );
 		} catch ( Babilim_Test_Wp_Die_Exception $e ) {
 			// Expected.
 		}
 
 		$this->assertNotEmpty( $GLOBALS['babilim_test_wp_die_calls'] );
-		// Consent must be untouched -- the nonce check must happen before
-		// any input is acted on.
+		// Consent and the settings must be untouched -- the nonce check
+		// must happen before any input is acted on.
 		$this->assertTrue( (bool) get_option( 'babilim_consent' ) );
+		$this->assertSame( 1, get_option( 'babilim_auto_install' ) );
 	}
 
 	public function test_action_handler_without_the_capability_calls_wp_die(): void {
@@ -2400,12 +2401,11 @@ final class Test_Admin extends TestCase {
 		$this->assertSame( 'error', $errors[0]['type'] );
 	}
 
-	// -- babilim_save_settings ------------------------------------------------
+	// -- saving the settings form (Settings API) -----------------------------
 
 	public function test_save_settings_persists_manual_locales(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
-		$this->post(
-			'babilim_save_settings',
+		$fields = babilim_test_settings_fields(
 			array(
 				'consent' => 'on',
 				'locales' => array( 'de_DE', 'fr_FR' ),
@@ -2413,7 +2413,7 @@ final class Test_Admin extends TestCase {
 		);
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertSame( array( 'de_DE', 'fr_FR' ), get_option( 'babilim_manual_locales' ) );
 	}
@@ -2437,24 +2437,24 @@ final class Test_Admin extends TestCase {
 	public function test_a_manually_added_locale_that_is_not_valid_is_refused_and_nothing_is_saved( string $typed ): void {
 		update_option( 'babilim_consent', false );
 		update_option( 'babilim_manual_locales', array( 'pt_BR' ) );
-		$this->post( 'babilim_save_settings', array( 'consent' => 'on', 'locales' => array( 'pt_BR' ), 'new_locale' => $typed ) );
+		$fields = babilim_test_settings_fields( array( 'consent' => 'on', 'locales' => array( 'pt_BR' ), 'new_locale' => $typed ) );
 
-		$this->admin()->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ), 'the list is unchanged' );
 		$this->assertFalse( (bool) get_option( 'babilim_consent' ), 'nothing else was saved either' );
 		$codes = array_column( get_settings_errors( 'babilim' ), 'code' );
 		$this->assertContains( 'invalid_locale', $codes );
-		$this->assertNotContains( 'settings_saved', $codes, 'no "Settings saved." next to the error' );
+		$this->assertNotContains( 'settings_updated', array_column( get_settings_errors(), 'code' ), 'no "Settings saved." next to the error' );
 		$errors = array_values( array_filter( get_settings_errors( 'babilim' ), static function ( $e ) { return 'invalid_locale' === $e['code']; } ) );
 		$this->assertSame( 'That is not a valid WordPress locale code. Nothing was saved.', $errors[0]['message'] );
 	}
 
 	public function test_a_manually_added_locale_is_saved_in_its_canonical_form(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
-		$this->post( 'babilim_save_settings', array( 'consent' => 'on', 'locales' => array(), 'new_locale' => 'pt-br' ) );
+		$fields = babilim_test_settings_fields( array( 'consent' => 'on', 'locales' => array(), 'new_locale' => 'pt-br' ) );
 
-		$this->admin()->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ) );
 	}
@@ -2462,12 +2462,12 @@ final class Test_Admin extends TestCase {
 	public function test_a_manually_added_locale_of_exactly_35_characters_is_saved_and_sent(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
 		$typed = 'de_DE_' . str_repeat( 'l', 29 );
-		$this->post( 'babilim_save_settings', array( 'consent' => 'on', 'locales' => array(), 'new_locale' => $typed ) );
+		$fields = babilim_test_settings_fields( array( 'consent' => 'on', 'locales' => array(), 'new_locale' => $typed ) );
 
-		$this->admin()->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( array( $typed ), get_option( 'babilim_manual_locales' ) );
-		$this->assertContains( 'settings_saved', array_column( get_settings_errors( 'babilim' ), 'code' ) );
+		$this->assertContains( 'settings_updated', array_column( get_settings_errors(), 'code' ) );
 		$this->assertContains( $typed, ( new Babilim_Inventory( static function () { return array(); }, static function () { return array(); }, static function () { return false; }, static function () { return array(); } ) )->locales() );
 	}
 
@@ -2480,20 +2480,20 @@ final class Test_Admin extends TestCase {
 	 */
 	public function test_save_settings_does_not_write_a_detected_locale_into_the_manual_list(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'de_DE';
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE', 'pt_BR' ) ) );
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE', 'pt_BR' ) ) );
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ) );
 	}
 
 	public function test_save_settings_can_add_a_new_locale_via_the_text_field(): void {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
-		$this->post( 'babilim_save_settings', array( 'locales' => array(), 'new_locale' => 'vi' ) );
+		$fields = babilim_test_settings_fields( array( 'locales' => array(), 'new_locale' => 'vi' ) );
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertSame( array( 'vi' ), get_option( 'babilim_manual_locales' ) );
 	}
@@ -2502,10 +2502,10 @@ final class Test_Admin extends TestCase {
 		$GLOBALS['babilim_test_site_locale'] = 'en_US';
 		update_option( 'babilim_manual_locales', array( 'pt_BR', 'vi' ) );
 		// 'vi' is no longer checked -- only 'pt_BR' comes back.
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'pt_BR' ) ) );
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'pt_BR' ) ) );
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ) );
 	}
@@ -2517,23 +2517,23 @@ final class Test_Admin extends TestCase {
 
 		$html = $this->admin()->render_current_page();
 
-		$this->assertMatchesRegularExpression( '/name="keep_custom"[^>]*checked=\'checked\'/', $html );
+		$this->assertMatchesRegularExpression( '/name="babilim_keep_custom_on_purge"[^>]*checked=\'checked\'/', $html );
 	}
 
 	public function test_save_settings_persists_keep_custom_being_unchecked(): void {
 		update_option( 'babilim_keep_custom_on_purge', 1 );
-		$this->post( 'babilim_save_settings', array( 'locales' => array() ) ); // keep_custom omitted -> unchecked.
+		$fields = babilim_test_settings_fields( array( 'locales' => array() ) ); // keep_custom omitted -> unchecked.
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertFalse( (bool) get_option( 'babilim_keep_custom_on_purge' ) );
 	}
 
 	public function test_save_settings_persists_keep_custom_being_unchecked_on_a_fresh_site(): void {
 		// No option yet: core's update_option() returns early when the new value equals get_option()'s default (false).
-		$this->post( 'babilim_save_settings', array( 'locales' => array() ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array() ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( 0, (int) get_option( 'babilim_keep_custom_on_purge', 1 ) );
 	}
@@ -2558,10 +2558,10 @@ final class Test_Admin extends TestCase {
 	}
 
 	public function test_save_settings_persists_keep_custom_being_checked(): void {
-		$this->post( 'babilim_save_settings', array( 'locales' => array(), 'keep_custom' => 'on' ) );
+		$fields = babilim_test_settings_fields( array( 'locales' => array(), 'keep_custom' => 'on' ) );
 
 		$admin = $this->admin();
-		$admin->dispatch_babilim_save_settings();
+		babilim_test_submit_settings( $admin, $fields );
 
 		$this->assertTrue( (bool) get_option( 'babilim_keep_custom_on_purge' ) );
 	}
@@ -3378,12 +3378,54 @@ final class Test_Admin extends TestCase {
 		// Cancel: the pending offer goes, the cell is requestable again.
 		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'plugin', 'slug' => 'acme', 'locale' => 'fr_FR' ) );
 		$http = new Babilim_Fake_Http( array( array( 'response' => array( 'code' => 200 ), 'body' => '{"state":"cancelled"}', 'headers' => array() ) ) );
-		$this->post( 'babilim_upload_cancel', array() );
+		$this->post( 'babilim_upload_cancel', array( 'upload_id' => 'up_9a1b2c3d4e5f' ) );
 		$this->admin( $http )->dispatch_babilim_upload_cancel();
 		$this->assertNull( Babilim_Upload::pending() );
 		$this->assertSame( 'requestable', ( new Babilim_State() )->status( 'plugin', 'acme', 'fr_FR' )['status'] );
 		$this->assertSame( 'DELETE', $http->requests[0]['method'] );
 		$this->assertStringNotContainsString( 'screen=upload', end( $GLOBALS['babilim_test_redirects'] )['location'] );
+	}
+
+	/**
+	 * @dataProvider upload_actions
+	 */
+	public function test_an_upload_form_for_a_replaced_offer_is_refused_and_the_new_offer_is_not_sent( string $action, string $method ): void {
+		update_option( 'babilim_consent', true );
+		// The page showed offer A; another tab has since replaced it with B.
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_bbbbbbbbbbbb', 'kind' => 'plugin', 'slug' => 'other', 'locale' => 'fr_FR', 'version' => '1.0', 'part_bytes' => 1000, 'max_parts' => 5, 'max_bytes' => 5000, 'expires_at' => '2030-01-01T00:00:00Z' ) );
+		$http = new Babilim_Fake_Http( array() );
+		$this->post( $action, array( 'upload_id' => 'up_aaaaaaaaaaaa' ) );
+		$this->admin( $http )->$method();
+		$this->assertCount( 0, $http->requests, 'nothing is sent' );
+		$pending = Babilim_Upload::pending();
+		$this->assertSame( 'up_bbbbbbbbbbbb', $pending['upload_id'], 'the new offer is left as it was' );
+		$this->assertArrayNotHasKey( 'zip', $pending, 'nothing is packaged' );
+		$this->assertStringNotContainsString( 'screen=upload', end( $GLOBALS['babilim_test_redirects'] )['location'] );
+	}
+
+	/**
+	 * @dataProvider upload_actions
+	 */
+	public function test_an_upload_form_without_an_offer_id_is_refused( string $action, string $method ): void {
+		update_option( 'babilim_consent', true );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_bbbbbbbbbbbb', 'kind' => 'plugin', 'slug' => 'other', 'locale' => 'fr_FR', 'version' => '1.0' ) );
+		$http = new Babilim_Fake_Http( array() );
+		$this->post( $action, array() );
+		$this->admin( $http )->$method();
+		$this->assertCount( 0, $http->requests );
+		$this->assertSame( 'up_bbbbbbbbbbbb', Babilim_Upload::pending()['upload_id'] );
+	}
+
+	public function test_the_upload_screens_carry_the_offer_id_in_every_form(): void {
+		update_option( 'babilim_consent', true );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'theme', 'slug' => 'avada', 'locale' => 'fr_FR', 'version' => '7.11.4' ) );
+		$_GET = array( 'page' => 'babilim', 'screen' => 'upload-confirm' );
+		$html = $this->admin()->render_current_page();
+		$this->assertSame( 2, substr_count( $html, 'name="upload_id" value="up_9a1b2c3d4e5f"' ) );
+		update_option( Babilim_Upload::OPTION, array( 'upload_id' => 'up_9a1b2c3d4e5f', 'kind' => 'plugin', 'slug' => 'acme', 'locale' => 'fr_FR', 'zip' => '/x', 'parts' => 4, 'next' => 2 ) );
+		$_GET = array( 'page' => 'babilim', 'screen' => 'upload-progress' );
+		$html = $this->admin()->render_current_page();
+		$this->assertSame( 2, substr_count( $html, 'name="upload_id" value="up_9a1b2c3d4e5f"' ) );
 	}
 
 	public function test_step_and_confirm_with_nothing_pending_end_on_the_list_with_an_error(): void {

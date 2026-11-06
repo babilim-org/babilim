@@ -18,9 +18,11 @@ final class Test_Admin_Error_Consent extends TestCase {
 		$_GET     = array();
 		$_POST    = array();
 		$_REQUEST = array();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
 	}
 
 	protected function tearDown(): void {
+		unset( $GLOBALS['hook_suffix'] );
 		$_GET     = array();
 		$_POST    = array();
 		$_REQUEST = array();
@@ -113,7 +115,7 @@ final class Test_Admin_Error_Consent extends TestCase {
 		$this->assertCount( 1, get_option( Babilim_Error_Reporter::OPTION_QUEUE ) );
 
 		$this->awaiting();
-		$this->post( 'babilim_error_decline' );
+		$this->post( 'babilim_error_decline', array( 'event_ids' => self::EVENT_ID ) );
 		$this->admin()->dispatch_babilim_error_decline();
 		$this->assertSame( array(), get_option( Babilim_Error_Reporter::OPTION_AWAITING ) );
 	}
@@ -138,6 +140,49 @@ final class Test_Admin_Error_Consent extends TestCase {
 		$this->assertStringContainsString( 'name="event_id" value="' . self::EVENT_ID . '"', $html );
 	}
 
+	public function test_the_consent_notice_shows_only_on_babilim_dashboard_and_plugins_screens(): void {
+		update_option( 'babilim_consent', true );
+		$this->awaiting();
+		$admin = $this->admin();
+		$admin->register_menu();
+
+		$suffix = new ReflectionProperty( Babilim_Admin::class, 'settings_hook_suffix' );
+		$suffix->setAccessible( true );
+		$settings_screen = (string) $suffix->getValue( $admin );
+		$this->assertNotSame( '', $settings_screen, 'register_menu() recorded the Settings screen' );
+		$screens = array( 'index.php', 'plugins.php', 'toplevel_page_' . Babilim_Admin::MENU_SLUG, $settings_screen );
+		foreach ( $screens as $screen ) {
+			$GLOBALS['hook_suffix'] = $screen;
+			ob_start();
+			$admin->render_error_consent_notice();
+			$this->assertStringContainsString( 'Babilim hit an error', (string) ob_get_clean(), $screen );
+		}
+		foreach ( array( 'edit.php', 'upload.php', 'options-general.php', 'themes.php', 'tools.php', '' ) as $screen ) {
+			$GLOBALS['hook_suffix'] = $screen;
+			ob_start();
+			$admin->render_error_consent_notice();
+			$this->assertSame( '', (string) ob_get_clean(), "no notice on '{$screen}'" );
+		}
+		unset( $GLOBALS['hook_suffix'] );
+	}
+
+	public function test_dismissing_the_consent_notice_submits_the_hide_only_form(): void {
+		update_option( 'babilim_consent', true );
+		$this->awaiting();
+		$GLOBALS['hook_suffix'] = 'plugins.php';
+		$admin                  = $this->admin();
+		$admin->register_menu();
+		ob_start();
+		$admin->render_error_consent_notice();
+		$html = (string) ob_get_clean();
+		unset( $GLOBALS['hook_suffix'] );
+
+		$this->assertStringContainsString( 'is-dismissible', $html );
+		$this->assertSame( 1, preg_match( '/data-babilim-dismiss-form="([^"]+)"/', $html, $m ), 'the notice names the form to submit' );
+		$this->assertSame( 1, preg_match( '/<form[^>]*id="' . preg_quote( $m[1], '/' ) . '"[^>]*>.*?value="babilim_error_notice_dismiss"/s', $html ), 'that form only hides the notice' );
+		$this->assertStringContainsString( 'notice-dismiss', implode( '', $GLOBALS['babilim_test_inline_scripts']['babilim-notice-dismiss'] ?? array() ) );
+	}
+
 	public function test_notice_is_hidden_without_awaiting_events_or_capability(): void {
 		update_option( 'babilim_consent', true );
 		$this->assertSame( '', $this->notice_html() );
@@ -153,14 +198,14 @@ final class Test_Admin_Error_Consent extends TestCase {
 		$page->setAccessible( true );
 		$html = $page->invoke( $this->admin() );
 		$this->assertStringContainsString( 'Share error reports', $html );
-		$this->assertMatchesRegularExpression( '/name="share_errors"(?![^>]*checked)/', $html );
+		$this->assertMatchesRegularExpression( '/name="babilim_share_errors"(?![^>]*checked)/', $html );
 
-		$this->post( 'babilim_save_settings', array( 'share_errors' => 'on' ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'share_errors' => 'on' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( '1', (string) get_option( Babilim_Error_Reporter::OPTION_SHARE ) );
 
-		$this->post( 'babilim_save_settings' );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields();
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( '0', (string) get_option( Babilim_Error_Reporter::OPTION_SHARE ) );
 	}
 
@@ -204,8 +249,8 @@ final class Test_Admin_Error_Consent extends TestCase {
 		update_option( Babilim_Error_Reporter::OPTION_QUEUE, array( array( 'event_id' => self::EVENT_ID, 'error_code' => 'download_failed', 'action' => 'download', 'origin_id' => 'site.sync', 'at' => gmdate( 'c' ), 'attempts' => 1 ) ), false );
 		$this->awaiting( array( 'event_id' => 'dddddddddddddddddddddddddddddddd' ) );
 
-		$this->post( 'babilim_save_settings' ); // The box is not ticked.
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields(); // The box is not ticked.
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( '0', (string) get_option( Babilim_Error_Reporter::OPTION_SHARE ) );
 		$this->assertSame( array(), get_option( Babilim_Error_Reporter::OPTION_QUEUE ) );
@@ -229,8 +274,8 @@ final class Test_Admin_Error_Consent extends TestCase {
 		update_option( 'babilim_consent', true );
 		$this->awaiting();
 
-		$this->post( 'babilim_save_settings' );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields();
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertCount( 1, get_option( Babilim_Error_Reporter::OPTION_AWAITING ) );
 	}
@@ -295,11 +340,11 @@ final class Test_Admin_Error_Consent extends TestCase {
 	}
 
 	public function test_the_three_actions_return_to_the_admin_page_they_came_from(): void {
-		foreach ( array( 'share_once', 'share_always', 'decline' ) as $name ) {
+		foreach ( array( 'share_once', 'share_always', 'decline', 'notice_dismiss' ) as $name ) {
 			$this->awaiting();
 			$GLOBALS['babilim_test_redirects'] = array();
 			$GLOBALS['babilim_test_referer']   = 'http://example.org/wp-admin/plugins.php?x=1';
-			$this->post( 'babilim_error_' . $name, array( 'event_id' => self::EVENT_ID ) );
+			$this->post( 'babilim_error_' . $name, array( 'event_id' => self::EVENT_ID, 'event_ids' => self::EVENT_ID, 'fingerprint' => self::EVENT_ID ) );
 			$this->admin()->{'dispatch_babilim_error_' . $name}();
 			$this->assertSame( 'http://example.org/wp-admin/plugins.php?x=1', $GLOBALS['babilim_test_redirects'][0]['location'], $name );
 		}
@@ -321,11 +366,86 @@ final class Test_Admin_Error_Consent extends TestCase {
 		update_option( 'babilim_consent', true );
 		$this->awaiting();
 
-		$this->post( 'babilim_save_settings', array( 'share_errors' => 'on' ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'share_errors' => 'on' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( '1', (string) get_option( Babilim_Error_Reporter::OPTION_SHARE ) );
 		$this->assertSame( array(), get_option( Babilim_Error_Reporter::OPTION_AWAITING ) );
 		$this->assertSame( self::EVENT_ID, get_option( Babilim_Error_Reporter::OPTION_QUEUE )[0]['event_id'] );
+	}
+
+	// -- the close button hides, it never deletes ---------------------------
+
+	private function two_waiting(): void {
+		update_option(
+			Babilim_Error_Reporter::OPTION_AWAITING,
+			array(
+				array( 'event_id' => self::EVENT_ID, 'error_code' => 'download_failed', 'action' => 'download', 'origin_id' => 'site.sync', 'at' => '2026-10-01T00:00:00+00:00', 'attempts' => 0 ),
+				array( 'event_id' => 'dddddddddddddddddddddddddddddddd', 'error_code' => 'install_failed', 'action' => 'install', 'origin_id' => 'installer.commit', 'at' => '2026-10-01T00:01:00+00:00', 'attempts' => 0 ),
+			),
+			false
+		);
+	}
+
+	public function test_the_close_button_hides_the_notice_and_keeps_every_waiting_report(): void {
+		update_option( 'babilim_consent', true );
+		$this->two_waiting();
+		$html = $this->notice_html();
+		$this->assertSame( 1, preg_match( '/name="fingerprint" value="([^"]+)"/', $html, $m ), 'the hide form carries what the user saw' );
+
+		$this->post( 'babilim_error_notice_dismiss', array( 'fingerprint' => $m[1] ) );
+		$this->admin()->dispatch_babilim_error_notice_dismiss();
+
+		$this->assertCount( 2, get_option( Babilim_Error_Reporter::OPTION_AWAITING ), 'nothing is deleted' );
+		$this->assertSame( '', $this->notice_html(), 'the notice is hidden' );
+	}
+
+	public function test_a_newer_report_brings_the_hidden_notice_back(): void {
+		update_option( 'babilim_consent', true );
+		$this->awaiting();
+		$this->assertSame( 1, preg_match( '/name="fingerprint" value="([^"]+)"/', $this->notice_html(), $m ) );
+		$this->post( 'babilim_error_notice_dismiss', array( 'fingerprint' => $m[1] ) );
+		$this->admin()->dispatch_babilim_error_notice_dismiss();
+		$this->assertSame( '', $this->notice_html() );
+
+		$this->two_waiting();
+		$this->assertStringContainsString( 'Babilim hit an error', $this->notice_html(), 'a report that came in later shows the notice again' );
+	}
+
+	public function test_the_hide_action_needs_the_nonce_and_the_capability(): void {
+		update_option( 'babilim_consent', true );
+		$this->awaiting();
+		$_POST    = array( 'action' => 'babilim_error_notice_dismiss', 'fingerprint' => self::EVENT_ID );
+		$_REQUEST = $_POST;
+		try {
+			$this->admin()->dispatch_babilim_error_notice_dismiss();
+			$this->fail( 'expected wp_die' );
+		} catch ( Babilim_Test_Wp_Die_Exception $e ) {
+			$this->assertNotSame( '', $this->notice_html() );
+		}
+	}
+
+	public function test_dont_share_discards_only_the_reports_the_form_listed(): void {
+		update_option( 'babilim_consent', true );
+		$this->awaiting();
+		$html = $this->notice_html();
+		$this->assertSame( 1, preg_match( '/name="event_ids" value="([^"]+)"/', $html, $m ), 'the button carries the listed ids' );
+		$this->assertSame( self::EVENT_ID, $m[1] );
+
+		// A report arrives after the page was drawn.
+		$this->two_waiting();
+		$this->post( 'babilim_error_decline', array( 'event_ids' => $m[1] ) );
+		$this->admin()->dispatch_babilim_error_decline();
+
+		$left = get_option( Babilim_Error_Reporter::OPTION_AWAITING );
+		$this->assertCount( 1, $left );
+		$this->assertSame( 'dddddddddddddddddddddddddddddddd', $left[0]['event_id'] );
+	}
+
+	public function test_dont_share_without_ids_discards_nothing(): void {
+		$this->two_waiting();
+		$this->post( 'babilim_error_decline' );
+		$this->admin()->dispatch_babilim_error_decline();
+		$this->assertCount( 2, get_option( Babilim_Error_Reporter::OPTION_AWAITING ) );
 	}
 }

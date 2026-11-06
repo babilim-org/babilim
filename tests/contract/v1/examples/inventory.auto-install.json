@@ -1,5 +1,5 @@
 {
-  "description": "1.10.0: auto_install. Free site. component-a already has a Babilim translation installed (de_DE), so its fr_FR babilim_available entry carries auto_install: true (this request's installed{} for the component is non-empty). component-b has installed: {} and no paid/partner license, so its de_DE babilim_available entry has no auto_install key: the plugin must not install it automatically, the manual install action stays available. Absence of the key is the default; the key is never false.",
+  "description": "1.11.0: auto_install on every babilim_available entry. Free site. component-a holds a free plugin slot (bound), so its fr_FR entry is babilim_available and carries auto_install: true (always sent, deprecated). component-b has an active build for de_DE but is not bound to a slot and the theme slot is free: the entry is requestable (the site must Request it first, which binds the slot), not babilim_available, and carries no auto_install key.",
   "http": {
     "method": "POST",
     "path": "/v1/sites/st_3f9c2a1b7e4d/inventory"
@@ -171,10 +171,7 @@
           "slug": "component-b",
           "locales": {
             "de_DE": {
-              "status": "babilim_available",
-              "build_id": "bd_9e8d7c6b5a4f",
-              "build_no": 1,
-              "built_at": "2026-09-20T08:00:00Z"
+              "status": "requestable"
             },
             "fr_FR": {
               "status": "requestable"
@@ -208,7 +205,7 @@
         "checkout": false,
         "upload": true
       },
-      "contract": "1.10.0"
+      "contract": "1.11.0"
     }
   }
 }

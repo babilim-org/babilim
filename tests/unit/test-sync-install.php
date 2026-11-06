@@ -30,6 +30,9 @@ final class Babilim_Test_Routing_Http implements Babilim_Http {
 	/** @var array|null Overrides the POST /v1/downloads answer. */
 	public $download_response = null;
 
+	/** @var array<string,array> Per-build overrides of the POST /v1/downloads answer. */
+	public $download_by_build = array();
+
 	/** @var string */
 	public $package_bytes = 'zip-bytes';
 
@@ -43,6 +46,9 @@ final class Babilim_Test_Routing_Http implements Babilim_Http {
 				return $this->download_response;
 			}
 			$build = json_decode( (string) $args['body'], true )['build_id'];
+			if ( isset( $this->download_by_build[ $build ] ) ) {
+				return $this->download_by_build[ $build ];
+			}
 			return array( 'response' => array( 'code' => 302 ), 'body' => '', 'headers' => array( 'location' => '/v1/packages/' . $build ) );
 		}
 		if ( 'GET' === $method && false !== strpos( $url, '/v1/packages/' ) ) {
@@ -444,20 +450,21 @@ final class Test_Sync_Install extends TestCase {
 		);
 	}
 
-	/** A second component whose single locale is available and marked auto_install. */
+	/** A second component whose single locale is available. */
 	private function other_available( string $slug, string $build ): array {
-		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => $build, 'auto_install' => true ) ) );
+		return array( 'kind' => 'plugin', 'slug' => $slug, 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => $build ) ) );
 	}
 
-	public function test_a_cell_without_the_auto_install_flag_is_never_installed_automatically(): void {
+	public function test_an_available_cell_without_any_flag_is_installed(): void {
 		$this->stage_package( self::NEW, 'st_e2e' );
 		$this->seed_available();
 
 		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
 
-		$this->assertSame( array(), $done );
-		$this->assertCount( 0, $this->http->requests );
-		$this->assertNull( $this->manifest->installed( 'plugin', 'woocommerce', 'zh_TW' ) );
+		$this->assertCount( 1, $done );
+		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
+		$this->assertSame( self::NEW, ( new Babilim_Manifest( $this->fs ) )->installed( 'plugin', 'woocommerce', 'zh_TW' )['build_id'] );
+		$this->assertSame( 1, (int) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALLED, 0 ) );
 	}
 
 	public function test_on_multisite_nothing_is_installed_automatically_even_with_the_flag(): void {
@@ -472,27 +479,42 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertNull( $this->manifest->installed( 'plugin', 'woocommerce', 'zh_TW' ) );
 	}
 
-	public function test_a_cell_with_the_auto_install_flag_is_installed_without_any_local_license_rule(): void {
-		$this->stage_package( self::NEW, 'st_e2e' );
-		$this->seed_available( array( 'auto_install' => true ) );
-		$this->assertFalse( $this->site->has_manifest_record( 'plugin', 'woocommerce' ), 'no record in any language' );
+	public function test_the_same_available_response_installs_identically_for_free_paid_and_partner(): void {
+		$runs = array();
+		foreach ( array( 'free', 'paid', 'partner' ) as $kind ) {
+			$this->setUp();
+			$this->stage_package( self::NEW, 'st_e2e' );
+			$this->seed_available();
+			$state            = $this->state->get();
+			$state['license'] = array( 'kind' => $kind );
+			$this->state->set( $state );
 
-		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+			$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
 
-		$this->assertCount( 1, $done );
-		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
-		$this->assertSame( self::NEW, ( new Babilim_Manifest( $this->fs ) )->installed( 'plugin', 'woocommerce', 'zh_TW' )['build_id'] );
-		$this->assertSame( 1, (int) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALLED, 0 ) );
+			$this->assertCount( 1, $done, $kind );
+			$this->assertTrue( $done[0]['result']->is_ok(), $kind );
+			$runs[ $kind ] = array(
+				'done'     => array( $done[0]['kind'], $done[0]['slug'], $done[0]['locale'], $done[0]['build_id'] ),
+				'requests' => array_map(
+					static function ( $request ) {
+						return $request['method'] . ' ' . $request['url'];
+					},
+					$this->http->requests
+				),
+			);
+		}
+		$this->assertSame( $runs['free'], $runs['paid'] );
+		$this->assertSame( $runs['free'], $runs['partner'] );
 	}
 
-	public function test_a_flag_that_is_not_boolean_true_is_ignored(): void {
-		foreach ( array( false, 1, '1', 'true' ) as $i => $flag ) {
+	public function test_a_stale_auto_install_key_of_any_value_changes_nothing(): void {
+		foreach ( array( true, false, 1, '1', 'true', null ) as $i => $flag ) {
 			$this->setUp();
 			$this->stage_package( self::NEW, 'st_e2e' );
 			$this->seed_available( array( 'auto_install' => $flag ) );
 
-			$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), "variant $i" );
-			$this->assertCount( 0, $this->http->requests, "variant $i" );
+			$this->assertCount( 1, $this->sync_installer->install_available( array( 'zh_TW' ), 20 ), "variant $i" );
+			$this->assertNotNull( $this->manifest->installed( 'plugin', 'woocommerce', 'zh_TW' ), "variant $i" );
 		}
 	}
 
@@ -509,7 +531,7 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertCount( 0, $this->http->requests );
 	}
 
-	public function test_without_the_flag_updates_are_still_installed(): void {
+	public function test_updates_and_unflagged_available_cells_are_both_installed(): void {
 		$this->seed_installed_old_build();
 		$this->stage_package( self::NEW, 'st_e2e' );
 		$unflagged = array( 'kind' => 'plugin', 'slug' => 'second', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => 'bd_000000000003' ) ) );
@@ -520,15 +542,20 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
 		$this->assertSame( self::NEW, ( new Babilim_Manifest( $this->fs ) )->installed( 'plugin', 'woocommerce', 'zh_TW' )['build_id'] );
 
-		$requests = count( $this->http->requests );
-		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
-		$this->assertCount( $requests, $this->http->requests, 'install_available adds no request' );
+		$available = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		$this->assertCount( 1, $available, 'the unflagged available cell is installed too' );
+		$this->assertSame( 'second', $available[0]['slug'] );
 	}
 
-	public function test_install_available_does_not_read_the_license(): void {
-		$tokens = token_get_all( (string) file_get_contents( dirname( __DIR__, 2 ) . '/includes/class-babilim-sync-installer.php' ) );
-		$count  = count( $tokens );
-		$found  = false;
+	/**
+	 * Every string literal in the body of install_available(), in order.
+	 *
+	 * @return string[]
+	 */
+	private static function install_available_string_literals(): array {
+		$tokens  = token_get_all( (string) file_get_contents( dirname( __DIR__, 2 ) . '/includes/class-babilim-sync-installer.php' ) );
+		$count   = count( $tokens );
+		$strings = array();
 		for ( $i = 0; $i < $count; $i++ ) {
 			if ( ! is_array( $tokens[ $i ] ) || T_FUNCTION !== $tokens[ $i ][0] ) {
 				continue;
@@ -540,7 +567,6 @@ final class Test_Sync_Install extends TestCase {
 			if ( ! isset( $tokens[ $j ] ) || 'install_available' !== $tokens[ $j ][1] ) {
 				continue;
 			}
-			$found = true;
 			while ( $j < $count && '{' !== $tokens[ $j ] ) {
 				++$j;
 			}
@@ -555,12 +581,26 @@ final class Test_Sync_Install extends TestCase {
 						break;
 					}
 				} elseif ( is_array( $t ) && T_CONSTANT_ENCAPSED_STRING === $t[0] ) {
-					$this->assertNotSame( 'license', trim( $t[1], '\'"' ), 'install_available() must not read the license' );
+					$strings[] = trim( $t[1], '\'"' );
 				}
 			}
-			$this->assertGreaterThan( 0, $j - $i, 'the method body was walked' );
+			return $strings;
 		}
-		$this->assertTrue( $found, 'install_available() was found' );
+		return $strings;
+	}
+
+	public function test_the_literal_walker_reads_the_body_of_install_available(): void {
+		$strings = self::install_available_string_literals();
+		$this->assertContains( 'babilim_available', $strings, 'the method body was walked' );
+		$this->assertContains( 'build_id', $strings );
+	}
+
+	public function test_install_available_does_not_read_the_license(): void {
+		$this->assertNotContains( 'license', self::install_available_string_literals(), 'install_available() must not read the license' );
+	}
+
+	public function test_install_available_does_not_read_a_cell_key_named_auto_install(): void {
+		$this->assertNotContains( 'auto_install', self::install_available_string_literals(), 'install_available() must not read a cell key named auto_install' );
 	}
 
 	public function test_a_locale_that_is_not_managed_is_not_installed(): void {
@@ -664,5 +704,194 @@ final class Test_Sync_Install extends TestCase {
 		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), 20 ) );
 		$this->assertCount( $downloads, $this->http->to( '/v1/downloads' ) );
 		$this->assertSame( 0, (int) get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALLED, 0 ), 'failures are not counted as installed' );
+	}
+
+	// -- the service's refusals are not this build's failures ------------
+
+	private function refusal( string $code ): array {
+		return array(
+			'response' => array( 'code' => 403 ),
+			'body'     => (string) wp_json_encode( array( 'error' => array( 'code' => $code, 'message' => 'x', 'hint' => 'y' ) ) ),
+			'headers'  => array(),
+		);
+	}
+
+	public function test_a_service_refusal_is_not_counted_as_a_failed_attempt_and_the_run_goes_on(): void {
+		foreach ( array( 'quota_exceeded', 'license_required', 'slot_required' ) as $code ) {
+			$this->setUp();
+			$this->seed_available( array(), array( $this->other_available( 'second', 'bd_000000000003' ) ) );
+			$this->http->download_response = $this->refusal( $code );
+
+			$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+
+			$this->assertSame( array(), $done, $code . ': a refusal is not an outcome of the run' );
+			$this->assertSame( array(), (array) get_option( Babilim_Sync_Installer::OPTION_FAILURES, array() ), $code );
+			$this->assertCount( 2, $this->http->to( '/v1/downloads' ), $code );
+		}
+	}
+
+	public function test_a_bad_package_is_still_counted(): void {
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$manifest                                            = json_decode( $this->zip['manifest.json'], true );
+		$manifest['files']['woocommerce-zh_TW.mo']['sha256'] = str_repeat( '0', 64 );
+		$this->zip['manifest.json']                          = wp_json_encode( $manifest );
+		$this->seed_available();
+
+		$this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+
+		$this->assertSame( array( self::NEW => 1 ), get_option( Babilim_Sync_Installer::OPTION_FAILURES ) );
+	}
+
+	public function test_a_service_refusal_on_an_update_is_not_counted(): void {
+		foreach ( array( 'quota_exceeded', 'license_required', 'slot_required' ) as $code ) {
+			$this->setUp();
+			$this->state->set( array( 'updates' => array( $this->update_entry(), array_merge( $this->update_entry( 'bd_000000000003' ), array( 'slug' => 'other' ) ) ) ) );
+			$this->http->download_response = $this->refusal( $code );
+
+			$done = $this->sync_installer->install_pending_updates();
+
+			$this->assertSame( array(), $done, $code );
+			$this->assertSame( array(), (array) get_option( Babilim_Sync_Installer::OPTION_FAILURES, array() ), $code );
+			$this->assertCount( 2, $this->http->to( '/v1/downloads' ), $code . ': each build was asked for once' );
+		}
+	}
+
+	public function test_a_refused_first_cell_does_not_stop_the_second_cell_from_installing(): void {
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$this->state->set(
+			array(
+				'components' => array(
+					$this->other_available( 'refused', 'bd_000000000003' ),
+					array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) ) ),
+				),
+			)
+		);
+		$this->http->download_by_build['bd_000000000003'] = $this->refusal( 'slot_required' );
+
+		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+
+		$this->assertCount( 1, $done );
+		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
+		$this->assertSame( self::NEW, ( new Babilim_Manifest( $this->fs ) )->installed( 'plugin', 'woocommerce', 'zh_TW' )['build_id'] );
+		$this->assertSame( array(), (array) get_option( Babilim_Sync_Installer::OPTION_FAILURES, array() ) );
+	}
+
+	// -- a refused build is left alone until the service's state changes --
+
+	/** @return array<string,array{string}> */
+	public static function refusal_codes(): array {
+		return array(
+			'quota_exceeded'   => array( 'quota_exceeded' ),
+			'license_required' => array( 'license_required' ),
+			'slot_required'    => array( 'slot_required' ),
+		);
+	}
+
+	/**
+	 * @dataProvider refusal_codes
+	 */
+	public function test_refused_cells_do_not_use_up_the_run_and_the_next_cell_is_installed( string $code ): void {
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$components = array();
+		for ( $i = 0; $i < Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN - 1; $i++ ) {
+			$build                                   = sprintf( 'bd_%012d', 500 + $i );
+			$components[]                            = $this->other_available( 'refused' . $i, $build );
+			$this->http->download_by_build[ $build ] = $this->refusal( $code );
+		}
+		$components[] = array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) ) );
+		$this->state->set( array( 'components' => $components ) );
+
+		// One install left in the run: the refusals before it must not use it up.
+		$done = $this->sync_installer->install_available( array( 'zh_TW' ), 1 );
+
+		$this->assertCount( 1, $done, 'only the install is an outcome of the run' );
+		$this->assertTrue( $done[0]['result']->is_ok(), $done[0]['result']->message() );
+		$this->assertSame( 'woocommerce', $done[0]['slug'] );
+		$this->assertSame( array(), (array) get_option( Babilim_Sync_Installer::OPTION_FAILURES, array() ) );
+	}
+
+	public function test_a_run_stops_asking_once_it_has_been_refused_max_refusals_times(): void {
+		$this->stage_package( self::NEW, 'st_e2e' );
+		$components = array();
+		for ( $i = 0; $i < Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN + 3; $i++ ) {
+			$build                                   = sprintf( 'bd_%012d', 500 + $i );
+			$components[]                            = $this->other_available( 'refused' . $i, $build );
+			$this->http->download_by_build[ $build ] = $this->refusal( 'slot_required' );
+		}
+		$components[] = array( 'kind' => 'plugin', 'slug' => 'woocommerce', 'locales' => array( 'zh_TW' => array( 'status' => 'babilim_available', 'build_id' => self::NEW ) ) );
+		$this->state->set( array( 'components' => $components ) );
+
+		$done = $this->sync_installer->install_available( array( 'zh_TW' ), Babilim_Sync_Installer::MAX_PER_RUN );
+
+		$this->assertSame( array(), $done, 'the cell after the cap is not tried in this run' );
+		$this->assertCount( Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN, $this->http->to( '/v1/downloads' ) );
+	}
+
+	public function test_refusals_of_updates_count_towards_the_same_cap_as_available_cells(): void {
+		$updates = array();
+		for ( $i = 0; $i < Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN; $i++ ) {
+			$updates[] = array_merge( $this->update_entry( sprintf( 'bd_%012d', 500 + $i ) ), array( 'slug' => 'upd' . $i ) );
+		}
+		$this->seed_available( array(), array(), $updates );
+		$this->http->download_response = $this->refusal( 'quota_exceeded' );
+
+		$this->assertSame( array(), $this->sync_installer->install_pending_updates() );
+		$this->assertCount( Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN, $this->http->to( '/v1/downloads' ) );
+
+		$this->assertSame( array(), $this->sync_installer->install_available( array( 'zh_TW' ), Babilim_Sync_Installer::MAX_PER_RUN ) );
+		$this->assertCount( Babilim_Sync_Installer::MAX_REFUSALS_PER_RUN, $this->http->to( '/v1/downloads' ), 'the run already reached the cap' );
+	}
+
+	/**
+	 * @dataProvider refusal_codes
+	 */
+	public function test_a_refused_build_is_not_asked_for_again_until_the_state_changes( string $code ): void {
+		$this->seed_available();
+		$this->http->download_response = $this->refusal( $code );
+
+		$this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		$this->assertCount( 1, $this->http->to( '/v1/downloads' ) );
+
+		$again = $this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		$this->assertSame( array(), $again );
+		$this->assertCount( 1, $this->http->to( '/v1/downloads' ), 'a repeat run sends nothing for the same build' );
+
+		// A new sync answer with the same content (a different fetched_at) changes nothing.
+		$state               = $this->state->get();
+		$state['fetched_at'] = '2031-01-01T00:00:00+00:00';
+		$this->state->set( $state );
+		$this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		$this->assertCount( 1, $this->http->to( '/v1/downloads' ), 'the same report under a newer answer is still left alone' );
+
+		// The service reports something else for the cell: it is tried once more.
+		$state['components'][0]['locales']['zh_TW']['build_no'] = 9;
+		$this->state->set( $state );
+		$this->sync_installer->install_available( array( 'zh_TW' ), 20 );
+		$this->assertCount( 2, $this->http->to( '/v1/downloads' ) );
+	}
+
+	/**
+	 * @dataProvider refusal_codes
+	 */
+	public function test_a_refused_update_is_not_asked_for_again_and_uses_no_budget( string $code ): void {
+		$this->state->set( array( 'updates' => array( $this->update_entry() ) ) );
+		$this->http->download_response = $this->refusal( $code );
+
+		$this->assertSame( array(), $this->sync_installer->install_pending_updates() );
+		$this->assertSame( array(), $this->sync_installer->install_pending_updates() );
+		$this->assertCount( 1, $this->http->to( '/v1/downloads' ) );
+	}
+
+	public function test_outcomes_are_classified_in_one_place(): void {
+		foreach ( array( 'verification_required', 'no_token', 'babilim_rate_limited' ) as $code ) {
+			$this->assertSame( Babilim_Sync_Installer::OUTCOME_STOP, Babilim_Sync_Installer::classify_outcome( $code ), $code );
+		}
+		foreach ( array( 'babilim_quota_exceeded', 'babilim_license_required', 'babilim_slot_required' ) as $code ) {
+			$this->assertSame( Babilim_Sync_Installer::OUTCOME_REFUSED, Babilim_Sync_Installer::classify_outcome( $code ), $code );
+			$this->assertTrue( Babilim_Error_Reporter::is_excluded_code( $code ), $code );
+		}
+		foreach ( array( 'integrity_failed', 'babilim_write_failed', '' ) as $code ) {
+			$this->assertSame( Babilim_Sync_Installer::OUTCOME_FAILED, Babilim_Sync_Installer::classify_outcome( $code ), $code );
+		}
 	}
 }

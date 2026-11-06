@@ -160,7 +160,9 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$this->assertSame( 1, $x->query( '//button[contains(@class,"button-primary")]' )->length );
 		$this->assertSame( 'Save changes', trim( $x->query( '//button[contains(@class,"button-primary")]' )->item( 0 )->textContent ) );
 		$this->assertSame( 0, $x->query( '//form//form' )->length );
-		$this->assertSame( 1, $x->query( '//form[@id="babilim-settings-form"][@method="post"]//input[@name="action"][@value="babilim_save_settings"]' )->length );
+		$this->assertSame( 1, $x->query( '//form[@id="babilim-settings-form"][@method="post"][contains(@action,"options.php")]//input[@name="action"][@value="update"]' )->length );
+		$this->assertSame( 1, $x->query( '//form[@id="babilim-settings-form"]//input[@name="option_page"][@value="babilim_settings"]' )->length );
+		$this->assertSame( 'nonce-babilim_settings-options', $this->el( $x, '//form[@id="babilim-settings-form"]//input[@name="_wpnonce"]' )->getAttribute( 'value' ) );
 		$this->assertGreaterThan( 0, $x->query( '//form[@id="babilim-settings-form"]//table[contains(@class,"form-table")]' )->length );
 	}
 
@@ -205,55 +207,72 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$this->assertSame( 0, $x->query( '//form[@id="babilim-disable-form"]' )->length );
 	}
 
+	public function test_the_toolbar_row_is_on_by_default_and_save_stores_the_choice(): void {
+		$x = $this->xpath( $this->page() );
+		$this->assertTrue( $this->el( $x, '//input[@type="checkbox"][@name="babilim_toolbar_report"]' )->hasAttribute( 'checked' ), 'a missing option reads as on' );
+		$this->assertStringContainsString( 'Show the "Report translation" entry in the admin toolbar', $x->document->textContent );
+
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ) ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
+		$this->assertSame( 0, (int) get_option( 'babilim_toolbar_report' ) );
+		$this->assertFalse( $this->el( $this->xpath( $this->page() ), '//input[@name="babilim_toolbar_report"]' )->hasAttribute( 'checked' ) );
+
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ), 'toolbar_report' => 'on' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
+		$this->assertSame( 1, (int) get_option( 'babilim_toolbar_report' ) );
+	}
+
 	// -- general: languages -----------------------------------------------------
 
 	public function test_detected_locales_are_checkboxes_marked_detected(): void {
 		$x     = $this->xpath( $this->page() );
-		$boxes = $x->query( '//input[@type="checkbox"][@name="locales[]"][@value="de_DE"]' );
+		$boxes = $x->query( '//input[@type="checkbox"][@name="babilim_manual_locales[checked][]"][@value="de_DE"]' );
 		$this->assertSame( 1, $boxes->length );
-		$this->assertTrue( $this->el( $x, '//input[@name="locales[]"][@value="de_DE"]' )->hasAttribute( 'checked' ) );
+		$this->assertTrue( $this->el( $x, '//input[@name="babilim_manual_locales[checked][]"][@value="de_DE"]' )->hasAttribute( 'checked' ) );
 		$this->assertStringContainsString( '(detected)', $x->document->textContent );
 	}
 
 	public function test_the_automatic_installs_row_is_on_by_default_and_save_stores_the_choice(): void {
 		$x = $this->xpath( $this->page() );
 		$this->assertStringContainsString( 'Automatic installs', $x->document->textContent );
-		$this->assertTrue( $this->el( $x, '//input[@type="checkbox"][@name="auto_install"]' )->hasAttribute( 'checked' ), 'a missing option reads as on' );
-		$this->assertStringContainsString( 'The Babilim service decides which available translations may be installed automatically', $x->document->textContent );
+		$this->assertTrue( $this->el( $x, '//input[@type="checkbox"][@name="babilim_auto_install"]' )->hasAttribute( 'checked' ), 'a missing option reads as on' );
+		$this->assertStringContainsString( 'While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync.', $x->document->textContent );
+		$this->assertStringNotContainsString( 'decides which available translations', $x->document->textContent );
+		$this->assertStringNotContainsString( 'take up a new free slot', $x->document->textContent );
 
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE' ) ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ) ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( 0, (int) get_option( 'babilim_auto_install' ), 'an unchecked box turns it off' );
-		$this->assertFalse( $this->el( $this->xpath( $this->page() ), '//input[@name="auto_install"]' )->hasAttribute( 'checked' ) );
+		$this->assertFalse( $this->el( $this->xpath( $this->page() ), '//input[@name="babilim_auto_install"]' )->hasAttribute( 'checked' ) );
 
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE' ), 'auto_install' => 'on' ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ), 'auto_install' => 'on' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( 1, (int) get_option( 'babilim_auto_install' ) );
 	}
 
 	public function test_unchecking_a_detected_locale_stops_managing_it_and_checking_restores_it(): void {
 		$GLOBALS['babilim_test_available_languages'] = array( 'fr_FR' );
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE' ) ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ) ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 
 		$this->assertSame( array( 'fr_FR' ), get_option( 'babilim_disabled_locales' ) );
 		$inventory = new Babilim_Inventory( static function () { return array(); }, static function () { return array(); }, static function () { return false; }, static function () { return array(); } );
 		$this->assertSame( array( 'de_DE' ), $inventory->locales() );
 
 		$x = $this->xpath( $this->page() );
-		$this->assertFalse( $this->el( $x, '//input[@name="locales[]"][@value="fr_FR"]' )->hasAttribute( 'checked' ), 'a stopped locale stays listed, unchecked' );
+		$this->assertFalse( $this->el( $x, '//input[@name="babilim_manual_locales[checked][]"][@value="fr_FR"]' )->hasAttribute( 'checked' ), 'a stopped locale stays listed, unchecked' );
 
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE', 'fr_FR' ) ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE', 'fr_FR' ) ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( array(), get_option( 'babilim_disabled_locales' ) );
 		$this->assertSame( array( 'de_DE', 'fr_FR' ), $inventory->locales() );
-		$this->assertSame( admin_url( 'admin.php?page=babilim-settings&tab=general' ), $GLOBALS['babilim_test_redirects'][1]['location'] );
+		$this->assertSame( admin_url( 'admin.php?page=babilim-settings&tab=general' ) . '&settings-updated=true', $GLOBALS['babilim_test_redirects'][1]['location'], 'options.php returns to the General tab' );
 	}
 
 	public function test_a_manual_locale_that_is_unchecked_is_removed(): void {
 		update_option( 'babilim_manual_locales', array( 'pt_BR', 'vi' ) );
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE', 'pt_BR' ) ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE', 'pt_BR' ) ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( array( 'pt_BR' ), get_option( 'babilim_manual_locales' ) );
 		$this->assertSame( array(), get_option( 'babilim_disabled_locales' ) );
 	}
@@ -263,7 +282,7 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		set_transient( 'babilim_meta_locales_cache', array( 'de_DE', 'pt_BR', 'ja', 'vi' ), 12 * HOUR_IN_SECONDS );
 		$this->enable();
 		$x       = $this->xpath( $this->page() );
-		$options = $x->query( '//select[@name="new_locale"]/option' );
+		$options = $x->query( '//select[@name="babilim_manual_locales[new]"]/option' );
 		$values  = array();
 		foreach ( $options as $o ) {
 			if ( $o instanceof DOMElement ) {
@@ -276,7 +295,7 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 	public function test_managed_language_checkboxes_show_the_name_with_the_code_in_the_title(): void {
 		set_site_transient( 'available_translations', array( 'de_DE' => array( 'native_name' => 'Deutsch' ) ) );
 		$x    = $this->xpath( $this->page() );
-		$span = $this->el( $x, '//label[input[@name="locales[]"][@value="de_DE"]]/span' );
+		$span = $this->el( $x, '//label[input[@name="babilim_manual_locales[checked][]"][@value="de_DE"]]/span' );
 		$this->assertSame( 'Deutsch', trim( $span->textContent ) );
 		$this->assertSame( 'de_DE', $span->getAttribute( 'title' ) );
 		$this->assertStringContainsString( '(detected)', $x->document->textContent );
@@ -296,14 +315,14 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$this->enable();
 		$x      = $this->xpath( $this->page() );
 		$values = array();
-		foreach ( $x->query( '//select[@name="new_locale"]/option' ) as $o ) {
+		foreach ( $x->query( '//select[@name="babilim_manual_locales[new]"]/option' ) as $o ) {
 			if ( $o instanceof DOMElement ) {
 				$values[] = $o->getAttribute( 'value' );
 			}
 		}
 		$this->assertSame( array( '', 'ar', 'ja', 'zz' ), $values, 'the add-language menu is in code order' );
 		$boxes = array();
-		foreach ( $x->query( '//input[@name="locales[]"]' ) as $o ) {
+		foreach ( $x->query( '//input[@name="babilim_manual_locales[checked][]"]' ) as $o ) {
 			if ( $o instanceof DOMElement ) {
 				$boxes[] = $o->getAttribute( 'value' );
 			}
@@ -315,12 +334,12 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$http = new Babilim_Fake_Http( array() );
 		$x    = $this->xpath( $this->page( array(), $http ) );
 		$this->assertCount( 0, $http->requests );
-		$this->assertSame( 0, $x->query( '//select[@name="new_locale"]' )->length, 'no menu is offered before consent' );
+		$this->assertSame( 0, $x->query( '//select[@name="babilim_manual_locales[new]"]' )->length, 'no menu is offered before consent' );
 	}
 
 	public function test_saving_a_new_locale_from_the_menu_adds_it(): void {
-		$this->post( 'babilim_save_settings', array( 'locales' => array( 'de_DE' ), 'new_locale' => 'ja' ) );
-		$this->admin()->dispatch_babilim_save_settings();
+		$fields = babilim_test_settings_fields( array( 'locales' => array( 'de_DE' ), 'new_locale' => 'ja' ) );
+		babilim_test_submit_settings( $this->admin(), $fields );
 		$this->assertSame( array( 'ja' ), get_option( 'babilim_manual_locales' ) );
 	}
 
@@ -328,8 +347,8 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 
 	public function test_the_uninstall_defaults_and_risk_text(): void {
 		$x = $this->xpath( $this->page() );
-		$this->assertFalse( $this->el( $x, '//input[@name="delete_data_on_uninstall"]' )->hasAttribute( 'checked' ) );
-		$this->assertTrue( $this->el( $x, '//input[@name="keep_custom"]' )->hasAttribute( 'checked' ) );
+		$this->assertFalse( $this->el( $x, '//input[@name="babilim_delete_data_on_uninstall"]' )->hasAttribute( 'checked' ) );
+		$this->assertTrue( $this->el( $x, '//input[@name="babilim_keep_custom_on_purge"]' )->hasAttribute( 'checked' ) );
 		$this->assertStringContainsString( 'cannot be restored automatically', $x->document->textContent );
 	}
 
@@ -344,7 +363,7 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$this->assertStringNotContainsString( 'always wins over anything Babilim provides', $text );
 		$rel = basename( rtrim( WP_LANG_DIR, '/' ) ) . '/babilim/custom/';
 		$x   = $this->xpath( $html );
-		$this->assertSame( $rel, $this->el( $x, '//input[@name="keep_custom"]/ancestor::td//p[contains(@class,"description")]//code' )->textContent );
+		$this->assertSame( $rel, $this->el( $x, '//input[@name="babilim_keep_custom_on_purge"]/ancestor::td//p[contains(@class,"description")]//code' )->textContent );
 		$this->assertSame( 'wp-content/languages/babilim/custom/', Babilim_Admin::custom_dir_label_for( '/var/www/html/wp-content/languages/babilim/custom', '/var/www/html/' ) );
 		$this->assertSame( 'languages/babilim/custom/', Babilim_Admin::custom_dir_label_for( '/srv/shared/languages/babilim/custom', '/var/www/html/' ), 'outside the root: last three segments' );
 		$this->assertSame( 'lang/other/custom/', Babilim_Admin::custom_dir_label_for( '/x/lang/other/custom', '' ), 'derived from the path, not fixed' );
@@ -402,7 +421,7 @@ final class Test_Admin_Settings_Tabs extends TestCase {
 		$text = $this->xpath( $this->page() )->document->textContent;
 		$this->assertStringContainsString( 'Theme 0/1', $text );
 		$this->assertStringContainsString( 'Plugin 1/2', $text );
-		$this->assertStringContainsString( 'License: Free', $text );
+		$this->assertStringContainsString( 'Service plan: Free', $text );
 	}
 
 	// -- Check again now: the foreground budget ----------------------------------

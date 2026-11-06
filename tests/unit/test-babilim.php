@@ -953,6 +953,23 @@ final class Test_Babilim extends TestCase {
 		babilim_test_rmtree( $old );
 	}
 
+	public function test_the_first_load_of_a_version_creates_the_two_settings_unautoloaded_with_their_defaults(): void {
+		Babilim::instance()->init();
+		$this->assertSame( 1, get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL ), 'automatic installs default to on' );
+		$this->assertSame( '0', get_option( Babilim_Error_Reporter::OPTION_SHARE ), 'sharing defaults to off' );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload'][ Babilim_Sync_Installer::OPTION_AUTO_INSTALL ], 'not read on every request, so not autoloaded' );
+		$this->assertFalse( $GLOBALS['babilim_test_options_autoload'][ Babilim_Error_Reporter::OPTION_SHARE ] );
+	}
+
+	public function test_an_upgrade_leaves_the_two_settings_as_the_owner_set_them(): void {
+		update_option( 'babilim_version', '1.0.1', true );
+		update_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 0, false );
+		update_option( Babilim_Error_Reporter::OPTION_SHARE, '1', false );
+		Babilim::instance()->init();
+		$this->assertSame( 0, get_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL ) );
+		$this->assertSame( '1', get_option( Babilim_Error_Reporter::OPTION_SHARE ) );
+	}
+
 	public function test_the_legacy_sweep_runs_once_per_plugin_version(): void {
 		$base = BABILIM_TEST_TMP_ROOT . '/legacy-' . bin2hex( random_bytes( 4 ) );
 		$dir  = $base . '/babilim-upload-' . str_repeat( 'ab', 16 );
@@ -964,6 +981,7 @@ final class Test_Babilim extends TestCase {
 		Babilim::instance()->init();
 		$this->assertDirectoryDoesNotExist( $dir, 'the first init after an upgrade removes this site\'s unsealed pending directory' );
 		$this->assertSame( BABILIM_VERSION, get_option( 'babilim_version' ) );
+		$this->assertTrue( $GLOBALS['babilim_test_options_autoload']['babilim_version'], 'read on every request, so it is autoloaded' );
 
 		mkdir( $dir, 0700, true );
 		Babilim::reset_for_tests();
@@ -1393,6 +1411,251 @@ final class Test_Babilim extends TestCase {
 
 	private function failing_download(): array {
 		return array( 'response' => array( 'code' => 500 ), 'body' => '', 'headers' => array() );
+	}
+
+	private function seed_available_state( string $slug = 'fresh' ): void {
+		( new Babilim_State() )->set( array( 'components' => array( $this->available_component( $slug ) ), 'updates' => array() ) );
+	}
+
+	public function test_run_sync_installs_nothing_when_the_sync_itself_failed(): void {
+		$this->prime_run_sync( array(), array(), $this->failing_download() );
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$updates = array( array( 'kind' => 'plugin', 'slug' => 'upd', 'locale' => 'ja', 'build_id' => 'bd_000000000101', 'build_no' => 2 ) );
+		( new Babilim_State() )->set( array( 'components' => array( $this->available_component( 'fresh' ) ), 'updates' => $updates ) );
+		$before = get_option( 'babilim_state' );
+		$GLOBALS['babilim_test_wp_remote_responses'] = array( $this->failing_download() );
+
+		Babilim::instance()->run_sync();
+
+		$this->assertSame( 0, $this->download_requests(), 'a failed inventory means no download at all, listed updates included' );
+		$this->assertSame( $before, get_option( 'babilim_state' ), 'the stored snapshot is untouched' );
+	}
+
+	public function test_no_sync_required_flag_exists_any_more(): void {
+		$root = dirname( __DIR__, 2 );
+		foreach ( array_merge( glob( $root . '/includes/*.php' ) ?: array(), glob( $root . '/admin/*.php' ) ?: array(), array( $root . '/uninstall.php', $root . '/babilim.php' ) ) as $file ) {
+			$code = (string) file_get_contents( $file );
+			$this->assertStringNotContainsString( 'SYNC_REQUIRED', $code, basename( $file ) );
+			$this->assertStringNotContainsString( 'babilim_sync_required', $code, basename( $file ) );
+		}
+	}
+
+	/**
+	 * Runs one cron round: a successful sync answer, then (when the service
+	 * is asked) a refusal of the download.
+	 *
+	 * @param array[] $components Components in the sync answer.
+	 * @param array[] $updates    Updates in the sync answer.
+	 */
+	private function refused_round( array $components, array $updates = array() ): int {
+		$this->prime_run_sync(
+			$updates,
+			$components,
+			array( 'response' => array( 'code' => 403 ), 'body' => (string) wp_json_encode( array( 'error' => array( 'code' => 'slot_required', 'message' => 'm', 'hint' => 'h' ) ) ), 'headers' => array() )
+		);
+		Babilim::instance()->run_sync();
+		return $this->download_requests();
+	}
+
+	public function test_a_refused_build_is_not_asked_for_in_the_next_cron_rounds_while_the_answer_is_unchanged(): void {
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$this->assertSame( 1, $this->refused_round( array( $this->available_component( 'fresh' ) ) ), 'the first cron run asks once' );
+		$this->assertSame( 0, $this->refused_round( array( $this->available_component( 'fresh' ) ) ), 'the same answer again: not asked' );
+		$this->assertSame( 0, $this->refused_round( array( $this->available_component( 'fresh' ) ) ), 'and again' );
+		$this->assertFalse( get_option( Babilim_Sync_Installer::OPTION_FAILURES, false ) );
+	}
+
+	public function test_a_refused_build_is_asked_for_again_when_the_service_changes_what_it_reports(): void {
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$this->assertSame( 1, $this->refused_round( array( $this->available_component( 'fresh' ) ) ) );
+		$changed = $this->available_component( 'fresh' );
+		$changed['locales']['ja']['build_id'] = 'bd_0000000000b2';
+		$this->assertSame( 1, $this->refused_round( array( $changed ) ), 'a different build is asked for' );
+		$this->assertSame( 0, $this->refused_round( array( $changed ) ), 'and then left alone' );
+	}
+
+	public function test_a_refused_build_is_asked_for_again_after_seven_days(): void {
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$this->assertSame( 1, $this->refused_round( array( $this->available_component( 'fresh' ) ) ) );
+		$this->assertSame( 0, $this->refused_round( array( $this->available_component( 'fresh' ) ) ) );
+		$stored = get_option( Babilim_Sync_Installer::OPTION_REFUSED );
+		$this->assertIsArray( $stored );
+		foreach ( $stored as $build => $entry ) {
+			$stored[ $build ]['at'] = time() - 8 * DAY_IN_SECONDS;
+		}
+		update_option( Babilim_Sync_Installer::OPTION_REFUSED, $stored, false );
+		$this->assertSame( 1, $this->refused_round( array( $this->available_component( 'fresh' ) ) ), 'the record expired: one more try' );
+	}
+
+	public function test_a_refused_update_is_not_asked_for_in_the_next_cron_rounds_and_is_asked_when_it_changes(): void {
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$update = array( 'kind' => 'plugin', 'slug' => 'fresh', 'locale' => 'ja', 'build_id' => 'bd_0000000000c3', 'build_no' => 2 );
+		$this->assertSame( 1, $this->refused_round( array(), array( $update ) ) );
+		$this->assertSame( 0, $this->refused_round( array(), array( $update ) ) );
+		$update['build_no'] = 3;
+		$this->assertSame( 1, $this->refused_round( array(), array( $update ) ), 'the update entry changed' );
+	}
+
+	public function test_after_a_plugin_upgrade_nothing_is_auto_installed_until_one_sync_succeeds(): void {
+		$this->prime_run_sync( array(), array( $this->available_component( 'fresh' ) ), $this->failing_download() );
+		update_option( 'babilim_version', '1.0.1', false ); // Any version other than the running one is an upgrade.
+		$this->seed_available_state();
+
+		Babilim::instance()->init();
+
+		// The sync itself fails: nothing is installed (run_sync() looks at the sync result only).
+		$GLOBALS['babilim_test_wp_remote_responses'] = array( $this->failing_download() );
+		Babilim::instance()->run_sync();
+		$this->assertSame( 0, $this->download_requests() );
+
+		// One successful sync, and that same run requests the build.
+		$GLOBALS['babilim_test_wp_remote_responses'] = array(
+			array( 'response' => array( 'code' => 200 ), 'body' => (string) wp_json_encode( array( 'components' => array( $this->available_component( 'fresh' ) ), 'updates' => array(), 'license' => array(), 'quota' => array(), 'features' => array(), 'contract' => '1.3.0' ) ), 'headers' => array() ),
+			$this->failing_download(),
+		);
+		Babilim::instance()->run_sync();
+		$this->assertSame( 1, $this->download_requests(), 'a successful sync lets the run request the build' );
+	}
+
+	/**
+	 * A minimal WP_Translation_File for this process only: the class does
+	 * not exist in this suite, and the installer's real transform/parse
+	 * callables need it.
+	 */
+	private function define_translation_file_stand_in(): void {
+		if ( class_exists( 'WP_Translation_File', false ) ) {
+			return;
+		}
+		eval( // phpcs:ignore Squiz.PHP.Eval.Discouraged -- test-only stand-in for a core class.
+			'class WP_Translation_File {
+				private $entries;
+				public function __construct( array $entries ) { $this->entries = $entries; }
+				public static function create( $path ) {
+					if ( ! is_readable( $path ) ) { return false; }
+					if ( substr( $path, -4 ) === ".php" ) {
+						$data = include $path;
+						return new self( (array) ( $data["messages"] ?? array() ) );
+					}
+					$entries = babilim_test_read_mo( (string) file_get_contents( $path ) );
+					unset( $entries[""] );
+					return new self( $entries );
+				}
+				public static function transform( $path, $format ) {
+					$entries = babilim_test_read_mo( (string) file_get_contents( $path ) );
+					unset( $entries[""] );
+					return "<?php\nreturn array( \"messages\" => " . var_export( $entries, true ) . " );\n";
+				}
+				public function entries() { return $this->entries; }
+			}'
+		);
+	}
+
+	/**
+	 * End to end: a site whose failure counters are exhausted upgrades,
+	 * the counters are reset once, nothing installs before a successful
+	 * sync, and the cell then really installs.
+	 *
+	 * Runs in its own process: it defines a core class stand-in.
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function test_a_plugin_upgrade_resets_the_failure_counters_once_and_the_cell_then_installs(): void {
+		$this->define_translation_file_stand_in();
+		$new = 'bd_0000000000a1';
+		update_option( 'babilim_consent', true );
+		update_option( 'babilim_site_id', 'st_wired' );
+		update_option( 'babilim_site_token', 'tok_wired' );
+		update_option( 'babilim_manual_locales', array( 'ja' ) );
+		update_option( 'babilim_version', BABILIM_VERSION, false );
+		$this->seed_available_state();
+		update_option( Babilim_Sync_Installer::OPTION_FAILURES, array( $new => Babilim_Sync_Installer::MAX_AUTO_ATTEMPTS ), false );
+
+		$inventory = array(
+			'response' => array( 'code' => 200 ),
+			'body'     => (string) wp_json_encode( array( 'components' => array( $this->available_component( 'fresh' ) ), 'updates' => array(), 'license' => array(), 'quota' => array(), 'features' => array(), 'contract' => '1.11.0' ) ),
+			'headers'  => array(),
+		);
+
+		// Counters exhausted: the cell is not tried.
+		$GLOBALS['babilim_test_wp_remote_responses'] = array( $inventory );
+		$GLOBALS['babilim_test_wp_remote_requests']  = array();
+		Babilim::instance()->run_sync();
+		$this->assertSame( 0, $this->download_requests(), 'an exhausted counter keeps the cell from being tried' );
+
+		// Upgrade.
+		update_option( 'babilim_version', '1.0.1', false );
+		Babilim::reset_for_tests();
+		Babilim::instance()->init();
+		$this->assertFalse( get_option( Babilim_Sync_Installer::OPTION_FAILURES, false ), 'the upgrade empties the failure counters' );
+
+		// A cron run whose sync fails still downloads nothing.
+		$GLOBALS['babilim_test_wp_remote_responses'] = array( $this->failing_download() );
+		$GLOBALS['babilim_test_wp_remote_requests']  = array();
+		Babilim::instance()->run_sync();
+		$this->assertSame( 0, $this->download_requests(), 'no sync has succeeded since the upgrade' );
+
+		// A successful sync, a download answer, and a valid package.
+		$mo  = Babilim_Mo_Writer::write(
+			array( 'Save' => 'Save-ja', 'Cancel' => 'Cancel-ja' ),
+			array( 'Language' => 'ja', 'X-Babilim-Site' => 'st_wired', 'X-Babilim-Build' => $new )
+		);
+		$po  = "msgid \"\"\nmsgstr \"\"\n\"X-Babilim-Site: st_wired\\n\"\n\"X-Babilim-Build: {$new}\\n\"\n";
+		$zip = $this->write_real_zip(
+			array(
+				'fresh-ja.mo'   => $mo,
+				'fresh-ja.po'   => $po,
+				'manifest.json' => (string) wp_json_encode(
+					array(
+						'build_id'        => 'fresh-1.0-ja-20260101T000000-abc123',
+						'entries'         => 2,
+						'files'           => array(
+							'fresh-ja.mo' => array( 'sha256' => hash( 'sha256', $mo ), 'size' => strlen( $mo ) ),
+							'fresh-ja.po' => array( 'sha256' => hash( 'sha256', $po ), 'size' => strlen( $po ) ),
+						),
+						'locale'          => 'ja',
+						'status'          => 'published',
+						'kind'            => 'plugin',
+						'slug'            => 'fresh',
+						'version'         => '1.0',
+						'text_domain'     => 'fresh',
+						'extra_domains'   => array(),
+						'server_build_id' => $new,
+						'build_no'        => 1,
+						'issued_at'       => '2026-01-01T00:00:00Z',
+						'contract'        => '1.3.0',
+					)
+				),
+			)
+		);
+		$GLOBALS['babilim_test_wp_remote_responses'] = array(
+			$inventory,
+			array( 'response' => array( 'code' => 302 ), 'body' => '', 'headers' => array( 'location' => '/v1/packages/' . $new ) ),
+			array( 'response' => array( 'code' => 200 ), 'body' => (string) file_get_contents( $zip ), 'headers' => array() ),
+		);
+		$GLOBALS['babilim_test_wp_remote_requests'] = array();
+		try {
+			Babilim::instance()->run_sync();
+
+			$this->assertSame( 1, $this->download_requests() );
+			$fs     = new Babilim_Wp_Fs();
+			$record = ( new Babilim_Manifest( $fs ) )->installed( 'plugin', 'fresh', 'ja' );
+			$this->assertNotNull( $record, 'the cell is installed' );
+			$this->assertSame( $new, $record['build_id'] );
+			$this->assertFileExists( Babilim_Paths::file( 'plugins', 'fresh', 'ja', 'mo' ) );
+			$this->assertFalse( get_option( Babilim_Sync_Installer::OPTION_FAILURES, false ), 'nothing was counted as a failure' );
+
+			// Same version again: the counters are not reset a second time.
+			update_option( Babilim_Sync_Installer::OPTION_FAILURES, array( $new => 1 ), false );
+			Babilim::reset_for_tests();
+			Babilim::instance()->init();
+			$this->assertSame( array( $new => 1 ), get_option( Babilim_Sync_Installer::OPTION_FAILURES ) );
+		} finally {
+			unlink( $zip );
+			$fs = new Babilim_Wp_Fs();
+			$fs->delete( Babilim_Paths::manifest_file() );
+			$fs->delete( Babilim_Paths::file( 'plugins', 'fresh', 'ja', 'mo' ) );
+		}
 	}
 
 	public function test_run_sync_installs_an_available_translation_for_a_managed_language(): void {

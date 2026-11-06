@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.1.0\n"
+"Project-Id-Version: Babilim 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: skr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:53:31+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:53:31+00:00\n"
+"POT-Creation-Date: 2026-11-05T19:51:08+00:00\n"
+"PO-Revision-Date: 2026-11-05T19:51:08+00:00\n"
 "Language: skr\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Babilim\n"
@@ -16,10 +16,10 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:338
-#: admin/class-babilim-admin.php:339
-#: admin/class-babilim-admin.php:2614
-#: admin/class-babilim-admin.php:2668
+#: admin/class-babilim-admin.php:378
+#: admin/class-babilim-admin.php:379
+#: admin/class-babilim-admin.php:3051
+#: admin/class-babilim-admin.php:3105
 msgid "Babilim"
 msgstr "Babilim"
 
@@ -28,52 +28,280 @@ msgstr "Babilim"
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
 msgstr "تہاݙی سائٹ تے پہلے توں انسٹال کیتے ہوئے پلگ اِنز تے تھیمز دے گمشدہ ترجمے پورے کریندا ہے۔"
 
-#: admin/class-babilim-admin.php:354
-#: admin/class-babilim-admin.php:355
-#: admin/class-babilim-translations-table.php:400
-msgid "Translations"
-msgstr "ترجمے"
+#: admin/class-babilim-admin.php:1274
+msgid "That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list."
+msgstr "اوہ اپ لوڈ سکرین پرانی ہو گئی ہئی: اوں دے بعد اک ہور اپ لوڈ تیار کیتا گیا ہے۔ کجھ نہیں بھیجیا گیا۔ موجودہ والی ترجمیاں دی لسٹ وچوں ݙیکھو۔"
 
-#: admin/class-babilim-admin.php:362
-msgid "Babilim Settings"
-msgstr "Babilim ترتیباں"
+#: admin/class-babilim-admin.php:3067
+msgid "The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim."
+msgstr "مفت سروس پلان ہر سائٹ کوں پلگ اِنز تے تھیمز کیتے سلاٹس دی محدود گنتی ݙیندا ہے؛ Babilim فعال کرݨ دے بعد ورتے ہوئے سلاٹس ترتیباں وچ ݙکھائے ویندے ہن۔"
 
-#: admin/class-babilim-admin.php:363
-#: admin/class-babilim-admin.php:2671
-#: admin/class-babilim-admin.php:2960
-msgid "Settings"
-msgstr "ترتیباں"
-
-#: admin/class-babilim-admin.php:390
-#: admin/class-babilim-admin.php:789
-msgid "You are not allowed to do this."
-msgstr "تہانوں اے کم کرݨ دی اجازت کائنی۔"
-
-#. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:419
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:62
 #, php-format
-msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
-msgstr "گھٹ جزو چݨو: ہر دور وچ وڈھ توں وڈھ %1$d کارروائیاں ہو سگدیاں ہن (تساں %2$d چݨے ہن)۔"
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "ترجمے دی درخواست کرݨ نال ایہ پلگ اِن یا تھیم اس سائٹ کیتے مفت سروس پلان دے سلاٹس وچوں اک تے آ ویندا ہے (حد تھیمز کیتے %1$d تے پلگ اِنز کیتے %2$d ہے)، جے پہلے توں اک تے نہ ہووے۔ سلاٹ ورتیا ہویا رہندا ہے، تے ناکام ترجمہ اینکوں خالی نہیں کریندا۔"
 
-#: admin/class-babilim-admin.php:432
-#: admin/class-babilim-admin.php:1110
-#: admin/class-babilim-admin.php:1281
-msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "ایہ کمپوننٹ اس سائٹ تے انسٹال کائناں، ایâس کرکے ایندے کیتے ترجمہ دی درخواست نہیں کیتی ونڄ سڳدی۔"
+#: admin/class-babilim-translations-table.php:67
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "ترجمے دی درخواست کرݨ نال ایہ پلگ اِن یا تھیم اس سائٹ کیتے مفت سروس پلان دے سلاٹس وچوں اک تے آ ویندا ہے، جے پہلے توں اک تے نہ ہووے۔ سلاٹ ورتیا ہویا رہندا ہے، تے ناکام ترجمہ اینکوں خالی نہیں کریندا۔"
 
-#: admin/class-babilim-admin.php:911
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:80
+#, php-format
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "جے ایہ پلگ اِن یا تھیم اڄݨ اس سائٹ کیتے مفت سروس پلان دے سلاٹس وچوں کنہیں تے نہیں، تاں ترجمے دی درخواست کرݨ نال ایہ اک تے آ ویندا ہے (حد تھیمز کیتے %1$d تے پلگ اِنز کیتے %2$d ہے)۔ سلاٹ ورتیا ہویا رہندا ہے، تے ناکام ترجمہ اینکوں خالی نہیں کریندا۔ جاری رکھو؟"
+
+#: admin/class-babilim-translations-table.php:85
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "جے ایہ پلگ اِن یا تھیم اڄݨ اس سائٹ کیتے مفت سروس پلان دے سلاٹس وچوں کنہیں تے نہیں، تاں ترجمے دی درخواست کرݨ نال ایہ اک تے آ ویندا ہے۔ سلاٹ ورتیا ہویا رہندا ہے، تے ناکام ترجمہ اینکوں خالی نہیں کریندا۔ جاری رکھو؟"
+
+#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1974
+#, php-format
+msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr[0] "ایں نیٹ ورک تے %1$d سائٹ ایں طرح سیٹ ہے جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیوے۔ پھر ایں سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %2$s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناخت رکھݨ کیتے منسوخ دباؤ، ایں سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
+msgstr[1] "ایں نیٹ ورک تے %1$d سائٹاں ایں طرح سیٹ ہن جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیون۔ پھر ایں سائٹاں نال جڑے ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدے؛ تُہاکوں %2$s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناختاں رکھݨ کیتے منسوخ دباؤ، ہر سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
+
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:3206
+#, php-format
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
+
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:3301
+#, php-format
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
+
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:3203
+#, php-format
+msgid "%1$s nothing to do."
+msgstr "%1$s کرݨ دی کوئی گال کائنی۔"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:773
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:776
+#, php-format
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
+
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:3575
+#, php-format
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s۔ زبان چݨو۔"
+
+#. translators: %d: how many items failed.
+#: admin/class-babilim-admin.php:3194
+#, php-format
+msgid "%d failed"
+msgid_plural "%d failed"
+msgstr[0] "%d ناکام"
+msgstr[1] "%d ناکام"
+
+#. translators: %d: how many items were not tried yet.
+#: admin/class-babilim-admin.php:3198
+#, php-format
+msgid "%d not yet tried"
+msgid_plural "%d not yet tried"
+msgstr[0] "%d دی ہݨ تک کوشش کائنی تھئی"
+msgstr[1] "%d دی ہݨ تک کوشش کائنی تھئی"
+
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2522
+#, php-format
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "%d رپورٹ انتظار کر رہی ہے۔ \"Always share\" تے \"Don't share\" سارئیں تے لاگو تھیندے ہن۔"
+msgstr[1] "%d رپورٹاں انتظار کر رہیاں ہن۔ \"Always share\" تے \"Don't share\" سارئیں تے لاگو تھیندے ہن۔"
+
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:3190
+#, php-format
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "%d چھوڑے ڳئے"
+msgstr[1] "%d چھوڑے ڳئے"
+
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:3186
+#, php-format
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "%d کامیاب"
+msgstr[1] "%d کامیاب"
+
+#. translators: %d: number of translations ready to download or update for a language.
+#: admin/class-babilim-translations-table.php:544
+#, php-format
+msgid "%d to install"
+msgid_plural "%d to install"
+msgstr[0] "%d انسٹال کرݨ کیتے"
+msgstr[1] "%d انسٹال کرݨ کیتے"
+
+#: includes/class-babilim-consent.php:101
+msgid "(a public key generated for this site)"
+msgstr "(اس سائٹ کیتے بݨائی گئی پبلک کی)"
+
+#: admin/class-babilim-admin.php:4670
+msgid "(detected)"
+msgstr "(پتہ لگیا)"
+
+#: includes/class-babilim-consent.php:116
+msgid "(generic codes and coordinates only)"
+msgstr "(صرف عام کوڈ تے کوآرڈینیٹس)"
+
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:4830
+#, php-format
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "%1$s تے صفائی روک ݙتی گئی: %2$s۔ کجھ وی ڈیلیٹ کائنی کیتا گیا۔"
+
+#: includes/class-babilim-packager.php:125
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "کمپوننٹ دی اک فائل پڑھی نہیں جا سکی، ایں کِیتے اوکوں پیک نہیں کیتا گیا۔"
+
+#: admin/class-babilim-admin.php:2386
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "جیڑھا ہوسٹ اکو ویلے صرف اکو PHP درخواست سنبھالیندا ہے، او ایہ مرحلہ مکمل نہیں کر سگدا۔"
+
+#: includes/class-babilim-upload.php:293
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "اپ لوڈ دا اکو حصہ بار بار ناکام ریہا، اس کیتے اپ لوڈ منسوخ کر ݙتا گیا۔"
+
+#: admin/class-babilim-admin.php:1377
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "ایں لوکیل کیتے ایں سائٹ تے ہݨ ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:4862
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "ترجمہ انڈیکس دی لکھائی %1$s تے ݙوجھی درخواست نال ٹکرا گئی (%2$s) تے لاگو نئیں تھئی؛ سب توں نواں ورژن رکھیا ڳیا۔"
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:4875
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "%1$s تے ترجمہ انڈیکس دی لکھائی (%2$s) مکمل نئیں تھی سڳی تے لاگو نئیں تھئی (%3$s)۔"
+
+#: admin/class-babilim-admin.php:3898
+msgid "Account"
+msgstr "اکاؤنٹ"
+
+#: admin/class-babilim-admin.php:4682
+msgid "Add another language"
+msgstr "ہک ہور زبان شامل کرو"
+
+#: admin/class-babilim-admin.php:3835
+msgid "Advanced"
+msgstr "ایڈوانس"
+
+#: admin/class-babilim-translations-table.php:466
+#: admin/class-babilim-translations-table.php:514
+msgid "All"
+msgstr "سارے"
+
+#: admin/class-babilim-cell.php:143
+msgid "All free-plan slots for this site are used"
+msgstr "اس سائیٹ واسطے مفت پلان دے سارے سلاٹ ورتے ون ہوئے ہن"
+
+#: admin/class-babilim-translations-table.php:541
+msgid "All languages"
+msgstr "ساریاں زباناں"
+
+#: admin/class-babilim-admin.php:4800
+msgid "Already in WordPress core"
+msgstr "پہلے ای WordPress کور وچ موجود ہے"
+
+#: admin/class-babilim-admin.php:961
 msgid "Already installed."
 msgstr "پہلے توں انسٹال ہے۔"
 
-#: admin/class-babilim-admin.php:911
-msgid "Downloaded and installed."
-msgstr "ڈاؤن لوڈ تے انسٹال تھی گیا۔"
+#: admin/class-babilim-admin.php:2544
+msgid "Always share"
+msgstr "Always share"
 
-#: admin/class-babilim-admin.php:934
-#: admin/class-babilim-admin.php:1275
-#: admin/class-babilim-admin.php:1353
-#: admin/class-babilim-admin.php:1954
-#: admin/class-babilim-admin.php:2229
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "ہک ہور انسٹالیشن چل رہی ہے؛ تھوڑی دیر بعد دوبارہ کوشش کرو۔"
+
+#: admin/class-babilim-admin.php:3866
+msgid "Automatic installs"
+msgstr "آپوں آپ انسٹال"
+
+#: admin/class-babilim-admin.php:2731
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "خودکار انسٹال ہݨ بند ہن؛ جے چاہو تاں ترتیباں وچ ولدا آن کر گھنو۔"
+
+#: admin/class-babilim-translations-table.php:467
+msgid "Available"
+msgstr "دستیاب"
+
+#: admin/class-babilim-admin.php:3066
+msgid "Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "دستیاب ترجمے اکو کلک نال انسٹال کیتے ونج سڳدے ہن تے گم شدہ ترجمیاں دی درخواست کیتی ونج سڳدی اے۔ جڈاں خودکار انسٹالیشناں چالو ہوون، تاں جہڑے ترجمے سروس تہاڈیاں منیجڈ زباناں واسطے دستیاب دسیندی اے اوہ روزانہ دو واری سنک دے دوران انسٹال تھی ویندے ہن۔"
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:326
+#, php-format
+msgid "Available · %s"
+msgstr "دستیاب · %s"
+
+#: admin/class-babilim-admin.php:402
+msgid "Babilim Settings"
+msgstr "Babilim ترتیباں"
+
+#: admin/class-babilim-admin.php:4677
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim ہیٹھ نشان زد ہر زبان کِیتے ترجمے شامل کریندا ہے۔"
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim ویب سائٹ توں باہر کوئی عارضی فولڈر تصدیق نہیں کر سڳیا، ایں لئی جزو دا پیکیج نہیں بنیا تے کجھ وی اپ لوڈ نہیں تھیا۔ wp-config.php وچ BABILIM_TEMP_DIR کوں ویب روٹ توں باہر لکھن جوڳے فولڈر دے طور تے طے کرو (مثال دے طور تے تہاڈی سائٹ دی پبلک ڈائریکٹری دے اندر نہیں، بلکہ اوندے نال دا فولڈر)، یا اپنے ہوسٹ کولوں منگو۔"
+
+#: includes/class-babilim-site.php:987
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim ایں سائٹ دی چیکنگ مکمل نہیں کر سکیا۔"
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:2381
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim چالو کرݨ مکمل نہیں کر سگیا (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:3792
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim ایں سائٹ دی تصدیق مکمل نہیں کر سڳیا (سروس واپس اتھاں تک نہیں پہنچ سڳی)۔ رجسٹریشن روکی ڳئی ہے۔"
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:401
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim ایں سائٹ دی تصدیق نہیں کر سکیا، اس کیتے تصدیق کامیاب تھیݨ تک کجھ ڈاؤن لوڈ یا انسٹال نہیں تھیسی۔"
+
+#: admin/class-babilim-admin.php:2216
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim ایس سائٹ دی تصدیق نہیں کر سگیا، ایں کیتے کجھ ڈاؤن لوڈ یا انسٹال نہیں کیتا ڳیا۔"
+
+#: admin/class-babilim-admin.php:3053
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim ایں سائٹ تے اوہ پلگ ان تے تھیمز لبھیندا ہے جنہاں دا تہاݙی زبان وچ ترجمہ کائنی، تے ہر اکو کیتے اکو ترجمہ انسٹال کریندا ہے۔"
+
+#: admin/class-babilim-admin.php:984
+#: admin/class-babilim-admin.php:1355
+#: admin/class-babilim-admin.php:1433
+#: admin/class-babilim-admin.php:2335
+#: admin/class-babilim-admin.php:2665
 #: includes/class-babilim-api-client.php:532
 #: includes/class-babilim-site.php:311
 #: includes/class-babilim-site.php:362
@@ -82,1371 +310,592 @@ msgstr "ڈاؤن لوڈ تے انسٹال تھی گیا۔"
 msgid "Babilim has not been enabled for this site yet."
 msgstr "Babilim ہݨ تائیں ایں سائٹ کیتے فعال کائنی کیتا ڳیا۔"
 
-#: admin/class-babilim-admin.php:953
-msgid "No build is available to download for this locale."
-msgstr "ایں لوکیل کیتے ڈاؤن لوڈ کرݨ کیتے کوئی بلڈ دستیاب کائناں۔"
+#: admin/class-babilim-admin.php:4239
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim ایں زبان کیتے کوئی ترجمہ انسٹال کائناں کیتا۔"
 
-#: admin/class-babilim-admin.php:1008
-msgid "Rolled back to the previous build."
-msgstr "پچھلے بلڈ تے واپس ونڄ ڳیا۔"
-
-#: admin/class-babilim-admin.php:1067
-msgid "Rolled back and reported."
-msgstr "پچھلے بلڈ تے واپس کر ݙتا ڳیا تے رپورٹ وی بھیج ݙتی ڳئی۔"
-
-#. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1073
-#, php-format
-msgid "Rolled back, but the report could not be sent: %s"
-msgstr "واپس ونڄ ڳیا، پر رپورٹ کائنی بھیجی ونڄ سگی: %s"
-
-#: admin/class-babilim-admin.php:1097
-msgid "Removed."
-msgstr "ہٹا ݙتا ڳیا۔"
-
-#: admin/class-babilim-admin.php:1133
-msgid "Translation requested."
-msgstr "ترجمے دی درخواست کر ݙتی ڳئی۔"
-
-#: admin/class-babilim-admin.php:1155
-msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "ایہ کمپوننٹ پہلے ہی اپ لوڈ تھی ڳیا ہے۔ Babilim ہݨ ایکوں چیک کریندا پئے۔"
-
-#: admin/class-babilim-admin.php:1195
-msgid "Upload cancelled."
-msgstr "اپ لوڈ منسوخ کر ݙتا ڳیا۔"
-
-#: admin/class-babilim-admin.php:1206
-msgid "Upload complete — translation requested."
-msgstr "اپ لوڈ مکمل تھی ڳیا — ترجمے دی درخواست کر ݙتی ڳئی۔"
-
-#: admin/class-babilim-admin.php:1284
-msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "ایہ کمپوننٹ ورژن نمبر ظاہر کائناں کریندا، ایâس کرکے ایندے کیتے ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
-
-#. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1291
-#, php-format
-msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "ایں کمپوننٹ دا ورژن نمبر %d حرفاں کنوں ودھ لما ہے، جہڑا Babilim سنبھال کائناں سڳدا، ایâس کرکے ایندے کیتے ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
-
-#: admin/class-babilim-admin.php:1297
-msgid "A translation cannot be requested for that locale on this site right now."
-msgstr "ایں لوکیل کیتے ایں سائٹ تے ہݨ ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
-
-#: admin/class-babilim-admin.php:1323
-#: admin/class-babilim-admin.php:3688
-msgid "Thank you. Your report was sent."
-msgstr "شکریہ۔ تہاݙی رپورٹ بھیج ݙتی ڳئی۔"
-
-#: admin/class-babilim-admin.php:1358
-msgid "This report does not name a valid plugin or theme and locale."
-msgstr "ایں رپورٹ وچ کوئی درست پلگ ان یا تھیم تے لوکیل دا ناں کائناں۔"
-
-#: admin/class-babilim-admin.php:1365
-msgid "Please choose a category for this report."
-msgstr "مہربانی کر تے ایں رپورٹ کیتے زمرہ چݨو۔"
-
-#: admin/class-babilim-admin.php:1369
-msgid "This report is missing a valid build to report against."
-msgstr "ایں رپورٹ وچ رپورٹ کرݨ کیتے درست بلڈ موجود کائنی۔"
-
-#: admin/class-babilim-admin.php:1372
-msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "ایہ بلڈ ایں کمپوننٹ/لوکیل کیتے ایں سائٹ دے معلوم بلڈاں وچ شامل کائناں۔"
-
-#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1442
-#, php-format
-msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
-msgstr "خانہ \"%1$s\" بہوں لمبا ہے: اینکوں %2$d حرف ہن تے حد %3$d ہے۔ کجھ نئیں بھیجیا ڳیا؛ مہربانی کر تے اینکوں چھوٹا کرو تے ول کوشش کرو۔"
-
-#: admin/class-babilim-admin.php:3666
-msgid "Original string"
-msgstr "اصلی سٹرنگ"
-
-#: admin/class-babilim-admin.php:3681
-msgid "String context"
-msgstr "سٹرنگ دا سیاق"
-
-#: admin/class-babilim-admin.php:1467
-#: admin/class-babilim-admin.php:3667
-#: admin/class-babilim-admin.php:4406
-msgid "Current translation"
-msgstr "موجودہ ترجمہ"
-
-#: admin/class-babilim-admin.php:1471
-#: admin/class-babilim-admin.php:3671
-#: admin/class-babilim-admin.php:4408
-msgid "Suggested translation"
-msgstr "تجویز کیتا ہویا ترجمہ"
-
-#: admin/class-babilim-admin.php:1475
-#: admin/class-babilim-admin.php:3672
-#: admin/class-babilim-admin.php:4410
-msgid "Note (optional)"
-msgstr "نوٹ (اختیاری)"
-
-#: admin/class-babilim-admin.php:1479
-#: admin/class-babilim-admin.php:4412
-msgid "Where you saw this (optional)"
-msgstr "تساں اے کتھاں ݙٹھا (اختیاری)"
-
-#. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1542
-#, php-format
-msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
-msgstr "Babilim سنک سروس ولوں عارضی طور تے رُکی ہوئی ہے (ریٹ لمٹ)؛ اے %s توں بعد ول کوشش کرسی۔"
-
-#: admin/class-babilim-admin.php:1576
-msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "ایہ WordPress دا درست لوکیل کوڈ کائناں۔ کجھ محفوظ کائناں کیتا ڳیا۔"
-
-#: admin/class-babilim-admin.php:1619
-msgid "Settings saved."
-msgstr "ترتیباں محفوظ تھی ڳیاں۔"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1681
-#, php-format
-msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "جے ایہ آن ہے تاں ان انسٹال کرݨ نال ایں سائٹ دی شناخت وی مٹ ویسی۔ ایں سائٹ نال جڑیا ادا شدہ لائسنس بعد وچ خود بخود بحال کائناں تھی سڳدا؛ اوکوں واپس گھنݨ کیتے تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1697
-#, php-format
-msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Babilim ایں طرح سیٹ ہے جو پلگ ان مٹاونْ تے ایں سائٹ دی شناخت مٹا ݙیوے۔ پھر ایں سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناخت رکھݨ کیتے منسوخ دباؤ، Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
-
-#. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1722
-#, php-format
-msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr[0] "ایں نیٹ ورک تے %1$d سائٹ ایں طرح سیٹ ہے جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیوے۔ پھر ایں سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %2$s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناخت رکھݨ کیتے منسوخ دباؤ، ایں سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
-msgstr[1] "ایں نیٹ ورک تے %1$d سائٹاں ایں طرح سیٹ ہن جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیون۔ پھر ایں سائٹاں نال جڑے ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدے؛ تُہاکوں %2$s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناختاں رکھݨ کیتے منسوخ دباؤ، ہر سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1741
-#, php-format
-msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "ایں نیٹ ورک وچ سائٹاں ڈھیر ہن، ہک ہک کرکے چیک کائناں کیتیاں ونڄ سڳدیاں، تے کجھ سائٹاں شاید ایں طرح سیٹ ہوون جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیون۔ ایجھی سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناختاں رکھݨ کیتے منسوخ دباؤ، ہر سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
-
-#: admin/class-babilim-admin.php:1830
-msgid "Open Babilim settings"
-msgstr "Babilim ترتیباں کھولو"
-
-#: admin/class-babilim-admin.php:1835
-msgid "Babilim could not verify this site, so nothing is downloaded or installed."
-msgstr "Babilim ایس سائٹ دی تصدیق نہیں کر سگیا، ایں کیتے کجھ ڈاؤن لوڈ یا انسٹال نہیں کیتا ڳیا۔"
-
-#: admin/class-babilim-admin.php:1847
-msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "سروس تُہاݙی سائٹ تائیں نہ پہنچ سگی۔ شاید فائر وال، سکیورٹی پلگ ان یا ہوسٹ دا کوئی اصول درخواست روک ریہا ہے؛ مہربانی کرکے /wp-json/babilim/v1/challenge تے درخواستاں دی اجازت ݙیوو۔"
-
-#: admin/class-babilim-admin.php:1849
-msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
-msgstr "تہاݙی سائٹ نے جواب ݙیݨ وچ بہوں دیر لائی۔ مہربانی کر کے بعد وچ ݙوبارہ کوشش کرو، تے چیک کرو جو تہاݙا ہوسٹ بہوں سست یا اوورلوڈ تاں کائنی۔"
-
-#: admin/class-babilim-admin.php:1851
-msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "تُہاݙی سائٹ نے جواب تاں ݙتا، پر متوقع جواب کائناں ہئی۔ ہو سڳدا ہے REST API کہیں ہور پلگ ان نے بدل ݙتی ہووے، یا او اینڈ پوائنٹ کیش تھیا ہووے؛ مہربانی کرکے /wp-json/babilim/v1/challenge کوں کیشنگ تے ری رائٹنگ کنوں الگ رکھو۔"
-
-#: admin/class-babilim-admin.php:1853
-msgid "Please check that your site can be reached from the internet, then try again."
-msgstr "مہربانی کر کے چیک کرو جو تہاݙی سائٹ انٹرنیٹ توں پہنچ وچ ہے، فیر ݙوبارہ کوشش کرو۔"
-
-#: admin/class-babilim-admin.php:1876
-msgid "Re-verify"
-msgstr "ݙوبارہ تصدیق کرو"
-
-#. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1897
-#, php-format
-msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "ایہ سائٹ اوں سائز کولوں وݙی ہے جیڑھا سروس اکو سنک وچ قبول کرین‌دی ہے، ایں کیتے کجھ آئٹم چھوڑ ݙتے ڳئے: %1$d جزو تے %2$d لوکیلز۔"
-
-#: admin/class-babilim-admin.php:1926
-msgid "This site is verified."
-msgstr "ایں سائٹ دی تصدیق تھی ڳئی ہے۔"
-
-#: admin/class-babilim-admin.php:1939
-msgid "Registration restarted."
-msgstr "رجسٹریشن ولدا شروع کر ݙتی ڳئی۔"
-
-#: admin/class-babilim-admin.php:1960
-#: admin/class-babilim-admin.php:2034
-msgid "Sync complete."
-msgstr "سنک مکمل تھی ڳیا۔"
-
-#: admin/class-babilim-admin.php:1995
-msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
-msgstr "Babilim ایں سائٹ کوں چالو تے چیک کر رہیا ہے… ایں ورقے کوں ریلوڈ کرو یا شیڈول چیک مکمل تھیوݨ دا انتظار کرو۔"
-
-#. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:2000
-#, php-format
-msgid "Babilim could not finish enabling (%1$s): %2$s"
-msgstr "Babilim چالو کرݨ مکمل نہیں کر سگیا (%1$s): %2$s"
-
-#: admin/class-babilim-admin.php:2005
-msgid "A host that serves only one PHP request at a time cannot complete this step."
-msgstr "جیڑھا ہوسٹ اکو ویلے صرف اکو PHP درخواست سنبھالیندا ہے، او ایہ مرحلہ مکمل نہیں کر سگدا۔"
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2026
-#, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] "Babilim فعال ہے: ایہ سائٹ تصدیق شدہ ہے تے %d کمپوننٹ لبھیا ڳیا۔"
-msgstr[1] "Babilim فعال ہے: ایہ سائٹ تصدیق شدہ ہے تے %d کمپوننٹ لبھے ڳئے۔"
-
-#: admin/class-babilim-admin.php:2111
-msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
-msgstr "Babilim بند ہے۔ ہور کجھ نہیں ٻھیجیا ویسی؛ پہلے توں انسٹال کیتے ہوئے ترجمے کم کریندے رہسن۔"
-
-#: admin/class-babilim-admin.php:2243
-msgid "Supplementary translation index rebuilt."
-msgstr "اضافی ترجمیاں دی فہرست ولدا بݨا ݙتی ڳئی۔"
-
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2261
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] "سکین مکمل تھی گیا: %d فائل مٹائی ڳئی۔"
-msgstr[1] "سکین مکمل تھی گیا: %d فائلاں مٹائیاں ڳیاں۔"
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2293
-#, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] "%d انسٹال شدہ کمپوننٹ ہٹا ݙتا ڳیا۔"
-msgstr[1] "%d انسٹال شدہ کمپوننٹ ہٹا ݙتے ڳئے۔"
-
-#: admin/class-babilim-admin.php:2295
-msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "خودکار انسٹال ہݨ بند ہن؛ جے چاہو تاں ترتیباں وچ ولدا آن کر گھنو۔"
-
-#: admin/class-babilim-admin.php:2616
-msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
-msgstr "Babilim ایں سائٹ تے اوہ پلگ ان تے تھیمز لبھیندا ہے جنہاں دا تہاݙی زبان وچ ترجمہ کائنی، تے ہر اکو کیتے اکو ترجمہ انسٹال کریندا ہے۔"
-
-#. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2624
-#, php-format
-msgid "Languages found on this site: %s."
-msgstr "ایں سائٹ تے ملیاں زباناں: %s۔"
-
-#: admin/class-babilim-admin.php:2630
-msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "مفت پلان وچ پلگ اناں تے تھیماں دی ہک محدود تعداد شامل ہے؛ Babilim فعال کرݨ دے بعد تُہاݙا اصل کوٹہ ترتیباں وچ ݙکھایا ویسی۔"
-
-#: admin/class-babilim-admin.php:2631
-msgid "What is sent when you enable Babilim"
-msgstr "Babilim فعال کرݨ تے کیا کجھ بھیجیا ویندا ہے"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enabling…"
-msgstr "چالو تھی رہیا ہے…"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enable Babilim"
-msgstr "Babilim فعال کرو"
-
-#: admin/class-babilim-admin.php:2636
-msgid "By clicking Enable, you agree to send the information listed above to Babilim."
-msgstr "چالو کرو تے کلک کرݨ نال تساں اُتے ݙتی ہوئی معلومات Babilim کوں ٻھیجݨ تے راضی تھیندے او۔"
-
-#: admin/class-babilim-admin.php:2670
-#: admin/class-babilim-admin.php:2718
-#: admin/class-babilim-admin.php:4313
-msgid "Check again now"
-msgstr "ہݨ ولدا چیک کرو"
+#: admin/class-babilim-admin.php:2517
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim وچ ایرر آ ڳیا۔ ایرر رپورٹ شیئر کرو؟"
 
 #. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2685
+#: admin/class-babilim-admin.php:3122
 #, php-format
 msgid "Babilim installed %d translation automatically since your last visit."
 msgid_plural "Babilim installed %d translations automatically since your last visit."
 msgstr[0] "تہاݙی پچھلی وزٹ توں بعد Babilim نے %d ترجمہ خودکار طور تے انسٹال کیتا۔"
 msgstr[1] "تہاݙی پچھلی وزٹ توں بعد Babilim نے %d ترجمے خودکار طور تے انسٹال کیتے۔"
 
+#: admin/class-babilim-admin.php:2492
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim بند ہے۔ ہور کجھ نہیں ٻھیجیا ویسی؛ پہلے توں انسٹال کیتے ہوئے ترجمے کم کریندے رہسن۔"
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2407
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim فعال ہے: ایہ سائٹ تصدیق شدہ ہے تے %d کمپوننٹ لبھیا ڳیا۔"
+msgstr[1] "Babilim فعال ہے: ایہ سائٹ تصدیق شدہ ہے تے %d کمپوننٹ لبھے ڳئے۔"
+
 #. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2711
+#: admin/class-babilim-admin.php:3148
 #, php-format
 msgid "Babilim is enabling and checking this site… (last attempt: %s)"
 msgstr "Babilim ایں سائٹ کوں چالو تے چیک کر رہیا ہے… (آخری کوشش: %s)"
 
-#: admin/class-babilim-admin.php:2715
-msgid "Check again"
-msgstr "ولدا چیک کرو"
-
-#: admin/class-babilim-admin.php:2728
-msgid "No components synced yet."
-msgstr "ہݨ تک کوئی جزو سنک کائنی تھیا۔"
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2749
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] "%d کامیاب"
-msgstr[1] "%d کامیاب"
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2753
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] "%d چھوڑے ڳئے"
-msgstr[1] "%d چھوڑے ڳئے"
-
-#. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2757
-#, php-format
-msgid "%d failed"
-msgid_plural "%d failed"
-msgstr[0] "%d ناکام"
-msgstr[1] "%d ناکام"
-
-#. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2761
-#, php-format
-msgid "%d not yet tried"
-msgid_plural "%d not yet tried"
-msgstr[0] "%d دی ہݨ تک کوشش کائنی تھئی"
-msgstr[1] "%d دی ہݨ تک کوشش کائنی تھئی"
-
-#. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2766
-#, php-format
-msgid "%1$s nothing to do."
-msgstr "%1$s کرݨ دی کوئی گال کائنی۔"
-
-#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2769
-#, php-format
-msgid "%1$s %2$s."
-msgstr "%1$s %2$s."
-
-#: admin/class-babilim-admin.php:2781
-msgid "Bulk download:"
-msgstr "کٹھا ڈاؤن لوڈ:"
-
-#: admin/class-babilim-admin.php:2783
-msgid "Bulk update:"
-msgstr "کٹھی اپ ڈیٹ:"
-
-#: admin/class-babilim-admin.php:2785
-msgid "Bulk request:"
-msgstr "کٹھی درخواست:"
-
-#: admin/class-babilim-admin.php:2798
-msgid "per day"
-msgstr "ہر روز"
-
-#: admin/class-babilim-admin.php:2812
-msgid "Wrong meaning"
-msgstr "غلط مطلب"
-
-#: admin/class-babilim-admin.php:2814
-msgid "Wrong term"
-msgstr "غلط اصطلاح"
-
-#: admin/class-babilim-admin.php:2816
-msgid "Broken placeholder"
-msgstr "ٹُٹا ہویا پلیس ہولڈر"
-
-#: admin/class-babilim-admin.php:2818
-msgid "Wrong for this context"
-msgstr "ایں سیاق کیتے غلط"
-
-#: admin/class-babilim-admin.php:2820
-msgid "Wrong plural form"
-msgstr "غلط جمع شکل"
-
-#: admin/class-babilim-admin.php:2822
-msgid "Negation reversed"
-msgstr "نفی اُلٹ ڳئی"
-
-#: admin/class-babilim-admin.php:2824
-msgid "Translation does not load"
-msgstr "ترجمہ لوڈ کائنی تھیندا"
-
-#. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2827
-msgctxt "problem report category"
-msgid "Other"
-msgstr "ہور"
-
-#. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2864
-#, php-format
-msgid "%1$s (%2$s): %3$s"
-msgstr "%1$s (%2$s): %3$s"
-
-#: admin/class-babilim-admin.php:2899
-msgid "Continuing…"
-msgstr "جاری ہے…"
-
-#. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2902
-#, php-format
-msgid "Continue next batch (%d left)"
-msgstr "اڳلی کھیپ جاری رکھو (%d باقی)"
-
-#: admin/class-babilim-admin.php:2952
-msgid "Search components"
-msgstr "جزو تلاش کرو"
-
-#. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2959
-#, php-format
-msgid "These are the languages this site uses. You can change them in %s."
-msgstr "ایہ او زباناں ہن جہڑیاں ایہ سائٹ ورتیندی ہے۔ تساں انہاں کوں %s وچ بدل سگدے ہو۔"
-
-#: admin/class-babilim-admin.php:2978
-msgid "Upload this component?"
-msgstr "ایہ کمپوننٹ اپ لوڈ کروں؟"
-
-#: admin/class-babilim-admin.php:2980
-#: includes/class-babilim-upload.php:96
-msgid "There is no upload waiting for confirmation."
-msgstr "کوئی اپ لوڈ تصدیق دا منتظر کائنی۔"
-
-#: admin/class-babilim-admin.php:2980
-#: admin/class-babilim-admin.php:3007
-#: admin/class-babilim-admin.php:3685
-msgid "Back"
-msgstr "واپس"
-
-#: admin/class-babilim-admin.php:2984
-msgid "To translate this component, Babilim needs its source."
-msgstr "ایہ کمپوننٹ دا ترجمہ کرݨ کیتے Babilim کوں ایندا سورس چاہیدا ہے۔"
-
-#: admin/class-babilim-admin.php:2988
-msgid "The upload is kept until you ask Babilim to delete it."
-msgstr "اپ لوڈ تیں تئیں رکھیا ویندا ہے جیں تئیں تساں Babilim کوں اونکوں مٹاوݨ دا نہ آکھو۔"
-
-#: admin/class-babilim-admin.php:2989
-msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
-msgstr "ایہ سروس دے ہوسٹنگ پرووائیڈر کول محفوظ تھیندا ہے تے ترجمہ بݨاوݨ کیتے AI ماڈلز ایندی پروسیسنگ کریندے ہن۔"
-
-#: admin/class-babilim-admin.php:2990
-msgid "The original text and the translations made from it will be provided to other sites that install the same version."
-msgstr "اصلی متن تے ایندے توں بݨے ترجمے ہوراں سائٹاں کوں مہیا کیتے ویسن جہڑیاں اے ای ورژن انسٹال کریندیاں ہن۔"
-
-#: admin/class-babilim-admin.php:2991
-msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "جاری رکھݨ نال تusاں تصدیق کریندے ہو جو ایہ کمپوننٹ اپ لوڈ کرݨ دا تہاڈے کول حق ہے۔"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Upload and request"
-msgstr "اپ لوڈ کرو تے درخواست کرو"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Uploading…"
-msgstr "اپ لوڈ تھیندا پئے…"
-
-#: admin/class-babilim-admin.php:2993
-#: admin/class-babilim-admin.php:3012
-#: admin/class-babilim-admin.php:3049
-#: admin/class-babilim-admin.php:3106
-msgid "Cancel"
-msgstr "منسوخ کرو"
-
-#: admin/class-babilim-admin.php:3005
-msgid "Uploading"
-msgstr "اپ لوڈ تھیندا پئے"
-
-#: admin/class-babilim-admin.php:3007
-#: includes/class-babilim-upload.php:145
-msgid "There is no upload in progress."
-msgstr "کوئی اپ لوڈ جاری کائنی۔"
-
-#. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:3010
-#, php-format
-msgid "Uploading part %1$d of %2$d…"
-msgstr "حصہ %1$d از %2$d اپ لوڈ تھیندا پئے…"
-
-#: admin/class-babilim-admin.php:3011
-msgid "Continue"
-msgstr "جاری رکھو"
-
-#: admin/class-babilim-admin.php:3051
-msgid "Confirm"
-msgstr "تصدیق کرو"
-
-#: admin/class-babilim-admin.php:3054
-#: admin/class-babilim-admin.php:3118
-#: admin/class-babilim-translations-table.php:691
-msgid "Remove"
-msgstr "ہٹاؤ"
-
-#: admin/class-babilim-admin.php:3058
-#: admin/class-babilim-admin.php:3117
-#: admin/class-babilim-translations-table.php:690
-msgid "Roll back"
-msgstr "پچھلی حالت تے ولو"
-
-#: admin/class-babilim-admin.php:3061
-msgid "Nothing to confirm."
-msgstr "تصدیق کیتے کجھ کائنی۔"
-
-#: admin/class-babilim-admin.php:3107
-msgid "Choose a language"
-msgstr "زبان چݨو"
-
-#: admin/class-babilim-admin.php:3119
-#: admin/class-babilim-translations-table.php:692
-msgid "Roll back and report"
-msgstr "پچھلی حالت تے ولو تے رپورٹ کرو"
-
-#: admin/class-babilim-admin.php:3120
-#: admin/class-babilim-admin.php:4374
-#: admin/class-babilim-translations-table.php:693
-msgid "Report a problem"
-msgstr "مسئلے دی رپورٹ کرو"
-
-#: admin/class-babilim-admin.php:3124
-msgid "Nothing to choose."
-msgstr "چݨݨ کیتے کجھ کائنی۔"
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3130
-#, php-format
-msgid "%1$s: %2$s. Choose the language."
-msgstr "%1$s: %2$s۔ زبان چݨو۔"
-
-#: admin/class-babilim-admin.php:3276
-msgid "Supplementary translations"
-msgstr "اضافی ترجمے"
-
-#: admin/class-babilim-admin.php:3277
-msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "ہر کمپوننٹ دا اپݨا حصہ ہر لوکیل دے سانجھے default-domain اضافے وچ۔"
-
-#: admin/class-babilim-admin.php:3279
-#: admin/class-babilim-admin.php:3677
-#: admin/class-babilim-translations-table.php:399
-msgid "Component"
-msgstr "کمپوننٹ"
-
-#: admin/class-babilim-admin.php:3280
-#: admin/class-babilim-admin.php:3678
-#: admin/class-babilim-admin.php:4215
-msgid "Language"
-msgstr "زبان"
-
-#: admin/class-babilim-admin.php:3281
-msgid "Included in index"
-msgstr "فہرست وچ شامل"
-
-#: admin/class-babilim-admin.php:3282
-msgid "Entries"
-msgstr "اندراجات"
-
-#: admin/class-babilim-admin.php:3283
-#: admin/class-babilim-admin.php:4219
-msgid "Conflicting keys"
-msgstr "متصادم کیز"
-
-#: admin/class-babilim-admin.php:3286
-msgid "Yes"
-msgstr "ہاں"
-
-#: admin/class-babilim-admin.php:3303
-msgid "No — component inactive"
-msgstr "نہیں — کمپوننٹ غیر فعال ہے"
-
-#: admin/class-babilim-admin.php:3305
-msgid "No — installed version differs from the active one"
-msgstr "نہیں — انسٹال کیتا ہویا ورژن فعال ورژن کنوں مختلف ہے"
-
-#: admin/class-babilim-admin.php:3307
-msgid "No — component removed"
-msgstr "نہیں — کمپوننٹ ہٹا ݙتا ڳیا"
-
-#: admin/class-babilim-admin.php:3309
-msgid "No"
-msgstr "نہیں"
-
-#: admin/class-babilim-admin.php:3331
-msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "صرف نیٹ ورک ایڈمنسٹریٹر ایہ کم کر سڳدا ہے، کیوں جو ایہ ترجمے دیاں اوہ فائلاں بدلیندا ہے جیڑھیاں ایں نیٹ ورک دیاں ساریاں سائٹاں وچ سانجھیاں ہن۔"
-
-#: admin/class-babilim-admin.php:3347
-msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
-msgstr "Babilim ایں سائٹ دی تصدیق مکمل نہیں کر سڳیا (سروس واپس اتھاں تک نہیں پہنچ سڳی)۔ رجسٹریشن روکی ڳئی ہے۔"
-
-#: admin/class-babilim-admin.php:3348
-msgid "This site already has an active registration that can no longer be recovered automatically."
-msgstr "ایں سائٹ دی پہلے کنوں فعال رجسٹریشن موجود ہے جیڑھی ہݨ خودکار طور تے بحال نہیں تھی سڳدی۔"
-
-#: admin/class-babilim-admin.php:3355
-msgid "Restart registration"
-msgstr "رجسٹریشن دوبارہ شروع کرو"
-
-#: admin/class-babilim-admin.php:3382
-msgid "Babilim settings"
-msgstr "Babilim ترتیباں"
-
-#: admin/class-babilim-admin.php:3389
-msgid "General"
-msgstr "عام"
-
-#: admin/class-babilim-admin.php:3390
-msgid "Advanced"
-msgstr "ایڈوانس"
-
-#: admin/class-babilim-admin.php:3415
-msgid "Languages"
-msgstr "زباناں"
-
-#: admin/class-babilim-admin.php:3417
-msgid "Automatic installs"
-msgstr "آپوں آپ انسٹال"
-
-#: admin/class-babilim-admin.php:3419
-msgid "Install available translations automatically"
-msgstr "دستیاب ترجمے آپوں آپ انسٹال کرو"
-
-#: admin/class-babilim-admin.php:3421
-msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
-msgstr "ایہ سائٹ ملٹی سائٹ نیٹ ورک دا حصہ ہے، جیڑھا نوے ترجمے خودکار طور تے انسٹال نہیں کریندا۔ جیڑھے ترجمے پہلے کنوں انسٹال ہن اوہ ہݨ وی اپڈیٹ تھیندے ہن۔"
-
-#: admin/class-babilim-admin.php:3429
-msgid "Custom overrides"
-msgstr "حسب ضرورت اووررائیڈ"
-
-#: admin/class-babilim-admin.php:3431
-msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "سب کجھ صاف کرݨ یا ایہ پلگ ان ان انسٹال کرݨ ویلے میڈے اپݨے ترجمے دے اووررائیڈ رکھو۔"
-
-#. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3434
-#, php-format
-msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "جیڑھیاں ترجمے دیاں فائلاں تسی %s وچ رکھو او ہمیشہ Babilim دیاں فائلاں کنوں ودھ ترجیح رکھیندیاں ہن۔ جیں تائیں تسی ایہ نشان نہ ہٹاوو، اے رکھیاں ویندیاں ہن۔"
-
-#: admin/class-babilim-admin.php:3438
-msgid "Uninstall"
-msgstr "ان انسٹال"
-
-#: admin/class-babilim-admin.php:3440
-msgid "Delete all Babilim data on uninstall"
-msgstr "ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو"
-
-#: admin/class-babilim-admin.php:3441
-msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "پہلے کنوں بند: پلگ ان مٹاوݨ نال ایں سائٹ دی شناخت رکھی ویندی ہے، تاں جو دوبارہ انسٹال کرن تے اوہو ورتی ونڄ سڳے۔"
-
-#: admin/class-babilim-admin.php:3444
-msgid "Account"
-msgstr "اکاؤنٹ"
-
-#: admin/class-babilim-admin.php:3447
-msgid "Save changes"
-msgstr "تبدیلیاں محفوظ کرو"
-
-#: admin/class-babilim-admin.php:3450
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim"
-msgstr "Babilim غیر فعال کرو"
-
-#: admin/class-babilim-admin.php:3451
-msgid "Installed translations are kept, but no further checks or downloads will run."
-msgstr "انسٹال کیتے ہوئے ترجمے رکھے ویندے ہن، پر اڳوں کوئی چیک یا ڈاؤن لوڈ نہیں تھیسی۔"
-
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "Babilim غیر فعال کروں؟ انسٹال تھئے ترجمے رہ ویسن، پر اڳوں کوئی چیک یا ڈاؤن لوڈ کائنی تھیسی۔"
-
-#: admin/class-babilim-admin.php:3511
-#: admin/class-babilim-admin.php:3986
-#: admin/class-babilim-admin.php:4026
-#: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:319
-msgid "This site is not registered with Babilim yet."
-msgstr "ایہ سائٹ ہݨ تک Babilim نال رجسٹرڈ نہیں ہے۔"
-
-#: admin/class-babilim-admin.php:3519
-msgid "This site is already licensed. Reload the page."
-msgstr "ایہ سائٹ پہلے کنوں لائسنس یافتہ ہے۔ ورقہ دوبارہ لوڈ کرو۔"
-
-#: admin/class-babilim-admin.php:3521
-#: admin/class-babilim-admin.php:3532
-msgid "Checkout is not available for this site right now."
-msgstr "ایں سائٹ کیتے چیک آؤٹ ہݨ دستیاب نہیں ہے۔"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3524
-#, php-format
-msgid "Could not start checkout: %s"
-msgstr "چیک آؤٹ شروع نہیں تھی سڳیا: %s"
-
-#: admin/class-babilim-admin.php:3848
+#: admin/class-babilim-admin.php:2376
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim ایں سائٹ کوں چالو تے چیک کر رہیا ہے… ایں ورقے کوں ریلوڈ کرو یا شیڈول چیک مکمل تھیوݨ دا انتظار کرو۔"
+
+#: admin/class-babilim-admin.php:4426
 msgid "Babilim is not enabled."
 msgstr "Babilim فعال کائنی۔"
 
-#: admin/class-babilim-admin.php:3851
-msgid "Not registered yet"
-msgstr "ہݨ تائیں رجسٹر کائنی"
-
-#: admin/class-babilim-admin.php:3853
-msgid "Not verified"
-msgstr "تصدیق کائنی تھئی"
-
-#: admin/class-babilim-admin.php:3855
-msgid "Verified"
-msgstr "تصدیق تھی گئی"
-
-#: admin/class-babilim-admin.php:3863
-msgid "Status"
-msgstr "حالت"
-
-#: admin/class-babilim-admin.php:3868
-msgid "Licensed"
-msgstr "لائسنس یافتہ"
-
-#: admin/class-babilim-admin.php:3870
-msgid "Partner"
-msgstr "پارٹنر"
-
-#: admin/class-babilim-admin.php:3872
-msgid "Free"
-msgstr "مفت"
-
-#: admin/class-babilim-admin.php:3876
-msgid "License"
-msgstr "لائسنس"
-
-#: admin/class-babilim-admin.php:3879
-#: admin/class-babilim-translations-table.php:865
-msgid "Upgrade this site"
-msgstr "ایں سائٹ کوں اپ گریڈ کرو"
-
-#. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3883
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1949
 #, php-format
-msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
-msgstr "ایں سائٹ کِیتے اکو واری خریداری: %1$s %2$s۔ ایندے وچ ترجمے دیاں سبھ آوݨ آلیاں اپ ڈیٹس شامل ہن۔ ادائیگی Paddle ولوں نویں ٹیب وچ کیتیویندی ہے۔"
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Babilim ایں طرح سیٹ ہے جو پلگ ان مٹاونْ تے ایں سائٹ دی شناخت مٹا ݙیوے۔ پھر ایں سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناخت رکھݨ کیتے منسوخ دباؤ، Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
 
-#: admin/class-babilim-admin.php:3940
-msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "ایں نال نواں بحالی کوڈ جاری تھیسی تے پچھلا کوڈ کم کرݨ چھوڑ ڈیسی۔ جاری رکھو؟"
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:939
+#: includes/class-babilim-site.php:1271
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Babilim دا ایں مرحلے کیتے وقت مک گیا تے اگلی چیک تے جاری رکھسی۔"
 
-#: admin/class-babilim-admin.php:3940
-msgid "Show a new restore code"
-msgstr "نواں بحالی کوڈ ݙکھاؤ"
+#: admin/class-babilim-admin.php:3827
+msgid "Babilim settings"
+msgstr "Babilim ترتیباں"
 
-#: admin/class-babilim-admin.php:3942
-msgid "rc_…"
-msgstr "rc_…"
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1622
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "Babilim سنک سروس ولوں عارضی طور تے رُکی ہوئی ہے (ریٹ لمٹ)؛ اے %s توں بعد ول کوشش کرسی۔"
 
-#: admin/class-babilim-admin.php:3942
-msgid "Restore code"
-msgstr "بحالی کوڈ"
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "اس اپ لوڈ دے انتظار دوران Babilim اپ ڈیٹ تھی گیا۔ پرانا پیکیج رد کر ݙتا گیا ہے؛ مہربانی کر کے اپ لوڈ دی دوبارہ تصدیق کرو۔"
 
-#: admin/class-babilim-admin.php:3943
-msgid "Restore purchase"
-msgstr "خریداری بحال کرو"
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:3428
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim %1$s (ورژن %2$s) دیاں اے فائلاں اپ لوڈ کریسی: ہر .php تے .js فائل، ہر block.json فائل، تے اینکوں دے مین فولڈر وچ readme.txt، readme.md، style.css تے theme.json۔ اے او متن لبھن لئی تے پلگ ان یا تھیم دی شناخت کرن لئی ورتیاں ویندیاں ہن جنکوں ترجمے دی لوڑ ہے۔"
 
-#: admin/class-babilim-admin.php:3944
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest مہیا نہیں اے: %s"
+
+#: admin/class-babilim-admin.php:3422
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:4263
+msgid "Back"
+msgstr "واپس"
+
+#: admin/class-babilim-admin.php:4522
 msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
 msgstr "کیا تُساں ایں ڈومین کِیتے پہلے لائسنس خریدیا ہئی؟ چیک آؤٹ ویلے ملیا ہویا بحالی کوڈ درج کرو۔"
 
-#: admin/class-babilim-admin.php:3980
-msgid "That does not look like a restore code."
-msgstr "اے بحالی کوڈ دے طور تے ٹھیک کائنی لگدا۔"
+#: admin/class-babilim-admin.php:3253
+msgid "Broken placeholder"
+msgstr "ٹُٹا ہویا پلیس ہولڈر"
 
-#: admin/class-babilim-admin.php:3994
-msgid "This restore code was not recognised for this site."
-msgstr "اے بحالی کوڈ ایں سائٹ کِیتے پچھاتا کائنی گیا۔"
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:4258
+msgid "Build"
+msgstr "بلڈ"
 
-#: admin/class-babilim-admin.php:3996
-msgid "Too many attempts. Try again tomorrow."
-msgstr "بہوں کوششاں تھی گیاں۔ کل ولدی کوشش کرو۔"
-
-#: admin/class-babilim-admin.php:3998
-msgid "This site must be verified first."
-msgstr "پہلے ایں سائٹ دی تصدیق ضروری ہے۔"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4001
-#, php-format
-msgid "Could not restore the purchase: %s"
-msgstr "خریداری بحال کائنی تھی سڳی: %s"
-
-#: admin/class-babilim-admin.php:4011
-msgid "Purchase restored. This site is now licensed."
-msgstr "خریداری بحال تھی گئی۔ ہݨ اے سائٹ لائسنس یافتہ ہے۔"
-
-#: admin/class-babilim-admin.php:4034
-msgid "This site has no purchase to show a code for."
-msgstr "ایں سائٹ دی کوئی خریداری کائنی جیندا کوڈ ݙکھایا ونڄے۔"
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4037
-#, php-format
-msgid "Could not show a new restore code: %s"
-msgstr "نواں بحالی کوڈ کائنی ݙکھایا ونڄ سڳیا: %s"
-
-#. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:4048
-#, php-format
-msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
-msgstr "تہاڈا نواں بحالی کوڈ: %s۔ ایکوں کہیں محفوظ جاہ تے رکھو — پچھلا کوڈ ہݨ کم کائنی کریندا۔"
-
-#: admin/class-babilim-admin.php:4063
-msgid "What is sent when Babilim checks this site"
-msgstr "جݙاں Babilim ایں سائٹ دی جانچ کریندا ہے تاں کیا بھیجیا ویندا ہے"
-
-#: admin/class-babilim-admin.php:4092
-msgid "(detected)"
-msgstr "(پتہ لگیا)"
-
-#: admin/class-babilim-admin.php:4095
-msgid "No language is managed yet."
-msgstr "ہݨ تائیں کوئی زبان منیج کائنی تھیندی۔"
-
-#: admin/class-babilim-admin.php:4097
-msgid "Babilim adds translations for every language checked here."
-msgstr "Babilim ہیٹھ نشان زد ہر زبان کِیتے ترجمے شامل کریندا ہے۔"
-
-#: admin/class-babilim-admin.php:4102
-msgid "Add another language"
-msgstr "ہک ہور زبان شامل کرو"
-
-#: admin/class-babilim-admin.php:4103
-msgid "Choose a language…"
-msgstr "زبان چُݨو…"
-
-#: admin/class-babilim-admin.php:4109
-msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "سروس کنوں WordPress.org دی پوری لوکیل فہرست لوڈ کائنی تھی سڳی، ایں کیتے ہݨ کوئی ہور زبان شامل کائنی کیتی ونڄ سڳدی۔"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Theme"
-msgstr "تھیم"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Plugin"
-msgstr "پلگ اِن"
-
-#: admin/class-babilim-admin.php:4174
-msgid "Free quota"
-msgstr "مفت کوٹہ"
-
-#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:4181
-#, php-format
-msgid "Downloads: %1$d/%2$d (%3$s)"
-msgstr "ڈاؤن لوڈ: %1$d/%2$d (%3$s)"
-
-#: admin/class-babilim-admin.php:4213
-msgid "Supplementary translation index"
-msgstr "اضافی ترجمیاں دی فہرست"
-
-#: admin/class-babilim-admin.php:4216
+#: admin/class-babilim-admin.php:4796
 msgid "Built"
 msgstr "تیار کیتا ڳیا"
 
-#: admin/class-babilim-admin.php:4217
-msgid "Included"
-msgstr "شامل"
+#: admin/class-babilim-translations-table.php:590
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "بلک ایکشنز ہر چݨے ہوئے کمپوننٹ دی صرف چݨی ہوئی زبان تے لاگو تھیندے ہن۔"
 
-#: admin/class-babilim-admin.php:4218
-msgid "Excluded"
-msgstr "خارج"
+#: admin/class-babilim-translations-table.php:589
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "بلک ایکشنز ہر چݨے ہوئے کمپوننٹ دی ہر مطابق زبان تے لاگو تھیندے ہن۔"
 
-#: admin/class-babilim-admin.php:4220
-msgid "Already in WordPress core"
-msgstr "پہلے ای WordPress کور وچ موجود ہے"
+#: admin/class-babilim-admin.php:3218
+msgid "Bulk download:"
+msgstr "کٹھا ڈاؤن لوڈ:"
 
-#: admin/class-babilim-admin.php:4239
-msgid "Supplementary translation maintenance"
-msgstr "اضافی ترجمے دی دیکھ بھال"
+#: admin/class-babilim-admin.php:3222
+msgid "Bulk request:"
+msgstr "کٹھی درخواست:"
 
-#: admin/class-babilim-admin.php:4242
-msgid "Maintenance status is not available right now."
-msgstr "دیکھ بھال دی حالت ہݨے دستیاب کائنی۔"
-
-#. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:4250
-#, php-format
-msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "%1$s تے صفائی روک ݙتی گئی: %2$s۔ کجھ وی ڈیلیٹ کائنی کیتا گیا۔"
-
-#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:4264
-#, php-format
-msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "آخری صفائی %1$s تے تھی: %2$d نویں نشان زد کیتیاں گیاں، %3$d فائل مٹائیاں گیاں، %4$d ریکارڈ ہٹائے گئے۔"
-
-#: admin/class-babilim-admin.php:4271
-msgid "No cleanup has run yet."
-msgstr "ہݨ تئیں کوئی صفائی نئیں تھئی۔"
-
-#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:4282
-#, php-format
-msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
-msgstr "ترجمہ انڈیکس دی لکھائی %1$s تے ݙوجھی درخواست نال ٹکرا گئی (%2$s) تے لاگو نئیں تھئی؛ سب توں نواں ورژن رکھیا ڳیا۔"
-
-#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:4295
-#, php-format
-msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
-msgstr "%1$s تے ترجمہ انڈیکس دی لکھائی (%2$s) مکمل نئیں تھی سڳی تے لاگو نئیں تھئی (%3$s)۔"
-
-#: admin/class-babilim-admin.php:4311
-msgid "Maintenance"
-msgstr "دیکھ بھال"
-
-#: admin/class-babilim-admin.php:4322
-msgid "Rebuild index now"
-msgstr "ہݨ انڈیکس ݙوبارہ بݨاؤ"
-
-#: admin/class-babilim-admin.php:4328
-msgid "Sweep now"
-msgstr "هݨ سکین کرو"
-
-#: admin/class-babilim-admin.php:4344
-msgid "Danger zone"
-msgstr "خطرے دا علاقہ"
-
-#: admin/class-babilim-admin.php:4352
-msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
-msgstr "اس سائٹ تے ہر پلگ اِن تے تھیم کیتے Babilim دیاں انسٹال کیتیاں ہوئیاں ساریاں زبان فائلاں ہٹیندا ہے۔"
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
-msgstr "Babilim دا انسٹال کیتا ہر کجھ ہٹاؤ؟ ایہ اس سائٹ تے ہر پلگ اِن تے تھیم کیتے Babilim دیاں انسٹال کیتیاں ہوئیاں ساریاں زبان فائلاں مٹا ݙیسی۔"
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed"
-msgstr "Babilim دا انسٹال کیتا ہر کجھ ہٹاؤ"
-
-#: admin/class-babilim-admin.php:3670
-#: admin/class-babilim-admin.php:4398
-msgid "Category"
-msgstr "زمرہ"
-
-#: admin/class-babilim-admin.php:4400
-msgid "Choose a category…"
-msgstr "زمرہ چݨو…"
-
-#: admin/class-babilim-admin.php:4415
-msgid "Roll back and send report"
-msgstr "پچھلی حالت تے ولو تے رپورٹ بھیجو"
-
-#: admin/class-babilim-admin.php:3684
-#: admin/class-babilim-admin.php:4415
-msgid "Send report"
-msgstr "رپورٹ بھیجو"
-
-#: admin/class-babilim-cell.php:65
-msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "ایں کمپوننٹ دا کجھ متن ایندے مصنف ہارڈ کوڈ کیتا ہے تے زبان پیک نال ایندا ترجمہ کائنی تھی سڳدا۔"
-
-#: admin/class-babilim-cell.php:105
-msgid "WordPress.org"
-msgstr "WordPress.org"
-
-#: admin/class-babilim-cell.php:108
-msgid "Bundled with the theme"
-msgstr "تھیم نال شامل"
+#: admin/class-babilim-admin.php:3220
+msgid "Bulk update:"
+msgstr "کٹھی اپ ڈیٹ:"
 
 #: admin/class-babilim-cell.php:109
 msgid "Bundled with the plugin"
 msgstr "پلگ اِن نال شامل"
 
-#: admin/class-babilim-cell.php:118
-msgid "Upload was not accepted"
-msgstr "اپ لوڈ قبول نئیں تھیا"
+#: admin/class-babilim-cell.php:108
+msgid "Bundled with the theme"
+msgstr "تھیم نال شامل"
 
-#: admin/class-babilim-cell.php:121
-msgid "Upload expired before it finished"
-msgstr "اپ لوڈ مکݨ توں پہلے ای ختم تھی گیا"
+#: admin/class-babilim-admin.php:3073
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "چالو کرو تے کلک کرݨ نال تساں اُتے ݙتی ہوئی معلومات Babilim کوں ٻھیجݨ تے راضی تھیندے او۔"
 
-#: admin/class-babilim-cell.php:123
-msgid "No translation"
-msgstr "کوئی ترجمہ نئیں"
+#: admin/class-babilim-admin.php:3433
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "جاری رکھݨ نال تusاں تصدیق کریندے ہو جو ایہ کمپوننٹ اپ لوڈ کرݨ دا تہاڈے کول حق ہے۔"
 
-#: admin/class-babilim-cell.php:129
-#: admin/class-babilim-cell.php:131
-#: admin/class-babilim-cell.php:265
-#: admin/class-babilim-cell.php:267
-msgid "Upload in progress — continue or cancel"
-msgstr "اپ لوڈ جاری ہے — جاری رکھو یا منسوخ کرو"
+#: admin/class-babilim-admin.php:3436
+#: admin/class-babilim-admin.php:3456
+#: admin/class-babilim-admin.php:3494
+#: admin/class-babilim-admin.php:3551
+msgid "Cancel"
+msgstr "منسوخ کرو"
 
-#: admin/class-babilim-cell.php:133
-msgid "Scheduled, waiting to be processed"
-msgstr "شیڈول کیتا ڳیا، کارروائی دا انتظار ہے"
+#: admin/class-babilim-admin.php:4248
+#: admin/class-babilim-admin.php:4978
+msgid "Category"
+msgstr "زمرہ"
 
-#: admin/class-babilim-cell.php:135
-msgid "Translating…"
-msgstr "ترجمہ تھیندا پیا ہے…"
+#: admin/class-babilim-admin.php:3152
+msgid "Check again"
+msgstr "ولدا چیک کرو"
 
-#: admin/class-babilim-cell.php:137
-msgid "Translation failed"
-msgstr "ترجمہ ناکام تھی گیا"
+#: admin/class-babilim-admin.php:3107
+#: admin/class-babilim-admin.php:3155
+#: admin/class-babilim-admin.php:4893
+msgid "Check again now"
+msgstr "ہݨ ولدا چیک کرو"
 
-#: admin/class-babilim-cell.php:139
-msgid "Free quota used"
-msgstr "مفت کوٹہ ورتیا گیا"
+#: admin/class-babilim-admin.php:3976
+#: admin/class-babilim-admin.php:3987
+msgid "Checkout is not available for this site right now."
+msgstr "ایں سائٹ کیتے چیک آؤٹ ہݨ دستیاب نہیں ہے۔"
 
-#: admin/class-babilim-cell.php:141
-msgid "Needs a paid license"
-msgstr "ادا شدہ لائسنس دی لوڑ اے"
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:4247
+msgid "Choose"
+msgstr "چݨو"
 
-#: admin/class-babilim-cell.php:148
-msgid "Not supported"
-msgstr "سپورٹ نئیں کیتا ڳیا"
+#: admin/class-babilim-admin.php:4980
+msgid "Choose a category…"
+msgstr "زمرہ چݨو…"
 
-#: admin/class-babilim-cell.php:150
-msgid "Status unknown"
-msgstr "حالت نامعلوم"
+#: admin/class-babilim-admin.php:3552
+msgid "Choose a language"
+msgstr "زبان چݨو"
 
-#: admin/class-babilim-cell.php:170
-#: admin/class-babilim-cell.php:197
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Installed"
-msgstr "انسٹال تھیا ہویا"
+#: admin/class-babilim-admin.php:4683
+msgid "Choose a language…"
+msgstr "زبان چُݨو…"
 
-#: admin/class-babilim-cell.php:183
-#: admin/class-babilim-cell.php:185
-msgid "Update available"
-msgstr "اپ ڈیٹ دستیاب ہے"
-
-#: admin/class-babilim-cell.php:210
-msgid "Removed after a failed integrity check"
-msgstr "سالمیت دی جانچ ناکام تھیݨ دے بعد ہٹا ݙتا گیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-#, php-format
-msgid "Installed · built for %s, new version scheduled"
-msgstr "انسٹال تھی گیا · %s کیتے بݨایا گیا، نواں ورژن شیڈول کیتا گیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-msgid "Installed · built for a different version, new version scheduled"
-msgstr "انسٹال تھی گیا · مختلف ورژن کیتے بݨایا گیا، نواں ورژن شیڈول کیتا گیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-#, php-format
-msgid "Installed · built for %s, translating the new version…"
-msgstr "انسٹال تھیا ہویا · %s کیتے بݨایا ڳیا، نویں ورژن دا ترجمہ تھیندا پیا ہے…"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-msgid "Installed · built for a different version, translating the new version…"
-msgstr "انسٹال تھیا ہویا · ہک ݙوجھے ورژن کیتے بݨایا ڳیا، نویں ورژن دا ترجمہ تھیندا پیا ہے…"
-
-#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:279
-#, php-format
-msgid "Installed · built for %1$s, this site has %2$s"
-msgstr "انسٹال تھیا ہویا · %1$s کیتے بݨایا ڳیا، ایں سائٹ تے %2$s ہے"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-#, php-format
-msgid "Installed · built for %s"
-msgstr "انسٹال تھیا ہویا · %s کیتے بݨایا ڳیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-msgid "Installed · built for a different version"
-msgstr "انسٹال تھیا ہویا · ہک ݙوجھے ورژن کیتے بݨایا ڳیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-#, php-format
-msgid "Installed · built for %s, new version failed"
-msgstr "انسٹال تھیا · %s کیتے بݨایا ڳیا، نواں ورژن ناکام تھی ڳیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-msgid "Installed · built for a different version, new version failed"
-msgstr "انسٹال تھیا · کسے ہور ورژن کیتے بݨایا ڳیا، نواں ورژن ناکام تھی ڳیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-#, php-format
-msgid "Installed · built for %s, new version needs a paid license"
-msgstr "انسٹال تھی گیا · %s کیتے بݨایا گیا، نویں ورژن کوں ادا شدہ لائسنس دی لوڑ اے"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "انسٹال تھی گیا · مختلف ورژن کیتے بݨایا گیا، نویں ورژن کوں ادا شدہ لائسنس دی لوڑ اے"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-#, php-format
-msgid "Installed · built for %s, free quota used"
-msgstr "انسٹال تھی گیا · %s کیتے بݨایا گیا، مفت کوٹہ ورتیا گیا"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-msgid "Installed · built for a different version, free quota used"
-msgstr "انسٹال تھی گیا · مختلف ورژن کیتے بݨایا گیا، مفت کوٹہ ورتیا گیا"
-
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Available"
-msgstr "دستیاب"
-
-#. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:319
-#, php-format
-msgid "Installed · %s"
-msgstr "انسٹال تھیا · %s"
-
-#. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:322
-#, php-format
-msgid "Available · %s"
-msgstr "دستیاب · %s"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:412
-msgid "Update"
-msgstr "اپڈیٹ کرو"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:411
-msgid "Download"
-msgstr "ڈاؤنلوڈ کرو"
-
-#: admin/class-babilim-cell.php:362
-msgid "Updating…"
-msgstr "اپڈیٹ تھیندی پئی اے…"
-
-#: admin/class-babilim-cell.php:362
-msgid "Downloading…"
-msgstr "ڈاؤنلوڈ تھیندی پئی اے…"
-
-#: admin/class-babilim-cell.php:365
-msgid "Retry request"
-msgstr "درخواست ولدا کرو"
-
-#: admin/class-babilim-cell.php:367
-msgid "Request newer translation"
-msgstr "نویں ترجمے دی درخواست کرو"
-
-#: admin/class-babilim-cell.php:367
-#: admin/class-babilim-translations-table.php:413
-msgid "Request translation"
-msgstr "ترجمے دی درخواست کرو"
-
-#: admin/class-babilim-cell.php:369
-msgid "Requesting…"
-msgstr "درخواست تھیندی پئی اے…"
-
-#: admin/class-babilim-translations-table.php:35
-msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "ترجمے دی درخواست تُہاݙے مفت سلاٹس وچوں ہک ورتیندی اے، سوائے ایندے کہ ایہ کمپوننٹ پہلے توں ہک ورتیندا ہووے۔ ناکام ترجمہ سلاٹ واپس نئیں ݙیندا۔"
-
-#: admin/class-babilim-translations-table.php:42
-msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "جے ایہ کمپوننٹ ہݨ تک تُہاݙے مفت سلاٹس وچوں کوئی سلاٹ نئیں ورتیندا تاں ترجمے دی درخواست ہک ورتیسی۔ ناکام ترجمہ سلاٹ واپس نئیں ݙیندا۔ جاری رکھو؟"
-
-#: admin/class-babilim-translations-table.php:382
-msgid "No plugins or themes found."
-msgstr "کوئی پلگ اِن یا تھیم کینہ لبھی۔"
-
-#: admin/class-babilim-translations-table.php:386
+#: admin/class-babilim-translations-table.php:428
 msgid "Clear filters"
 msgstr "فلٹر صاف کرو"
 
-#. translators: %s: a "Clear filters" link.
-#: admin/class-babilim-translations-table.php:388
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:4265
+msgid "Close"
+msgstr "بند کرو"
+
+#: admin/class-babilim-admin.php:3724
+#: admin/class-babilim-admin.php:4255
+#: admin/class-babilim-translations-table.php:441
+msgid "Component"
+msgstr "کمپوننٹ"
+
+#: admin/class-babilim-admin.php:3496
+msgid "Confirm"
+msgstr "تصدیق کرو"
+
+#: admin/class-babilim-admin.php:3728
+#: admin/class-babilim-admin.php:4799
+msgid "Conflicting keys"
+msgstr "متصادم کیز"
+
+#: admin/class-babilim-admin.php:3455
+msgid "Continue"
+msgstr "جاری رکھو"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:3339
 #, php-format
-msgid "No components match these filters. %s"
-msgstr "کوئی جزو ایں فلٹراں نال نہیں ملدا۔ %s"
+msgid "Continue next batch (%d left)"
+msgstr "اڳلی کھیپ جاری رکھو (%d باقی)"
 
-#: admin/class-babilim-translations-table.php:398
-msgid "Select all"
-msgstr "سارے چݨو"
+#: admin/class-babilim-admin.php:3336
+msgid "Continuing…"
+msgstr "جاری ہے…"
 
-#: admin/class-babilim-translations-table.php:424
-#: admin/class-babilim-translations-table.php:472
-msgid "All"
-msgstr "سارے"
-
-#: admin/class-babilim-translations-table.php:425
-msgid "Available"
-msgstr "دستیاب"
-
-#: admin/class-babilim-translations-table.php:426
-msgid "Updates"
-msgstr "اپڈیٹاں"
-
-#: admin/class-babilim-translations-table.php:427
-msgid "Requestable"
-msgstr "درخواست دے قابل"
-
-#: admin/class-babilim-translations-table.php:428
-msgid "Installed"
-msgstr "انسٹال تھیا"
-
-#: admin/class-babilim-translations-table.php:473
-msgid "Plugins"
-msgstr "پلگ اِن"
-
-#: admin/class-babilim-translations-table.php:474
-msgid "Themes"
-msgstr "تھیم"
-
-#: admin/class-babilim-translations-table.php:499
-msgid "All languages"
-msgstr "ساریاں زباناں"
-
-#. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
 #, php-format
-msgid "%d to install"
-msgid_plural "%d to install"
-msgstr[0] "%d انسٹال کرݨ کیتے"
-msgstr[1] "%d انسٹال کرݨ کیتے"
+msgid "Could not back up %s before replacing it."
+msgstr "%s کوں بدلݨ کنوں پہلے بیک اپ نہیں کر سڳے۔"
 
-#: admin/class-babilim-translations-table.php:511
-msgid "Language:"
-msgstr "زبان:"
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
+msgid "Could not create the package archive."
+msgstr "پیکیج آرکائیو نہیں بݨ سکیا۔"
 
-#: admin/class-babilim-translations-table.php:547
-msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "بلک ایکشنز ہر چݨے ہوئے کمپوننٹ دی ہر مطابق زبان تے لاگو تھیندے ہن۔"
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "فعال جزو دا پتہ کائنی لگ سگیا؛ موجودہ ضم شدہ انڈیکس کوں نہیں بدلیا گیا۔"
 
-#: admin/class-babilim-translations-table.php:548
-msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "بلک ایکشنز ہر چݨے ہوئے کمپوننٹ دی صرف چݨی ہوئی زبان تے لاگو تھیندے ہن۔"
+#: includes/class-babilim-default-index.php:400
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "انسٹال کیتے ہوئے پلگ ان/تھیم دا پتہ کائنی لگ سگیا؛ صفائی چھوڑ دتی گئی، کجھ وی کائنی مٹایا گیا۔"
 
-#. translators: %s: the component's version number.
-#: admin/class-babilim-translations-table.php:572
+#: admin/class-babilim-admin.php:4689
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "سروس کنوں WordPress.org دی پوری لوکیل فہرست لوڈ کائنی تھی سڳی، ایں کیتے ہݨ کوئی ہور زبان شامل کائنی کیتی ونڄ سڳدی۔"
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
 #, php-format
-msgid "Version %s"
-msgstr "ورژن %s"
+msgid "Could not move %s into place."
+msgstr "%s کوں اپݨی جاہ تے نہیں رکھ سڳے۔"
 
-#. translators: %s: the theme's version number.
-#: admin/class-babilim-translations-table.php:575
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:989
 #, php-format
-msgid "Theme · %s"
-msgstr "تھیم · %s"
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "'%s' دی ضم شدہ فہرست مقررہ جاء تے منتقل نئیں کیتی ونڄ سگی؛ پچھلی ورتی ویندی فہرست (جے ہئی) اڌ ادھوری اپ ڈیٹ تھی ہوئی چھوڑݨ دی بجائے ہٹا ݙتی گئی۔ اڳلی کامیاب ری بلڈ تک ایں لوکیل کیتے کوئی ڈیفالٹ ڈومین سپلیمنٹ نئیں ݙتا ویسی۔"
 
-#. translators: %s: the plugin's version number.
-#: admin/class-babilim-translations-table.php:578
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
 #, php-format
-msgid "Plugin · %s"
-msgstr "پلگ اِن · %s"
+msgid "Could not open zip: %s"
+msgstr "zip کائنی کھولی ون٘ج سگی: %s"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:635
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
 #, php-format
-msgid "Remove the %2$s translation of %1$s from this site?"
-msgstr "کیا %1$s دا %2$s وچ ترجمہ ایں سائٹ توں ہٹاوݨا اے؟"
+msgid "Could not prepare %s for rollback."
+msgstr "%s نوں رول بیک کِیتے تیار نہیں کیتا جا سکیا۔"
 
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:638
+#. translators: %s: the filename that could not be read back after it was moved into place.
+#: includes/class-babilim-installer.php:1656
 #, php-format
-msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "کیا %1$s دا %2$s وچ ترجمہ پچھلے بلڈ تے واپس کرݨا اے؟"
+msgid "Could not read %s back after moving it into place."
+msgstr "%s نوں جگہ تے رکھن توں بعد ولدا پڑھیا نہیں جا سکیا۔"
 
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-translations-table.php:731
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
 #, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+msgid "Could not read: %s"
+msgstr "نہیں پڑھ سکیا: %s"
 
-#. translators: 1: action name such as Remove, 2: component name, 3: language name.
-#: admin/class-babilim-translations-table.php:734
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4579
 #, php-format
-msgid "%1$s: %2$s (%3$s)"
-msgstr "%1$s: %2$s (%3$s)"
+msgid "Could not restore the purchase: %s"
+msgstr "خریداری بحال کائنی تھی سڳی: %s"
 
-#: includes/class-babilim-api-client.php:102
-msgid "The registration challenge is not in the expected form."
-msgstr "رجسٹریشن چیلنج متوقع شکل وچ کائنی۔"
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4615
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "نواں بحالی کوڈ کائنی ݙکھایا ونڄ سڳیا: %s"
 
-#: includes/class-babilim-api-client.php:212
-msgid "That is not a valid build identifier."
-msgstr "ایہ درست بلڈ شناخت کار کائنی۔"
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "%s سٹیج نہیں تھی سڳی"
 
-#: includes/class-babilim-api-client.php:309
-msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "Babilim دی زبان فائل ڈائریکٹری توں باہر لکھݨ توں انکار۔"
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "default/%s سٹیج نہیں تھی سڳی"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3979
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "چیک آؤٹ شروع نہیں تھی سڳیا: %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "%s واسطے اندراجاں دی گنتی دی تصدیق نہیں تھی سڳی"
 
 #: includes/class-babilim-api-client.php:331
 msgid "Could not write the downloaded package to disk."
 msgstr "ڈاؤن لوڈ کیتا ہویا پیکیج ڈسک تے نہیں لکھیا ون٘ج سگیا۔"
 
-#. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:605
+#: includes/class-babilim-default-index.php:950
+msgid "Could not write the staged merged index."
+msgstr "تیار کیتی ہوئی ضم شدہ فہرست لکھی نئیں ونڄ سگی۔"
+
+#: admin/class-babilim-admin.php:1547
+#: admin/class-babilim-admin.php:4245
+#: admin/class-babilim-admin.php:4986
+msgid "Current translation"
+msgstr "موجودہ ترجمہ"
+
+#: admin/class-babilim-admin.php:3883
+msgid "Custom overrides"
+msgstr "حسب ضرورت اووررائیڈ"
+
+#: admin/class-babilim-admin.php:4924
+msgid "Danger zone"
+msgstr "خطرے دا علاقہ"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "Default سپلیمنٹ دے اندراجاں دی گنتی نہیں ملدی۔"
+
+#: admin/class-babilim-admin.php:3894
+msgid "Delete all Babilim data on uninstall"
+msgstr "ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو"
+
+#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim"
+msgstr "Babilim غیر فعال کرو"
+
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "Babilim غیر فعال کروں؟ انسٹال تھئے ترجمے رہ ویسن، پر اڳوں کوئی چیک یا ڈاؤن لوڈ کائنی تھیسی۔"
+
+#: admin/class-babilim-admin.php:2545
+msgid "Don't share"
+msgstr "Don't share"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:453
+msgid "Download"
+msgstr "ڈاؤنلوڈ کرو"
+
+#: admin/class-babilim-admin.php:961
+msgid "Downloaded and installed."
+msgstr "ڈاؤن لوڈ تے انسٹال تھی گیا۔"
+
+#: admin/class-babilim-cell.php:366
+msgid "Downloading…"
+msgstr "ڈاؤنلوڈ تھیندی پئی اے…"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
+#: admin/class-babilim-admin.php:4761
 #, php-format
-msgid "Unexpected HTTP %d response."
-msgstr "غیر متوقع HTTP %d جواب۔"
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "ڈاؤن لوڈ: %1$d/%2$d (%3$s)"
 
-#: includes/class-babilim-consent.php:72
-msgid "This site's URL, so the service can verify you own it."
-msgstr "اس سائٹ دا URL، تاں جو سروس تصدیق کر سگے جو اے تہاڈی ہے۔"
+#: admin/class-babilim-admin.php:3722
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "ہر کمپوننٹ دا اپݨا حصہ ہر لوکیل دے سانجھے default-domain اضافے وچ۔"
 
-#: includes/class-babilim-consent.php:77
-msgid "Your WordPress version, to serve compatible translation files."
-msgstr "تہاڈا WordPress ورژن، تاں جو موافق ترجمہ فائلاں مہیا کیتیاں ونجن۔"
+#: admin/class-babilim-admin.php:3072
+msgid "Enable Babilim"
+msgstr "Babilim فعال کرو"
 
-#: includes/class-babilim-consent.php:82
-msgid "Your PHP version, for compatibility."
-msgstr "تہاڈا PHP ورژن، موافقت کیتے۔"
+#: admin/class-babilim-admin.php:3072
+msgid "Enabling…"
+msgstr "چالو تھی رہیا ہے…"
 
-#: includes/class-babilim-consent.php:87
-msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
-msgstr "اس پلگ ان دا اپنا ورژن، تاں جو جے اے بہوں پرانا ہووے تے سروس تہانکوں اپ ڈیٹ کرݨ دا آکھ سگے۔"
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "English (United States)"
 
-#: includes/class-babilim-consent.php:92
-msgid "This site's configured locale."
-msgstr "ایں سائٹ دا ترتیب ݙتا ہویا لوکیل۔"
+#: admin/class-babilim-admin.php:3727
+msgid "Entries"
+msgstr "اندراجات"
 
-#: includes/class-babilim-consent.php:97
-msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "ایں سائٹ تے ورتیا ویندا ہر لوکیل (سائٹ لوکیل، انسٹال کیتے ہوئے لینگویج پیک، صارف لوکیلز، تے جیڑھے تساں ہتھوں شامل کرو)۔ کوئی لوکیل کہیں ݙوجھے توں مختلف نئیں سمجھیا ویندا۔"
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "%s واسطے اندراجاں دی گنتی نہیں ملدی"
 
-#: includes/class-babilim-consent.php:101
-msgid "(a public key generated for this site)"
-msgstr "(اس سائٹ کیتے بݨائی گئی پبلک کی)"
-
-#: includes/class-babilim-consent.php:102
-msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
-msgstr "اس سائٹ دی انسٹال پبلک کی، جیہڑی ثابت کرݨ کیتے ورتی ویندی ہے جو درخواستاں سچ مچ اس سائٹ توں آندیاں ہن۔ صرف پبلک حصہ ای بھیجیا ویندا ہے۔"
+#: admin/class-babilim-admin.php:3878
+msgid "Error reports"
+msgstr "ایرر رپورٹاں"
 
 #: includes/class-babilim-consent.php:107
 msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
 msgstr "ہر انسٹال کیتا ہویا پلگ ان/تھیم: ایندا سلگ، ورژن، ٹیکسٹ ڈومین، ایہ WordPress.org تے درج اے کہ نئیں، ایندے اپݨے شامل لوکیلز، تے کیہڑے لوکیلز کیتے تساں پہلے توں Babilim ترجمہ انسٹال کیتا اے۔"
 
-#: includes/class-babilim-consent.php:116
-msgid "(generic codes and coordinates only)"
-msgstr "(صرف عام کوڈ تے کوآرڈینیٹس)"
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "ایں سائٹ تے ورتیا ویندا ہر لوکیل (سائٹ لوکیل، انسٹال کیتے ہوئے لینگویج پیک، صارف لوکیلز، تے جیڑھے تساں ہتھوں شامل کرو)۔ کوئی لوکیل کہیں ݙوجھے توں مختلف نئیں سمجھیا ویندا۔"
 
-#: includes/class-babilim-consent.php:117
-msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "بیس تک زیر التوا تشخیصی واقعات (مثلاً اوہ فائل جیڑھی سالمیت دی جانچ وچ ناکام تھئی)، ہر ہک وچ صرف کوڈ، کمپوننٹ تے لوکیل، تے کݙاہیں وی کوئی سٹرنگ مواد یا ترجمہ شدہ ٹیکسٹ نئیں۔"
+#: admin/class-babilim-admin.php:4798
+msgid "Excluded"
+msgstr "خارج"
 
-#. translators: %s: the invalid locale code.
-#: includes/class-babilim-default-index.php:109
-#: includes/class-babilim-installer.php:949
+#: admin/class-babilim-admin.php:3429
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "ہور ناں یا ایکسٹینشن والیاں فائلاں شامل نہیں ہن، نہ ای uploads، cache، logs، backup، data، vendor، node_modules تے languages فولڈر، چھپیاں ہوئیاں فائلاں، یا اوہ فائلاں جنہاں دے ناں عام رازدار فائلاں نال ملدے ہن (wp-config*، .env*، *.sql، *.log، *.pem، *.key)۔ کوڈ فائلاں وچ ہجے وی اجیہا متن یا ڈیٹا ہو سڳدا ہے جیکوں تusی شیئر نہ کرنا چاہو؛ جے یقین نہ ہووے تاں انہاں کوں چیک کرو۔ سروس آمد تے انہاں ای قسماں دیاں فائلاں کوں دوبارہ ہٹا ݙیندی ہے۔"
+
+#: admin/class-babilim-admin.php:4450
+msgid "Free"
+msgstr "مفت"
+
+#: admin/class-babilim-admin.php:4754
+msgid "Free-plan slots"
+msgstr "مفت پلان دے سلاٹ"
+
+#: admin/class-babilim-admin.php:3834
+msgid "General"
+msgstr "عام"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1933
 #, php-format
-msgid "Unsafe locale: %s"
-msgstr "غیر محفوظ لوکیل: %s"
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "جے ایہ آن ہے تاں ان انسٹال کرݨ نال ایں سائٹ دی شناخت وی مٹ ویسی۔ ایں سائٹ نال جڑیا ادا شدہ لائسنس بعد وچ خود بخود بحال کائناں تھی سڳدا؛ اوکوں واپس گھنݨ کیتے تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔"
+
+#: admin/class-babilim-admin.php:4797
+msgid "Included"
+msgstr "شامل"
+
+#: admin/class-babilim-admin.php:3726
+msgid "Included in index"
+msgstr "فہرست وچ شامل"
+
+#: admin/class-babilim-admin.php:3868
+msgid "Install available translations automatically"
+msgstr "دستیاب ترجمے آپوں آپ انسٹال کرو"
+
+#: admin/class-babilim-translations-table.php:470
+msgid "Installed"
+msgstr "انسٹال تھیا"
+
+#: admin/class-babilim-admin.php:3905
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "انسٹال کیتے ہوئے ترجمے رکھے ویندے ہن، پر اڳوں کوئی چیک یا ڈاؤن لوڈ نہیں تھیسی۔"
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:323
+#, php-format
+msgid "Installed · %s"
+msgstr "انسٹال تھیا · %s"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:283
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "انسٹال تھیا ہویا · %1$s کیتے بݨایا ڳیا، ایں سائٹ تے %2$s ہے"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+#, php-format
+msgid "Installed · built for %s"
+msgstr "انسٹال تھیا ہویا · %s کیتے بݨایا ڳیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+#, php-format
+msgid "Installed · built for %s, all free-plan slots for this site are used"
+msgstr "انسٹال کیتا ہویا · %s واسطے بنایا گیا، اس سائیٹ واسطے مفت پلان دے سارے سلاٹ ورتے ون ہوئے ہن"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "انسٹال تھیا · %s کیتے بݨایا ڳیا، نواں ورژن ناکام تھی ڳیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+#, php-format
+msgid "Installed · built for %s, new version not covered by the free service plan"
+msgstr "انسٹال کیتا ہویا · %s واسطے بنایا گیا، نواں ورژن مفت سروس پلان وچ شامل کینی"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "انسٹال تھی گیا · %s کیتے بݨایا گیا، نواں ورژن شیڈول کیتا گیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "انسٹال تھیا ہویا · %s کیتے بݨایا ڳیا، نویں ورژن دا ترجمہ تھیندا پیا ہے…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+msgid "Installed · built for a different version"
+msgstr "انسٹال تھیا ہویا · ہک ݙوجھے ورژن کیتے بݨایا ڳیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+msgid "Installed · built for a different version, all free-plan slots for this site are used"
+msgstr "انسٹال کیتا ہویا · مختلف ورژن واسطے بنایا گیا، اس سائیٹ واسطے مفت پلان دے سارے سلاٹ ورتے ون ہوئے ہن"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+msgid "Installed · built for a different version, new version failed"
+msgstr "انسٹال تھیا · کسے ہور ورژن کیتے بݨایا ڳیا، نواں ورژن ناکام تھی ڳیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+msgid "Installed · built for a different version, new version not covered by the free service plan"
+msgstr "انسٹال کیتا ہویا · مختلف ورژن واسطے بنایا گیا، نواں ورژن مفت سروس پلان وچ شامل کینی"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "انسٹال تھی گیا · مختلف ورژن کیتے بݨایا گیا، نواں ورژن شیڈول کیتا گیا"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "انسٹال تھیا ہویا · ہک ݙوجھے ورژن کیتے بݨایا ڳیا، نویں ورژن دا ترجمہ تھیندا پیا ہے…"
+
+#: admin/class-babilim-admin.php:3431
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "ایہ سروس دے ہوسٹنگ پرووائیڈر کول محفوظ تھیندا ہے تے ترجمہ بݨاوݨ کیتے AI ماڈلز ایندی پروسیسنگ کریندے ہن۔"
+
+#: admin/class-babilim-admin.php:3885
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "سب کجھ صاف کرݨ یا ایہ پلگ ان ان انسٹال کرݨ ویلے میڈے اپݨے ترجمے دے اووررائیڈ رکھو۔"
+
+#: admin/class-babilim-admin.php:3725
+#: admin/class-babilim-admin.php:4256
+#: admin/class-babilim-admin.php:4795
+msgid "Language"
+msgstr "زبان"
+
+#: admin/class-babilim-translations-table.php:553
+msgid "Language:"
+msgstr "زبان:"
+
+#: admin/class-babilim-admin.php:3864
+msgid "Languages"
+msgstr "زباناں"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:3061
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "ایں سائٹ تے ملیاں زباناں: %s۔"
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:4844
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "آخری صفائی %1$s تے تھی: %2$d نویں نشان زد کیتیاں گیاں، %3$d فائل مٹائیاں گیاں، %4$d ریکارڈ ہٹائے گئے۔"
+
+#: admin/class-babilim-admin.php:4891
+msgid "Maintenance"
+msgstr "دیکھ بھال"
+
+#: admin/class-babilim-admin.php:4822
+msgid "Maintenance status is not available right now."
+msgstr "دیکھ بھال دی حالت ہݨے دستیاب کائنی۔"
 
 #. translators: %s: the technical reason the manifest is unavailable.
 #: includes/class-babilim-default-index.php:112
@@ -1463,190 +912,56 @@ msgstr "غیر محفوظ لوکیل: %s"
 msgid "Manifest unavailable: %s"
 msgstr "مینی فیسٹ دستیاب کائنی: %s"
 
-#: includes/class-babilim-default-index.php:134
-msgid "Could not determine active components; the existing merged index was left unchanged."
-msgstr "فعال جزو دا پتہ کائنی لگ سگیا؛ موجودہ ضم شدہ انڈیکس کوں نہیں بدلیا گیا۔"
+#: admin/class-babilim-admin.php:3259
+msgid "Negation reversed"
+msgstr "نفی اُلٹ ڳئی"
 
-#: includes/class-babilim-default-index.php:400
-msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "انسٹال کیتے ہوئے پلگ ان/تھیم دا پتہ کائنی لگ سگیا؛ صفائی چھوڑ دتی گئی، کجھ وی کائنی مٹایا گیا۔"
+#: admin/class-babilim-admin.php:3754
+msgid "No"
+msgstr "نہیں"
 
-#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
-#: includes/class-babilim-default-index.php:532
+#: admin/class-babilim-admin.php:1003
+msgid "No build is available to download for this locale."
+msgstr "ایں لوکیل کیتے ڈاؤن لوڈ کرݨ کیتے کوئی بلڈ دستیاب کائناں۔"
+
+#: admin/class-babilim-admin.php:4851
+msgid "No cleanup has run yet."
+msgstr "ہݨ تئیں کوئی صفائی نئیں تھئی۔"
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:430
 #, php-format
-msgid "Sweep aborted without orphaning anything: %s."
-msgstr "کہیں کوں یتیم کیتے بغیر صفائی روک ݙتی گئی: %s۔"
+msgid "No components match these filters. %s"
+msgstr "کوئی جزو ایں فلٹراں نال نہیں ملدا۔ %s"
 
-#: includes/class-babilim-default-index.php:624
-msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "صفائی تھی گئی، پر کجھ تبدیلیاں ترجمیاں دی فہرست وچ درج نئیں تھی سگیاں؛ اڳلی صفائی وچ انہاں کوں درج کرݨ دی ولدا کوشش کیتی ویسی۔"
+#: admin/class-babilim-admin.php:3165
+msgid "No components synced yet."
+msgstr "ہݨ تک کوئی جزو سنک کائنی تھیا۔"
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:746
-msgctxt "component kind in the sweep brake message"
-msgid "theme"
-msgstr "تھیم"
+#: admin/class-babilim-admin.php:4240
+msgid "No installed translation matches."
+msgstr "کوئی انسٹال کیتا ہویا ترجمہ میل کائناں کھاندا۔"
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:749
-msgctxt "component kind in the sweep brake message"
-msgid "plugin"
-msgstr "پلگ ان"
+#: admin/class-babilim-admin.php:4673
+msgid "No language is managed yet."
+msgstr "ہݨ تائیں کوئی زبان منیج کائنی تھیندی۔"
 
-#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
-#: includes/class-babilim-default-index.php:755
-#, php-format
-msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "ایہ ہر منظم %1$s کمپوننٹ کوں یتیم کر ݙیسی (%2$d وچوں %2$d)"
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "اس nonce کِیتے کوئی زیر التوا چیلنج نہیں۔"
 
-#. translators: 1: components that would be orphaned, 2: components managed in total.
-#: includes/class-babilim-default-index.php:762
-#, php-format
-msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "ایہ %2$d منظم کمپوننٹس وچوں %1$d کوں یتیم کر ݙیسی (اڌ توں ڈھیر)"
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "تصدیق کیتے کوئی زیر التوا چیلنج نہیں۔"
 
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:874
-#, php-format
-msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "'%s' دی ضم شدہ فہرست ولدی بݨائی گئی، پر ترجمیاں دی فہرست اینکوں درج نئیں کر سگی؛ اڳلی ری بلڈ ولدا کوشش کرسی۔"
+#: admin/class-babilim-translations-table.php:424
+msgid "No plugins or themes found."
+msgstr "کوئی پلگ اِن یا تھیم کینہ لبھی۔"
 
-#: includes/class-babilim-default-index.php:950
-msgid "Could not write the staged merged index."
-msgstr "تیار کیتی ہوئی ضم شدہ فہرست لکھی نئیں ونڄ سگی۔"
-
-#: includes/class-babilim-default-index.php:958
-msgid "Re-parsed entry count did not match the built index."
-msgstr "دوبارہ پارس کیتی گئی اندراجات دی گݨتی بݨائے گئے انڈیکس نال میل کائنی کھاندی۔"
-
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:989
-#, php-format
-msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "'%s' دی ضم شدہ فہرست مقررہ جاء تے منتقل نئیں کیتی ونڄ سگی؛ پچھلی ورتی ویندی فہرست (جے ہئی) اڌ ادھوری اپ ڈیٹ تھی ہوئی چھوڑݨ دی بجائے ہٹا ݙتی گئی۔ اڳلی کامیاب ری بلڈ تک ایں لوکیل کیتے کوئی ڈیفالٹ ڈومین سپلیمنٹ نئیں ݙتا ویسی۔"
-
-#. translators: %s: the zip file path that could not be opened.
-#: includes/class-babilim-installer.php:147
-#, php-format
-msgid "Could not open zip: %s"
-msgstr "zip کائنی کھولی ون٘ج سگی: %s"
-
-#: includes/class-babilim-installer.php:150
-msgid "Zip has no manifest.json."
-msgstr "زپ وچ manifest.json کائنی۔"
-
-#: includes/class-babilim-installer.php:161
-msgid "manifest.json in the zip is not valid JSON."
-msgstr "زپ وچ manifest.json درست JSON کائنی۔"
-
-#. translators: %s: the manifest.json field that did not match.
-#: includes/class-babilim-installer.php:165
-#, php-format
-msgid "manifest.json's '%s' does not match the expected value."
-msgstr "manifest.json دا '%s' متوقع قدر نال میل نئیں کھاندا۔"
-
-#: includes/class-babilim-installer.php:249
-#: includes/class-babilim-installer.php:254
-msgid "Another installation is running; try again in a moment."
-msgstr "ہک ہور انسٹالیشن چل رہی ہے؛ تھوڑی دیر بعد دوبارہ کوشش کرو۔"
-
-#. translators: %s: the invalid server_build_id value.
-#: includes/class-babilim-installer.php:296
-#, php-format
-msgid "Not a valid server_build_id: %s"
-msgstr "درست server_build_id کائنی: %s"
-
-#. translators: 1: the package manifest's own kind. 2: the requested kind.
-#: includes/class-babilim-installer.php:311
-#, php-format
-msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "پیکیج مینی فیسٹ دی قسم '%1$s' درخواست کیتی قسم '%2$s' نال میل نئیں کھاندی۔"
-
-#. translators: 1: the package's text domain. 2: this site's text domain for the component.
-#: includes/class-babilim-installer.php:346
-#, php-format
-msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "پیکیج دا ٹیکسٹ ڈومین '%1$s' اس سائٹ دی کمپوننٹ دی کاپی ('%2$s') نال نہیں ملدا، ایں کِیتے اے انسٹال نہیں کیتا گیا۔"
-
-#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
-#: includes/class-babilim-installer.php:364
-#, php-format
-msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "دِتا گیا ڈومین '%1$s' نہ تاں پیکیج مینی فیسٹ دے اپنے سلگ '%2$s' نال ملدا اے تے نہ ای اوندے text_domain '%3$s' نال۔"
-
-#. translators: %s: the invalid slug.
-#: includes/class-babilim-installer.php:372
-#, php-format
-msgid "Unsafe slug: %s"
-msgstr "غیر محفوظ سلگ: %s"
-
-#. translators: %s: the invalid text domain.
-#: includes/class-babilim-installer.php:375
-#, php-format
-msgid "Unsafe text_domain: %s"
-msgstr "غیر محفوظ text_domain: %s"
-
-#. translators: %s: the expected .mo filename for the package's own text domain.
-#: includes/class-babilim-installer.php:413
-#, php-format
-msgid "The package has no %s for its own text domain."
-msgstr "پیکیج وچ اوندے اپنے ٹیکسٹ ڈومین کِیتے کوئی %s نہیں۔"
-
-#. translators: %s: the manifest.json field that is missing or invalid.
-#: includes/class-babilim-installer.php:470
-#, php-format
-msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json وچ '%s' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:474
-msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json وچ 'entries' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:477
-msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json وچ 'files' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:480
-msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json وچ 'extra_domains' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:483
-msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json وچ 'build_no' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:486
-msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "manifest.json دا 'server_build_id' درست بلڈ آئی ڈی نہیں۔"
-
-#: includes/class-babilim-installer.php:489
-msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "manifest.json دا 'contract' درست ورژن سٹرنگ نہیں۔"
-
-#: includes/class-babilim-installer.php:492
-msgid "manifest.json's 'status' must be 'published'."
-msgstr "manifest.json دا 'status' لازمی 'published' ہووے۔"
-
-#: includes/class-babilim-installer.php:495
-msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "manifest.json دا 'kind' لازمی 'plugin' یا 'theme' ہووے۔"
-
-#: includes/class-babilim-installer.php:498
-msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json وچ 'default_domain_entries' غلط اے۔"
-
-#: includes/class-babilim-installer.php:501
-msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json وچ 'default_domain_files' غلط اے۔"
-
-#. translators: %s: the expected-manifest field that is missing or invalid.
-#: includes/class-babilim-installer.php:524
-#, php-format
-msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest وچ '%s' غائب اے یا غلط اے۔"
-
-#: includes/class-babilim-installer.php:528
-msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "expected_manifest دا 'server_build_id' درست بلڈ آئی ڈی نہیں۔"
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "رول بیک کرن کِیتے کوئی پچھلی بلڈ نہیں۔"
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1657,17 +972,788 @@ msgstr "expected_manifest دا 'server_build_id' درست بلڈ آئی ڈی ن�
 msgid "No record for %s"
 msgstr "%s واسطے کوئی ریکارڈ کائنی"
 
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "ٹوکن بدلݨ کیتے کوئی سائٹ آئی ڈی فائل وچ محفوظ نہیں۔"
+
+#: admin/class-babilim-admin.php:3748
+msgid "No — component inactive"
+msgstr "نہیں — کمپوننٹ غیر فعال ہے"
+
+#: admin/class-babilim-admin.php:3752
+msgid "No — component removed"
+msgstr "نہیں — کمپوننٹ ہٹا ݙتا ڳیا"
+
+#: admin/class-babilim-admin.php:3750
+msgid "No — installed version differs from the active one"
+msgstr "نہیں — انسٹال کیتا ہویا ورژن فعال ورژن کنوں مختلف ہے"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "درست server_build_id کائنی: %s"
+
+#: admin/class-babilim-cell.php:145
+msgid "Not covered by the free service plan"
+msgstr "مفت سروس پلان وچ شامل کینی"
+
+#: admin/class-babilim-cell.php:127
+msgid "Not installed"
+msgstr "انسٹال کینی"
+
+#: admin/class-babilim-admin.php:4429
+msgid "Not registered yet"
+msgstr "ہݨ تائیں رجسٹر کائنی"
+
+#: admin/class-babilim-cell.php:152
+msgid "Not supported"
+msgstr "سپورٹ نئیں کیتا ڳیا"
+
+#: admin/class-babilim-admin.php:4431
+msgid "Not verified"
+msgstr "تصدیق کائنی تھئی"
+
+#: admin/class-babilim-admin.php:1555
+#: admin/class-babilim-admin.php:4250
+#: admin/class-babilim-admin.php:4990
+msgid "Note (optional)"
+msgstr "نوٹ (اختیاری)"
+
+#: admin/class-babilim-admin.php:3569
+msgid "Nothing to choose."
+msgstr "چݨݨ کیتے کجھ کائنی۔"
+
+#: admin/class-babilim-admin.php:3506
+msgid "Nothing to confirm."
+msgstr "تصدیق کیتے کجھ کائنی۔"
+
+#: admin/class-babilim-admin.php:3895
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "پہلے کنوں بند: پلگ ان مٹاوݨ نال ایں سائٹ دی شناخت رکھی ویندی ہے، تاں جو دوبارہ انسٹال کرن تے اوہو ورتی ونڄ سڳے۔"
+
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
 msgstr "اک یا ودھ فائلاں ہُن مینی فیسٹ نال نہیں ملدیاں۔"
 
-#: includes/class-babilim-installer.php:705
-msgid "No previous build to roll back to."
-msgstr "رول بیک کرن کِیتے کوئی پچھلی بلڈ نہیں۔"
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:4461
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "ایں سائٹ کِیتے اکو واری خریداری: %1$s %2$s۔ ایندے وچ ترجمے دیاں سبھ آوݨ آلیاں اپ ڈیٹس شامل ہن۔ ادائیگی Paddle ولوں نویں ٹیب وچ کیتیویندی ہے۔"
+
+#: admin/class-babilim-admin.php:3776
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "صرف نیٹ ورک ایڈمنسٹریٹر ایہ کم کر سڳدا ہے، کیوں جو ایہ ترجمے دیاں اوہ فائلاں بدلیندا ہے جیڑھیاں ایں نیٹ ورک دیاں ساریاں سائٹاں وچ سانجھیاں ہن۔"
+
+#: includes/class-babilim-packager.php:180
+msgid "Only plugins and themes can be packaged."
+msgstr "صرف پلگ اِن تے تھیم پیکیج کیتے ونج سکدے ہن۔"
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "صرف تݙاں جݙاں تusی کسے ایجھے پلگ ان یا تھیم واسطے اپ لوڈ دی تصدیق کرو جیڑھا WordPress.org تے نہیں ہے: ہر .php تے .js فائل، ہر block.json فائل، تے اس جزو دے مین فولڈر وچ readme.txt، readme.md، style.css تے theme.json، zip دی شکل وچ، عام رازدار فائلاں چھوڑن دے بعد۔"
+
+#: admin/class-babilim-admin.php:2086
+msgid "Open Babilim settings"
+msgstr "Babilim ترتیباں کھولو"
+
+#: admin/class-babilim-cell.php:150
+msgid "Original language"
+msgstr "اصلی زبان"
+
+#: admin/class-babilim-admin.php:4244
+msgid "Original string"
+msgstr "اصلی سٹرنگ"
+
+#: admin/class-babilim-admin.php:4446
+msgid "Paid"
+msgstr "ادائیگی والا"
+
+#: admin/class-babilim-admin.php:4448
+msgid "Partner"
+msgstr "پارٹنر"
+
+#: admin/class-babilim-admin.php:2234
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "مہربانی کر کے چیک کرو جو تہاݙی سائٹ انٹرنیٹ توں پہنچ وچ ہے، فیر ݙوبارہ کوشش کرو۔"
+
+#: admin/class-babilim-admin.php:1445
+msgid "Please choose a category for this report."
+msgstr "مہربانی کر تے ایں رپورٹ کیتے زمرہ چݨو۔"
+
+#: admin/class-babilim-admin.php:4747
+msgid "Plugin"
+msgstr "پلگ اِن"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:620
+#, php-format
+msgid "Plugin · %s"
+msgstr "پلگ اِن · %s"
+
+#: admin/class-babilim-translations-table.php:515
+msgid "Plugins"
+msgstr "پلگ اِن"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:4252
+msgid "Preview"
+msgstr "پیش نظارہ"
+
+#: admin/class-babilim-admin.php:4589
+msgid "Purchase restored. This site is now licensed."
+msgstr "خریداری بحال تھی گئی۔ ہݨ اے سائٹ لائسنس یافتہ ہے۔"
+
+#: includes/class-babilim-default-index.php:958
+msgid "Re-parsed entry count did not match the built index."
+msgstr "دوبارہ پارس کیتی گئی اندراجات دی گݨتی بݨائے گئے انڈیکس نال میل کائنی کھاندی۔"
+
+#: admin/class-babilim-admin.php:2257
+msgid "Re-verify"
+msgstr "ݙوبارہ تصدیق کرو"
+
+#: admin/class-babilim-admin.php:4902
+msgid "Rebuild index now"
+msgstr "ہݨ انڈیکس ݙوبارہ بݨاؤ"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "Babilim دی زبان فائل ڈائریکٹری توں باہر لکھݨ توں انکار۔"
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "رجسٹریشن دے جواب وچ ضروری خانے غائب ہن۔"
+
+#: admin/class-babilim-admin.php:2320
+msgid "Registration restarted."
+msgstr "رجسٹریشن ولدا شروع کر ݙتی ڳئی۔"
+
+#: admin/class-babilim-admin.php:3499
+#: admin/class-babilim-admin.php:3563
+#: admin/class-babilim-translations-table.php:733
+msgid "Remove"
+msgstr "ہٹاؤ"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed"
+msgstr "Babilim دا انسٹال کیتا ہر کجھ ہٹاؤ"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "Babilim دا انسٹال کیتا ہر کجھ ہٹاؤ؟ ایہ اس سائٹ تے ہر پلگ اِن تے تھیم کیتے Babilim دیاں انسٹال کیتیاں ہوئیاں ساریاں زبان فائلاں مٹا ݙیسی۔"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:677
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "کیا %1$s دا %2$s وچ ترجمہ ایں سائٹ توں ہٹاوݨا اے؟"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2729
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "%d انسٹال شدہ کمپوننٹ ہٹا ݙتا ڳیا۔"
+msgstr[1] "%d انسٹال شدہ کمپوننٹ ہٹا ݙتے ڳئے۔"
+
+#: admin/class-babilim-cell.php:214
+msgid "Removed after a failed integrity check"
+msgstr "سالمیت دی جانچ ناکام تھیݨ دے بعد ہٹا ݙتا گیا"
+
+#: admin/class-babilim-admin.php:1147
+msgid "Removed."
+msgstr "ہٹا ݙتا ڳیا۔"
+
+#: admin/class-babilim-admin.php:4932
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "اس سائٹ تے ہر پلگ اِن تے تھیم کیتے Babilim دیاں انسٹال کیتیاں ہوئیاں ساریاں زبان فائلاں ہٹیندا ہے۔"
+
+#: admin/class-babilim-admin.php:3565
+#: admin/class-babilim-admin.php:4954
+#: admin/class-babilim-translations-table.php:735
+msgid "Report a problem"
+msgstr "مسئلے دی رپورٹ کرو"
+
+#: admin/class-babilim-admin.php:4087
+#: admin/class-babilim-admin.php:4235
+msgid "Report translation"
+msgstr "ترجمے دی رپورٹ کرو"
+
+#: admin/class-babilim-cell.php:371
+msgid "Request newer translation"
+msgstr "نویں ترجمے دی درخواست کرو"
+
+#: admin/class-babilim-cell.php:371
+#: admin/class-babilim-translations-table.php:455
+msgid "Request translation"
+msgstr "ترجمے دی درخواست کرو"
+
+#: admin/class-babilim-translations-table.php:469
+msgid "Requestable"
+msgstr "درخواست دے قابل"
+
+#: admin/class-babilim-cell.php:373
+msgid "Requesting…"
+msgstr "درخواست تھیندی پئی اے…"
+
+#: admin/class-babilim-admin.php:3800
+msgid "Restart registration"
+msgstr "رجسٹریشن دوبارہ شروع کرو"
+
+#: admin/class-babilim-admin.php:4520
+msgid "Restore code"
+msgstr "بحالی کوڈ"
+
+#: admin/class-babilim-admin.php:4521
+msgid "Restore purchase"
+msgstr "خریداری بحال کرو"
+
+#: admin/class-babilim-cell.php:369
+msgid "Retry request"
+msgstr "درخواست ولدا کرو"
+
+#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3562
+#: admin/class-babilim-translations-table.php:732
+msgid "Roll back"
+msgstr "پچھلی حالت تے ولو"
+
+#: admin/class-babilim-admin.php:3564
+#: admin/class-babilim-translations-table.php:734
+msgid "Roll back and report"
+msgstr "پچھلی حالت تے ولو تے رپورٹ کرو"
+
+#: admin/class-babilim-admin.php:4995
+msgid "Roll back and send report"
+msgstr "پچھلی حالت تے ولو تے رپورٹ بھیجو"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:680
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "کیا %1$s دا %2$s وچ ترجمہ پچھلے بلڈ تے واپس کرݨا اے؟"
+
+#: admin/class-babilim-admin.php:1117
+msgid "Rolled back and reported."
+msgstr "پچھلے بلڈ تے واپس کر ݙتا ڳیا تے رپورٹ وی بھیج ݙتی ڳئی۔"
+
+#: admin/class-babilim-admin.php:1058
+msgid "Rolled back to the previous build."
+msgstr "پچھلے بلڈ تے واپس ونڄ ڳیا۔"
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1123
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "واپس ونڄ ڳیا، پر رپورٹ کائنی بھیجی ونڄ سگی: %s"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "رول بیک نال '%1$s' (%2$s) اوور رائٹ ہو ویسی، جیڑھی ہُن کسے ہور انسٹال کیتے ہوئے کمپوننٹ (%3$s) کِیتے مہیا کیتی ویندی پئی اے؛ کجھ وی تبدیل نہیں کیتا گیا۔"
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "ٹوکن بدلݨ دے جواب وچ site_token غائب ہئی۔"
+
+#: admin/class-babilim-admin.php:3901
+msgid "Save changes"
+msgstr "تبدیلیاں محفوظ کرو"
+
+#: admin/class-babilim-cell.php:137
+msgid "Scheduled, waiting to be processed"
+msgstr "شیڈول کیتا ڳیا، کارروائی دا انتظار ہے"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:4238
+msgid "Search"
+msgstr "ڳولو"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Search components"
+msgstr "جزو تلاش کرو"
+
+#: admin/class-babilim-admin.php:4236
+msgid "Search the installed translations"
+msgstr "انسٹال کیتے ہوئے ترجمے ڳولو"
+
+#: admin/class-babilim-translations-table.php:440
+msgid "Select all"
+msgstr "سارے چݨو"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:459
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "گھٹ جزو چݨو: ہر دور وچ وڈھ توں وڈھ %1$d کارروائیاں ہو سگدیاں ہن (تساں %2$d چݨے ہن)۔"
+
+#: admin/class-babilim-admin.php:4262
+#: admin/class-babilim-admin.php:4995
+msgid "Send report"
+msgstr "رپورٹ بھیجو"
+
+#: admin/class-babilim-admin.php:4454
+msgid "Service plan"
+msgstr "سروس پلان"
+
+#: admin/class-babilim-admin.php:403
+#: admin/class-babilim-admin.php:3108
+#: admin/class-babilim-admin.php:3400
+msgid "Settings"
+msgstr "ترتیباں"
+
+#: admin/class-babilim-admin.php:3880
+msgid "Share error reports"
+msgstr "ایرر رپورٹاں شیئر کرو"
+
+#: admin/class-babilim-admin.php:2543
+msgid "Share this report"
+msgstr "ایہ رپورٹ شیئر کرو"
+
+#: admin/class-babilim-admin.php:4518
+msgid "Show a new restore code"
+msgstr "نواں بحالی کوڈ ݙکھاؤ"
+
+#: admin/class-babilim-admin.php:3875
+msgid "Show the \"Report translation\" entry in the admin toolbar"
+msgstr "ایڈمن ٹول بار وچ \"ترجمہ دی رپورٹ کرو\" اندراج ڈکھاؤ"
+
+#: admin/class-babilim-cell.php:65
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "ایں کمپوننٹ دا کجھ متن ایندے مصنف ہارڈ کوڈ کیتا ہے تے زبان پیک نال ایندا ترجمہ کائنی تھی سڳدا۔"
+
+#: admin/class-babilim-admin.php:4441
+msgid "Status"
+msgstr "حالت"
+
+#: admin/class-babilim-cell.php:154
+msgid "Status unknown"
+msgstr "حالت نامعلوم"
+
+#: admin/class-babilim-admin.php:4259
+msgid "String context"
+msgstr "سٹرنگ دا سیاق"
+
+#: admin/class-babilim-admin.php:1551
+#: admin/class-babilim-admin.php:4249
+#: admin/class-babilim-admin.php:4988
+msgid "Suggested translation"
+msgstr "تجویز کیتا ہویا ترجمہ"
+
+#: admin/class-babilim-admin.php:4793
+msgid "Supplementary translation index"
+msgstr "اضافی ترجمیاں دی فہرست"
+
+#: admin/class-babilim-admin.php:2679
+msgid "Supplementary translation index rebuilt."
+msgstr "اضافی ترجمیاں دی فہرست ولدا بݨا ݙتی ڳئی۔"
+
+#: admin/class-babilim-admin.php:4819
+msgid "Supplementary translation maintenance"
+msgstr "اضافی ترجمے دی دیکھ بھال"
+
+#: admin/class-babilim-admin.php:3721
+msgid "Supplementary translations"
+msgstr "اضافی ترجمے"
+
+#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
+#: includes/class-babilim-default-index.php:532
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "کہیں کوں یتیم کیتے بغیر صفائی روک ݙتی گئی: %s۔"
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2697
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "سکین مکمل تھی گیا: %d فائل مٹائی ڳئی۔"
+msgstr[1] "سکین مکمل تھی گیا: %d فائلاں مٹائیاں ڳیاں۔"
+
+#: admin/class-babilim-admin.php:4908
+msgid "Sweep now"
+msgstr "هݨ سکین کرو"
+
+#: admin/class-babilim-admin.php:2341
+#: admin/class-babilim-admin.php:2415
+msgid "Sync complete."
+msgstr "سنک مکمل تھی ڳیا۔"
+
+#: admin/class-babilim-admin.php:1403
+#: admin/class-babilim-admin.php:4266
+msgid "Thank you. Your report was sent."
+msgstr "شکریہ۔ تہاݙی رپورٹ بھیج ݙتی ڳئی۔"
+
+#: admin/class-babilim-admin.php:472
+#: admin/class-babilim-admin.php:1160
+#: admin/class-babilim-admin.php:1361
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "ایہ کمپوننٹ اس سائٹ تے انسٹال کائناں، ایâس کرکے ایندے کیتے ترجمہ دی درخواست نہیں کیتی ونڄ سڳدی۔"
+
+#: admin/class-babilim-admin.php:4558
+msgid "That does not look like a restore code."
+msgstr "اے بحالی کوڈ دے طور تے ٹھیک کائنی لگدا۔"
+
+#: admin/class-babilim-admin.php:1751
+msgid "That is not a valid WordPress locale code. Nothing was saved."
+msgstr "ایہ WordPress دا درست لوکیل کوڈ کائناں۔ کجھ محفوظ کائناں کیتا ڳیا۔"
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "ایہ درست بلڈ شناخت کار کائنی۔"
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
 msgstr "تبدیلی ترجمیاں دی فہرست وچ درج نہیں ہو سکی؛ مہربانی کر کے ولدا کوشش کرو۔"
+
+#: includes/class-babilim-default-index.php:624
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "صفائی تھی گئی، پر کجھ تبدیلیاں ترجمیاں دی فہرست وچ درج نئیں تھی سگیاں؛ اڳلی صفائی وچ انہاں کوں درج کرݨ دی ولدا کوشش کیتی ویسی۔"
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "اس جزو وچ اپ لوڈ کرن جوڳیاں کوئی فائلاں نہیں ہن۔"
+
+#: includes/class-babilim-packager.php:190
+msgid "The component is not inside the plugins or themes directory."
+msgstr "کمپوننٹ پلگ اِن یا تھیم ڈائریکٹری دے اندر نہیں اے۔"
+
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
+msgid "The component's main file was not found."
+msgstr "کمپوننٹ دی مین فائل نہیں لبھی۔"
+
+#: includes/class-babilim-sync-installer.php:415
+msgid "The download response was missing a usable location."
+msgstr "ڈاؤن لوڈ دے جواب وچ کوئی قابل استعمال مقام نہیں ہا۔"
+
+#: admin/class-babilim-admin.php:3876
+msgid "The entry opens a panel to search the translations Babilim installed on this site and report one of them."
+msgstr "ایہ اندراج اکو پینل کھولدا اے جتھے Babilim دے اس سائیٹ تے انسٹال کیتے ہوئے ترجمے لبھے ونج سڳدے ہن تے اوندے وچوں کہیں دی رپورٹ کیتی ونج سڳدی اے۔"
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1522
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "خانہ \"%1$s\" بہوں لمبا ہے: اینکوں %2$d حرف ہن تے حد %3$d ہے۔ کجھ نئیں بھیجیا ڳیا؛ مہربانی کر تے اینکوں چھوٹا کرو تے ول کوشش کرو۔"
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "دِتا گیا ڈومین '%1$s' نہ تاں پیکیج مینی فیسٹ دے اپنے سلگ '%2$s' نال ملدا اے تے نہ ای اوندے text_domain '%3$s' نال۔"
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:874
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "'%s' دی ضم شدہ فہرست ولدی بݨائی گئی، پر ترجمیاں دی فہرست اینکوں درج نئیں کر سگی؛ اڳلی ری بلڈ ولدا کوشش کرسی۔"
+
+#: admin/class-babilim-admin.php:3432
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "اصلی متن تے ایندے توں بݨے ترجمے ہوراں سائٹاں کوں مہیا کیتے ویسن جہڑیاں اے ای ورژن انسٹال کریندیاں ہن۔"
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "پیکیج وچ کوئی مکھ ترجمے دی فائل ظاہر کائنی کیتی ڳئی۔"
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "پیکیج وچ اوندے اپنے ٹیکسٹ ڈومین کِیتے کوئی %s نہیں۔"
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "پیکیج مینی فیسٹ دی قسم '%1$s' درخواست کیتی قسم '%2$s' نال میل نئیں کھاندی۔"
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "پیکیج کنوں کوئی قابل پیش مکھ ترجمے دی فائل نہیں بݨی۔"
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "پیکیج دا ٹیکسٹ ڈومین '%1$s' اس سائٹ دی کمپوننٹ دی کاپی ('%2$s') نال نہیں ملدا، ایں کِیتے اے انسٹال نہیں کیتا گیا۔"
+
+#: includes/class-babilim-upload.php:163
+msgid "The packaged component could not be read."
+msgstr "پیک کیتا ہویا کمپوننٹ پڑھیا نہیں جا سکیا۔"
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "رجسٹریشن چیلنج متوقع شکل وچ کائنی۔"
+
+#: admin/class-babilim-admin.php:4269
+msgid "The report could not be sent."
+msgstr "رپورٹ کائناں بھیجی ونڄ سڳی۔"
+
+#: admin/class-babilim-admin.php:4243
+msgid "The search could not be completed."
+msgstr "ڳولݨ مکمل کائناں تھی سڳیا۔"
+
+#: includes/class-babilim-site.php:847
+msgid "The service asked this site to wait before syncing again."
+msgstr "سروس نے اس سائٹ کوں آکھیا کہ ولدا سنک کرن توں پہلے انتظار کرے۔"
+
+#: admin/class-babilim-admin.php:2228
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "سروس تُہاݙی سائٹ تائیں نہ پہنچ سگی۔ شاید فائر وال، سکیورٹی پلگ ان یا ہوسٹ دا کوئی اصول درخواست روک ریہا ہے؛ مہربانی کرکے /wp-json/babilim/v1/challenge تے درخواستاں دی اجازت ݙیوو۔"
+
+#: includes/class-babilim-upload.php:64
+#: includes/class-babilim-upload.php:69
+msgid "The service's upload offer was incomplete."
+msgstr "سروس دی اپ لوڈ پیشکش ادھوری ہئی۔"
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "ٹیکسٹ ڈومین '%1$s' (%2$s) پہلے ای کسے ہور انسٹال کیتے ہوئے کمپوننٹ (%3$s) کِیتے مہیا کیتا ویندا پیا اے؛ کجھ وی انسٹال نہیں کیتا گیا۔"
+
+#: admin/class-babilim-admin.php:3430
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "اپ لوڈ تیں تئیں رکھیا ویندا ہے جیں تئیں تساں Babilim کوں اونکوں مٹاوݨ دا نہ آکھو۔"
+
+#: admin/class-babilim-admin.php:4747
+msgid "Theme"
+msgstr "تھیم"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:617
+#, php-format
+msgid "Theme · %s"
+msgstr "تھیم · %s"
+
+#: admin/class-babilim-translations-table.php:516
+msgid "Themes"
+msgstr "تھیم"
+
+#: admin/class-babilim-admin.php:3450
+#: includes/class-babilim-upload.php:145
+msgid "There is no upload in progress."
+msgstr "کوئی اپ لوڈ جاری کائنی۔"
+
+#: admin/class-babilim-admin.php:3422
+#: includes/class-babilim-upload.php:96
+msgid "There is no upload waiting for confirmation."
+msgstr "کوئی اپ لوڈ تصدیق دا منتظر کائنی۔"
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:3399
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "ایہ او زباناں ہن جہڑیاں ایہ سائٹ ورتیندی ہے۔ تساں انہاں کوں %s وچ بدل سگدے ہو۔"
+
+#: admin/class-babilim-admin.php:4260
+msgid "These fields will be sent:"
+msgstr "ایہ خانے بھیجے ویسن:"
+
+#: admin/class-babilim-admin.php:1452
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "ایہ بلڈ ایں کمپوننٹ/لوکیل کیتے ایں سائٹ دے معلوم بلڈاں وچ شامل کائناں۔"
+
+#: admin/class-babilim-admin.php:1364
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "ایہ کمپوننٹ ورژن نمبر ظاہر کائناں کریندا، ایâس کرکے ایندے کیتے ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
+
+#: includes/class-babilim-upload.php:112
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "اے کمپوننٹ سروس دی قبول کرن دی حد توں وڈا اے، ایں کِیتے اپ لوڈ نہیں ہو سکدا۔"
+
+#: admin/class-babilim-admin.php:1205
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "ایہ کمپوننٹ پہلے ہی اپ لوڈ تھی ڳیا ہے۔ Babilim ہݨ ایکوں چیک کریندا پئے۔"
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1371
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "ایں کمپوننٹ دا ورژن نمبر %d حرفاں کنوں ودھ لما ہے، جہڑا Babilim سنبھال کائناں سڳدا، ایâس کرکے ایندے کیتے ترجمے دی درخواست نہیں کیتی ونڄ سڳدی۔"
+
+#: admin/class-babilim-admin.php:4518
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "ایں نال نواں بحالی کوڈ جاری تھیسی تے پچھلا کوڈ کم کرݨ چھوڑ ڈیسی۔ جاری رکھو؟"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1993
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "ایں نیٹ ورک وچ سائٹاں ڈھیر ہن، ہک ہک کرکے چیک کائناں کیتیاں ونڄ سڳدیاں، تے کجھ سائٹاں شاید ایں طرح سیٹ ہوون جو پلگ ان مٹاونْ تے اپݨی Babilim شناخت مٹا ݙیون۔ ایجھی سائٹ نال جڑیا ادا شدہ لائسنس خود بخود بحال کائناں تھی سڳدا؛ تُہاکوں %s تے Babilim سپورٹ نال رابطہ کرݨ پوسی۔ شناختاں رکھݨ کیتے منسوخ دباؤ، ہر سائٹ دیاں Babilim ترتیباں وچ \"ان انسٹال کرݨ تے Babilim دا سارا ڈیٹا مٹا ݙیوو\" دا نشان ہٹاؤ، تے ولدا غیر فعال کرو۔ ہر حال وچ غیر فعال کروں؟"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "اس پلگ ان دا اپنا ورژن، تاں جو جے اے بہوں پرانا ہووے تے سروس تہانکوں اپ ڈیٹ کرݨ دا آکھ سگے۔"
+
+#: admin/class-babilim-admin.php:1438
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "ایں رپورٹ وچ کوئی درست پلگ ان یا تھیم تے لوکیل دا ناں کائناں۔"
+
+#: admin/class-babilim-admin.php:1467
+msgid "This report does not name an installed string."
+msgstr "اس رپورٹ وچ کسے انسٹال کیتی ہوئی سٹرنگ دا ناں نہیں ہے۔"
+
+#: admin/class-babilim-admin.php:1449
+msgid "This report is missing a valid build to report against."
+msgstr "ایں رپورٹ وچ رپورٹ کرݨ کیتے درست بلڈ موجود کائنی۔"
+
+#: admin/class-babilim-admin.php:2542
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "ایہ رپورٹ GitHub تے عوامی طور تے پوسٹ کیتی ویسی تے تیجی پارٹیاں اینکوں رکھ سڳدیاں ہن۔"
+
+#: admin/class-babilim-admin.php:4572
+msgid "This restore code was not recognised for this site."
+msgstr "اے بحالی کوڈ ایں سائٹ کِیتے پچھاتا کائنی گیا۔"
+
+#: admin/class-babilim-admin.php:3793
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "ایں سائٹ دی پہلے کنوں فعال رجسٹریشن موجود ہے جیڑھی ہݨ خودکار طور تے بحال نہیں تھی سڳدی۔"
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:911
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "اس سائٹ دے %1$d کمپوننٹ %2$d زباناں وچ ہن، جنہاں کِیتے %3$d چیک بیچ چاہیدے ہن؛ Babilim اک رن وچ زیادہ توں زیادہ %4$d سنبھال سکدا اے۔ ترتیباں وچ منیج کیتیاں زباناں گھٹاؤ یا غیر استعمال شدہ پلگ اِن تے تھیم ڈی ایکٹیویٹ کرو، فیر ہُنے ولدا چیک کرو دباؤ۔"
+
+#: admin/class-babilim-admin.php:4612
+msgid "This site has no purchase to show a code for."
+msgstr "ایں سائٹ دی کوئی خریداری کائنی جیندا کوڈ ݙکھایا ونڄے۔"
+
+#: admin/class-babilim-admin.php:3974
+msgid "This site is already licensed. Reload the page."
+msgstr "ایہ سائٹ پہلے کنوں لائسنس یافتہ ہے۔ ورقہ دوبارہ لوڈ کرو۔"
+
+#: admin/class-babilim-admin.php:3966
+#: admin/class-babilim-admin.php:4564
+#: admin/class-babilim-admin.php:4604
+#: includes/class-babilim-site.php:857
+#: includes/class-babilim-sync-installer.php:405
+msgid "This site is not registered with Babilim yet."
+msgstr "ایہ سائٹ ہݨ تک Babilim نال رجسٹرڈ نہیں ہے۔"
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:2278
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "ایہ سائٹ اوں سائز کولوں وݙی ہے جیڑھا سروس اکو سنک وچ قبول کرین‌دی ہے، ایں کیتے کجھ آئٹم چھوڑ ݙتے ڳئے: %1$d جزو تے %2$d لوکیلز۔"
+
+#: admin/class-babilim-admin.php:3870
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "ایہ سائٹ ملٹی سائٹ نیٹ ورک دا حصہ ہے، جیڑھا نوے ترجمے خودکار طور تے انسٹال نہیں کریندا۔ جیڑھے ترجمے پہلے کنوں انسٹال ہن اوہ ہݨ وی اپڈیٹ تھیندے ہن۔"
+
+#: admin/class-babilim-admin.php:2307
+msgid "This site is verified."
+msgstr "ایں سائٹ دی تصدیق تھی ڳئی ہے۔"
+
+#: admin/class-babilim-admin.php:4576
+msgid "This site must be verified first."
+msgstr "پہلے ایں سائٹ دی تصدیق ضروری ہے۔"
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "اس سائٹ دا URL، تاں جو سروس تصدیق کر سگے جو اے تہاڈی ہے۔"
+
+#: includes/class-babilim-site.php:1483
+msgid "This site's address is too long for Babilim to register."
+msgstr "ایں سائٹ دا پتہ Babilim دے رجسٹر کرݨ کیتے بہوں لمبا ہے۔"
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "ایں سائٹ دا ترتیب ݙتا ہویا لوکیل۔"
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "اس سائٹ دی انسٹال پبلک کی، جیہڑی ثابت کرݨ کیتے ورتی ویندی ہے جو درخواستاں سچ مچ اس سائٹ توں آندیاں ہن۔ صرف پبلک حصہ ای بھیجیا ویندا ہے۔"
+
+#: includes/class-babilim-site.php:1486
+msgid "This site's locale code is not one Babilim can register."
+msgstr "اس سائٹ دا لوکیل کوڈ اوہ نہیں جیڑھا Babilim رجسٹر کر سکے۔"
+
+#: admin/class-babilim-admin.php:4267
+msgid "This string can't be reported from this site."
+msgstr "ایہ سٹرنگ ایں سائٹ توں رپورٹ کائناں تھی سڳدی۔"
+
+#: admin/class-babilim-admin.php:1475
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "اے سٹرنگ اس سائٹ تے انسٹال کیتے ہوئے ترجمیاں وچ شامل نہیں ہے۔ دوبارہ تلاش کرو تے لسٹ وچوں اینکوں چنو۔"
+
+#: admin/class-babilim-admin.php:1478
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "تہاڈی تلاش دے بعد اے ترجمہ اپ ڈیٹ تھی گیا ہے۔ دوبارہ تلاش کرو تے نویں لسٹ وچوں سٹرنگ چنو۔"
+
+#: admin/class-babilim-admin.php:3426
+msgid "To translate this component, Babilim needs its source."
+msgstr "ایہ کمپوننٹ دا ترجمہ کرݨ کیتے Babilim کوں ایندا سورس چاہیدا ہے۔"
+
+#: admin/class-babilim-admin.php:4574
+msgid "Too many attempts. Try again tomorrow."
+msgstr "بہوں کوششاں تھی گیاں۔ کل ولدی کوشش کرو۔"
+
+#: admin/class-babilim-admin.php:4268
+msgid "Too many reports today. Try again tomorrow."
+msgstr "اڄ بہوں ساریاں رپورٹاں تھی ڳیاں ہن۔ کل ولدا کوشش کرو۔"
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "بہوں زیادہ درخواستاں۔"
+
+#: admin/class-babilim-admin.php:3873
+msgid "Toolbar"
+msgstr "ٹول بار"
+
+#: admin/class-babilim-cell.php:139
+msgid "Translating…"
+msgstr "ترجمہ تھیندا پیا ہے…"
+
+#: admin/class-babilim-admin.php:3261
+msgid "Translation does not load"
+msgstr "ترجمہ لوڈ کائنی تھیندا"
+
+#: admin/class-babilim-cell.php:141
+msgid "Translation failed"
+msgstr "ترجمہ ناکام تھی گیا"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3888
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "جیڑھیاں ترجمے دیاں فائلاں تسی %s وچ رکھو او ہمیشہ Babilim دیاں فائلاں کنوں ودھ ترجیح رکھیندیاں ہن۔ جیں تائیں تسی ایہ نشان نہ ہٹاوو، اے رکھیاں ویندیاں ہن۔"
+
+#: admin/class-babilim-admin.php:1183
+msgid "Translation requested."
+msgstr "ترجمے دی درخواست کر ݙتی ڳئی۔"
+
+#: admin/class-babilim-admin.php:394
+#: admin/class-babilim-admin.php:395
+#: admin/class-babilim-translations-table.php:442
+msgid "Translations"
+msgstr "ترجمے"
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:4254
+msgid "Type"
+msgstr "قسم"
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:4242
+msgid "Type at least 2 characters to search."
+msgstr "ڳولݨ کیتے گھٹ توں گھٹ 2 حرف ٹائپ کرو۔"
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:605
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "غیر متوقع HTTP %d جواب۔"
+
+#: admin/class-babilim-admin.php:3892
+msgid "Uninstall"
+msgstr "ان انسٹال"
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1681,33 +1767,189 @@ msgstr "اݨ جاݨی kind: %s"
 msgid "Unsafe domain: %s"
 msgstr "غیر محفوظ ڈومین: %s"
 
-#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1022
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
 #, php-format
-msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "ٹیکسٹ ڈومین '%1$s' (%2$s) پہلے ای کسے ہور انسٹال کیتے ہوئے کمپوننٹ (%3$s) کِیتے مہیا کیتا ویندا پیا اے؛ کجھ وی انسٹال نہیں کیتا گیا۔"
+msgid "Unsafe locale: %s"
+msgstr "غیر محفوظ لوکیل: %s"
 
-#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1075
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
 #, php-format
-msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "رول بیک نال '%1$s' (%2$s) اوور رائٹ ہو ویسی، جیڑھی ہُن کسے ہور انسٹال کیتے ہوئے کمپوننٹ (%3$s) کِیتے مہیا کیتی ویندی پئی اے؛ کجھ وی تبدیل نہیں کیتا گیا۔"
+msgid "Unsafe slug: %s"
+msgstr "غیر محفوظ سلگ: %s"
 
-#. translators: %s: the filename missing from the zip.
-#: includes/class-babilim-installer.php:1167
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
 #, php-format
-msgid "Zip is missing expected file: %s"
-msgstr "زپ وچ متوقع فائل گم ہے: %s"
+msgid "Unsafe text_domain: %s"
+msgstr "غیر محفوظ text_domain: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1171
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "بیس تک زیر التوا تشخیصی واقعات (مثلاً اوہ فائل جیڑھی سالمیت دی جانچ وچ ناکام تھئی)، ہر ہک وچ صرف کوڈ، کمپوننٹ تے لوکیل، تے کݙاہیں وی کوئی سٹرنگ مواد یا ترجمہ شدہ ٹیکسٹ نئیں۔"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:454
+msgid "Update"
+msgstr "اپڈیٹ کرو"
+
+#: admin/class-babilim-cell.php:187
+#: admin/class-babilim-cell.php:189
+msgid "Update available"
+msgstr "اپ ڈیٹ دستیاب ہے"
+
+#: admin/class-babilim-translations-table.php:468
+msgid "Updates"
+msgstr "اپڈیٹاں"
+
+#: admin/class-babilim-cell.php:366
+msgid "Updating…"
+msgstr "اپڈیٹ تھیندی پئی اے…"
+
+#: admin/class-babilim-admin.php:4457
+msgid "Upgrade this site"
+msgstr "ایں سائٹ کوں اپ گریڈ کرو"
+
+#: admin/class-babilim-admin.php:3435
+msgid "Upload and request"
+msgstr "اپ لوڈ کرو تے درخواست کرو"
+
+#: admin/class-babilim-admin.php:1254
+msgid "Upload cancelled."
+msgstr "اپ لوڈ منسوخ کر ݙتا ڳیا۔"
+
+#: admin/class-babilim-admin.php:1286
+msgid "Upload complete — translation requested."
+msgstr "اپ لوڈ مکمل تھی ڳیا — ترجمے دی درخواست کر ݙتی ڳئی۔"
+
+#: admin/class-babilim-cell.php:121
+msgid "Upload expired before it finished"
+msgstr "اپ لوڈ مکݨ توں پہلے ای ختم تھی گیا"
+
+#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:269
+#: admin/class-babilim-cell.php:271
+msgid "Upload in progress — continue or cancel"
+msgstr "اپ لوڈ جاری ہے — جاری رکھو یا منسوخ کرو"
+
+#: admin/class-babilim-admin.php:3420
+msgid "Upload this component?"
+msgstr "ایہ کمپوننٹ اپ لوڈ کروں؟"
+
+#: admin/class-babilim-cell.php:118
+msgid "Upload was not accepted"
+msgstr "اپ لوڈ قبول نئیں تھیا"
+
+#: admin/class-babilim-admin.php:3448
+msgid "Uploading"
+msgstr "اپ لوڈ تھیندا پئے"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:3453
 #, php-format
-msgid "sha256 mismatch for %s"
-msgstr "%s کِیتے sha256 بے میل"
+msgid "Uploading part %1$d of %2$d…"
+msgstr "حصہ %1$d از %2$d اپ لوڈ تھیندا پئے…"
 
-#: includes/class-babilim-installer.php:1181
-msgid "The package declares no main translation file."
-msgstr "پیکیج وچ کوئی مکھ ترجمے دی فائل ظاہر کائنی کیتی ڳئی۔"
+#: admin/class-babilim-admin.php:3435
+msgid "Uploading…"
+msgstr "اپ لوڈ تھیندا پئے…"
+
+#: admin/class-babilim-admin.php:4433
+msgid "Verified"
+msgstr "تصدیق تھی گئی"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "تصدیق دے جواب وچ site_token غائب ہئی۔"
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:614
+#, php-format
+msgid "Version %s"
+msgstr "ورژن %s"
+
+#: admin/class-babilim-admin.php:4641
+msgid "What is sent when Babilim checks this site"
+msgstr "جݙاں Babilim ایں سائٹ دی جانچ کریندا ہے تاں کیا بھیجیا ویندا ہے"
+
+#: admin/class-babilim-admin.php:3068
+msgid "What is sent when you enable Babilim"
+msgstr "Babilim فعال کرݨ تے کیا کجھ بھیجیا ویندا ہے"
+
+#: admin/class-babilim-admin.php:3881
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "جݙاں Babilim دے اندر کجھ ناکام تھیندا ہے تاں Babilim سروس کوں ایرر رپورٹ بھیجو تاں جو اینکوں GitHub تے عوامی مسئلے دے طور تے شائع کیتا ونڄ سڳے۔ رپورٹ ایں سائٹ دی طرفوں بھیجی ویندی ہے، اوہو تصدیق نال جیڑھی Babilim سروس کوں ہر دوجی درخواست وچ ہوندی ہے۔ سروس صرف ایرر کوڈ تے ورژن GitHub تے عوامی مسئلے دے طور تے شائع کریندی ہے؛ عوامی مسئلے وچ سائٹ دا پتہ، مواد یا فائل پاتھ نہیں ہوندے۔ ڈیفالٹ طور تے بند ہے۔"
+
+#: admin/class-babilim-admin.php:1559
+#: admin/class-babilim-admin.php:4992
+msgid "Where you saw this (optional)"
+msgstr "تساں اے کتھاں ݙٹھا (اختیاری)"
+
+#: admin/class-babilim-admin.php:3869
+msgid "While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "جڈاں تئیں ایہ چالو اے، جہڑے ترجمے سروس تہاڈیاں منیجڈ زباناں واسطے دستیاب دسیندی اے اوہ روزانہ دو واری سنک دے دوران انسٹال تھی ویندے ہن۔"
+
+#: admin/class-babilim-cell.php:105
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-admin.php:3255
+msgid "Wrong for this context"
+msgstr "ایں سیاق کیتے غلط"
+
+#: admin/class-babilim-admin.php:3249
+msgid "Wrong meaning"
+msgstr "غلط مطلب"
+
+#: admin/class-babilim-admin.php:3257
+msgid "Wrong plural form"
+msgstr "غلط جمع شکل"
+
+#: admin/class-babilim-admin.php:3251
+msgid "Wrong term"
+msgstr "غلط اصطلاح"
+
+#: admin/class-babilim-admin.php:3731
+msgid "Yes"
+msgstr "ہاں"
+
+#: admin/class-babilim-admin.php:430
+#: admin/class-babilim-admin.php:839
+msgid "You are not allowed to do this."
+msgstr "تہانوں اے کم کرݨ دی اجازت کائنی۔"
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "تہاڈا PHP ورژن، موافقت کیتے۔"
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "تہاڈا WordPress ورژن، تاں جو موافق ترجمہ فائلاں مہیا کیتیاں ونجن۔"
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:4626
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "تہاڈا نواں بحالی کوڈ: %s۔ ایکوں کہیں محفوظ جاہ تے رکھو — پچھلا کوڈ ہݨ کم کائنی کریندا۔"
+
+#: admin/class-babilim-admin.php:4261
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "تہاݙی رپورٹ AI ماڈلز ولوں خودکار طور تے پروسیس کیتی ویندی ہے تے دوجیاں سائٹاں کیتے ایں ترجمے کوں بہتر بݨا سڳدی ہے۔"
+
+#: admin/class-babilim-admin.php:2232
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "تُہاݙی سائٹ نے جواب تاں ݙتا، پر متوقع جواب کائناں ہئی۔ ہو سڳدا ہے REST API کہیں ہور پلگ ان نے بدل ݙتی ہووے، یا او اینڈ پوائنٹ کیش تھیا ہووے؛ مہربانی کرکے /wp-json/babilim/v1/challenge کوں کیشنگ تے ری رائٹنگ کنوں الگ رکھو۔"
+
+#: admin/class-babilim-admin.php:2230
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "تہاݙی سائٹ نے جواب ݙیݨ وچ بہوں دیر لائی۔ مہربانی کر کے بعد وچ ݙوبارہ کوشش کرو، تے چیک کرو جو تہاݙا ہوسٹ بہوں سست یا اوورلوڈ تاں کائنی۔"
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "زپ وچ manifest.json کائنی۔"
 
 #. translators: %s: the filename missing from the zip's default-domain supplement.
 #: includes/class-babilim-installer.php:1187
@@ -1715,85 +1957,15 @@ msgstr "پیکیج وچ کوئی مکھ ترجمے دی فائل ظاہر کائ
 msgid "Zip is missing expected default file: %s"
 msgstr "زپ وچ متوقع default فائل گم ہے: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1191
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
 #, php-format
-msgid "sha256 mismatch for default/%s"
-msgstr "default/%s کِیتے sha256 بے میل"
+msgid "Zip is missing expected file: %s"
+msgstr "زپ وچ متوقع فائل گم ہے: %s"
 
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1214
-#: includes/class-babilim-installer.php:1279
-#: includes/class-babilim-installer.php:1312
-#, php-format
-msgid "Could not stage %s"
-msgstr "%s سٹیج نہیں تھی سڳی"
-
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1221
-#, php-format
-msgid "Could not stage default/%s"
-msgstr "default/%s سٹیج نہیں تھی سڳی"
-
-#. translators: %s: the .mo filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1263
-#, php-format
-msgid "Entry count mismatch for %s"
-msgstr "%s واسطے اندراجاں دی گنتی نہیں ملدی"
-
-#. translators: %s: the .mo filename whose entry count could not be verified.
-#: includes/class-babilim-installer.php:1272
-#, php-format
-msgid "Could not verify entry count for %s"
-msgstr "%s واسطے اندراجاں دی گنتی دی تصدیق نہیں تھی سڳی"
-
-#. translators: %s: the .l10n.php filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1293
-#, php-format
-msgid "l10n.php entry count mismatch for %s"
-msgstr "%s کِیتے l10n.php انٹریاں دی گنتی بے میل"
-
-#: includes/class-babilim-installer.php:1324
-msgid "Default supplement entry count mismatch."
-msgstr "Default سپلیمنٹ دے اندراجاں دی گنتی نہیں ملدی۔"
-
-#: includes/class-babilim-installer.php:1336
-msgid "The package produced no servable main translation file."
-msgstr "پیکیج کنوں کوئی قابل پیش مکھ ترجمے دی فائل نہیں بݨی۔"
-
-#. translators: %s: the filename that could not be prepared for rollback.
-#: includes/class-babilim-installer.php:1628
-#, php-format
-msgid "Could not prepare %s for rollback."
-msgstr "%s نوں رول بیک کِیتے تیار نہیں کیتا جا سکیا۔"
-
-#. translators: %s: the filename that could not be backed up.
-#: includes/class-babilim-installer.php:1644
-#, php-format
-msgid "Could not back up %s before replacing it."
-msgstr "%s کوں بدلݨ کنوں پہلے بیک اپ نہیں کر سڳے۔"
-
-#. translators: %s: the filename that could not be moved into place.
-#: includes/class-babilim-installer.php:1650
-#, php-format
-msgid "Could not move %s into place."
-msgstr "%s کوں اپݨی جاہ تے نہیں رکھ سڳے۔"
-
-#. translators: %s: the filename that could not be read back after it was moved into place.
-#: includes/class-babilim-installer.php:1656
-#, php-format
-msgid "Could not read %s back after moving it into place."
-msgstr "%s نوں جگہ تے رکھن توں بعد ولدا پڑھیا نہیں جا سکیا۔"
-
-#: includes/class-babilim-locale-label.php:53
-msgid "English (United States)"
-msgstr "English (United States)"
-
-#. translators: %s: the technical reason the manifest is unavailable.
-#: includes/class-babilim-manifest.php:546
-#, php-format
-msgid "Babilim_Manifest is unavailable: %s"
-msgstr "Babilim_Manifest مہیا نہیں اے: %s"
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json دا ڈھانچہ غیر متوقع ہے"
 
 #. translators: %s: the underlying filesystem error message.
 #: includes/class-babilim-manifest.php:587
@@ -1801,296 +1973,147 @@ msgstr "Babilim_Manifest مہیا نہیں اے: %s"
 msgid "could not read _manifest.json: %s"
 msgstr "_manifest.json نہیں پڑھ سڳے: %s"
 
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest وچ '%s' غائب اے یا غلط اے۔"
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "expected_manifest دا 'server_build_id' درست بلڈ آئی ڈی نہیں۔"
+
 #. translators: %s: the underlying JSON parser error message.
 #: includes/class-babilim-manifest.php:601
 #, php-format
 msgid "failed to parse _manifest.json: %s"
 msgstr "_manifest.json دا پارس کرݨ ناکام ریہا: %s"
 
-#: includes/class-babilim-manifest.php:608
-msgid "_manifest.json has an unexpected structure"
-msgstr "_manifest.json دا ڈھانچہ غیر متوقع ہے"
+#. translators: 1: components that would be orphaned, 2: components managed in total.
+#: includes/class-babilim-default-index.php:762
+#, php-format
+msgid "it would orphan %1$d of %2$d managed components (more than half)"
+msgstr "ایہ %2$d منظم کمپوننٹس وچوں %1$d کوں یتیم کر ݙیسی (اڌ توں ڈھیر)"
 
-#: includes/class-babilim-packager.php:106
-#: includes/class-babilim-packager.php:115
-#: includes/class-babilim-packager.php:138
-msgid "Could not create the package archive."
-msgstr "پیکیج آرکائیو نہیں بݨ سکیا۔"
+#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
+#: includes/class-babilim-default-index.php:755
+#, php-format
+msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
+msgstr "ایہ ہر منظم %1$s کمپوننٹ کوں یتیم کر ݙیسی (%2$d وچوں %2$d)"
 
-#: includes/class-babilim-packager.php:125
-msgid "A file in the component could not be read, so it was not packaged."
-msgstr "کمپوننٹ دی اک فائل پڑھی نہیں جا سکی، ایں کِیتے اوکوں پیک نہیں کیتا گیا۔"
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "%s کِیتے l10n.php انٹریاں دی گنتی بے میل"
 
-#: includes/class-babilim-packager.php:180
-msgid "Only plugins and themes can be packaged."
-msgstr "صرف پلگ اِن تے تھیم پیکیج کیتے ونج سکدے ہن۔"
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json وچ 'default_domain_entries' غلط اے۔"
 
-#: includes/class-babilim-packager.php:185
-#: includes/class-babilim-packager.php:194
-msgid "The component's main file was not found."
-msgstr "کمپوننٹ دی مین فائل نہیں لبھی۔"
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json وچ 'default_domain_files' غلط اے۔"
 
-#: includes/class-babilim-packager.php:190
-msgid "The component is not inside the plugins or themes directory."
-msgstr "کمپوننٹ پلگ اِن یا تھیم ڈائریکٹری دے اندر نہیں اے۔"
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "زپ وچ manifest.json درست JSON کائنی۔"
 
-#: includes/class-babilim-site.php:348
-#: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1271
-msgid "Babilim ran out of time for this step and will continue on the next check."
-msgstr "Babilim دا ایں مرحلے کیتے وقت مک گیا تے اگلی چیک تے جاری رکھسی۔"
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json وچ '%s' غائب اے یا غلط اے۔"
 
-#: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:315
-msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
-msgstr "Babilim ایں سائٹ دی تصدیق نہیں کر سکیا، اس کیتے تصدیق کامیاب تھیݨ تک کجھ ڈاؤن لوڈ یا انسٹال نہیں تھیسی۔"
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json وچ 'build_no' غائب اے یا غلط اے۔"
 
-#: includes/class-babilim-site.php:530
-#: includes/class-babilim-site.php:643
-msgid "Registration response was missing required fields."
-msgstr "رجسٹریشن دے جواب وچ ضروری خانے غائب ہن۔"
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json وچ 'entries' غائب اے یا غلط اے۔"
 
-#: includes/class-babilim-site.php:536
-#: includes/class-babilim-site.php:650
-msgid "No pending challenge to verify."
-msgstr "تصدیق کیتے کوئی زیر التوا چیلنج نہیں۔"
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json وچ 'extra_domains' غائب اے یا غلط اے۔"
 
-#: includes/class-babilim-site.php:574
-msgid "Verify response was missing site_token."
-msgstr "تصدیق دے جواب وچ site_token غائب ہئی۔"
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json وچ 'files' غائب اے یا غلط اے۔"
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "ٹوکن بدلݨ کیتے کوئی سائٹ آئی ڈی فائل وچ محفوظ نہیں۔"
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "manifest.json دا '%s' متوقع قدر نال میل نئیں کھاندا۔"
 
-#: includes/class-babilim-site.php:744
-msgid "Rotate-token response was missing site_token."
-msgstr "ٹوکن بدلݨ دے جواب وچ site_token غائب ہئی۔"
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "manifest.json دا 'contract' درست ورژن سٹرنگ نہیں۔"
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "manifest.json دا 'kind' لازمی 'plugin' یا 'theme' ہووے۔"
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "manifest.json دا 'server_build_id' درست بلڈ آئی ڈی نہیں۔"
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "manifest.json دا 'status' لازمی 'published' ہووے۔"
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
 msgstr "nonce لازمی ہیکساڈیسیمل سٹرنگ ہووے۔"
 
-#: includes/class-babilim-site.php:805
-msgid "No pending challenge for this nonce."
-msgstr "اس nonce کِیتے کوئی زیر التوا چیلنج نہیں۔"
+#: admin/class-babilim-admin.php:3235
+msgid "per day"
+msgstr "ہر روز"
 
-#: includes/class-babilim-site.php:808
-msgid "Too many requests."
-msgstr "بہوں زیادہ درخواستاں۔"
+#: admin/class-babilim-admin.php:4520
+msgid "rc_…"
+msgstr "rc_…"
 
-#: includes/class-babilim-site.php:847
-msgid "The service asked this site to wait before syncing again."
-msgstr "سروس نے اس سائٹ کوں آکھیا کہ ولدا سنک کرن توں پہلے انتظار کرے۔"
-
-#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
-#: includes/class-babilim-site.php:911
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
 #, php-format
-msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "اس سائٹ دے %1$d کمپوننٹ %2$d زباناں وچ ہن، جنہاں کِیتے %3$d چیک بیچ چاہیدے ہن؛ Babilim اک رن وچ زیادہ توں زیادہ %4$d سنبھال سکدا اے۔ ترتیباں وچ منیج کیتیاں زباناں گھٹاؤ یا غیر استعمال شدہ پلگ اِن تے تھیم ڈی ایکٹیویٹ کرو، فیر ہُنے ولدا چیک کرو دباؤ۔"
+msgid "sha256 mismatch for %s"
+msgstr "%s کِیتے sha256 بے میل"
 
-#: includes/class-babilim-site.php:987
-msgid "Babilim could not finish checking this site."
-msgstr "Babilim ایں سائٹ دی چیکنگ مکمل نہیں کر سکیا۔"
-
-#: includes/class-babilim-site.php:1483
-msgid "This site's address is too long for Babilim to register."
-msgstr "ایں سائٹ دا پتہ Babilim دے رجسٹر کرݨ کیتے بہوں لمبا ہے۔"
-
-#: includes/class-babilim-site.php:1486
-msgid "This site's locale code is not one Babilim can register."
-msgstr "اس سائٹ دا لوکیل کوڈ اوہ نہیں جیڑھا Babilim رجسٹر کر سکے۔"
-
-#: includes/class-babilim-sync-installer.php:329
-msgid "The download response was missing a usable location."
-msgstr "ڈاؤن لوڈ دے جواب وچ کوئی قابل استعمال مقام نہیں ہا۔"
-
-#: includes/class-babilim-upload.php:64
-#: includes/class-babilim-upload.php:69
-msgid "The service's upload offer was incomplete."
-msgstr "سروس دی اپ لوڈ پیشکش ادھوری ہئی۔"
-
-#: includes/class-babilim-upload.php:112
-msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "اے کمپوننٹ سروس دی قبول کرن دی حد توں وڈا اے، ایں کِیتے اپ لوڈ نہیں ہو سکدا۔"
-
-#: includes/class-babilim-upload.php:163
-msgid "The packaged component could not be read."
-msgstr "پیک کیتا ہویا کمپوننٹ پڑھیا نہیں جا سکیا۔"
-
-#: includes/class-babilim-upload.php:293
-msgid "A part of the upload kept failing, so the upload was cancelled."
-msgstr "اپ لوڈ دا اکو حصہ بار بار ناکام ریہا، اس کیتے اپ لوڈ منسوخ کر ݙتا گیا۔"
-
-#. translators: %s: the file path that could not be read.
-#: includes/class-babilim-wp-fs.php:91
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
 #, php-format
-msgid "Could not read: %s"
-msgstr "نہیں پڑھ سکیا: %s"
+msgid "sha256 mismatch for default/%s"
+msgstr "default/%s کِیتے sha256 بے میل"
 
-#: admin/class-babilim-cell.php:146
-msgid "Original language"
-msgstr "اصلی زبان"
+#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:749
+msgctxt "component kind in the sweep brake message"
+msgid "plugin"
+msgstr "پلگ ان"
 
-#: admin/class-babilim-admin.php:2156
-msgid "This report will be posted publicly on GitHub and may be kept by third parties."
-msgstr "ایہ رپورٹ GitHub تے عوامی طور تے پوسٹ کیتی ویسی تے تیجی پارٹیاں اینکوں رکھ سڳدیاں ہن۔"
+#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:746
+msgctxt "component kind in the sweep brake message"
+msgid "theme"
+msgstr "تھیم"
 
-#: admin/class-babilim-admin.php:2157
-msgid "Share this report"
-msgstr "ایہ رپورٹ شیئر کرو"
+#. translators: a problem report category: none of the other listed kinds of problem applies.
+#: admin/class-babilim-admin.php:3264
+msgctxt "problem report category"
+msgid "Other"
+msgstr "ہور"
 
-#: admin/class-babilim-admin.php:2158
-msgid "Always share"
-msgstr "Always share"
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Available"
+msgstr "دستیاب"
 
-#: admin/class-babilim-admin.php:2159
-msgid "Don't share"
-msgstr "Don't share"
-
-#: admin/class-babilim-admin.php:3424
-msgid "Error reports"
-msgstr "ایرر رپورٹاں"
-
-#: admin/class-babilim-admin.php:3426
-msgid "Share error reports"
-msgstr "ایرر رپورٹاں شیئر کرو"
-
-#. translators: %d: number of error reports waiting for the owner's decision.
-#: admin/class-babilim-admin.php:2136
-#, php-format
-msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgstr[0] "%d رپورٹ انتظار کر رہی ہے۔ \"Always share\" تے \"Don't share\" سارئیں تے لاگو تھیندے ہن۔"
-msgstr[1] "%d رپورٹاں انتظار کر رہیاں ہن۔ \"Always share\" تے \"Don't share\" سارئیں تے لاگو تھیندے ہن۔"
-
-#: admin/class-babilim-admin.php:3621
-#: admin/class-babilim-admin.php:3657
-msgid "Report translation"
-msgstr "ترجمے دی رپورٹ کرو"
-
-#: admin/class-babilim-admin.php:3658
-msgid "Search the installed translations"
-msgstr "انسٹال کیتے ہوئے ترجمے ڳولو"
-
-#. translators: Button label (a verb): runs the search of installed translations.
-#: admin/class-babilim-admin.php:3660
-msgid "Search"
-msgstr "ڳولو"
-
-#: admin/class-babilim-admin.php:3661
-msgid "Babilim has not installed any translation for this language."
-msgstr "Babilim ایں زبان کیتے کوئی ترجمہ انسٹال کائناں کیتا۔"
-
-#: admin/class-babilim-admin.php:3662
-msgid "No installed translation matches."
-msgstr "کوئی انسٹال کیتا ہویا ترجمہ میل کائناں کھاندا۔"
-
-#: admin/class-babilim-admin.php:3665
-msgid "The search could not be completed."
-msgstr "ڳولݨ مکمل کائناں تھی سڳیا۔"
-
-#. translators: Button label (a verb): selects this string as the one to report.
-#: admin/class-babilim-admin.php:3669
-msgid "Choose"
-msgstr "چݨو"
-
-#. translators: Heading of the step that shows the report before it is sent.
-#: admin/class-babilim-admin.php:3674
-msgid "Preview"
-msgstr "پیش نظارہ"
-
-#: admin/class-babilim-admin.php:3682
-msgid "These fields will be sent:"
-msgstr "ایہ خانے بھیجے ویسن:"
-
-#. translators: Button label (a verb): closes the report panel.
-#: admin/class-babilim-admin.php:3687
-msgid "Close"
-msgstr "بند کرو"
-
-#: admin/class-babilim-admin.php:3689
-msgid "This string can't be reported from this site."
-msgstr "ایہ سٹرنگ ایں سائٹ توں رپورٹ کائناں تھی سڳدی۔"
-
-#: admin/class-babilim-admin.php:3690
-msgid "Too many reports today. Try again tomorrow."
-msgstr "اڄ بہوں ساریاں رپورٹاں تھی ڳیاں ہن۔ کل ولدا کوشش کرو۔"
-
-#: admin/class-babilim-admin.php:3691
-msgid "The report could not be sent."
-msgstr "رپورٹ کائناں بھیجی ونڄ سڳی۔"
-
-#. translators: Field label (a noun): whether the component is a plugin or a theme.
-#: admin/class-babilim-admin.php:3676
-msgid "Type"
-msgstr "قسم"
-
-#. translators: Field label (a noun): the identifier of the translation package version the string came from.
-#: admin/class-babilim-admin.php:3680
-msgid "Build"
-msgstr "بلڈ"
-
-#: admin/class-babilim-admin.php:2131
-msgid "Babilim hit an error. Share an error report?"
-msgstr "Babilim وچ ایرر آ ڳیا۔ ایرر رپورٹ شیئر کرو؟"
-
-#: admin/class-babilim-admin.php:3427
-msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
-msgstr "جݙاں Babilim دے اندر کجھ ناکام تھیندا ہے تاں Babilim سروس کوں ایرر رپورٹ بھیجو تاں جو اینکوں GitHub تے عوامی مسئلے دے طور تے شائع کیتا ونڄ سڳے۔ رپورٹ ایں سائٹ دی طرفوں بھیجی ویندی ہے، اوہو تصدیق نال جیڑھی Babilim سروس کوں ہر دوجی درخواست وچ ہوندی ہے۔ سروس صرف ایرر کوڈ تے ورژن GitHub تے عوامی مسئلے دے طور تے شائع کریندی ہے؛ عوامی مسئلے وچ سائٹ دا پتہ، مواد یا فائل پاتھ نہیں ہوندے۔ ڈیفالٹ طور تے بند ہے۔"
-
-#: admin/class-babilim-admin.php:3683
-msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
-msgstr "تہاݙی رپورٹ AI ماڈلز ولوں خودکار طور تے پروسیس کیتی ویندی ہے تے دوجیاں سائٹاں کیتے ایں ترجمے کوں بہتر بݨا سڳدی ہے۔"
-
-#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
-#: admin/class-babilim-admin.php:3664
-msgid "Type at least 2 characters to search."
-msgstr "ڳولݨ کیتے گھٹ توں گھٹ 2 حرف ٹائپ کرو۔"
-
-#: admin/class-babilim-admin.php:2629
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "دستیاب ترجمے اک کلک نال انسٹال کیتے جا سڳدے ہن تے گمشدہ ترجمیاں دی درخواست کیتی جا سڳدی ہے۔ اونکوں بعد نویں ترجمے تے اپ ڈیٹاں خودکار طور تے انسٹال تھی ویندیاں ہن۔ Babilim سروس فیصلہ کریندی ہے جو کہڑے دستیاب ترجمے خودکار طور تے انسٹال تھی سڳدے ہن۔ مفت پلان تے عام طور تے صرف اوہو پلگ ان تے تھیم اجازت ہوندے ہن جنہاں دا Babilim ترجمہ اس سائٹ تے پہلے توں انسٹال ہووے، تاں جو خودکار انسٹالیشناں کوئی نواں مفت سلاٹ نہ گھنن۔"
-
-#: admin/class-babilim-admin.php:3420
-msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "Babilim سروس فیصلہ کریندی ہے جو کہڑے دستیاب ترجمے خودکار طور تے انسٹال تھی سڳدے ہن۔ مفت پلان تے عام طور تے صرف اوہو پلگ ان تے تھیم اجازت ہوندے ہن جنہاں دا Babilim ترجمہ اس سائٹ تے پہلے توں انسٹال ہووے، تاں جو خودکار انسٹالیشناں کوئی نواں مفت سلاٹ نہ گھنن۔"
-
-#: admin/class-babilim-admin.php:1387
-msgid "This report does not name an installed string."
-msgstr "اس رپورٹ وچ کسے انسٹال کیتی ہوئی سٹرنگ دا ناں نہیں ہے۔"
-
-#: admin/class-babilim-admin.php:1395
-msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
-msgstr "اے سٹرنگ اس سائٹ تے انسٹال کیتے ہوئے ترجمیاں وچ شامل نہیں ہے۔ دوبارہ تلاش کرو تے لسٹ وچوں اینکوں چنو۔"
-
-#: admin/class-babilim-admin.php:1398
-msgid "This translation was updated since you searched. Search again and pick the string from the new list."
-msgstr "تہاڈی تلاش دے بعد اے ترجمہ اپ ڈیٹ تھی گیا ہے۔ دوبارہ تلاش کرو تے نویں لسٹ وچوں سٹرنگ چنو۔"
-
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2986
-#, php-format
-msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
-msgstr "Babilim %1$s (ورژن %2$s) دیاں اے فائلاں اپ لوڈ کریسی: ہر .php تے .js فائل، ہر block.json فائل، تے اینکوں دے مین فولڈر وچ readme.txt، readme.md، style.css تے theme.json۔ اے او متن لبھن لئی تے پلگ ان یا تھیم دی شناخت کرن لئی ورتیاں ویندیاں ہن جنکوں ترجمے دی لوڑ ہے۔"
-
-#: admin/class-babilim-admin.php:2987
-msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
-msgstr "ہور ناں یا ایکسٹینشن والیاں فائلاں شامل نہیں ہن، نہ ای uploads، cache، logs، backup، data، vendor، node_modules تے languages فولڈر، چھپیاں ہوئیاں فائلاں، یا اوہ فائلاں جنہاں دے ناں عام رازدار فائلاں نال ملدے ہن (wp-config*، .env*، *.sql، *.log، *.pem، *.key)۔ کوڈ فائلاں وچ ہجے وی اجیہا متن یا ڈیٹا ہو سڳدا ہے جیکوں تusی شیئر نہ کرنا چاہو؛ جے یقین نہ ہووے تاں انہاں کوں چیک کرو۔ سروس آمد تے انہاں ای قسماں دیاں فائلاں کوں دوبارہ ہٹا ݙیندی ہے۔"
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
-msgstr "صرف تݙاں جݙاں تusی کسے ایجھے پلگ ان یا تھیم واسطے اپ لوڈ دی تصدیق کرو جیڑھا WordPress.org تے نہیں ہے: ہر .php تے .js فائل، ہر block.json فائل، تے اس جزو دے مین فولڈر وچ readme.txt، readme.md، style.css تے theme.json، zip دی شکل وچ، عام رازدار فائلاں چھوڑن دے بعد۔"
-
-#: includes/class-babilim-packager.php:132
-msgid "The component has no files that can be uploaded."
-msgstr "اس جزو وچ اپ لوڈ کرن جوڳیاں کوئی فائلاں نہیں ہن۔"
-
-#: includes/class-babilim-packager.php:110
-msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
-msgstr "Babilim ویب سائٹ توں باہر کوئی عارضی فولڈر تصدیق نہیں کر سڳیا، ایں لئی جزو دا پیکیج نہیں بنیا تے کجھ وی اپ لوڈ نہیں تھیا۔ wp-config.php وچ BABILIM_TEMP_DIR کوں ویب روٹ توں باہر لکھن جوڳے فولڈر دے طور تے طے کرو (مثال دے طور تے تہاڈی سائٹ دی پبلک ڈائریکٹری دے اندر نہیں، بلکہ اوندے نال دا فولڈر)، یا اپنے ہوسٹ کولوں منگو۔"
-
-#: includes/class-babilim-upload.php:191
-msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
-msgstr "اس اپ لوڈ دے انتظار دوران Babilim اپ ڈیٹ تھی گیا۔ پرانا پیکیج رد کر ݙتا گیا ہے؛ مہربانی کر کے اپ لوڈ دی دوبارہ تصدیق کرو۔"
+#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:201
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Installed"
+msgstr "انسٹال تھیا ہویا"

@@ -198,7 +198,7 @@ final class Test_Admin_Restore extends TestCase {
 		$this->assertSame( $input ? 1 : 0, $x->query( '//form[@id="babilim-restore-form"]' )->length );
 		$this->assertSame( $new_code ? 1 : 0, $x->query( '//button[normalize-space()="Show a new restore code"]' )->length );
 		$this->assertSame( $new_code ? 1 : 0, $x->query( '//form[@id="babilim-restore-code-form"]' )->length );
-		$this->assertSame( $free_quota, false !== strpos( $x->document->textContent, 'Free quota' ) );
+		$this->assertSame( $free_quota, false !== strpos( $x->document->textContent, 'Free-plan slots' ) );
 		$this->assertStringContainsString( 'Downloads: 4/500 (per day)', $x->document->textContent );
 		$this->assertSame( 1, $this->form_depth( $html ) );
 	}
@@ -368,16 +368,17 @@ final class Test_Admin_Restore extends TestCase {
 		$this->assertSame( 0, $x->query( '//button[normalize-space()="Upgrade this site" or normalize-space()="Opening checkout…"][@data-babilim-busy-label]' )->length );
 	}
 
-	public function test_api_contract_license_required_mentions_the_upgrade_button(): void {
+	public function test_api_contract_license_required_puts_no_upgrade_button_in_the_cell(): void {
 		$doc = (string) file_get_contents( dirname( __DIR__, 2 ) . '/docs/api-contract.md' );
 		$this->assertStringNotContainsString( 'offers no action', $doc );
-		$this->assertStringContainsString( 'Upgrade', $doc );
+		$this->assertStringNotContainsString( 'next to it (the Settings screen shows the same button)', $doc );
+		$this->assertStringContainsString( 'puts no button there', $doc );
 	}
 
 	public function test_readme_mentions_the_one_time_price_the_restore_code_and_the_checkout_page(): void {
 		$readme = $this->readme();
-		$this->assertStringContainsString( '= How much does a license cost? =', $readme );
-		$this->assertStringContainsString( 'A license is a one-time purchase per site domain', $readme );
+		$this->assertStringContainsString( '= How much does the paid plan cost? =', $readme );
+		$this->assertStringContainsString( 'The paid plan is a one-time purchase per site domain', $readme );
 		$this->assertStringNotContainsString( 'not refundable', $readme );
 		$this->assertStringContainsString( '= What is a restore code? =', $readme );
 		$this->assertStringContainsString( 'Settings → Restore purchase', $readme );

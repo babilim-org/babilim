@@ -9,7 +9,7 @@
 # Usage: run-neutral-ux-flow.sh <out-dir> [runs] [scenarios]
 #   out-dir    results and per-run logs go here (outside the repository)
 #   runs       how many times each scenario is repeated, default 1
-#   scenarios  space separated, default "enable settings list"; also bulk, rowactions, l10n, report, errconsent and screenshots; each scenario runs
+#   scenarios  space separated, default "enable settings list"; also bulk, rowactions, l10n, report, errconsent, notices, noquota and screenshots (seam only leaves a SKIP line: it needs a real service, see run-seam.sh); each scenario runs
 #              with and without the admin script (--no-js), on a fresh database
 #
 # Environment:
@@ -24,7 +24,8 @@
 # Cached downloads (WordPress 6.6.4, the wp.org SQLite Database Integration
 # plugin 3.0.2, wp-cli 2.11.0) are fetched with curl on first use. Every
 # process started here is stopped by its recorded PID; the script prints
-# whether anything is left. Exit code is non-zero on any FAIL line.
+# whether anything is left. Exit code is non-zero on any FAIL line, and when
+# the results hold no PASS at all (only SKIP lines: nothing was tested).
 
 set -uo pipefail
 # extglob must be on before the function that uses !(...) is parsed.
@@ -234,6 +235,11 @@ add_action( 'admin_init', static function () {
 } );
 MUPHP
 	fi
+	if [ "$1" = notices ]; then
+		# The same administrator-only seeding URLs the Playground runner mounts.
+		mkdir -p "${ROOT}/wp-content/mu-plugins"
+		cp "${SCRIPT_DIR}/mu-plugins/e2e-notices.php" "${ROOT}/wp-content/mu-plugins/e2e-notices.php"
+	fi
 	local profile=""
 	[ "$1" = list ] && profile=',"profile":"list"'
 	# bulk: bulk-e answers its download with a 500; every download waits a little.
@@ -243,6 +249,8 @@ MUPHP
 	[ "$1" = rowactions ] && profile=',"profile":"list"'
 	[ "$1" = l10n ] && profile=',"profile":"list"'
 	[ "$1" = errconsent ] && profile=',"profile":"errors","fail_builds":["bd_0badc0de0bad"]'
+	[ "$1" = notices ] && profile=',"profile":"errors"'
+	[ "$1" = noquota ] && profile=',"profile":"noquota"'
 	kill_tree "$(cat "${WORK}/site.pid" 2>/dev/null)"
 	: > "${WORK}/site.pid"
 	rm -f "${ROOT}"/wp-content/database/.ht.sqlite*
@@ -298,6 +306,12 @@ MUPHP
 
 for run in $(seq 1 "${RUNS}"); do
 	for scenario in ${SCENARIOS}; do
+		if [ "${scenario}" = seam ]; then
+			# seam talks to a real local instance of the service, never this
+			# mock: only run-seam.sh runs it. Said in the results, not a pass.
+			echo "SKIP browser-seam runs only through run-seam.sh, against a real local service" >> "${RESULTS}"
+			continue
+		fi
 		for flag in "" "--no-js"; do
 			if ! fresh_site "${scenario}"; then
 				echo "FAIL infra the site did not start (run ${run}, ${scenario} ${flag}; see ${WORK}/install.log)" >> "${RESULTS}"
@@ -333,6 +347,12 @@ if [ -z "${left}" ]; then echo "clean" >&2; else echo "still running:${left}" >&
 
 status=0
 if [ ! -s "${RESULTS}" ] || grep -q '^FAIL' "${RESULTS}"; then
+	status=1
+fi
+# Only SKIP lines (say only seam was asked for) means nothing was tested:
+# that is not a pass either.
+if [ -s "${RESULTS}" ] && ! grep -q '^PASS' "${RESULTS}"; then
+	echo "nothing was tested: every result is a SKIP" >&2
 	status=1
 fi
 exit "${status}"

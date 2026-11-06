@@ -1,5 +1,5 @@
 {
-  "description": "Site is entitled to the build; server redirects to a short-lived signed package URL. Location is relative to the API base URL (docs/api/v1.md Base URL); clients resolve it against that base, they don't need it to already be absolute.",
+  "description": "Site is entitled to the build (1.11.0: a free site whose free-plan slot for this component is already bound; downloads only consume an existing allocation); server redirects to a short-lived signed package URL. Location is relative to the API base URL (docs/api/v1.md Base URL); clients resolve it against that base, they don't need it to already be absolute.",
   "http": {
     "method": "POST",
     "path": "/v1/downloads"
@@ -33,6 +33,13 @@
             "period": "daily"
           }
         }
+      }
+    ],
+    "slot_bindings": [
+      {
+        "site_id": "st_3f9c2a1b7e4d",
+        "kind": "plugin",
+        "slug": "component-b"
       }
     ],
     "builds": [

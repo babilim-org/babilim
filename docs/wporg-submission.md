@@ -20,21 +20,21 @@ against the plugin guidelines.
    `WP_Translation_File::transform()`. It never downloads PHP or JavaScript.
    Does this satisfy Guideline 8?
 
-2. Free allowance. Each domain can use one theme and two plugins that are
-   listed on WordPress.org for free; components not listed on WordPress.org,
-   and anything beyond that allowance, need a paid license. The allowance is
-   set by the service and may change; the plugin does not count or enforce
-   any allowance itself, and translation files that were already downloaded
-   keep working. The Babilim service decides which available translations
-   may be installed automatically by the optional background auto-install,
-   and returns that decision with the sync; the plugin does not read the
-   license kind for it. On the free plan automatic installs normally do not take up a new free slot
-   without a click from a user. The admin screen reads the license kind only to
-   show the allowance note and a confirmation before a request, to offer
-   the upgrade, to show the license label, and to choose which restore
-   control to show (a restore-code box for a free site, a new-code button
-   for a licensed one, none for a partner); it never counts or enforces
-   the allowance.
+2. Service plans. The service has a free plan: each domain gets slots for
+   one theme and two plugins that are listed on WordPress.org; components not
+   listed on WordPress.org, and anything beyond those slots, need the paid
+   service plan. The slots are set by the service and may change; the plugin
+   does not count or enforce any slots itself, and translation files that
+   were already downloaded keep working. While the option is on, automatic
+   installs follow the same eligibility rules on every service plan: during
+   the sync the plugin installs what the service lists as available for a
+   managed language; it reads no permission flag and no license kind for
+   this. On the free plan a plugin or theme is listed as available once the
+   site has requested a translation for it, which puts the component on one
+   of its slots; which translations are available is the service's answer,
+   shown as returned. The admin screen reads the license kind only to show
+   the slots row, the note before a request, the plan label, which restore
+   control to show, and whether to show the Upgrade button.
    Is this service software under Guideline 6 rather than trialware under
    Guideline 5?
 
@@ -70,18 +70,19 @@ every request the plugin makes and every field it sends. The plugin loads no
 remote code: it only fetches translation data and builds `.l10n.php` files
 locally. Nothing is sent to the service before the site owner consents, and
 the plugin does not count or enforce any allowance; limits are decided by the
-service and reflected in the UI. The Babilim service decides which
-available translations the optional background auto-install may install,
-and the plugin does not read the license kind for it; the admin screen
-reads the license kind only to show the
-allowance note, the license label and confirmation, to choose the restore
-control, and to offer the upgrade. A Playground blueprint will be added to
-the SVN assets directory (blueprints/blueprint.json) after approval.
+service and reflected in the UI. While the option is on, automatic installs
+follow the same eligibility rules on every service plan: during the sync the
+plugin installs what the service lists as available for a managed language,
+and reads no permission flag and no license kind for it; the admin screen
+reads the license kind only to show the slots row, the plan label and
+confirmation, to choose the restore control, and to offer the upgrade. A
+Playground blueprint will be added to the SVN assets directory
+(blueprints/blueprint.json) after approval.
 
 ## 3. Owner checklist
 
 1. Confirm that `Contributors:` in `readme.txt` is the wp.org account
-   `babilim` and that the version is 1.0.0 (the `Stable tag` in the readme is
+   `babilim` and that the version is 1.2.0 (the `Stable tag` in the readme is
    the reference). Enable two-factor authentication on the account, and make
    sure the account's email receives mail from plugins@wordpress.org.
 2. Send the email above (it may go out together with the submission).

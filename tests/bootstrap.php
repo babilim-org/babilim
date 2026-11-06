@@ -454,6 +454,10 @@ function get_option( $name, $default = false ) {
  * "insert only if absent".
  */
 function add_option( $name, $value, $deprecated = '', $autoload = 'yes' ) {
+	// Real add_option() runs sanitize_option() too -- so a value that
+	// update_option() hands over here for a missing option is sanitized
+	// a second time, as in core.
+	$value = apply_filters( "sanitize_option_{$name}", $value, $name, $value );
 	if ( babilim_test_options_are_shared() ) {
 		$notoptions = wp_cache_get( 'notoptions', 'options' );
 		if ( ! is_array( $notoptions ) || ! isset( $notoptions[ $name ] ) ) {
@@ -470,6 +474,7 @@ function add_option( $name, $value, $deprecated = '', $autoload = 'yes' ) {
 			unset( $notoptions[ $name ] );
 			wp_cache_set( 'notoptions', $notoptions, 'options' );
 		}
+		do_action( "add_option_{$name}", $name, $value );
 		return true;
 	}
 	if ( array_key_exists( $name, $GLOBALS['babilim_test_options'] ) ) {
@@ -477,13 +482,16 @@ function add_option( $name, $value, $deprecated = '', $autoload = 'yes' ) {
 	}
 	$GLOBALS['babilim_test_options'][ $name ]          = babilim_test_deep_copy( $value );
 	$GLOBALS['babilim_test_options_autoload'][ $name ] = $autoload;
+	do_action( "add_option_{$name}", $name, $value );
 	return true;
 }
 
 function update_option( $name, $value, $autoload = null ) {
 	// Real update_option() runs sanitize_option() first, which applies
-	// the `sanitize_option_{$option}` filter register_setting() hooks.
+	// the `sanitize_option_{$option}` filter register_setting() hooks,
+	// then the `pre_update_option_{$option}` filter.
 	$value = apply_filters( "sanitize_option_{$name}", $value, $name, $value );
+	$value = apply_filters( "pre_update_option_{$name}", $value, get_option( $name ), $name );
 	if ( babilim_test_options_are_shared() ) {
 		$old = get_option( $name );
 		if ( $old === $value ) {
@@ -502,15 +510,23 @@ function update_option( $name, $value, $autoload = null ) {
 			unset( $notoptions[ $name ] );
 			wp_cache_set( 'notoptions', $notoptions, 'options' );
 		}
+		do_action( "update_option_{$name}", $old, $value, $name );
 		return true;
 	}
 	// Like core's update_option(): an unchanged value (against get_option()'s
-	// false default for a missing option) is not written.
-	if ( get_option( $name ) === $value ) {
+	// false default for a missing option) is not written, a missing
+	// option goes through add_option() (which fires add_option_{$name}),
+	// and a changed one fires update_option_{$name} once written.
+	$old = get_option( $name );
+	if ( $old === $value ) {
 		return false;
+	}
+	if ( ! array_key_exists( $name, $GLOBALS['babilim_test_options'] ) ) {
+		return add_option( $name, $value, '', $autoload );
 	}
 	$GLOBALS['babilim_test_options'][ $name ]          = babilim_test_deep_copy( $value );
 	$GLOBALS['babilim_test_options_autoload'][ $name ] = $autoload;
+	do_action( "update_option_{$name}", $old, $value, $name );
 	return true;
 }
 
@@ -567,6 +583,18 @@ final class Babilim_Test_Wpdb {
 
 	/** @var string */
 	public $base_prefix = 'wp_';
+
+	/**
+	 * Like wpdb::get_blog_prefix(): the main site's prefix is the base
+	 * prefix, every other site's is {base_prefix}{blog id}_.
+	 *
+	 * @param int|null $blog_id Blog id; the current blog when null.
+	 * @return string
+	 */
+	public function get_blog_prefix( $blog_id = null ) {
+		$blog_id = null === $blog_id ? (int) $GLOBALS['babilim_test_current_blog_id'] : (int) $blog_id;
+		return ( ! $GLOBALS['babilim_test_multisite'] || 1 === $blog_id ) ? $this->base_prefix : $this->base_prefix . $blog_id . '_';
+	}
 
 	/** @var string The current site's own options table (see switch_to_blog()). */
 	public $options = 'wp_options';
@@ -1648,6 +1676,7 @@ function babilim_test_reset() {
 	$GLOBALS['wp_version']                           = '6.7.1';
 	$GLOBALS['babilim_test_wp_remote_requests']      = array();
 	$GLOBALS['babilim_test_wp_remote_responses']     = array();
+	$GLOBALS['babilim_test_wp_remote_hook']          = null;
 	$GLOBALS['babilim_test_rest_routes']             = array();
 	$GLOBALS['babilim_test_download_url_calls']      = array();
 	$GLOBALS['babilim_test_download_url_return']     = null;
@@ -1665,6 +1694,9 @@ function babilim_test_reset() {
 	$GLOBALS['babilim_test_pll_locales']             = array();
 	$GLOBALS['babilim_test_multisite']               = false;
 	$GLOBALS['babilim_test_inline_scripts']          = array();
+	$GLOBALS['babilim_test_user_options']            = array();
+	$GLOBALS['babilim_test_deleted_metadata']        = array();
+	$GLOBALS['babilim_test_admin_bar_showing']       = true;
 	$GLOBALS['babilim_test_user_id']                 = 1;
 	$GLOBALS['babilim_test_network_admin']           = false;
 	$GLOBALS['babilim_test_sites']                   = array( 1 );
@@ -1714,6 +1746,11 @@ function wp_remote_request( $url, $args = array() ) {
 		'url'    => $url,
 		'args'   => $args,
 	);
+
+	// A test's way to change the world while a request is "in flight".
+	if ( isset( $GLOBALS['babilim_test_wp_remote_hook'] ) && is_callable( $GLOBALS['babilim_test_wp_remote_hook'] ) ) {
+		( $GLOBALS['babilim_test_wp_remote_hook'] )( count( $GLOBALS['babilim_test_wp_remote_requests'] ) );
+	}
 
 	$queue = $GLOBALS['babilim_test_wp_remote_responses'];
 	if ( empty( $queue ) ) {
@@ -1965,9 +2002,15 @@ function admin_url( $path = '' ) {
 	return rtrim( (string) $GLOBALS['babilim_test_admin_url'], '/' ) . '/' . ltrim( (string) $path, '/' );
 }
 
-/** wp_get_referer() (wp-includes/functions.php): the test sets the referer in a global. */
+/**
+ * wp_get_referer() (wp-includes/functions.php): a posted
+ * `_wp_http_referer` first, like core's wp_get_raw_referer(); otherwise
+ * the referer a test sets in a global.
+ */
 function wp_get_referer() {
-	$referer = $GLOBALS['babilim_test_referer'] ?? false;
+	$referer = isset( $_REQUEST['_wp_http_referer'] ) && is_string( $_REQUEST['_wp_http_referer'] ) && '' !== $_REQUEST['_wp_http_referer'] // phpcs:ignore WordPress.Security -- core's own reading.
+		? wp_unslash( $_REQUEST['_wp_http_referer'] ) // phpcs:ignore WordPress.Security -- core's own reading.
+		: ( $GLOBALS['babilim_test_referer'] ?? false );
 	return is_string( $referer ) && '' !== $referer ? $referer : false;
 }
 
@@ -2118,7 +2161,8 @@ $GLOBALS['babilim_test_redirects'] = array();
 
 /** wp_safe_redirect()/wp_redirect() (wp-includes/pluggable.php). Recorded only -- never actually redirects a PHPUnit process. */
 function wp_safe_redirect( $location, $status = 302 ) {
-	$GLOBALS['babilim_test_redirects'][] = array( 'location' => $location, 'status' => $status );
+	// allowed_hosts: what the allowed_redirect_hosts filter yields at call time (wp_validate_redirect() reads it).
+	$GLOBALS['babilim_test_redirects'][] = array( 'location' => $location, 'status' => $status, 'allowed_hosts' => apply_filters( 'allowed_redirect_hosts', array() ) );
 	return true;
 }
 
@@ -2251,6 +2295,44 @@ function spawn_cron( $gmt_time = 0 ) {
 	return true;
 }
 
+$GLOBALS['babilim_test_user_options']      = array();
+$GLOBALS['babilim_test_deleted_metadata']  = array();
+$GLOBALS['babilim_test_admin_bar_showing'] = true;
+
+/** is_admin_bar_showing() (wp-includes/admin-bar.php). */
+function is_admin_bar_showing() {
+	return (bool) $GLOBALS['babilim_test_admin_bar_showing'];
+}
+
+/**
+ * update_user_option()/get_user_option() (wp-includes/user.php): a
+ * non-global option is stored under the current blog's prefix, so each
+ * site of a network keeps its own value.
+ */
+function update_user_option( $user_id, $option_name, $newvalue, $is_global = false ) {
+	$key = $is_global ? $option_name : $GLOBALS['wpdb']->get_blog_prefix() . $option_name;
+	$GLOBALS['babilim_test_user_options'][ (int) $user_id ][ $key ] = $newvalue;
+	return true;
+}
+
+function get_user_option( $option, $user = 0 ) {
+	$user = $user ? (int) $user : get_current_user_id();
+	$key  = $GLOBALS['wpdb']->get_blog_prefix() . $option;
+	// Like core: the site's own key first, then the global (unprefixed)
+	// one, then the get_user_option_{$option} filter.
+	$result = $GLOBALS['babilim_test_user_options'][ $user ][ $key ] ?? $GLOBALS['babilim_test_user_options'][ $user ][ $option ] ?? false;
+	return apply_filters( "get_user_option_{$option}", $result, $option, $user );
+}
+
+/** delete_metadata() (wp-includes/meta.php), for user meta deleted across all users. */
+function delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
+	$GLOBALS['babilim_test_deleted_metadata'][] = array( $meta_type, $object_id, $meta_key, $delete_all );
+	foreach ( $GLOBALS['babilim_test_user_options'] as $uid => $keys ) {
+		unset( $GLOBALS['babilim_test_user_options'][ $uid ][ $meta_key ] );
+	}
+	return true;
+}
+
 /** get_current_user_id() (wp-includes/user.php). */
 function get_current_user_id() {
 	return $GLOBALS['babilim_test_user_id'] ?? 1;
@@ -2343,8 +2425,132 @@ function register_setting( $option_group, $option_name, $args = array() ) {
 	$args     = array_merge( $defaults, (array) $args );
 	$GLOBALS['babilim_test_registered_settings'][ $option_name ] = array( 'group' => $option_group ) + $args;
 	if ( is_callable( $args['sanitize_callback'] ) ) {
-		add_filter( "sanitize_option_{$option_name}", $args['sanitize_callback'], 10, 2 );
+		// One argument, like core's register_setting().
+		add_filter( "sanitize_option_{$option_name}", $args['sanitize_callback'] );
 	}
+}
+
+/**
+ * settings_fields() (wp-admin/includes/plugin.php): the option group,
+ * the `update` action and the `{$group}-options` nonce, printed.
+ */
+function settings_fields( $option_group ) {
+	echo "<input type='hidden' name='option_page' value='" . esc_attr( $option_group ) . "' />";
+	echo '<input type="hidden" name="action" value="update" />';
+	wp_nonce_field( "$option_group-options" );
+}
+
+/**
+ * The settings form's fields as the browser posts them, from the short
+ * names older tests use: `locales` and `new_locale` become the language
+ * block, the checkboxes their option names. Anything else (a nonce
+ * override, an unrelated field) passes through unchanged.
+ *
+ * @param array $fields Short field names.
+ * @return array
+ */
+function babilim_test_settings_fields( array $fields = array() ): array {
+	$names = array(
+		'auto_install'             => 'babilim_auto_install',
+		'toolbar_report'           => 'babilim_toolbar_report',
+		'share_errors'             => 'babilim_share_errors',
+		'keep_custom'              => 'babilim_keep_custom_on_purge',
+		'delete_data_on_uninstall' => 'babilim_delete_data_on_uninstall',
+	);
+	$post  = array( 'babilim_manual_locales' => array( 'form' => '1', 'new' => '' ) );
+	foreach ( $fields as $key => $value ) {
+		if ( 'locales' === $key ) {
+			$post['babilim_manual_locales']['checked'] = $value;
+		} elseif ( 'new_locale' === $key ) {
+			$post['babilim_manual_locales']['new'] = $value;
+		} else {
+			$post[ $names[ $key ] ?? $key ] = $value;
+		}
+	}
+	return $post;
+}
+
+/**
+ * Submits the settings form to the options.php stand-in below as one
+ * request: $admin's register_settings() is the admin_init callback, a
+ * valid `babilim_settings-options` nonce and the General tab referer
+ * are added unless $fields has its own, and the hooks that request adds
+ * are dropped afterwards.
+ *
+ * @param Babilim_Admin $admin  The admin instance serving the request.
+ * @param array         $fields Posted fields (see babilim_test_settings_fields()).
+ */
+function babilim_test_submit_settings( Babilim_Admin $admin, array $fields ): void {
+	$filters = $GLOBALS['babilim_test_filters'];
+	$actions = $GLOBALS['babilim_test_actions'];
+	$GLOBALS['babilim_test_registered_settings'] = array();
+	$GLOBALS['babilim_test_actions']['admin_init'] = array(
+		array(
+			'callback'      => array( $admin, 'register_settings' ),
+			'priority'      => 10,
+			'accepted_args' => 1,
+		),
+	);
+	$_POST    = $fields + array(
+		'option_page'      => 'babilim_settings',
+		'action'           => 'update',
+		'_wpnonce'         => wp_create_nonce( 'babilim_settings-options' ),
+		'_wp_http_referer' => admin_url( 'admin.php?page=babilim-settings&tab=general' ),
+	);
+	$_REQUEST = $_POST;
+	try {
+		babilim_test_options_php_update();
+	} finally {
+		$GLOBALS['babilim_test_filters'] = $filters;
+		$GLOBALS['babilim_test_actions'] = $actions;
+	}
+}
+
+/**
+ * The `action=update` branch of wp-admin/options.php, for the posted
+ * $_POST/$_REQUEST, in core's order: admin_init (where
+ * register_setting() runs), the capability (filtered through
+ * option_page_capability_{$option_page}), the `{$option_page}-options` nonce, the
+ * group's registered options, an update_option() of each (null when
+ * the field is missing; strings trimmed, then unslashed), "Settings
+ * saved." when nothing else was reported, the settings-errors
+ * transient, and a redirect to the referer with settings-updated=true.
+ * wp_die() stops it the way it stops core (by throwing here).
+ */
+function babilim_test_options_php_update(): void {
+	// wp-admin/admin.php (required first) fires admin_init.
+	do_action( 'admin_init' );
+	$option_page = isset( $_REQUEST['option_page'] ) ? sanitize_text_field( $_REQUEST['option_page'] ) : 'options'; // phpcs:ignore WordPress.Security -- core's own reading.
+	$capability  = apply_filters( "option_page_capability_{$option_page}", 'manage_options' );
+	if ( ! current_user_can( $capability ) ) {
+		wp_die( 'Sorry, you are not allowed to manage options for this site.', '', array( 'response' => 403 ) );
+	}
+	check_admin_referer( $option_page . '-options' );
+	$options = array();
+	foreach ( $GLOBALS['babilim_test_registered_settings'] as $name => $args ) {
+		if ( $option_page === $args['group'] ) {
+			$options[] = $name;
+		}
+	}
+	if ( array() === $options ) {
+		wp_die( 'The options page is not in the allowed options list.' );
+	}
+	foreach ( $options as $option ) {
+		$value = null;
+		if ( isset( $_POST[ $option ] ) ) { // phpcs:ignore WordPress.Security -- core's own reading.
+			$value = $_POST[ $option ]; // phpcs:ignore WordPress.Security -- core's own reading.
+			if ( ! is_array( $value ) ) {
+				$value = trim( $value );
+			}
+			$value = wp_unslash( $value );
+		}
+		update_option( $option, $value );
+	}
+	if ( ! count( get_settings_errors() ) ) {
+		add_settings_error( 'general', 'settings_updated', 'Settings saved.', 'success' );
+	}
+	set_transient( 'settings_errors', get_settings_errors(), 30 );
+	wp_redirect( add_query_arg( 'settings-updated', 'true', wp_get_referer() ) );
 }
 
 /** plugin_basename() (wp-includes/plugin.php): `{plugin-dir}/{file}` relative to the plugins directory. */

@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Babilim 1.1.0\n"
+"Project-Id-Version: Babilim 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: ary\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T05:52:58+00:00\n"
-"PO-Revision-Date: 2026-10-31T05:52:58+00:00\n"
+"POT-Creation-Date: 2026-11-05T19:50:35+00:00\n"
+"PO-Revision-Date: 2026-11-05T19:50:35+00:00\n"
 "Language: ary\n"
 "Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))));\n"
 "X-Generator: Babilim\n"
@@ -16,210 +16,48 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: babilim.php
-#: admin/class-babilim-admin.php:338
-#: admin/class-babilim-admin.php:339
-#: admin/class-babilim-admin.php:2614
-#: admin/class-babilim-admin.php:2668
+#: admin/class-babilim-admin.php:378
+#: admin/class-babilim-admin.php:379
+#: admin/class-babilim-admin.php:3051
+#: admin/class-babilim-admin.php:3105
 msgid "Babilim"
 msgstr "Babilim"
 
 #. Description of the plugin
 #: babilim.php
 msgid "Fills in missing translations for the plugins and themes already installed on your site."
-msgstr "كيعمّر الترجمات لي ناقصين فالإضافات والقوالب لي ديجا مثبتين فالموقع ديالك."
+msgstr "كيكمّل الترجمات اللي ناقصين فالإضافات والقوالب اللي ديجا مثبتين فالموقع ديالك."
 
-#: admin/class-babilim-admin.php:354
-#: admin/class-babilim-admin.php:355
-#: admin/class-babilim-translations-table.php:400
-msgid "Translations"
-msgstr "الترجمات"
+#: admin/class-babilim-admin.php:1274
+msgid "That upload screen was out of date: a different upload has been prepared since. Nothing was sent. Review the current one from the Translations list."
+msgstr "شاشة التحميل هادي قديمة: تّحضّر تحميل آخر من بعد. ما تبعت والو. راجع اللي دابا من لائحة الترجمات."
 
-#: admin/class-babilim-admin.php:362
-msgid "Babilim Settings"
-msgstr "إعدادات Babilim"
+#: admin/class-babilim-admin.php:3067
+msgid "The free service plan gives each site a limited number of slots for plugins and themes; the slots in use are shown in Settings after you enable Babilim."
+msgstr "خطة الخدمة المجانية كتعطي كل موقع عدد محدود د الخانات د الإضافات والقوالب؛ الخانات المستعملة كتبان فالإعدادات من بعد ما تفعّل Babilim."
 
-#: admin/class-babilim-admin.php:363
-#: admin/class-babilim-admin.php:2671
-#: admin/class-babilim-admin.php:2960
-msgid "Settings"
-msgstr "الإعدادات"
-
-#: admin/class-babilim-admin.php:390
-#: admin/class-babilim-admin.php:789
-msgid "You are not allowed to do this."
-msgstr "ما عندكش الصلاحية باش دير هادشي."
-
-#. translators: 1: the most operations one run accepts, 2: how many were selected.
-#: admin/class-babilim-admin.php:419
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:62
 #, php-format
-msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
-msgstr "اختار عدد أقل ديال المكونات: الحد الأقصى هو %1$d عمليات فكل تشغيل (نتا ختارتي %2$d)."
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site (the limit is %1$d for themes and %2$d for plugins), unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "طلب ترجمة كيدخّل هاد الإضافة ولا القالب فوحدة من خانات خطة الخدمة المجانية د هاد الموقع (الحد هو %1$d للقوالب و%2$d للإضافات)، إلا ما كانتش عندو خانة ديجا. الخانة كتبقى مستعملة، والترجمة اللي فشلات ما كتحررش هاد الخانة."
 
-#: admin/class-babilim-admin.php:432
-#: admin/class-babilim-admin.php:1110
-#: admin/class-babilim-admin.php:1281
-msgid "That component is not installed on this site, so a translation cannot be requested for it."
-msgstr "هاد المكوّن ماكاينش مثبّت فهاد الموقع، عليه ما يمكنش تطلب ترجمة ليه."
+#: admin/class-babilim-translations-table.php:67
+msgid "Requesting a translation puts this plugin or theme on one of the free service plan's slots for this site, unless it already has one. A slot stays used, and a failed translation does not free it."
+msgstr "طلب ترجمة كيدخّل هاد الإضافة ولا القالب فوحدة من خانات خطة الخدمة المجانية د هاد الموقع، إلا ما كانتش عندو خانة ديجا. الخانة كتبقى مستعملة، والترجمة اللي فشلات ما كتحررش هاد الخانة."
 
-#: admin/class-babilim-admin.php:911
-msgid "Already installed."
-msgstr "مثبّت ديجا."
-
-#: admin/class-babilim-admin.php:911
-msgid "Downloaded and installed."
-msgstr "تحمّل وتثبّت."
-
-#: admin/class-babilim-admin.php:934
-#: admin/class-babilim-admin.php:1275
-#: admin/class-babilim-admin.php:1353
-#: admin/class-babilim-admin.php:1954
-#: admin/class-babilim-admin.php:2229
-#: includes/class-babilim-api-client.php:532
-#: includes/class-babilim-site.php:311
-#: includes/class-babilim-site.php:362
-#: includes/class-babilim-site.php:705
-#: includes/class-babilim-site.php:838
-msgid "Babilim has not been enabled for this site yet."
-msgstr "Babilim باقي ما تفعّلاتش لهاد الموقع."
-
-#: admin/class-babilim-admin.php:953
-msgid "No build is available to download for this locale."
-msgstr "ماكاينش شي إصدار متاح للتحميل لهاد اللغة."
-
-#: admin/class-babilim-admin.php:1008
-msgid "Rolled back to the previous build."
-msgstr "تراجعات للإصدار السابق."
-
-#: admin/class-babilim-admin.php:1067
-msgid "Rolled back and reported."
-msgstr "تراجعات وتبعت التقرير."
-
-#. translators: %s: why sending the report failed.
-#: admin/class-babilim-admin.php:1073
+#. translators: 1: the free service plan's theme slot limit, 2: its plugin slot limit (both numbers come from the service).
+#: admin/class-babilim-translations-table.php:80
 #, php-format
-msgid "Rolled back, but the report could not be sent: %s"
-msgstr "تراجعات، ولكن ما قدراش يتصيفط التقرير: %s"
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one (the limit is %1$d for themes and %2$d for plugins). A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "إلا ماكانتش هاد الإضافة ولا القالب فوحدة من خانات خطة الخدمة المجانية د هاد الموقع، طلب ترجمة غادي يدخّلو فوحدة منهم (الحد هو %1$d للقوالب و%2$d للإضافات). الخانة كتبقى مستعملة، والترجمة اللي فشلات ما كتحرر والو خانة. بغيتي تكمل؟"
 
-#: admin/class-babilim-admin.php:1097
-msgid "Removed."
-msgstr "تحيّد."
-
-#: admin/class-babilim-admin.php:1133
-msgid "Translation requested."
-msgstr "تطلبات الترجمة."
-
-#: admin/class-babilim-admin.php:1155
-msgid "This component was already uploaded. Babilim is checking it now."
-msgstr "هاد المكوّن تحمّل من قبل. Babilim كيتحقق منو دابا."
-
-#: admin/class-babilim-admin.php:1195
-msgid "Upload cancelled."
-msgstr "تلغى التحميل."
-
-#: admin/class-babilim-admin.php:1206
-msgid "Upload complete — translation requested."
-msgstr "كمل التحميل — تطلبات الترجمة."
-
-#: admin/class-babilim-admin.php:1284
-msgid "This component does not declare a version number, so a translation cannot be requested for it."
-msgstr "هاد المكوّن ماكيصرّحش برقم النسخة، عليه ما يمكنش تطلب ترجمة ليه."
-
-#. translators: %d: the most characters a version number may have.
-#: admin/class-babilim-admin.php:1291
-#, php-format
-msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
-msgstr "رقم نسخة هاد المكوّن كتر من %d حرف، وBabilim ما يقدرش يتعامل معاه، عليه ما يمكنش تطلب ترجمة ليه."
-
-#: admin/class-babilim-admin.php:1297
-msgid "A translation cannot be requested for that locale on this site right now."
-msgstr "ما يمكنش تطلب ترجمة لهاد اللغة فهاد الموقع دابا."
-
-#: admin/class-babilim-admin.php:1323
-#: admin/class-babilim-admin.php:3688
-msgid "Thank you. Your report was sent."
-msgstr "شكرا. تبعت التقرير ديالك."
-
-#: admin/class-babilim-admin.php:1358
-msgid "This report does not name a valid plugin or theme and locale."
-msgstr "هاد التقرير ما فيهش إضافة ولا قالب ولغة صالحين."
-
-#: admin/class-babilim-admin.php:1365
-msgid "Please choose a category for this report."
-msgstr "عافاك اختار فئة لهاد التقرير."
-
-#: admin/class-babilim-admin.php:1369
-msgid "This report is missing a valid build to report against."
-msgstr "هاد التقرير ناقصو إصدار صالح باش يتبلغ عليه."
-
-#: admin/class-babilim-admin.php:1372
-msgid "This build is not one this site currently knows about for this component/locale."
-msgstr "هاد البناء ماشي واحد من اللي كيعرفهم الموقع دابا لهاد المكوّن/اللغة."
-
-#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
-#: admin/class-babilim-admin.php:1442
-#, php-format
-msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
-msgstr "الحقل \"%1$s\" طويل بزاف: فيه %2$d حرف والحد هو %3$d. ما تصيفط والو؛ عافاك قصّرو وعاود جرب."
-
-#: admin/class-babilim-admin.php:3666
-msgid "Original string"
-msgstr "النص الأصلي"
-
-#: admin/class-babilim-admin.php:3681
-msgid "String context"
-msgstr "سياق النص"
-
-#: admin/class-babilim-admin.php:1467
-#: admin/class-babilim-admin.php:3667
-#: admin/class-babilim-admin.php:4406
-msgid "Current translation"
-msgstr "الترجمة الحالية"
-
-#: admin/class-babilim-admin.php:1471
-#: admin/class-babilim-admin.php:3671
-#: admin/class-babilim-admin.php:4408
-msgid "Suggested translation"
-msgstr "الترجمة المقترحة"
-
-#: admin/class-babilim-admin.php:1475
-#: admin/class-babilim-admin.php:3672
-#: admin/class-babilim-admin.php:4410
-msgid "Note (optional)"
-msgstr "ملاحظة (اختياري)"
-
-#: admin/class-babilim-admin.php:1479
-#: admin/class-babilim-admin.php:4412
-msgid "Where you saw this (optional)"
-msgstr "فين شفتي هادشي (اختياري)"
-
-#. translators: %s: the date and time syncing is expected to resume.
-#: admin/class-babilim-admin.php:1542
-#, php-format
-msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
-msgstr "مزامنة Babilim تأخرات مؤقتا من الخدمة (تحدّدات السرعة)؛ غادي تعاود تجرب من بعد %s."
-
-#: admin/class-babilim-admin.php:1576
-msgid "That is not a valid WordPress locale code. Nothing was saved."
-msgstr "هادا ماشي رمز اللغة صالح ديال WordPress. ما تسجل والو."
-
-#: admin/class-babilim-admin.php:1619
-msgid "Settings saved."
-msgstr "تسجلات الإعدادات."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1681
-#, php-format
-msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
-msgstr "إلا كان هادا مفعّل، منين تحيد التثبيت غادي تتمسح حتى هوية هاد الموقع. الرخصة المدفوعة المرتبطة بهاد الموقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s باش ترجّعها."
-
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1697
-#, php-format
-msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "Babilim معدّ باش يمسح هوية هاد الموقع منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بهاد الموقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s. باش تبقي الهوية، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim، وعاود عطّل الإضافة. بغيتي تعطّل ولو كان؟"
+#: admin/class-babilim-translations-table.php:85
+msgid "If this plugin or theme is not on one of the free service plan's slots for this site yet, requesting a translation puts it on one. A slot stays used, and a failed translation does not free it. Continue?"
+msgstr "إلا ماكانتش هاد الإضافة ولا القالب فوحدة من خانات خطة الخدمة المجانية د هاد الموقع، طلب ترجمة غادي يدخّلو فوحدة منهم. الخانة كتبقى مستعملة، والترجمة اللي فشلات ما كتحرر والو خانة. بغيتي تكمل؟"
 
 #. translators: 1: number of sites on the network that erase their Babilim identity when the plugin is deleted. 2: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1722
+#: admin/class-babilim-admin.php:1974
 #, php-format
 msgid "%1$d site on this network is set to erase its Babilim identity when the plugin is deleted. The paid license attached to that site could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in that site's Babilim settings, and deactivate again. Deactivate anyway?"
 msgid_plural "%1$d sites on this network are set to erase their Babilim identity when the plugin is deleted. The paid license attached to those sites could then not be restored automatically; you would have to contact Babilim support at %2$s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
@@ -230,197 +68,44 @@ msgstr[3] "%1$d مواقع فهاد الشبكة معدّين باش يمسحو 
 msgstr[4] "%1$d موقع فهاد الشبكة معدّين باش يمسحو هوية Babilim ديالهم منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بديك المواقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %2$s. باش تبقي الهويات، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim ديال كل موقع، وعاود عطّل الإضافة. بغيتي تعطّل بكل الأحوال؟"
 msgstr[5] "%1$d موقع فهاد الشبكة معدّين باش يمسحو هوية Babilim ديالهم منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بديك المواقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %2$s. باش تبقي الهويات، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim ديال كل موقع، وعاود عطّل الإضافة. بغيتي تعطّل بكل الأحوال؟"
 
-#. translators: %s: Babilim support email address. Do not translate or change it.
-#: admin/class-babilim-admin.php:1741
+#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
+#: admin/class-babilim-admin.php:3206
 #, php-format
-msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
-msgstr "هاد الشبكة فيها بزاف د المواقع باش نتحققو منهم وحدة وحدة، وشي وحدين فيهم يمكن يكونو معدّين باش يمسحو هوية Babilim ديالهم منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بموقع بحال هاداك ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s. باش تبقي الهويات، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim ديال كل موقع، وعاود عطّل الإضافة. بغيتي تعطّل ولو كان؟"
+msgid "%1$s %2$s."
+msgstr "%1$s %2$s."
 
-#: admin/class-babilim-admin.php:1830
-msgid "Open Babilim settings"
-msgstr "حل إعدادات Babilim"
-
-#: admin/class-babilim-admin.php:1835
-msgid "Babilim could not verify this site, so nothing is downloaded or installed."
-msgstr "Babilim ما قدراتش تتحقق من هاد الموقع، عاد ما غادي يتحمّل ولا يتثبت والو."
-
-#: admin/class-babilim-admin.php:1847
-msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
-msgstr "الخدمة ما قدراتش توصل لموقعك. غالبا شي جدار ناري ولا إضافة أمان ولا قاعدة ديال الاستضافة كتبلوكي الطلب؛ عافاك سمح بالطلبات لـ /wp-json/babilim/v1/challenge."
-
-#: admin/class-babilim-admin.php:1849
-msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
-msgstr "موقعك طوّل بزاف باش يجاوب. عافاك عاود جرب من بعد، وتأكد بلي الاستضافة ديالك ماشي بطيئة ولا مضغوطة بزاف."
-
-#: admin/class-babilim-admin.php:1851
-msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
-msgstr "موقعك جاوب، ولكن ماشي بالجواب المنتظر. يمكن REST API تبدلات من إضافة أخرى، ولا هاداك الـ endpoint مخزّن فالكاش؛ عافاك استثني /wp-json/babilim/v1/challenge من الكاش ومن إعادة الكتابة."
-
-#: admin/class-babilim-admin.php:1853
-msgid "Please check that your site can be reached from the internet, then try again."
-msgstr "عافاك تأكد بلي موقعك كيمكن توصل ليه من الإنترنت، وعاود جرب."
-
-#: admin/class-babilim-admin.php:1876
-msgid "Re-verify"
-msgstr "عاود تحقق"
-
-#. translators: 1: number of components left out, 2: number of locales left out.
-#: admin/class-babilim-admin.php:1897
+#. translators: 1: component name, 2: language name, 3: why the action failed.
+#: admin/class-babilim-admin.php:3301
 #, php-format
-msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
-msgstr "حجم هاد الموقع أكبر من الحجم لي كتقبل الخدمة فمزامنة وحدة، وداكشي علاش ما تضمنوش بعض العناصر: %1$d مكوّن و%2$d لغة."
+msgid "%1$s (%2$s): %3$s"
+msgstr "%1$s (%2$s): %3$s"
 
-#: admin/class-babilim-admin.php:1926
-msgid "This site is verified."
-msgstr "هاد الموقع تم التحقق منو."
-
-#: admin/class-babilim-admin.php:1939
-msgid "Registration restarted."
-msgstr "تعاود التسجيل من الأول."
-
-#: admin/class-babilim-admin.php:1960
-#: admin/class-babilim-admin.php:2034
-msgid "Sync complete."
-msgstr "تمات المزامنة."
-
-#: admin/class-babilim-admin.php:1995
-msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
-msgstr "Babilim كتفعّل وكتفحص هاد الموقع… عاود حمّل هاد الصفحة ولا تسنى حتى يكمل الفحص المبرمج."
-
-#. translators: 1: short name of the step that failed, 2: the message for that failure.
-#: admin/class-babilim-admin.php:2000
+#. translators: 1: the "Bulk <action>:" lead-in.
+#: admin/class-babilim-admin.php:3203
 #, php-format
-msgid "Babilim could not finish enabling (%1$s): %2$s"
-msgstr "Babilim ما قدراتش تكمّل التفعيل (%1$s): %2$s"
+msgid "%1$s nothing to do."
+msgstr "%1$s ما كاين والو باش يتدار."
 
-#: admin/class-babilim-admin.php:2005
-msgid "A host that serves only one PHP request at a time cannot complete this step."
-msgstr "الاستضافة لي كتخدم غير طلب PHP واحد ف الوقت ما يمكنهاش تكمّل هاد الخطوة."
-
-#. translators: %d: number of components found on this site.
-#: admin/class-babilim-admin.php:2026
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-translations-table.php:773
 #, php-format
-msgid "Babilim is enabled: this site is verified and %d component was found."
-msgid_plural "Babilim is enabled: this site is verified and %d components were found."
-msgstr[0] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
-msgstr[1] "Babilim مفعّل: هاد الموقع متحقق منو وتلقى %d مكوّن."
-msgstr[2] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّنين."
-msgstr[3] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّنات."
-msgstr[4] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
-msgstr[5] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
 
-#: admin/class-babilim-admin.php:2111
-msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
-msgstr "Babilim معطّلة. ما غادي يتصيفط والو آخر؛ الترجمات لي تثبتات من قبل كتبقى خدامة."
-
-#: admin/class-babilim-admin.php:2243
-msgid "Supplementary translation index rebuilt."
-msgstr "تعاود بناء فهرس الترجمات التكميلي."
-
-#. translators: %d: number of components removed.
-#: admin/class-babilim-admin.php:2293
+#. translators: 1: action name such as Remove, 2: component name, 3: language name.
+#: admin/class-babilim-translations-table.php:776
 #, php-format
-msgid "Removed %d installed component."
-msgid_plural "Removed %d installed components."
-msgstr[0] "تحيدو %d مكوّن مثبّت."
-msgstr[1] "تحيد %d مكوّن مثبّت."
-msgstr[2] "تحيدو %d مكوّنين مثبّتين."
-msgstr[3] "تحيدو %d مكوّنات مثبّتة."
-msgstr[4] "تحيدو %d مكوّن مثبّت."
-msgstr[5] "تحيدو %d مكوّن مثبّت."
+msgid "%1$s: %2$s (%3$s)"
+msgstr "%1$s: %2$s (%3$s)"
 
-#: admin/class-babilim-admin.php:2295
-msgid "Automatic installs are now off; turn them on again in the settings if you want them."
-msgstr "التثبيتات الأوتوماتيكية توقفات دابا؛ فعّلها من جديد فالإعدادات إلا بغيتيها."
-
-#: admin/class-babilim-admin.php:2616
-msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
-msgstr "Babilim كتلقى الإضافات والقوالب ف هاد الموقع لي ما عندها ترجمة للغتك، وكتثبت ليها وحدة وحدة."
-
-#. translators: %s: a list of language names, joined the way the language joins lists.
-#: admin/class-babilim-admin.php:2624
+#. translators: 1: action name such as Remove, 2: component name.
+#: admin/class-babilim-admin.php:3575
 #, php-format
-msgid "Languages found on this site: %s."
-msgstr "اللغات لي تلقاو ف هاد الموقع: %s."
-
-#: admin/class-babilim-admin.php:2630
-msgid "The free plan covers a limited number of plugins and themes; your exact quota is shown in Settings after you enable Babilim."
-msgstr "الباقة المجانية كتغطي عدد محدود د الإضافات والقوالب؛ الحصة ديالك بالضبط كتبان فالإعدادات من بعد ما تفعّل Babilim."
-
-#: admin/class-babilim-admin.php:2631
-msgid "What is sent when you enable Babilim"
-msgstr "شنو كيتبعت منين تفعّل Babilim"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enabling…"
-msgstr "كيتفعّل…"
-
-#: admin/class-babilim-admin.php:2635
-msgid "Enable Babilim"
-msgstr "فعّل Babilim"
-
-#: admin/class-babilim-admin.php:2636
-msgid "By clicking Enable, you agree to send the information listed above to Babilim."
-msgstr "بالنقر على تفعيل، كتوافق تصيفط المعلومات لي فوق لـ Babilim."
-
-#: admin/class-babilim-admin.php:2670
-#: admin/class-babilim-admin.php:2718
-#: admin/class-babilim-admin.php:4313
-msgid "Check again now"
-msgstr "عاود تحقق دابا"
-
-#. translators: %d: how many translations were installed automatically.
-#: admin/class-babilim-admin.php:2685
-#, php-format
-msgid "Babilim installed %d translation automatically since your last visit."
-msgid_plural "Babilim installed %d translations automatically since your last visit."
-msgstr[0] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
-msgstr[1] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
-msgstr[2] "Babilim ثبّت %d ترجمتين أوتوماتيكيا من آخر زيارة ليك."
-msgstr[3] "Babilim ثبّت %d ترجمات أوتوماتيكيا من آخر زيارة ليك."
-msgstr[4] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
-msgstr[5] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
-
-#. translators: %s: when the last attempt happened.
-#: admin/class-babilim-admin.php:2711
-#, php-format
-msgid "Babilim is enabling and checking this site… (last attempt: %s)"
-msgstr "Babilim كتفعّل وكتفحص هاد الموقع… (آخر محاولة: %s)"
-
-#: admin/class-babilim-admin.php:2715
-msgid "Check again"
-msgstr "عاود تحقق"
-
-#: admin/class-babilim-admin.php:2728
-msgid "No components synced yet."
-msgstr "ما تزامن حتى مكوّن بعد."
-
-#. translators: %d: how many items succeeded.
-#: admin/class-babilim-admin.php:2749
-#, php-format
-msgid "%d succeeded"
-msgid_plural "%d succeeded"
-msgstr[0] "نجحو %d"
-msgstr[1] "نجح %d"
-msgstr[2] "نجحو %d"
-msgstr[3] "نجحو %d"
-msgstr[4] "نجحو %d"
-msgstr[5] "نجحو %d"
-
-#. translators: %d: how many items were skipped.
-#: admin/class-babilim-admin.php:2753
-#, php-format
-msgid "%d skipped"
-msgid_plural "%d skipped"
-msgstr[0] "تفوتو %d"
-msgstr[1] "تفات %d"
-msgstr[2] "تفوتو %d"
-msgstr[3] "تفوتو %d"
-msgstr[4] "تفوتو %d"
-msgstr[5] "تفوتو %d"
+msgid "%1$s: %2$s. Choose the language."
+msgstr "%1$s: %2$s. ختار اللغة."
 
 #. translators: %d: how many items failed.
-#: admin/class-babilim-admin.php:2757
+#: admin/class-babilim-admin.php:3194
 #, php-format
 msgid "%d failed"
 msgid_plural "%d failed"
@@ -432,7 +117,7 @@ msgstr[4] "فشلو %d"
 msgstr[5] "فشلو %d"
 
 #. translators: %d: how many items were not tried yet.
-#: admin/class-babilim-admin.php:2761
+#: admin/class-babilim-admin.php:3198
 #, php-format
 msgid "%d not yet tried"
 msgid_plural "%d not yet tried"
@@ -443,902 +128,44 @@ msgstr[3] "%d ما تجرباوش بعد"
 msgstr[4] "%d ما تجرباوش بعد"
 msgstr[5] "%d ما تجرباوش بعد"
 
-#. translators: 1: the "Bulk <action>:" lead-in.
-#: admin/class-babilim-admin.php:2766
+#. translators: %d: number of error reports waiting for the owner's decision.
+#: admin/class-babilim-admin.php:2522
 #, php-format
-msgid "%1$s nothing to do."
-msgstr "%1$s ما كاين والو باش يتدار."
+msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
+msgstr[0] "ما كاين حتى تقرير كيتسنا. \"Always share\" و \"Don't share\" كيطبقو على التقارير كاملين."
+msgstr[1] "%d تقرير كيتسنا. \"Always share\" و \"Don't share\" كيطبقو عليه."
+msgstr[2] "تقريرين كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم بجوج."
+msgstr[3] "%d تقارير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
+msgstr[4] "%d تقرير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
+msgstr[5] "%d تقرير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
 
-#. translators: 1: the "Bulk <action>:" lead-in, 2: the counts, already joined into a list.
-#: admin/class-babilim-admin.php:2769
+#. translators: %d: how many items were skipped.
+#: admin/class-babilim-admin.php:3190
 #, php-format
-msgid "%1$s %2$s."
-msgstr "%1$s %2$s."
+msgid "%d skipped"
+msgid_plural "%d skipped"
+msgstr[0] "تفوتو %d"
+msgstr[1] "تفات %d"
+msgstr[2] "تفوتو %d"
+msgstr[3] "تفوتو %d"
+msgstr[4] "تفوتو %d"
+msgstr[5] "تفوتو %d"
 
-#: admin/class-babilim-admin.php:2781
-msgid "Bulk download:"
-msgstr "تحميل جماعي:"
-
-#: admin/class-babilim-admin.php:2783
-msgid "Bulk update:"
-msgstr "تحديث جماعي:"
-
-#: admin/class-babilim-admin.php:2785
-msgid "Bulk request:"
-msgstr "طلب جماعي:"
-
-#: admin/class-babilim-admin.php:2798
-msgid "per day"
-msgstr "فاليوم"
-
-#: admin/class-babilim-admin.php:2812
-msgid "Wrong meaning"
-msgstr "المعنى غالط"
-
-#: admin/class-babilim-admin.php:2814
-msgid "Wrong term"
-msgstr "المصطلح غالط"
-
-#: admin/class-babilim-admin.php:2816
-msgid "Broken placeholder"
-msgstr "عنصر نائب مكسور"
-
-#: admin/class-babilim-admin.php:2818
-msgid "Wrong for this context"
-msgstr "غالط فهاد السياق"
-
-#: admin/class-babilim-admin.php:2820
-msgid "Wrong plural form"
-msgstr "صيغة الجمع غالطة"
-
-#: admin/class-babilim-admin.php:2822
-msgid "Negation reversed"
-msgstr "النفي تقلب"
-
-#: admin/class-babilim-admin.php:2824
-msgid "Translation does not load"
-msgstr "الترجمة ما كاتتحملش"
-
-#. translators: a problem report category: none of the other listed kinds of problem applies.
-#: admin/class-babilim-admin.php:2827
-msgctxt "problem report category"
-msgid "Other"
-msgstr "آخر"
-
-#. translators: 1: component name, 2: language name, 3: why the action failed.
-#: admin/class-babilim-admin.php:2864
+#. translators: %d: how many items succeeded.
+#: admin/class-babilim-admin.php:3186
 #, php-format
-msgid "%1$s (%2$s): %3$s"
-msgstr "%1$s (%2$s): %3$s"
-
-#: admin/class-babilim-admin.php:2899
-msgid "Continuing…"
-msgstr "كنكمل…"
-
-#. translators: %d: how many operations are left.
-#: admin/class-babilim-admin.php:2902
-#, php-format
-msgid "Continue next batch (%d left)"
-msgstr "كمّل الدفعة التالية (بقاو %d)"
-
-#: admin/class-babilim-admin.php:2952
-msgid "Search components"
-msgstr "قلّب على المكوّنات"
-
-#. translators: %s: link to the Settings page, with the text "Settings".
-#: admin/class-babilim-admin.php:2959
-#, php-format
-msgid "These are the languages this site uses. You can change them in %s."
-msgstr "هادو هوما اللغات اللي كيستعملهم هاد الموقع. تقدر تبدّلهم من %s."
-
-#: admin/class-babilim-admin.php:2978
-msgid "Upload this component?"
-msgstr "واش ترفع هاد المكوّن؟"
-
-#: admin/class-babilim-admin.php:2980
-#: includes/class-babilim-upload.php:96
-msgid "There is no upload waiting for confirmation."
-msgstr "ما كاين حتى رفع كيتسنى التأكيد."
-
-#: admin/class-babilim-admin.php:2980
-#: admin/class-babilim-admin.php:3007
-#: admin/class-babilim-admin.php:3685
-msgid "Back"
-msgstr "رجوع"
-
-#: admin/class-babilim-admin.php:2984
-msgid "To translate this component, Babilim needs its source."
-msgstr "باش يترجم هاد المكوّن، Babilim خاصو المصدر ديالو."
-
-#: admin/class-babilim-admin.php:2988
-msgid "The upload is kept until you ask Babilim to delete it."
-msgstr "الملفات المرفوعة كتبقى حتى تطلب من Babilim يمسحها."
-
-#: admin/class-babilim-admin.php:2989
-msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
-msgstr "كيتخزن عند مزوّد الاستضافة ديال الخدمة وكتعالجو نماذج الذكاء الاصطناعي باش تخرج الترجمة."
-
-#: admin/class-babilim-admin.php:2990
-msgid "The original text and the translations made from it will be provided to other sites that install the same version."
-msgstr "النص الأصلي والترجمات اللي تعملو منو غادي يتوفرو للمواقع الأخرى اللي مركّبين نفس النسخة."
-
-#: admin/class-babilim-admin.php:2991
-msgid "By continuing you confirm that you have the right to upload this component."
-msgstr "منين تكمل، كتأكد بلي عندك الحق باش ترفع هاد المكوّن."
-
-#: admin/class-babilim-admin.php:2992
-msgid "Upload and request"
-msgstr "ارفع وطلب"
-
-#: admin/class-babilim-admin.php:2992
-msgid "Uploading…"
-msgstr "كيترفع…"
-
-#: admin/class-babilim-admin.php:2993
-#: admin/class-babilim-admin.php:3012
-#: admin/class-babilim-admin.php:3049
-#: admin/class-babilim-admin.php:3106
-msgid "Cancel"
-msgstr "إلغاء"
-
-#: admin/class-babilim-admin.php:3005
-msgid "Uploading"
-msgstr "كيترفع"
-
-#: admin/class-babilim-admin.php:3007
-#: includes/class-babilim-upload.php:145
-msgid "There is no upload in progress."
-msgstr "ما كاين حتى رفع جاري."
-
-#. translators: 1: number of the part being sent, 2: total number of parts.
-#: admin/class-babilim-admin.php:3010
-#, php-format
-msgid "Uploading part %1$d of %2$d…"
-msgstr "كنرفع الجزء %1$d من %2$d…"
-
-#: admin/class-babilim-admin.php:3011
-msgid "Continue"
-msgstr "كمّل"
-
-#: admin/class-babilim-admin.php:3051
-msgid "Confirm"
-msgstr "أكّد"
-
-#: admin/class-babilim-admin.php:3054
-#: admin/class-babilim-admin.php:3118
-#: admin/class-babilim-translations-table.php:691
-msgid "Remove"
-msgstr "حيّد"
-
-#: admin/class-babilim-admin.php:3058
-#: admin/class-babilim-admin.php:3117
-#: admin/class-babilim-translations-table.php:690
-msgid "Roll back"
-msgstr "رجّع للنسخة اللي قبل"
-
-#: admin/class-babilim-admin.php:3061
-msgid "Nothing to confirm."
-msgstr "ما كاين والو باش يتأكد."
-
-#: admin/class-babilim-admin.php:3107
-msgid "Choose a language"
-msgstr "ختار لغة"
-
-#: admin/class-babilim-admin.php:3119
-#: admin/class-babilim-translations-table.php:692
-msgid "Roll back and report"
-msgstr "رجّع للنسخة اللي قبل وبلّغ"
-
-#: admin/class-babilim-admin.php:3120
-#: admin/class-babilim-admin.php:4374
-#: admin/class-babilim-translations-table.php:693
-msgid "Report a problem"
-msgstr "بلّغ على مشكل"
-
-#: admin/class-babilim-admin.php:3124
-msgid "Nothing to choose."
-msgstr "ما كاين والو باش يتختار."
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-admin.php:3130
-#, php-format
-msgid "%1$s: %2$s. Choose the language."
-msgstr "%1$s: %2$s. ختار اللغة."
-
-#: admin/class-babilim-admin.php:3276
-msgid "Supplementary translations"
-msgstr "ترجمات إضافية"
-
-#: admin/class-babilim-admin.php:3277
-msgid "Each component's own contribution to each locale's shared default-domain supplement."
-msgstr "مساهمة كل مكوّن فالإضافة ديال الدومين الافتراضي المشتركة لكل لغة."
-
-#: admin/class-babilim-admin.php:3279
-#: admin/class-babilim-admin.php:3677
-#: admin/class-babilim-translations-table.php:399
-msgid "Component"
-msgstr "المكوّن"
-
-#: admin/class-babilim-admin.php:3280
-#: admin/class-babilim-admin.php:3678
-#: admin/class-babilim-admin.php:4215
-msgid "Language"
-msgstr "اللغة"
-
-#: admin/class-babilim-admin.php:3281
-msgid "Included in index"
-msgstr "داخل في الفهرس"
-
-#: admin/class-babilim-admin.php:3282
-msgid "Entries"
-msgstr "المدخلات"
-
-#: admin/class-babilim-admin.php:3283
-#: admin/class-babilim-admin.php:4219
-msgid "Conflicting keys"
-msgstr "المفاتيح المتعارضة"
-
-#: admin/class-babilim-admin.php:3286
-msgid "Yes"
-msgstr "إيه"
-
-#: admin/class-babilim-admin.php:3303
-msgid "No — component inactive"
-msgstr "لا — المكوّن غير مفعّل"
-
-#: admin/class-babilim-admin.php:3305
-msgid "No — installed version differs from the active one"
-msgstr "لا — النسخة المثبّتة مختلفة على النسخة المفعّلة"
-
-#: admin/class-babilim-admin.php:3307
-msgid "No — component removed"
-msgstr "لا — المكوّن تمسح"
-
-#: admin/class-babilim-admin.php:3309
-msgid "No"
-msgstr "لا"
-
-#: admin/class-babilim-admin.php:3331
-msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
-msgstr "غير مدير الشبكة اللي يقدر يدير هادشي، حيت كيبدّل ملفات الترجمة المشتركة بين جميع المواقع ف هاد الشبكة."
-
-#: admin/class-babilim-admin.php:3347
-msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
-msgstr "Babilim ما قدراتش تكمّل التحقق من هاد الموقع (الخدمة ما قدراتش توصل ليه). التسجيل موقوف."
-
-#: admin/class-babilim-admin.php:3348
-msgid "This site already has an active registration that can no longer be recovered automatically."
-msgstr "هاد الموقع عندو تسجيل نشيط ما بقاش ممكن يتسترجع بشكل تلقائي."
-
-#: admin/class-babilim-admin.php:3355
-msgid "Restart registration"
-msgstr "عاود بدا التسجيل"
-
-#: admin/class-babilim-admin.php:3382
-msgid "Babilim settings"
-msgstr "إعدادات Babilim"
-
-#: admin/class-babilim-admin.php:3389
-msgid "General"
-msgstr "عام"
-
-#: admin/class-babilim-admin.php:3390
-msgid "Advanced"
-msgstr "متقدّم"
-
-#: admin/class-babilim-admin.php:3415
-msgid "Languages"
-msgstr "اللغات"
-
-#: admin/class-babilim-admin.php:3417
-msgid "Automatic installs"
-msgstr "التثبيت الأوتوماتيكي"
-
-#: admin/class-babilim-admin.php:3419
-msgid "Install available translations automatically"
-msgstr "ثبّت الترجمات المتوفرة أوتوماتيكيا"
-
-#: admin/class-babilim-admin.php:3421
-msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
-msgstr "هاد الموقع جزء من شبكة multisite، اللي ما كتثبتش الترجمات الجديدة بشكل تلقائي. الترجمات اللي ديجا مثبّتة كتبقى كتتحدّث."
-
-#: admin/class-babilim-admin.php:3429
-msgid "Custom overrides"
-msgstr "التعديلات المخصصة"
-
-#: admin/class-babilim-admin.php:3431
-msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
-msgstr "حافظ على تعديلات الترجمة ديالي منين تمسح كلشي أو تحيّد هاد الإضافة."
-
-#. translators: %s: folder path, shown as code.
-#: admin/class-babilim-admin.php:3434
-#, php-format
-msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
-msgstr "ملفات الترجمة اللي كتحط ف %s ديما عندها الأولوية على ديال Babilim. كتبقى محفوظة إلا إلا حيّدتي العلامة من هاد الخيار."
-
-#: admin/class-babilim-admin.php:3438
-msgid "Uninstall"
-msgstr "إلغاء التثبيت"
-
-#: admin/class-babilim-admin.php:3440
-msgid "Delete all Babilim data on uninstall"
-msgstr "مسح جميع بيانات Babilim منين تحيد التثبيت"
-
-#: admin/class-babilim-admin.php:3441
-msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
-msgstr "مطفي بشكل افتراضي: حذف الإضافة كيخلّي هوية هاد الموقع، باش إعادة التثبيت تقدر تستعملها من جديد."
-
-#: admin/class-babilim-admin.php:3444
-msgid "Account"
-msgstr "الحساب"
-
-#: admin/class-babilim-admin.php:3447
-msgid "Save changes"
-msgstr "حفظ التغييرات"
-
-#: admin/class-babilim-admin.php:3450
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim"
-msgstr "عطّل Babilim"
-
-#: admin/class-babilim-admin.php:3451
-msgid "Installed translations are kept, but no further checks or downloads will run."
-msgstr "الترجمات المثبّتة كتبقى، ولكن ما غاديش يتدارو تحقّقات ولا تحميلات أخرى."
-
-#: admin/class-babilim-admin.php:3455
-msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
-msgstr "واش تعطّل Babilim؟ الترجمات المثبتة غادي تبقى، ولكن ما بقاتش غادي تتدار فحوصات ولا تحميلات."
-
-#: admin/class-babilim-admin.php:3511
-#: admin/class-babilim-admin.php:3986
-#: admin/class-babilim-admin.php:4026
-#: includes/class-babilim-site.php:857
-#: includes/class-babilim-sync-installer.php:319
-msgid "This site is not registered with Babilim yet."
-msgstr "هاد الموقع باقي ما مسجّلش ف Babilim."
-
-#: admin/class-babilim-admin.php:3519
-msgid "This site is already licensed. Reload the page."
-msgstr "هاد الموقع عندو ديجا رخصة. عاود حمّل الصفحة."
-
-#: admin/class-babilim-admin.php:3521
-#: admin/class-babilim-admin.php:3532
-msgid "Checkout is not available for this site right now."
-msgstr "الدفع ما متاحش لهاد الموقع دابا."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:3524
-#, php-format
-msgid "Could not start checkout: %s"
-msgstr "ما قدرناش نبداو الدفع: %s"
-
-#: admin/class-babilim-admin.php:3848
-msgid "Babilim is not enabled."
-msgstr "Babilim ماشي مفعّل."
-
-#: admin/class-babilim-admin.php:3851
-msgid "Not registered yet"
-msgstr "مازال ما تسجلش"
-
-#: admin/class-babilim-admin.php:3853
-msgid "Not verified"
-msgstr "ما تأكدش"
-
-#: admin/class-babilim-admin.php:3855
-msgid "Verified"
-msgstr "تمّ التحقّق"
-
-#: admin/class-babilim-admin.php:3863
-msgid "Status"
-msgstr "الحالة"
-
-#: admin/class-babilim-admin.php:3868
-msgid "Licensed"
-msgstr "عندو رخصة"
-
-#: admin/class-babilim-admin.php:3870
-msgid "Partner"
-msgstr "شريك"
-
-#: admin/class-babilim-admin.php:3872
-msgid "Free"
-msgstr "مجاني"
-
-#: admin/class-babilim-admin.php:3876
-msgid "License"
-msgstr "الرخصة"
-
-#: admin/class-babilim-admin.php:3879
-#: admin/class-babilim-translations-table.php:865
-msgid "Upgrade this site"
-msgstr "رقّي هاد الموقع"
-
-#. translators: 1: currency code, 2: price amount.
-#: admin/class-babilim-admin.php:3883
-#, php-format
-msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
-msgstr "شراء مرة وحدة لهاد الموقع: %1$s %2$s. كيشمل جميع تحديثات الترجمة اللي جايين. الخلاص كيدار عبر Paddle فتبويب جديد."
-
-#: admin/class-babilim-admin.php:3940
-msgid "This issues a new restore code and the previous one stops working. Continue?"
-msgstr "هاد العملية غادي تصدر كود استرجاع جديد والقديم غادي يوقف خدمتو. واش تكمل؟"
-
-#: admin/class-babilim-admin.php:3940
-msgid "Show a new restore code"
-msgstr "بيّن كود استرجاع جديد"
-
-#: admin/class-babilim-admin.php:3942
-msgid "rc_…"
-msgstr "rc_…"
-
-#: admin/class-babilim-admin.php:3942
-msgid "Restore code"
-msgstr "كود الاسترجاع"
-
-#: admin/class-babilim-admin.php:3943
-msgid "Restore purchase"
-msgstr "استرجاع الشراء"
-
-#: admin/class-babilim-admin.php:3944
-msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
-msgstr "شريتي رخصة لهاد الدومين من قبل؟ دخل كود الاسترجاع اللي توصلتي بيه فمرحلة الأداء."
-
-#: admin/class-babilim-admin.php:3980
-msgid "That does not look like a restore code."
-msgstr "هادشي ما بحالش كود استرجاع."
-
-#: admin/class-babilim-admin.php:3994
-msgid "This restore code was not recognised for this site."
-msgstr "كود الاسترجاع هادا ما تعرفش لهاد الموقع."
-
-#: admin/class-babilim-admin.php:3996
-msgid "Too many attempts. Try again tomorrow."
-msgstr "بزاف د المحاولات. عاود جرّب غدا."
-
-#: admin/class-babilim-admin.php:3998
-msgid "This site must be verified first."
-msgstr "خاص نتأكدو من هاد الموقع اللول."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4001
-#, php-format
-msgid "Could not restore the purchase: %s"
-msgstr "ما قدرناش نسترجعو الشراء: %s"
-
-#: admin/class-babilim-admin.php:4011
-msgid "Purchase restored. This site is now licensed."
-msgstr "تسترجع الشراء. دابا هاد الموقع عندو رخصة."
-
-#: admin/class-babilim-admin.php:4034
-msgid "This site has no purchase to show a code for."
-msgstr "هاد الموقع ما عندو حتى شراء باش نبيّنو ليه كود."
-
-#. translators: %s: the reason the service or the connection gave.
-#: admin/class-babilim-admin.php:4037
-#, php-format
-msgid "Could not show a new restore code: %s"
-msgstr "ما قدرناش نبينو كود استرجاع جديد: %s"
-
-#. translators: %s: the restore code.
-#: admin/class-babilim-admin.php:4048
-#, php-format
-msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
-msgstr "كود الاسترجاع الجديد ديالك: %s. حافظ عليه فبلاصة مأمنة — الكود القديم ما بقاش كيخدم."
-
-#: admin/class-babilim-admin.php:4063
-msgid "What is sent when Babilim checks this site"
-msgstr "شنو كيتبعت فاش Babilim كيفحص هاد الموقع"
-
-#: admin/class-babilim-admin.php:4092
-msgid "(detected)"
-msgstr "(تكشف)"
-
-#: admin/class-babilim-admin.php:4095
-msgid "No language is managed yet."
-msgstr "حتى لغة ما مسيّرة دابا."
-
-#: admin/class-babilim-admin.php:4097
-msgid "Babilim adds translations for every language checked here."
-msgstr "Babilim كيزيد الترجمات لكل لغة معلّمة هنا."
-
-#: admin/class-babilim-admin.php:4102
-msgid "Add another language"
-msgstr "زيد لغة أخرى"
-
-#: admin/class-babilim-admin.php:4103
-msgid "Choose a language…"
-msgstr "اختار لغة…"
-
-#: admin/class-babilim-admin.php:4109
-msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
-msgstr "ما قدرناش نحمّلو اللائحة الكاملة ديال اللغات ديال WordPress.org من الخدمة، وداكشي علاش ما يمكنش تزيد لغة أخرى دابا."
-
-#: admin/class-babilim-admin.php:4167
-msgid "Theme"
-msgstr "القالب"
-
-#: admin/class-babilim-admin.php:4167
-msgid "Plugin"
-msgstr "الإضافة"
-
-#: admin/class-babilim-admin.php:4174
-msgid "Free quota"
-msgstr "الحصة المجانية"
-
-#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
-#: admin/class-babilim-admin.php:4181
-#, php-format
-msgid "Downloads: %1$d/%2$d (%3$s)"
-msgstr "التحميلات: %1$d/%2$d (%3$s)"
-
-#: admin/class-babilim-admin.php:4213
-msgid "Supplementary translation index"
-msgstr "فهرس الترجمات الإضافية"
-
-#: admin/class-babilim-admin.php:4216
-msgid "Built"
-msgstr "تبنات"
-
-#: admin/class-babilim-admin.php:4217
-msgid "Included"
-msgstr "مضمّنة"
-
-#: admin/class-babilim-admin.php:4218
-msgid "Excluded"
-msgstr "مستثنى"
-
-#: admin/class-babilim-admin.php:4220
-msgid "Already in WordPress core"
-msgstr "موجودة ديجا فنواة WordPress"
-
-#: admin/class-babilim-admin.php:4239
-msgid "Supplementary translation maintenance"
-msgstr "صيانة الترجمات الإضافية"
-
-#: admin/class-babilim-admin.php:4242
-msgid "Maintenance status is not available right now."
-msgstr "حالة الصيانة ماشي متوفرة دابا."
-
-#. translators: 1: when the guard tripped, 2: why.
-#: admin/class-babilim-admin.php:4250
-#, php-format
-msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
-msgstr "تعطّل تنظيف فـ %1$s: %2$s. ما تمسح حتى شي حاجة."
-
-#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
-#: admin/class-babilim-admin.php:4264
-#, php-format
-msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
-msgstr "آخر تنقية فـ %1$s: %2$d ملف تزادت عليهم علامة، %3$d ملف تمسح، %4$d سجل تحيّد."
-
-#: admin/class-babilim-admin.php:4271
-msgid "No cleanup has run yet."
-msgstr "مازال ما تدارات حتى تنقية."
-
-#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
-#: admin/class-babilim-admin.php:4282
-#, php-format
-msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
-msgstr "كتابة ففهرس الترجمات تعارضات مع طلب آخر فـ %1$s (%2$s) وما تطبقاتش؛ تحتافظات بآخر نسخة."
-
-#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
-#: admin/class-babilim-admin.php:4295
-#, php-format
-msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
-msgstr "كتابة ففهرس الترجمات فـ %1$s (%2$s) ما قدراتش تكمل وما تطبقاتش (%3$s)."
-
-#: admin/class-babilim-admin.php:4311
-msgid "Maintenance"
-msgstr "الصيانة"
-
-#: admin/class-babilim-admin.php:4322
-msgid "Rebuild index now"
-msgstr "عاود بني الفهرس دابا"
-
-#: admin/class-babilim-admin.php:4328
-msgid "Sweep now"
-msgstr "دير الفحص دابا"
-
-#: admin/class-babilim-admin.php:4344
-msgid "Danger zone"
-msgstr "منطقة الخطر"
-
-#: admin/class-babilim-admin.php:4352
-msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
-msgstr "كيمسح كاع ملفات اللغة اللي ثبّتها Babilim لكل إضافة وقالب فهاد الموقع."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
-msgstr "بغيتي تمسح كلشي ثبّتو Babilim؟ هاد العملية غتمسح كاع ملفات اللغة اللي ثبّت لكل إضافة وقالب فهاد الموقع."
-
-#: admin/class-babilim-admin.php:4353
-msgid "Remove everything Babilim installed"
-msgstr "امسح كلشي ثبّتو Babilim"
-
-#: admin/class-babilim-admin.php:3670
-#: admin/class-babilim-admin.php:4398
-msgid "Category"
-msgstr "الفئة"
-
-#: admin/class-babilim-admin.php:4400
-msgid "Choose a category…"
-msgstr "اختار فئة…"
-
-#: admin/class-babilim-admin.php:4415
-msgid "Roll back and send report"
-msgstr "رجّع للنسخة اللي قبل وصيفط التقرير"
-
-#: admin/class-babilim-admin.php:3684
-#: admin/class-babilim-admin.php:4415
-msgid "Send report"
-msgstr "صيفط التقرير"
-
-#: admin/class-babilim-cell.php:65
-msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
-msgstr "شي نصوص فهاد المكوّن كتبها المطور مباشرة فالكود وما يمكنش تترجم بحزمة اللغة."
-
-#: admin/class-babilim-cell.php:105
-msgid "WordPress.org"
-msgstr "WordPress.org"
-
-#: admin/class-babilim-cell.php:108
-msgid "Bundled with the theme"
-msgstr "مدمج مع القالب"
-
-#: admin/class-babilim-cell.php:109
-msgid "Bundled with the plugin"
-msgstr "مدمج مع الإضافة"
-
-#: admin/class-babilim-cell.php:118
-msgid "Upload was not accepted"
-msgstr "التحميل ما تقبلش"
-
-#: admin/class-babilim-cell.php:121
-msgid "Upload expired before it finished"
-msgstr "التحميل سالات صلاحيتو قبل ما يكمل"
-
-#: admin/class-babilim-cell.php:123
-msgid "No translation"
-msgstr "ما كاينة حتى ترجمة"
-
-#: admin/class-babilim-cell.php:129
-#: admin/class-babilim-cell.php:131
-#: admin/class-babilim-cell.php:265
-#: admin/class-babilim-cell.php:267
-msgid "Upload in progress — continue or cancel"
-msgstr "التحميل جاري — كمّل ولا لغي"
-
-#: admin/class-babilim-cell.php:133
-msgid "Scheduled, waiting to be processed"
-msgstr "مبرمج، كيتسنى المعالجة"
-
-#: admin/class-babilim-cell.php:135
-msgid "Translating…"
-msgstr "كيترجم…"
-
-#: admin/class-babilim-cell.php:137
-msgid "Translation failed"
-msgstr "فشلات الترجمة"
-
-#: admin/class-babilim-cell.php:139
-msgid "Free quota used"
-msgstr "الحصة المجانية تستعملات"
-
-#: admin/class-babilim-cell.php:141
-msgid "Needs a paid license"
-msgstr "خاصو ترخيص مدفوع"
-
-#: admin/class-babilim-cell.php:148
-msgid "Not supported"
-msgstr "ما مدعومش"
-
-#: admin/class-babilim-cell.php:150
-msgid "Status unknown"
-msgstr "الحالة مجهولة"
-
-#: admin/class-babilim-cell.php:170
-#: admin/class-babilim-cell.php:197
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Installed"
-msgstr "مثبّتة"
-
-#: admin/class-babilim-cell.php:183
-#: admin/class-babilim-cell.php:185
-msgid "Update available"
-msgstr "كاين تحديث"
-
-#: admin/class-babilim-cell.php:210
-msgid "Removed after a failed integrity check"
-msgstr "تحيدات من بعد فشل فحص السلامة"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-#, php-format
-msgid "Installed · built for %s, new version scheduled"
-msgstr "مثبّتة · مبنية لـ %s، النسخة الجديدة مبرمجة"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:270
-msgid "Installed · built for a different version, new version scheduled"
-msgstr "مثبّتة · مبنية لنسخة مختلفة، النسخة الجديدة مبرمجة"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-#, php-format
-msgid "Installed · built for %s, translating the new version…"
-msgstr "مثبّتة · مبنية لـ %s، كيترجم النسخة الجديدة…"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:274
-msgid "Installed · built for a different version, translating the new version…"
-msgstr "مثبّتة · مبنية لنسخة مختلفة، كيترجم النسخة الجديدة…"
-
-#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
-#: admin/class-babilim-cell.php:279
-#, php-format
-msgid "Installed · built for %1$s, this site has %2$s"
-msgstr "مثبّتة · مبنية لـ %1$s، الموقع فيه %2$s"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-#, php-format
-msgid "Installed · built for %s"
-msgstr "مثبّتة · مبنية لـ %s"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:283
-#: admin/class-babilim-cell.php:299
-msgid "Installed · built for a different version"
-msgstr "مثبّتة · مبنية لنسخة مختلفة"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-#, php-format
-msgid "Installed · built for %s, new version failed"
-msgstr "تّرْكَّبات · مبنية لـ %s، النسخة الجديدة فشلات"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:287
-msgid "Installed · built for a different version, new version failed"
-msgstr "تّرْكَّبات · مبنية لنسخة أخرى، النسخة الجديدة فشلات"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-#, php-format
-msgid "Installed · built for %s, new version needs a paid license"
-msgstr "مثبّتة · متبنية لـ %s، النسخة الجديدة خاصها ترخيص مدفوع"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:291
-msgid "Installed · built for a different version, new version needs a paid license"
-msgstr "مثبّتة · متبنية لنسخة أخرى، النسخة الجديدة خاصها ترخيص مدفوع"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-#, php-format
-msgid "Installed · built for %s, free quota used"
-msgstr "مثبّتة · متبنية لـ %s، الحصة المجانية تستعملات"
-
-#. translators: %s: the component version a Babilim translation was built for.
-#: admin/class-babilim-cell.php:295
-msgid "Installed · built for a different version, free quota used"
-msgstr "مثبّتة · متبنية لنسخة أخرى، الحصة المجانية تستعملات"
-
-#: admin/class-babilim-cell.php:315
-msgctxt "translation status"
-msgid "Available"
-msgstr "متوفرة"
-
-#. translators: %s: the date a translation installed on this site was built.
-#: admin/class-babilim-cell.php:319
-#, php-format
-msgid "Installed · %s"
-msgstr "تّرْكَّبات · %s"
-
-#. translators: %s: the date an available translation was built.
-#: admin/class-babilim-cell.php:322
-#, php-format
-msgid "Available · %s"
-msgstr "متوفرة · %s"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:412
-msgid "Update"
-msgstr "تحديث"
-
-#: admin/class-babilim-cell.php:361
-#: admin/class-babilim-translations-table.php:411
-msgid "Download"
-msgstr "تحميل"
-
-#: admin/class-babilim-cell.php:362
-msgid "Updating…"
-msgstr "كيتحدّث…"
-
-#: admin/class-babilim-cell.php:362
-msgid "Downloading…"
-msgstr "كيتحمّل…"
-
-#: admin/class-babilim-cell.php:365
-msgid "Retry request"
-msgstr "عاود دير الطلب"
-
-#: admin/class-babilim-cell.php:367
-msgid "Request newer translation"
-msgstr "طلب ترجمة أجدد"
-
-#: admin/class-babilim-cell.php:367
-#: admin/class-babilim-translations-table.php:413
-msgid "Request translation"
-msgstr "طلب ترجمة"
-
-#: admin/class-babilim-cell.php:369
-msgid "Requesting…"
-msgstr "كيتطلب…"
-
-#: admin/class-babilim-translations-table.php:35
-msgid "Requesting a translation uses one of your free slots, unless this component already uses one. A failed translation does not give the slot back."
-msgstr "طلب ترجمة كيستهلك وحدة من الخانات المجانية ديالك، إلا ما كانش هاد المكوّن ديجا كيستعمل وحدة. الترجمة اللي تفشلات ما كترجعش الخانة."
-
-#: admin/class-babilim-translations-table.php:42
-msgid "If this component does not use one of your free slots yet, requesting a translation uses one. A failed translation does not give the slot back. Continue?"
-msgstr "إلا كان هاد المكوّن مازال ما استعملش شي خانة مجانية ديالك، طلب ترجمة غادي يستعمل وحدة. الترجمة اللي تفشلات ما كترجعش الخانة. واش تكمل؟"
-
-#: admin/class-babilim-translations-table.php:382
-msgid "No plugins or themes found."
-msgstr "ما تلقات حتى إضافة ولا قالب."
-
-#: admin/class-babilim-translations-table.php:386
-msgid "Clear filters"
-msgstr "مسح الفلاتر"
-
-#. translators: %s: a "Clear filters" link.
-#: admin/class-babilim-translations-table.php:388
-#, php-format
-msgid "No components match these filters. %s"
-msgstr "ما كاين حتى عنصر كيطابق هاد الفلاتر. %s"
-
-#: admin/class-babilim-translations-table.php:398
-msgid "Select all"
-msgstr "حدد الكل"
-
-#: admin/class-babilim-translations-table.php:424
-#: admin/class-babilim-translations-table.php:472
-msgid "All"
-msgstr "الكل"
-
-#: admin/class-babilim-translations-table.php:425
-msgid "Available"
-msgstr "متوفرة"
-
-#: admin/class-babilim-translations-table.php:426
-msgid "Updates"
-msgstr "التحديثات"
-
-#: admin/class-babilim-translations-table.php:427
-msgid "Requestable"
-msgstr "ممكن تتطلب"
-
-#: admin/class-babilim-translations-table.php:428
-msgid "Installed"
-msgstr "مركّبة"
-
-#: admin/class-babilim-translations-table.php:473
-msgid "Plugins"
-msgstr "الإضافات"
-
-#: admin/class-babilim-translations-table.php:474
-msgid "Themes"
-msgstr "القوالب"
-
-#: admin/class-babilim-translations-table.php:499
-msgid "All languages"
-msgstr "جميع اللغات"
+msgid "%d succeeded"
+msgid_plural "%d succeeded"
+msgstr[0] "نجحو %d"
+msgstr[1] "نجح %d"
+msgstr[2] "نجحو %d"
+msgstr[3] "نجحو %d"
+msgstr[4] "نجحو %d"
+msgstr[5] "نجحو %d"
 
 #. translators: %d: number of translations ready to download or update for a language.
-#: admin/class-babilim-translations-table.php:502
+#: admin/class-babilim-translations-table.php:544
 #, php-format
 msgid "%d to install"
 msgid_plural "%d to install"
@@ -1349,132 +176,762 @@ msgstr[3] "%d باش يتركبو"
 msgstr[4] "%d باش يتركب"
 msgstr[5] "%d باش يتركب"
 
-#: admin/class-babilim-translations-table.php:511
-msgid "Language:"
-msgstr "اللغة:"
-
-#: admin/class-babilim-translations-table.php:547
-msgid "Bulk actions apply to every matching language of each selected component."
-msgstr "الإجراءات الجماعية كتطبق على كل لغة مطابقة لكل مكوّن محدد."
-
-#: admin/class-babilim-translations-table.php:548
-msgid "Bulk actions apply only to the selected language of each selected component."
-msgstr "الإجراءات الجماعية كتطبق غير على اللغة المحددة لكل مكوّن محدد."
-
-#. translators: %s: the component's version number.
-#: admin/class-babilim-translations-table.php:572
-#, php-format
-msgid "Version %s"
-msgstr "النسخة %s"
-
-#. translators: %s: the theme's version number.
-#: admin/class-babilim-translations-table.php:575
-#, php-format
-msgid "Theme · %s"
-msgstr "قالب · %s"
-
-#. translators: %s: the plugin's version number.
-#: admin/class-babilim-translations-table.php:578
-#, php-format
-msgid "Plugin · %s"
-msgstr "إضافة · %s"
-
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:635
-#, php-format
-msgid "Remove the %2$s translation of %1$s from this site?"
-msgstr "بغيتي تمسح الترجمة %2$s ديال %1$s من هاد الموقع؟"
-
-#. translators: 1: component name, 2: language name.
-#: admin/class-babilim-translations-table.php:638
-#, php-format
-msgid "Roll back the %2$s translation of %1$s to the previous build?"
-msgstr "واش بغيتي ترجّع ترجمة %2$s ديال %1$s للبناء اللي قبل؟"
-
-#. translators: 1: action name such as Remove, 2: component name.
-#: admin/class-babilim-translations-table.php:731
-#, php-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
-
-#. translators: 1: action name such as Remove, 2: component name, 3: language name.
-#: admin/class-babilim-translations-table.php:734
-#, php-format
-msgid "%1$s: %2$s (%3$s)"
-msgstr "%1$s: %2$s (%3$s)"
-
-#: includes/class-babilim-api-client.php:102
-msgid "The registration challenge is not in the expected form."
-msgstr "تحدي التسجيل ماشي بالشكل المتوقع."
-
-#: includes/class-babilim-api-client.php:212
-msgid "That is not a valid build identifier."
-msgstr "هادا ماشي معرّف البناء صالح."
-
-#: includes/class-babilim-api-client.php:309
-msgid "Refusing to write outside the Babilim language-file directory."
-msgstr "كنرفض نكتب برا مجلد ملفات اللغة ديال Babilim."
-
-#: includes/class-babilim-api-client.php:331
-msgid "Could not write the downloaded package to disk."
-msgstr "ما قدرناش نكتبو الحزمة اللي تحملات فالقرص."
-
-#. translators: %d: the unexpected HTTP status code.
-#: includes/class-babilim-api-client.php:605
-#, php-format
-msgid "Unexpected HTTP %d response."
-msgstr "جواب HTTP %d ما كانش متوقع."
-
-#: includes/class-babilim-consent.php:72
-msgid "This site's URL, so the service can verify you own it."
-msgstr "رابط هاد الموقع، باش الخدمة تقدر تتأكد بلي نتا المالك ديالو."
-
-#: includes/class-babilim-consent.php:77
-msgid "Your WordPress version, to serve compatible translation files."
-msgstr "نسخة WordPress ديالك، باش نقدمو ملفات ترجمة متوافقة."
-
-#: includes/class-babilim-consent.php:82
-msgid "Your PHP version, for compatibility."
-msgstr "نسخة PHP ديالك، للتوافق."
-
-#: includes/class-babilim-consent.php:87
-msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
-msgstr "نسخة هاد الإضافة نفسها، باش الخدمة تقدر تقول ليك دير تحديث إلا كانت قديمة بزاف ما تقدرش تتواصل معاها."
-
-#: includes/class-babilim-consent.php:92
-msgid "This site's configured locale."
-msgstr "اللغة المضبوطة ديال هاد الموقع."
-
-#: includes/class-babilim-consent.php:97
-msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
-msgstr "كل لغة مستعملة فهاد الموقع (لغة الموقع، حزم اللغة المثبتة، لغات المستخدمين، وأي وحدة زدتيها يدويا). ما كاينة حتى لغة كتعامل بشكل مختلف على الأخرى."
-
 #: includes/class-babilim-consent.php:101
 msgid "(a public key generated for this site)"
 msgstr "(مفتاح عمومي تولد لهاد الموقع)"
 
-#: includes/class-babilim-consent.php:102
-msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
-msgstr "المفتاح العمومي ديال تثبيت هاد الموقع، كيتستعمل باش يتثبت بلي الطلبات جاية فعلا من هاد الموقع. كيتبعت غير الجزء العمومي."
-
-#: includes/class-babilim-consent.php:107
-msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
-msgstr "كل الإضافات/القوالب المثبتة: slug، النسخة، text domain، واش مدرجة فـ WordPress.org، اللغات المضمّنة فيها، واللغات اللي ديجا ثبتي ليها ترجمة من Babilim."
+#: admin/class-babilim-admin.php:4670
+msgid "(detected)"
+msgstr "(تكشف)"
 
 #: includes/class-babilim-consent.php:116
 msgid "(generic codes and coordinates only)"
 msgstr "(رموز وإحداثيات عامة فقط)"
 
-#: includes/class-babilim-consent.php:117
-msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
-msgstr "حتى 20 ديال أحداث التشخيص المعلقة (بحال ملف فشل فحص السلامة)، كل واحد غير رمز ومكوّن ولغة، وعمرها ما كتجي معاها محتويات النصوص ولا النص المترجم."
-
-#. translators: %s: the invalid locale code.
-#: includes/class-babilim-default-index.php:109
-#: includes/class-babilim-installer.php:949
+#. translators: 1: when the guard tripped, 2: why.
+#: admin/class-babilim-admin.php:4830
 #, php-format
-msgid "Unsafe locale: %s"
-msgstr "لغة غير آمنة: %s"
+msgid "A cleanup was paused on %1$s: %2$s. Nothing was deleted."
+msgstr "تعطّل تنظيف فـ %1$s: %2$s. ما تمسح حتى شي حاجة."
+
+#: includes/class-babilim-packager.php:125
+msgid "A file in the component could not be read, so it was not packaged."
+msgstr "واحد الملف فالمكوّن ما قدرناش نقراوه، وداكشي علاش ما تحزمش."
+
+#: admin/class-babilim-admin.php:2386
+msgid "A host that serves only one PHP request at a time cannot complete this step."
+msgstr "الاستضافة لي كتخدم غير طلب PHP واحد ف الوقت ما يمكنهاش تكمّل هاد الخطوة."
+
+#: includes/class-babilim-upload.php:293
+msgid "A part of the upload kept failing, so the upload was cancelled."
+msgstr "جزء من الرفع بقا كيفشل، عاد تلغى الرفع."
+
+#: admin/class-babilim-admin.php:1377
+msgid "A translation cannot be requested for that locale on this site right now."
+msgstr "ما يمكنش تطلب ترجمة لهاد اللغة فهاد الموقع دابا."
+
+#. translators: 1: when the conflicting write happened, 2: which part of the index it was for.
+#: admin/class-babilim-admin.php:4862
+#, php-format
+msgid "A translation-index write conflicted with another request on %1$s (%2$s) and was not applied; the most recent version was kept."
+msgstr "كتابة ففهرس الترجمات تعارضات مع طلب آخر فـ %1$s (%2$s) وما تطبقاتش؛ تحتافظات بآخر نسخة."
+
+#. translators: 1: when the write failed, 2: which part of the index it was for, 3: a short technical reason code.
+#: admin/class-babilim-admin.php:4875
+#, php-format
+msgid "A translation-index write on %1$s (%2$s) could not be completed and was not applied (%3$s)."
+msgstr "كتابة ففهرس الترجمات فـ %1$s (%2$s) ما قدراتش تكمل وما تطبقاتش (%3$s)."
+
+#: admin/class-babilim-admin.php:3898
+msgid "Account"
+msgstr "الحساب"
+
+#: admin/class-babilim-admin.php:4682
+msgid "Add another language"
+msgstr "زيد لغة أخرى"
+
+#: admin/class-babilim-admin.php:3835
+msgid "Advanced"
+msgstr "متقدّم"
+
+#: admin/class-babilim-translations-table.php:466
+#: admin/class-babilim-translations-table.php:514
+msgid "All"
+msgstr "الكل"
+
+#: admin/class-babilim-cell.php:143
+msgid "All free-plan slots for this site are used"
+msgstr "جميع خانات الباقة المجانية ديال هاد الموقع مستعملة"
+
+#: admin/class-babilim-translations-table.php:541
+msgid "All languages"
+msgstr "جميع اللغات"
+
+#: admin/class-babilim-admin.php:4800
+msgid "Already in WordPress core"
+msgstr "موجودة ديجا فنواة WordPress"
+
+#: admin/class-babilim-admin.php:961
+msgid "Already installed."
+msgstr "مثبّت ديجا."
+
+#: admin/class-babilim-admin.php:2544
+msgid "Always share"
+msgstr "Always share"
+
+#: includes/class-babilim-installer.php:249
+#: includes/class-babilim-installer.php:254
+msgid "Another installation is running; try again in a moment."
+msgstr "كاين تثبيت آخر خدام؛ عاود حاول من بعد شوية."
+
+#: admin/class-babilim-admin.php:3866
+msgid "Automatic installs"
+msgstr "التثبيت الأوتوماتيكي"
+
+#: admin/class-babilim-admin.php:2731
+msgid "Automatic installs are now off; turn them on again in the settings if you want them."
+msgstr "التثبيتات الأوتوماتيكية توقفات دابا؛ فعّلها من جديد فالإعدادات إلا بغيتيها."
+
+#: admin/class-babilim-translations-table.php:467
+msgid "Available"
+msgstr "متوفرة"
+
+#: admin/class-babilim-admin.php:3066
+msgid "Available translations can be installed with one click, and missing ones can be requested. While automatic installs are on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "الترجمات المتوفرة تقدر تثبتها بنقرة وحدة، والناقصة تقدر تطلبها. وملي التثبيتات التلقائية تكون مفعلة، الترجمات اللي الخدمة كتعرضها متوفرة للغات اللي كتسيرها كيتم تثبيتها وقت المزامنة مرتين في اليوم."
+
+#. translators: %s: the date an available translation was built.
+#: admin/class-babilim-cell.php:326
+#, php-format
+msgid "Available · %s"
+msgstr "متوفرة · %s"
+
+#: admin/class-babilim-admin.php:402
+msgid "Babilim Settings"
+msgstr "إعدادات Babilim"
+
+#: admin/class-babilim-admin.php:4677
+msgid "Babilim adds translations for every language checked here."
+msgstr "Babilim كيزيد الترجمات لكل لغة معلّمة هنا."
+
+#: includes/class-babilim-packager.php:110
+msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
+msgstr "Babilim ما قدرش يتأكد من وجود الدوسي المؤقت برا الموقع، وداكشي علاش المكون ما تجمعش فحزمة وما ترفع والو. عرّف BABILIM_TEMP_DIR فـ wp-config.php كدوسي كيقبل الكتابة برا الجذر ديال الموقع (مثلا دوسي حدا الدليل العمومي ديال موقعك، ماشي داخلو)، ولا طلب من الاستضافة ديالك توفر ليك واحد."
+
+#: includes/class-babilim-site.php:987
+msgid "Babilim could not finish checking this site."
+msgstr "Babilim ما قدرش يكمل فحص هاد الموقع."
+
+#. translators: 1: short name of the step that failed, 2: the message for that failure.
+#: admin/class-babilim-admin.php:2381
+#, php-format
+msgid "Babilim could not finish enabling (%1$s): %2$s"
+msgstr "Babilim ما قدراتش تكمّل التفعيل (%1$s): %2$s"
+
+#: admin/class-babilim-admin.php:3792
+msgid "Babilim could not finish verifying this site (the service could not reach it back). Registration is paused."
+msgstr "Babilim ما قدراتش تكمّل التحقق من هاد الموقع (الخدمة ما قدراتش توصل ليه). التسجيل موقوف."
+
+#: includes/class-babilim-site.php:434
+#: includes/class-babilim-sync-installer.php:401
+msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
+msgstr "Babilim ما قdarch يتحقق من هاد الموقع، وما غاديش يتحمل ولا يتثبت والو حتى ينجح التحقق."
+
+#: admin/class-babilim-admin.php:2216
+msgid "Babilim could not verify this site, so nothing is downloaded or installed."
+msgstr "Babilim ما قدراتش تتحقق من هاد الموقع، عاد ما غادي يتحمّل ولا يتثبت والو."
+
+#: admin/class-babilim-admin.php:3053
+msgid "Babilim finds the plugins and themes on this site that have no translation for your language and installs one for each."
+msgstr "Babilim كتلقى الإضافات والقوالب ف هاد الموقع لي ما عندها ترجمة للغتك، وكتثبت ليها وحدة وحدة."
+
+#: admin/class-babilim-admin.php:984
+#: admin/class-babilim-admin.php:1355
+#: admin/class-babilim-admin.php:1433
+#: admin/class-babilim-admin.php:2335
+#: admin/class-babilim-admin.php:2665
+#: includes/class-babilim-api-client.php:532
+#: includes/class-babilim-site.php:311
+#: includes/class-babilim-site.php:362
+#: includes/class-babilim-site.php:705
+#: includes/class-babilim-site.php:838
+msgid "Babilim has not been enabled for this site yet."
+msgstr "Babilim باقي ما تفعّلاتش لهاد الموقع."
+
+#: admin/class-babilim-admin.php:4239
+msgid "Babilim has not installed any translation for this language."
+msgstr "Babilim ما ثبّت حتى ترجمة لهاد اللغة."
+
+#: admin/class-babilim-admin.php:2517
+msgid "Babilim hit an error. Share an error report?"
+msgstr "Babilim تلاقى مع شي خطأ. واش تشارك تقرير الخطأ؟"
+
+#. translators: %d: how many translations were installed automatically.
+#: admin/class-babilim-admin.php:3122
+#, php-format
+msgid "Babilim installed %d translation automatically since your last visit."
+msgid_plural "Babilim installed %d translations automatically since your last visit."
+msgstr[0] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
+msgstr[1] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
+msgstr[2] "Babilim ثبّت %d ترجمتين أوتوماتيكيا من آخر زيارة ليك."
+msgstr[3] "Babilim ثبّت %d ترجمات أوتوماتيكيا من آخر زيارة ليك."
+msgstr[4] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
+msgstr[5] "Babilim ثبّت %d ترجمة أوتوماتيكيا من آخر زيارة ليك."
+
+#: admin/class-babilim-admin.php:2492
+msgid "Babilim is disabled. Nothing more is sent; translations already installed keep working."
+msgstr "Babilim معطّلة. ما غادي يتصيفط والو آخر؛ الترجمات لي تثبتات من قبل كتبقى خدامة."
+
+#. translators: %d: number of components found on this site.
+#: admin/class-babilim-admin.php:2407
+#, php-format
+msgid "Babilim is enabled: this site is verified and %d component was found."
+msgid_plural "Babilim is enabled: this site is verified and %d components were found."
+msgstr[0] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
+msgstr[1] "Babilim مفعّل: هاد الموقع متحقق منو وتلقى %d مكوّن."
+msgstr[2] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّنين."
+msgstr[3] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّنات."
+msgstr[4] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
+msgstr[5] "Babilim مفعّل: هاد الموقع متحقق منو وتلقاو %d مكوّن."
+
+#. translators: %s: when the last attempt happened.
+#: admin/class-babilim-admin.php:3148
+#, php-format
+msgid "Babilim is enabling and checking this site… (last attempt: %s)"
+msgstr "Babilim كتفعّل وكتفحص هاد الموقع… (آخر محاولة: %s)"
+
+#: admin/class-babilim-admin.php:2376
+msgid "Babilim is enabling and checking this site… Reload this page or wait for the scheduled check to finish."
+msgstr "Babilim كتفعّل وكتفحص هاد الموقع… عاود حمّل هاد الصفحة ولا تسنى حتى يكمل الفحص المبرمج."
+
+#: admin/class-babilim-admin.php:4426
+msgid "Babilim is not enabled."
+msgstr "Babilim ماشي مفعّل."
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1949
+#, php-format
+msgid "Babilim is set to erase this site's identity when the plugin is deleted. The paid license attached to this site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identity, press Cancel, untick \"Delete all Babilim data on uninstall\" in the Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "Babilim معدّ باش يمسح هوية هاد الموقع منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بهاد الموقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s. باش تبقي الهوية، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim، وعاود عطّل الإضافة. بغيتي تعطّل ولو كان؟"
+
+#: includes/class-babilim-site.php:348
+#: includes/class-babilim-site.php:939
+#: includes/class-babilim-site.php:1271
+msgid "Babilim ran out of time for this step and will continue on the next check."
+msgstr "Babilim سالا ليه الوقت فهاد المرحلة وغادي يكمل فالفحص التالي."
+
+#: admin/class-babilim-admin.php:3827
+msgid "Babilim settings"
+msgstr "إعدادات Babilim"
+
+#. translators: %s: the date and time syncing is expected to resume.
+#: admin/class-babilim-admin.php:1622
+#, php-format
+msgid "Babilim sync is temporarily delayed by the service (rate limited); it will try again after %s."
+msgstr "مزامنة Babilim تأخرات مؤقتا من الخدمة (تحدّدات السرعة)؛ غادي تعاود تجرب من بعد %s."
+
+#: includes/class-babilim-upload.php:191
+msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
+msgstr "Babilim تحدث وهاد الرفع كان كيتسنى. الحزمة القديمة تحيدات؛ عاود أكد الرفع."
+
+#. translators: 1: plugin or theme name, 2: its version number.
+#: admin/class-babilim-admin.php:3428
+#, php-format
+msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
+msgstr "Babilim غادي يرفع هاد الملفات من %1$s (النسخة %2$s): كل ملف .php و .js، كل ملف block.json، و readme.txt و readme.md و style.css و theme.json اللي فالدوسي الرئيسي ديالو. كيتستعملو باش نلقاو النص اللي خاصو يترجم وباش نعرفو الإضافة ولا القالب."
+
+#. translators: %s: the technical reason the manifest is unavailable.
+#: includes/class-babilim-manifest.php:546
+#, php-format
+msgid "Babilim_Manifest is unavailable: %s"
+msgstr "Babilim_Manifest ماشي متوفر: %s"
+
+#: admin/class-babilim-admin.php:3422
+#: admin/class-babilim-admin.php:3450
+#: admin/class-babilim-admin.php:4263
+msgid "Back"
+msgstr "رجوع"
+
+#: admin/class-babilim-admin.php:4522
+msgid "Bought a license for this domain before? Enter the restore code you received at checkout."
+msgstr "شريتي رخصة لهاد الدومين من قبل؟ دخل كود الاسترجاع اللي توصلتي بيه فمرحلة الأداء."
+
+#: admin/class-babilim-admin.php:3253
+msgid "Broken placeholder"
+msgstr "عنصر نائب مكسور"
+
+#. translators: Field label (a noun): the identifier of the translation package version the string came from.
+#: admin/class-babilim-admin.php:4258
+msgid "Build"
+msgstr "النسخة"
+
+#: admin/class-babilim-admin.php:4796
+msgid "Built"
+msgstr "تبنات"
+
+#: admin/class-babilim-translations-table.php:590
+msgid "Bulk actions apply only to the selected language of each selected component."
+msgstr "الإجراءات الجماعية كتطبق غير على اللغة المحددة لكل مكوّن محدد."
+
+#: admin/class-babilim-translations-table.php:589
+msgid "Bulk actions apply to every matching language of each selected component."
+msgstr "الإجراءات الجماعية كتطبق على كل لغة مطابقة لكل مكوّن محدد."
+
+#: admin/class-babilim-admin.php:3218
+msgid "Bulk download:"
+msgstr "تحميل جماعي:"
+
+#: admin/class-babilim-admin.php:3222
+msgid "Bulk request:"
+msgstr "طلب جماعي:"
+
+#: admin/class-babilim-admin.php:3220
+msgid "Bulk update:"
+msgstr "تحديث جماعي:"
+
+#: admin/class-babilim-cell.php:109
+msgid "Bundled with the plugin"
+msgstr "مدمج مع الإضافة"
+
+#: admin/class-babilim-cell.php:108
+msgid "Bundled with the theme"
+msgstr "مدمج مع القالب"
+
+#: admin/class-babilim-admin.php:3073
+msgid "By clicking Enable, you agree to send the information listed above to Babilim."
+msgstr "بالنقر على تفعيل، كتوافق تصيفط المعلومات لي فوق لـ Babilim."
+
+#: admin/class-babilim-admin.php:3433
+msgid "By continuing you confirm that you have the right to upload this component."
+msgstr "منين تكمل، كتأكد بلي عندك الحق باش ترفع هاد المكوّن."
+
+#: admin/class-babilim-admin.php:3436
+#: admin/class-babilim-admin.php:3456
+#: admin/class-babilim-admin.php:3494
+#: admin/class-babilim-admin.php:3551
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: admin/class-babilim-admin.php:4248
+#: admin/class-babilim-admin.php:4978
+msgid "Category"
+msgstr "الفئة"
+
+#: admin/class-babilim-admin.php:3152
+msgid "Check again"
+msgstr "عاود تحقق"
+
+#: admin/class-babilim-admin.php:3107
+#: admin/class-babilim-admin.php:3155
+#: admin/class-babilim-admin.php:4893
+msgid "Check again now"
+msgstr "عاود تحقق دابا"
+
+#: admin/class-babilim-admin.php:3976
+#: admin/class-babilim-admin.php:3987
+msgid "Checkout is not available for this site right now."
+msgstr "الدفع ما متاحش لهاد الموقع دابا."
+
+#. translators: Button label (a verb): selects this string as the one to report.
+#: admin/class-babilim-admin.php:4247
+msgid "Choose"
+msgstr "اختار"
+
+#: admin/class-babilim-admin.php:4980
+msgid "Choose a category…"
+msgstr "اختار فئة…"
+
+#: admin/class-babilim-admin.php:3552
+msgid "Choose a language"
+msgstr "ختار لغة"
+
+#: admin/class-babilim-admin.php:4683
+msgid "Choose a language…"
+msgstr "اختار لغة…"
+
+#: admin/class-babilim-translations-table.php:428
+msgid "Clear filters"
+msgstr "مسح الفلاتر"
+
+#. translators: Button label (a verb): closes the report panel.
+#: admin/class-babilim-admin.php:4265
+msgid "Close"
+msgstr "سدّ"
+
+#: admin/class-babilim-admin.php:3724
+#: admin/class-babilim-admin.php:4255
+#: admin/class-babilim-translations-table.php:441
+msgid "Component"
+msgstr "المكوّن"
+
+#: admin/class-babilim-admin.php:3496
+msgid "Confirm"
+msgstr "أكّد"
+
+#: admin/class-babilim-admin.php:3728
+#: admin/class-babilim-admin.php:4799
+msgid "Conflicting keys"
+msgstr "المفاتيح المتعارضة"
+
+#: admin/class-babilim-admin.php:3455
+msgid "Continue"
+msgstr "كمّل"
+
+#. translators: %d: how many operations are left.
+#: admin/class-babilim-admin.php:3339
+#, php-format
+msgid "Continue next batch (%d left)"
+msgstr "كمّل الدفعة التالية (بقاو %d)"
+
+#: admin/class-babilim-admin.php:3336
+msgid "Continuing…"
+msgstr "كنكمل…"
+
+#. translators: %s: the filename that could not be backed up.
+#: includes/class-babilim-installer.php:1644
+#, php-format
+msgid "Could not back up %s before replacing it."
+msgstr "ما قدرناش نديرو نسخة احتياطية ديال %s قبل ما نبدلوه."
+
+#: includes/class-babilim-packager.php:106
+#: includes/class-babilim-packager.php:115
+#: includes/class-babilim-packager.php:138
+msgid "Could not create the package archive."
+msgstr "ما قدرناش ننشئو أرشيف الحزمة."
+
+#: includes/class-babilim-default-index.php:134
+msgid "Could not determine active components; the existing merged index was left unchanged."
+msgstr "ما قدرناش نحددو المكونات النشطة؛ الفهرس المدمج الموجود بقا بلا تغيير."
+
+#: includes/class-babilim-default-index.php:400
+msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
+msgstr "ما قدرناش نحددو الإضافات/القوالب المثبتة؛ تخطينا التنظيف وما تمسح والو."
+
+#: admin/class-babilim-admin.php:4689
+msgid "Could not load the full WordPress.org locale list from the service, so no other language can be added right now."
+msgstr "ما قدرناش نحمّلو اللائحة الكاملة ديال اللغات ديال WordPress.org من الخدمة، وداكشي علاش ما يمكنش تزيد لغة أخرى دابا."
+
+#. translators: %s: the filename that could not be moved into place.
+#: includes/class-babilim-installer.php:1650
+#, php-format
+msgid "Could not move %s into place."
+msgstr "ما قدرناش نحطو %s فبلاصتو."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:989
+#, php-format
+msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
+msgstr "ما قدرناش ننقلو الفهرس المدمج ديال '%s' لبلاصتو؛ الفهرس اللي كان كيتقدم قبل (إلا كان) تمسح عوض ما يبقى محدث نص نص. ما غاديش يتقدم حتى ملحق ديال default لهاد اللغة حتى تنجح إعادة البناء التالي."
+
+#. translators: %s: the zip file path that could not be opened.
+#: includes/class-babilim-installer.php:147
+#, php-format
+msgid "Could not open zip: %s"
+msgstr "ما قدرناش نحلو zip: %s"
+
+#. translators: %s: the filename that could not be prepared for rollback.
+#: includes/class-babilim-installer.php:1628
+#, php-format
+msgid "Could not prepare %s for rollback."
+msgstr "ما قدرناش نحضرو %s ل الرجوع للنسخة السابقة."
+
+#. translators: %s: the filename that could not be read back after it was moved into place.
+#: includes/class-babilim-installer.php:1656
+#, php-format
+msgid "Could not read %s back after moving it into place."
+msgstr "ما قدرناش نقراو %s من جديد من بعد ما تنقل لبلاصتو."
+
+#. translators: %s: the file path that could not be read.
+#: includes/class-babilim-wp-fs.php:91
+#, php-format
+msgid "Could not read: %s"
+msgstr "ما قدرناش نقراو: %s"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4579
+#, php-format
+msgid "Could not restore the purchase: %s"
+msgstr "ما قدرناش نسترجعو الشراء: %s"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:4615
+#, php-format
+msgid "Could not show a new restore code: %s"
+msgstr "ما قدرناش نبينو كود استرجاع جديد: %s"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1214
+#: includes/class-babilim-installer.php:1279
+#: includes/class-babilim-installer.php:1312
+#, php-format
+msgid "Could not stage %s"
+msgstr "ما قدرناش نجهزو %s"
+
+#. translators: %s: the filename that failed to stage.
+#: includes/class-babilim-installer.php:1221
+#, php-format
+msgid "Could not stage default/%s"
+msgstr "ما قدرناش نجهزو default/%s"
+
+#. translators: %s: the reason the service or the connection gave.
+#: admin/class-babilim-admin.php:3979
+#, php-format
+msgid "Could not start checkout: %s"
+msgstr "ما قدرناش نبداو الدفع: %s"
+
+#. translators: %s: the .mo filename whose entry count could not be verified.
+#: includes/class-babilim-installer.php:1272
+#, php-format
+msgid "Could not verify entry count for %s"
+msgstr "ما قدرناش نتحققو من عدد المداخل لـ %s"
+
+#: includes/class-babilim-api-client.php:331
+msgid "Could not write the downloaded package to disk."
+msgstr "ما قدرناش نكتبو الحزمة اللي تحملات فالقرص."
+
+#: includes/class-babilim-default-index.php:950
+msgid "Could not write the staged merged index."
+msgstr "ما قدرتش نكتب فهرس مدموج مرحلي."
+
+#: admin/class-babilim-admin.php:1547
+#: admin/class-babilim-admin.php:4245
+#: admin/class-babilim-admin.php:4986
+msgid "Current translation"
+msgstr "الترجمة الحالية"
+
+#: admin/class-babilim-admin.php:3883
+msgid "Custom overrides"
+msgstr "التعديلات المخصصة"
+
+#: admin/class-babilim-admin.php:4924
+msgid "Danger zone"
+msgstr "منطقة الخطر"
+
+#: includes/class-babilim-installer.php:1324
+msgid "Default supplement entry count mismatch."
+msgstr "عدد المداخل فالملحق ديال default ما كيطابقش."
+
+#: admin/class-babilim-admin.php:3894
+msgid "Delete all Babilim data on uninstall"
+msgstr "مسح جميع بيانات Babilim منين تحيد التثبيت"
+
+#: admin/class-babilim-admin.php:3904
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim"
+msgstr "عطّل Babilim"
+
+#: admin/class-babilim-admin.php:3909
+msgid "Disable Babilim? Installed translations are kept, but no further checks or downloads will run."
+msgstr "واش تعطّل Babilim؟ الترجمات المثبتة غادي تبقى، ولكن ما بقاتش غادي تتدار فحوصات ولا تحميلات."
+
+#: admin/class-babilim-admin.php:2545
+msgid "Don't share"
+msgstr "Don't share"
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:453
+msgid "Download"
+msgstr "تحميل"
+
+#: admin/class-babilim-admin.php:961
+msgid "Downloaded and installed."
+msgstr "تحمّل وتثبّت."
+
+#: admin/class-babilim-cell.php:366
+msgid "Downloading…"
+msgstr "كيتحمّل…"
+
+#. translators: 1: downloads used, 2: downloads limit, 3: the period they reset over, e.g. "per day".
+#: admin/class-babilim-admin.php:4761
+#, php-format
+msgid "Downloads: %1$d/%2$d (%3$s)"
+msgstr "التحميلات: %1$d/%2$d (%3$s)"
+
+#: admin/class-babilim-admin.php:3722
+msgid "Each component's own contribution to each locale's shared default-domain supplement."
+msgstr "مساهمة كل مكوّن فالإضافة ديال الدومين الافتراضي المشتركة لكل لغة."
+
+#: admin/class-babilim-admin.php:3072
+msgid "Enable Babilim"
+msgstr "فعّل Babilim"
+
+#: admin/class-babilim-admin.php:3072
+msgid "Enabling…"
+msgstr "كيتفعّل…"
+
+#: includes/class-babilim-locale-label.php:53
+msgid "English (United States)"
+msgstr "الإنجليزية (الولايات المتحدة)"
+
+#: admin/class-babilim-admin.php:3727
+msgid "Entries"
+msgstr "المدخلات"
+
+#. translators: %s: the .mo filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1263
+#, php-format
+msgid "Entry count mismatch for %s"
+msgstr "عدد المداخل ما كيطابقش لـ %s"
+
+#: admin/class-babilim-admin.php:3878
+msgid "Error reports"
+msgstr "تقارير الأخطاء"
+
+#: includes/class-babilim-consent.php:107
+msgid "Every installed plugin/theme: its slug, version, text domain(s), whether it's a wp.org listing, its own bundled locales, and which locales you've already installed a Babilim translation for."
+msgstr "كل الإضافات/القوالب المثبتة: slug، النسخة، text domain، واش مدرجة فـ WordPress.org، اللغات المضمّنة فيها، واللغات اللي ديجا ثبتي ليها ترجمة من Babilim."
+
+#: includes/class-babilim-consent.php:97
+msgid "Every locale in use on this site (site locale, installed language packs, user locales, and any you add manually). No locale is treated differently from another."
+msgstr "كل لغة مستعملة فهاد الموقع (لغة الموقع، حزم اللغة المثبتة، لغات المستخدمين، وأي وحدة زدتيها يدويا). ما كاينة حتى لغة كتعامل بشكل مختلف على الأخرى."
+
+#: admin/class-babilim-admin.php:4798
+msgid "Excluded"
+msgstr "مستثنى"
+
+#: admin/class-babilim-admin.php:3429
+msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
+msgstr "الملفات اللي عندها أسماء ولا امتدادات أخرى ماشي مضمنة، وكذلك الدوسيات uploads و cache و logs و backup و data و vendor و node_modules و languages، والملفات المخفية، ولا الملفات اللي أسماؤها كتشبه الأسرار الشائعة (wp-config* و .env* و *.sql و *.log و *.pem و *.key). ملفات الكود يقدرو يبقاو فيهم نصوص ولا معطيات ما بغيتيش تشاركها؛ تأكد منهم إلا ما كنتيش متيقن. الخدمة كتمسح نفس الأنواع من الملفات مرة أخرى عند الوصول."
+
+#: admin/class-babilim-admin.php:4450
+msgid "Free"
+msgstr "مجاني"
+
+#: admin/class-babilim-admin.php:4754
+msgid "Free-plan slots"
+msgstr "خانات الباقة المجانية"
+
+#: admin/class-babilim-admin.php:3834
+msgid "General"
+msgstr "عام"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1933
+#, php-format
+msgid "If this is on, uninstalling also erases this site's identity. The paid license attached to this site cannot be restored automatically afterwards; you would have to contact Babilim support at %s to get it back."
+msgstr "إلا كان هادا مفعّل، منين تحيد التثبيت غادي تتمسح حتى هوية هاد الموقع. الرخصة المدفوعة المرتبطة بهاد الموقع ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s باش ترجّعها."
+
+#: admin/class-babilim-admin.php:4797
+msgid "Included"
+msgstr "مضمّنة"
+
+#: admin/class-babilim-admin.php:3726
+msgid "Included in index"
+msgstr "داخل في الفهرس"
+
+#: admin/class-babilim-admin.php:3868
+msgid "Install available translations automatically"
+msgstr "ثبّت الترجمات المتوفرة أوتوماتيكيا"
+
+#: admin/class-babilim-translations-table.php:470
+msgid "Installed"
+msgstr "مركّبة"
+
+#: admin/class-babilim-admin.php:3905
+msgid "Installed translations are kept, but no further checks or downloads will run."
+msgstr "الترجمات المثبّتة كتبقى، ولكن ما غاديش يتدارو تحقّقات ولا تحميلات أخرى."
+
+#. translators: %s: the date a translation installed on this site was built.
+#: admin/class-babilim-cell.php:323
+#, php-format
+msgid "Installed · %s"
+msgstr "تّرْكَّبات · %s"
+
+#. translators: 1: the component version a Babilim translation was built for, 2: the component version installed on this site.
+#: admin/class-babilim-cell.php:283
+#, php-format
+msgid "Installed · built for %1$s, this site has %2$s"
+msgstr "مثبّتة · مبنية لـ %1$s، الموقع فيه %2$s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+#, php-format
+msgid "Installed · built for %s"
+msgstr "مثبّتة · مبنية لـ %s"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+#, php-format
+msgid "Installed · built for %s, all free-plan slots for this site are used"
+msgstr "مثبتة · مبنية للنسخة %s، جميع خانات الباقة المجانية ديال هاد الموقع مستعملة"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+#, php-format
+msgid "Installed · built for %s, new version failed"
+msgstr "تّرْكَّبات · مبنية لـ %s، النسخة الجديدة فشلات"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+#, php-format
+msgid "Installed · built for %s, new version not covered by the free service plan"
+msgstr "مثبتة · مبنية للنسخة %s، النسخة الجديدة ما مغطاش من باقة الخدمة المجانية"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+#, php-format
+msgid "Installed · built for %s, new version scheduled"
+msgstr "مثبّتة · مبنية لـ %s، النسخة الجديدة مبرمجة"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+#, php-format
+msgid "Installed · built for %s, translating the new version…"
+msgstr "مثبّتة · مبنية لـ %s، كيترجم النسخة الجديدة…"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:287
+#: admin/class-babilim-cell.php:303
+msgid "Installed · built for a different version"
+msgstr "مثبّتة · مبنية لنسخة مختلفة"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:299
+msgid "Installed · built for a different version, all free-plan slots for this site are used"
+msgstr "مثبتة · مبنية لنسخة مختلفة، جميع خانات الباقة المجانية ديال هاد الموقع مستعملة"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:291
+msgid "Installed · built for a different version, new version failed"
+msgstr "تّرْكَّبات · مبنية لنسخة أخرى، النسخة الجديدة فشلات"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:295
+msgid "Installed · built for a different version, new version not covered by the free service plan"
+msgstr "مثبتة · مبنية لنسخة مختلفة، النسخة الجديدة ما مغطاش من باقة الخدمة المجانية"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:274
+msgid "Installed · built for a different version, new version scheduled"
+msgstr "مثبّتة · مبنية لنسخة مختلفة، النسخة الجديدة مبرمجة"
+
+#. translators: %s: the component version a Babilim translation was built for.
+#: admin/class-babilim-cell.php:278
+msgid "Installed · built for a different version, translating the new version…"
+msgstr "مثبّتة · مبنية لنسخة مختلفة، كيترجم النسخة الجديدة…"
+
+#: admin/class-babilim-admin.php:3431
+msgid "It is stored by the service's hosting provider and processed by AI models to produce the translation."
+msgstr "كيتخزن عند مزوّد الاستضافة ديال الخدمة وكتعالجو نماذج الذكاء الاصطناعي باش تخرج الترجمة."
+
+#: admin/class-babilim-admin.php:3885
+msgid "Keep my own translation overrides when purging everything or uninstalling this plugin."
+msgstr "حافظ على تعديلات الترجمة ديالي منين تمسح كلشي أو تحيّد هاد الإضافة."
+
+#: admin/class-babilim-admin.php:3725
+#: admin/class-babilim-admin.php:4256
+#: admin/class-babilim-admin.php:4795
+msgid "Language"
+msgstr "اللغة"
+
+#: admin/class-babilim-translations-table.php:553
+msgid "Language:"
+msgstr "اللغة:"
+
+#: admin/class-babilim-admin.php:3864
+msgid "Languages"
+msgstr "اللغات"
+
+#. translators: %s: a list of language names, joined the way the language joins lists.
+#: admin/class-babilim-admin.php:3061
+#, php-format
+msgid "Languages found on this site: %s."
+msgstr "اللغات لي تلقاو ف هاد الموقع: %s."
+
+#. translators: 1: when the last sweep ran, 2: files marked, 3: files deleted, 4: records purged.
+#: admin/class-babilim-admin.php:4844
+#, php-format
+msgid "Last cleanup on %1$s: %2$d newly marked, %3$d file(s) deleted, %4$d record(s) removed."
+msgstr "آخر تنقية فـ %1$s: %2$d ملف تزادت عليهم علامة، %3$d ملف تمسح، %4$d سجل تحيّد."
+
+#: admin/class-babilim-admin.php:4891
+msgid "Maintenance"
+msgstr "الصيانة"
+
+#: admin/class-babilim-admin.php:4822
+msgid "Maintenance status is not available right now."
+msgstr "حالة الصيانة ماشي متوفرة دابا."
 
 #. translators: %s: the technical reason the manifest is unavailable.
 #: includes/class-babilim-default-index.php:112
@@ -1491,190 +948,56 @@ msgstr "لغة غير آمنة: %s"
 msgid "Manifest unavailable: %s"
 msgstr "manifest ماشي متاح: %s"
 
-#: includes/class-babilim-default-index.php:134
-msgid "Could not determine active components; the existing merged index was left unchanged."
-msgstr "ما قدرناش نحددو المكونات النشطة؛ الفهرس المدمج الموجود بقا بلا تغيير."
+#: admin/class-babilim-admin.php:3259
+msgid "Negation reversed"
+msgstr "النفي تقلب"
 
-#: includes/class-babilim-default-index.php:400
-msgid "Could not determine installed plugins/themes; sweep skipped, nothing was deleted."
-msgstr "ما قدرناش نحددو الإضافات/القوالب المثبتة؛ تخطينا التنظيف وما تمسح والو."
+#: admin/class-babilim-admin.php:3754
+msgid "No"
+msgstr "لا"
 
-#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
-#: includes/class-babilim-default-index.php:532
+#: admin/class-babilim-admin.php:1003
+msgid "No build is available to download for this locale."
+msgstr "ماكاينش شي إصدار متاح للتحميل لهاد اللغة."
+
+#: admin/class-babilim-admin.php:4851
+msgid "No cleanup has run yet."
+msgstr "مازال ما تدارات حتى تنقية."
+
+#. translators: %s: a "Clear filters" link.
+#: admin/class-babilim-translations-table.php:430
 #, php-format
-msgid "Sweep aborted without orphaning anything: %s."
-msgstr "الفحص تحبس بلا ما يتيّم شي حاجة: %s."
+msgid "No components match these filters. %s"
+msgstr "ما كاين حتى عنصر كيطابق هاد الفلاتر. %s"
 
-#: includes/class-babilim-default-index.php:624
-msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
-msgstr "التنظيف تدار، ولكن شي تغييرات ما قدراتش تتسجل فـ فهرس الترجمات؛ التنظيف التالي غادي يعاود يجربها."
+#: admin/class-babilim-admin.php:3165
+msgid "No components synced yet."
+msgstr "ما تزامن حتى مكوّن بعد."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:746
-msgctxt "component kind in the sweep brake message"
-msgid "theme"
-msgstr "قالب"
+#: admin/class-babilim-admin.php:4240
+msgid "No installed translation matches."
+msgstr "ما كاينة حتى ترجمة من الترجمات لي تثبتات كتوافق."
 
-#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
-#: includes/class-babilim-default-index.php:749
-msgctxt "component kind in the sweep brake message"
-msgid "plugin"
-msgstr "إضافة"
+#: admin/class-babilim-admin.php:4673
+msgid "No language is managed yet."
+msgstr "حتى لغة ما مسيّرة دابا."
 
-#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
-#: includes/class-babilim-default-index.php:755
-#, php-format
-msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
-msgstr "غادي ييتّم كل مكوّن %1$s مدار (%2$d من %2$d)"
+#: includes/class-babilim-site.php:805
+msgid "No pending challenge for this nonce."
+msgstr "ما كاين حتى تحدي معلق ل هاد nonce."
 
-#. translators: 1: components that would be orphaned, 2: components managed in total.
-#: includes/class-babilim-default-index.php:762
-#, php-format
-msgid "it would orphan %1$d of %2$d managed components (more than half)"
-msgstr "غادي ييتّم %1$d من %2$d ديال المكوّنات المدارة (أكثر من النص)"
+#: includes/class-babilim-site.php:536
+#: includes/class-babilim-site.php:650
+msgid "No pending challenge to verify."
+msgstr "ما كاين حتى تحدي معلق للتحقق منو."
 
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:874
-#, php-format
-msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
-msgstr "الفهرس المدموج ديال '%s' تعاود بناؤه، ولكن فهرس الترجمات ما قدرش يسجلو؛ إعادة البناء التالية غادي تعاود تجرب."
+#: admin/class-babilim-translations-table.php:424
+msgid "No plugins or themes found."
+msgstr "ما تلقات حتى إضافة ولا قالب."
 
-#: includes/class-babilim-default-index.php:950
-msgid "Could not write the staged merged index."
-msgstr "ما قدرتش نكتب فهرس مدموج مرحلي."
-
-#: includes/class-babilim-default-index.php:958
-msgid "Re-parsed entry count did not match the built index."
-msgstr "عدد المدخلات اللي تعاد تحليلها ما طابقش الفهرس المبني."
-
-#. translators: %s: the locale code the merged index was built for.
-#: includes/class-babilim-default-index.php:989
-#, php-format
-msgid "Could not move the merged index for '%s' into place; the previous served index (if any) was removed rather than left half-updated. No default-domain supplement is served for this locale until the next successful rebuild."
-msgstr "ما قدرناش ننقلو الفهرس المدمج ديال '%s' لبلاصتو؛ الفهرس اللي كان كيتقدم قبل (إلا كان) تمسح عوض ما يبقى محدث نص نص. ما غاديش يتقدم حتى ملحق ديال default لهاد اللغة حتى تنجح إعادة البناء التالي."
-
-#. translators: %s: the zip file path that could not be opened.
-#: includes/class-babilim-installer.php:147
-#, php-format
-msgid "Could not open zip: %s"
-msgstr "ما قدرناش نحلو zip: %s"
-
-#: includes/class-babilim-installer.php:150
-msgid "Zip has no manifest.json."
-msgstr "ملف zip ما فيهش manifest.json."
-
-#: includes/class-babilim-installer.php:161
-msgid "manifest.json in the zip is not valid JSON."
-msgstr "manifest.json اللي فـ zip ماشي JSON صالح."
-
-#. translators: %s: the manifest.json field that did not match.
-#: includes/class-babilim-installer.php:165
-#, php-format
-msgid "manifest.json's '%s' does not match the expected value."
-msgstr "'%s' فـ manifest.json ما كيطابقش القيمة المنتظرة."
-
-#: includes/class-babilim-installer.php:249
-#: includes/class-babilim-installer.php:254
-msgid "Another installation is running; try again in a moment."
-msgstr "كاين تثبيت آخر خدام؛ عاود حاول من بعد شوية."
-
-#. translators: %s: the invalid server_build_id value.
-#: includes/class-babilim-installer.php:296
-#, php-format
-msgid "Not a valid server_build_id: %s"
-msgstr "server_build_id ماشي صالح: %s"
-
-#. translators: 1: the package manifest's own kind. 2: the requested kind.
-#: includes/class-babilim-installer.php:311
-#, php-format
-msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
-msgstr "نوع manifest د الحزمة '%1$s' ما كيطابقش النوع المطلوب '%2$s'."
-
-#. translators: 1: the package's text domain. 2: this site's text domain for the component.
-#: includes/class-babilim-installer.php:346
-#, php-format
-msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
-msgstr "text domain د الحزمة '%1$s' ما كيطابقش النسخة د هاد الموقع د المكوّن ('%2$s')، وداكشي علاش ما تثبتاتش."
-
-#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
-#: includes/class-babilim-installer.php:364
-#, php-format
-msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
-msgstr "الدومين المعطى '%1$s' ما كيطابقش لا slug د manifest د الحزمة '%2$s' ولا text_domain ديالها '%3$s'."
-
-#. translators: %s: the invalid slug.
-#: includes/class-babilim-installer.php:372
-#, php-format
-msgid "Unsafe slug: %s"
-msgstr "slug غير آمن: %s"
-
-#. translators: %s: the invalid text domain.
-#: includes/class-babilim-installer.php:375
-#, php-format
-msgid "Unsafe text_domain: %s"
-msgstr "text_domain غير آمن: %s"
-
-#. translators: %s: the expected .mo filename for the package's own text domain.
-#: includes/class-babilim-installer.php:413
-#, php-format
-msgid "The package has no %s for its own text domain."
-msgstr "الحزمة ما فيهاش %s ل text domain ديالها."
-
-#. translators: %s: the manifest.json field that is missing or invalid.
-#: includes/class-babilim-installer.php:470
-#, php-format
-msgid "manifest.json is missing or has an invalid '%s'."
-msgstr "manifest.json ناقص ولا فيه '%s' ماشي صالح."
-
-#: includes/class-babilim-installer.php:474
-msgid "manifest.json is missing or has an invalid 'entries'."
-msgstr "manifest.json ناقص ولا فيه 'entries' ماشي صالح."
-
-#: includes/class-babilim-installer.php:477
-msgid "manifest.json is missing or has an invalid 'files'."
-msgstr "manifest.json ناقص ولا فيه 'files' ماشي صالح."
-
-#: includes/class-babilim-installer.php:480
-msgid "manifest.json is missing or has an invalid 'extra_domains'."
-msgstr "manifest.json ناقص ولا فيه 'extra_domains' ماشي صالح."
-
-#: includes/class-babilim-installer.php:483
-msgid "manifest.json is missing or has an invalid 'build_no'."
-msgstr "manifest.json ناقص ولا فيه 'build_no' ماشي صالح."
-
-#: includes/class-babilim-installer.php:486
-msgid "manifest.json's 'server_build_id' is not a valid build id."
-msgstr "'server_build_id' ف manifest.json ماشي معرّف بناء صالح."
-
-#: includes/class-babilim-installer.php:489
-msgid "manifest.json's 'contract' is not a valid version string."
-msgstr "'contract' ف manifest.json ماشي نص إصدار صالح."
-
-#: includes/class-babilim-installer.php:492
-msgid "manifest.json's 'status' must be 'published'."
-msgstr "خاص 'status' ف manifest.json يكون 'published'."
-
-#: includes/class-babilim-installer.php:495
-msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
-msgstr "خاص 'kind' ف manifest.json يكون 'plugin' ولا 'theme'."
-
-#: includes/class-babilim-installer.php:498
-msgid "manifest.json has an invalid 'default_domain_entries'."
-msgstr "manifest.json فيه 'default_domain_entries' ماشي صالح."
-
-#: includes/class-babilim-installer.php:501
-msgid "manifest.json has an invalid 'default_domain_files'."
-msgstr "manifest.json فيه 'default_domain_files' ماشي صالح."
-
-#. translators: %s: the expected-manifest field that is missing or invalid.
-#: includes/class-babilim-installer.php:524
-#, php-format
-msgid "expected_manifest is missing or has an invalid '%s'."
-msgstr "expected_manifest ناقص ولا فيه '%s' ماشي صالح."
-
-#: includes/class-babilim-installer.php:528
-msgid "expected_manifest's 'server_build_id' is not a valid build id."
-msgstr "'server_build_id' ف expected_manifest ماشي معرّف بناء صالح."
+#: includes/class-babilim-installer.php:705
+msgid "No previous build to roll back to."
+msgstr "ما كاين حتى بناء سابق نرجعو ليه."
 
 #. translators: %s: the kind/domain/locale identifier that has no installed record.
 #: includes/class-babilim-installer.php:555
@@ -1685,17 +1008,796 @@ msgstr "'server_build_id' ف expected_manifest ماشي معرّف بناء صا
 msgid "No record for %s"
 msgstr "ما كاين حتى سجل لـ %s"
 
+#: includes/class-babilim-site.php:735
+msgid "No site id is on file to rotate a token for."
+msgstr "ما كاين حتى معرف موقع مسجل باش نبدلو ليه التوكن."
+
+#: admin/class-babilim-admin.php:3748
+msgid "No — component inactive"
+msgstr "لا — المكوّن غير مفعّل"
+
+#: admin/class-babilim-admin.php:3752
+msgid "No — component removed"
+msgstr "لا — المكوّن تمسح"
+
+#: admin/class-babilim-admin.php:3750
+msgid "No — installed version differs from the active one"
+msgstr "لا — النسخة المثبّتة مختلفة على النسخة المفعّلة"
+
+#. translators: %s: the invalid server_build_id value.
+#: includes/class-babilim-installer.php:296
+#, php-format
+msgid "Not a valid server_build_id: %s"
+msgstr "server_build_id ماشي صالح: %s"
+
+#: admin/class-babilim-cell.php:145
+msgid "Not covered by the free service plan"
+msgstr "ما مغطاش من باقة الخدمة المجانية"
+
+#: admin/class-babilim-cell.php:127
+msgid "Not installed"
+msgstr "ما مثبتش"
+
+#: admin/class-babilim-admin.php:4429
+msgid "Not registered yet"
+msgstr "مازال ما تسجلش"
+
+#: admin/class-babilim-cell.php:152
+msgid "Not supported"
+msgstr "ما مدعومش"
+
+#: admin/class-babilim-admin.php:4431
+msgid "Not verified"
+msgstr "ما تأكدش"
+
+#: admin/class-babilim-admin.php:1555
+#: admin/class-babilim-admin.php:4250
+#: admin/class-babilim-admin.php:4990
+msgid "Note (optional)"
+msgstr "ملاحظة (اختياري)"
+
+#: admin/class-babilim-admin.php:3569
+msgid "Nothing to choose."
+msgstr "ما كاين والو باش يتختار."
+
+#: admin/class-babilim-admin.php:3506
+msgid "Nothing to confirm."
+msgstr "ما كاين والو باش يتأكد."
+
+#: admin/class-babilim-admin.php:3895
+msgid "Off by default: deleting the plugin keeps this site's identity, so a reinstall can reuse it."
+msgstr "مطفي بشكل افتراضي: حذف الإضافة كيخلّي هوية هاد الموقع، باش إعادة التثبيت تقدر تستعملها من جديد."
+
 #: includes/class-babilim-installer.php:599
 msgid "One or more served files no longer match the manifest."
 msgstr "واحد ولا أكثر من الملفات المقدمة ما بقاوش كيطابقو manifest."
 
-#: includes/class-babilim-installer.php:705
-msgid "No previous build to roll back to."
-msgstr "ما كاين حتى بناء سابق نرجعو ليه."
+#. translators: 1: currency code, 2: price amount.
+#: admin/class-babilim-admin.php:4461
+#, php-format
+msgid "One-time purchase for this site: %1$s %2$s. Includes all future translation updates. Payment is handled by Paddle in a new tab."
+msgstr "شراء مرة وحدة لهاد الموقع: %1$s %2$s. كيشمل جميع تحديثات الترجمة اللي جايين. الخلاص كيدار عبر Paddle فتبويب جديد."
+
+#: admin/class-babilim-admin.php:3776
+msgid "Only a network administrator can do this, because it changes translation files shared by every site on this network."
+msgstr "غير مدير الشبكة اللي يقدر يدير هادشي، حيت كيبدّل ملفات الترجمة المشتركة بين جميع المواقع ف هاد الشبكة."
+
+#: includes/class-babilim-packager.php:180
+msgid "Only plugins and themes can be packaged."
+msgstr "غير الإضافات والقوالب اللي يقدرو يتحزمو."
+
+#: includes/class-babilim-consent.php:112
+msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
+msgstr "غير فاش تأكد رفع لإضافة ولا قالب ماشي فـ WordPress.org: كل ملف .php و .js، كل ملف block.json، و readme.txt و readme.md و style.css و theme.json اللي فالدوسي الرئيسي ديال داك المكون، بصيغة zip، من بعد ما كيتحيدو الملفات اللي كتشبه الأسرار الشائعة."
+
+#: admin/class-babilim-admin.php:2086
+msgid "Open Babilim settings"
+msgstr "حل إعدادات Babilim"
+
+#: admin/class-babilim-cell.php:150
+msgid "Original language"
+msgstr "اللغة الأصلية"
+
+#: admin/class-babilim-admin.php:4244
+msgid "Original string"
+msgstr "النص الأصلي"
+
+#: admin/class-babilim-admin.php:4446
+msgid "Paid"
+msgstr "مدفوع"
+
+#: admin/class-babilim-admin.php:4448
+msgid "Partner"
+msgstr "شريك"
+
+#: admin/class-babilim-admin.php:2234
+msgid "Please check that your site can be reached from the internet, then try again."
+msgstr "عافاك تأكد بلي موقعك كيمكن توصل ليه من الإنترنت، وعاود جرب."
+
+#: admin/class-babilim-admin.php:1445
+msgid "Please choose a category for this report."
+msgstr "عافاك اختار فئة لهاد التقرير."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Plugin"
+msgstr "الإضافة"
+
+#. translators: %s: the plugin's version number.
+#: admin/class-babilim-translations-table.php:620
+#, php-format
+msgid "Plugin · %s"
+msgstr "إضافة · %s"
+
+#: admin/class-babilim-translations-table.php:515
+msgid "Plugins"
+msgstr "الإضافات"
+
+#. translators: Heading of the step that shows the report before it is sent.
+#: admin/class-babilim-admin.php:4252
+msgid "Preview"
+msgstr "معاينة"
+
+#: admin/class-babilim-admin.php:4589
+msgid "Purchase restored. This site is now licensed."
+msgstr "تسترجع الشراء. دابا هاد الموقع عندو رخصة."
+
+#: includes/class-babilim-default-index.php:958
+msgid "Re-parsed entry count did not match the built index."
+msgstr "عدد المدخلات اللي تعاد تحليلها ما طابقش الفهرس المبني."
+
+#: admin/class-babilim-admin.php:2257
+msgid "Re-verify"
+msgstr "عاود تحقق"
+
+#: admin/class-babilim-admin.php:4902
+msgid "Rebuild index now"
+msgstr "عاود بني الفهرس دابا"
+
+#: includes/class-babilim-api-client.php:309
+msgid "Refusing to write outside the Babilim language-file directory."
+msgstr "كنرفض نكتب برا مجلد ملفات اللغة ديال Babilim."
+
+#: includes/class-babilim-site.php:530
+#: includes/class-babilim-site.php:643
+msgid "Registration response was missing required fields."
+msgstr "جواب التسجيل كانو ناقصين فيه شي حقول ضرورية."
+
+#: admin/class-babilim-admin.php:2320
+msgid "Registration restarted."
+msgstr "تعاود التسجيل من الأول."
+
+#: admin/class-babilim-admin.php:3499
+#: admin/class-babilim-admin.php:3563
+#: admin/class-babilim-translations-table.php:733
+msgid "Remove"
+msgstr "حيّد"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed"
+msgstr "امسح كلشي ثبّتو Babilim"
+
+#: admin/class-babilim-admin.php:4933
+msgid "Remove everything Babilim installed? This deletes every language file it installed for every plugin and theme on this site."
+msgstr "بغيتي تمسح كلشي ثبّتو Babilim؟ هاد العملية غتمسح كاع ملفات اللغة اللي ثبّت لكل إضافة وقالب فهاد الموقع."
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:677
+#, php-format
+msgid "Remove the %2$s translation of %1$s from this site?"
+msgstr "بغيتي تمسح الترجمة %2$s ديال %1$s من هاد الموقع؟"
+
+#. translators: %d: number of components removed.
+#: admin/class-babilim-admin.php:2729
+#, php-format
+msgid "Removed %d installed component."
+msgid_plural "Removed %d installed components."
+msgstr[0] "تحيدو %d مكوّن مثبّت."
+msgstr[1] "تحيد %d مكوّن مثبّت."
+msgstr[2] "تحيدو %d مكوّنين مثبّتين."
+msgstr[3] "تحيدو %d مكوّنات مثبّتة."
+msgstr[4] "تحيدو %d مكوّن مثبّت."
+msgstr[5] "تحيدو %d مكوّن مثبّت."
+
+#: admin/class-babilim-cell.php:214
+msgid "Removed after a failed integrity check"
+msgstr "تحيدات من بعد فشل فحص السلامة"
+
+#: admin/class-babilim-admin.php:1147
+msgid "Removed."
+msgstr "تحيّد."
+
+#: admin/class-babilim-admin.php:4932
+msgid "Removes every language file Babilim has installed for every plugin and theme on this site."
+msgstr "كيمسح كاع ملفات اللغة اللي ثبّتها Babilim لكل إضافة وقالب فهاد الموقع."
+
+#: admin/class-babilim-admin.php:3565
+#: admin/class-babilim-admin.php:4954
+#: admin/class-babilim-translations-table.php:735
+msgid "Report a problem"
+msgstr "بلّغ على مشكل"
+
+#: admin/class-babilim-admin.php:4087
+#: admin/class-babilim-admin.php:4235
+msgid "Report translation"
+msgstr "بلّغ على الترجمة"
+
+#: admin/class-babilim-cell.php:371
+msgid "Request newer translation"
+msgstr "طلب ترجمة أجدد"
+
+#: admin/class-babilim-cell.php:371
+#: admin/class-babilim-translations-table.php:455
+msgid "Request translation"
+msgstr "طلب ترجمة"
+
+#: admin/class-babilim-translations-table.php:469
+msgid "Requestable"
+msgstr "ممكن تتطلب"
+
+#: admin/class-babilim-cell.php:373
+msgid "Requesting…"
+msgstr "كيتطلب…"
+
+#: admin/class-babilim-admin.php:3800
+msgid "Restart registration"
+msgstr "عاود بدا التسجيل"
+
+#: admin/class-babilim-admin.php:4520
+msgid "Restore code"
+msgstr "كود الاسترجاع"
+
+#: admin/class-babilim-admin.php:4521
+msgid "Restore purchase"
+msgstr "استرجاع الشراء"
+
+#: admin/class-babilim-cell.php:369
+msgid "Retry request"
+msgstr "عاود دير الطلب"
+
+#: admin/class-babilim-admin.php:3503
+#: admin/class-babilim-admin.php:3562
+#: admin/class-babilim-translations-table.php:732
+msgid "Roll back"
+msgstr "رجّع للنسخة اللي قبل"
+
+#: admin/class-babilim-admin.php:3564
+#: admin/class-babilim-translations-table.php:734
+msgid "Roll back and report"
+msgstr "رجّع للنسخة اللي قبل وبلّغ"
+
+#: admin/class-babilim-admin.php:4995
+msgid "Roll back and send report"
+msgstr "رجّع للنسخة اللي قبل وصيفط التقرير"
+
+#. translators: 1: component name, 2: language name.
+#: admin/class-babilim-translations-table.php:680
+#, php-format
+msgid "Roll back the %2$s translation of %1$s to the previous build?"
+msgstr "واش بغيتي ترجّع ترجمة %2$s ديال %1$s للبناء اللي قبل؟"
+
+#: admin/class-babilim-admin.php:1117
+msgid "Rolled back and reported."
+msgstr "تراجعات وتبعت التقرير."
+
+#: admin/class-babilim-admin.php:1058
+msgid "Rolled back to the previous build."
+msgstr "تراجعات للإصدار السابق."
+
+#. translators: %s: why sending the report failed.
+#: admin/class-babilim-admin.php:1123
+#, php-format
+msgid "Rolled back, but the report could not be sent: %s"
+msgstr "تراجعات، ولكن ما قدراش يتصيفط التقرير: %s"
+
+#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1075
+#, php-format
+msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
+msgstr "الرجوع للنسخة السابقة غادي يعوّض '%1$s' (%2$s)، اللي دابا مخدّم لمكوّن آخر مثبت (%3$s)؛ ما تبدل والو."
+
+#: includes/class-babilim-site.php:744
+msgid "Rotate-token response was missing site_token."
+msgstr "جواب تبديل التوكن كان ناقصو site_token."
+
+#: admin/class-babilim-admin.php:3901
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+#: admin/class-babilim-cell.php:137
+msgid "Scheduled, waiting to be processed"
+msgstr "مبرمج، كيتسنى المعالجة"
+
+#. translators: Button label (a verb): runs the search of installed translations.
+#: admin/class-babilim-admin.php:4238
+msgid "Search"
+msgstr "قلّب"
+
+#: admin/class-babilim-admin.php:3391
+msgid "Search components"
+msgstr "قلّب على المكوّنات"
+
+#: admin/class-babilim-admin.php:4236
+msgid "Search the installed translations"
+msgstr "قلّب فالترجمات لي تثبتات"
+
+#: admin/class-babilim-translations-table.php:440
+msgid "Select all"
+msgstr "حدد الكل"
+
+#. translators: 1: the most operations one run accepts, 2: how many were selected.
+#: admin/class-babilim-admin.php:459
+#, php-format
+msgid "Select fewer components: at most %1$d operations per run (you selected %2$d)."
+msgstr "اختار عدد أقل ديال المكونات: الحد الأقصى هو %1$d عمليات فكل تشغيل (نتا ختارتي %2$d)."
+
+#: admin/class-babilim-admin.php:4262
+#: admin/class-babilim-admin.php:4995
+msgid "Send report"
+msgstr "صيفط التقرير"
+
+#: admin/class-babilim-admin.php:4454
+msgid "Service plan"
+msgstr "باقة الخدمة"
+
+#: admin/class-babilim-admin.php:403
+#: admin/class-babilim-admin.php:3108
+#: admin/class-babilim-admin.php:3400
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: admin/class-babilim-admin.php:3880
+msgid "Share error reports"
+msgstr "شارك تقارير الأخطاء"
+
+#: admin/class-babilim-admin.php:2543
+msgid "Share this report"
+msgstr "شارك هاد التقرير"
+
+#: admin/class-babilim-admin.php:4518
+msgid "Show a new restore code"
+msgstr "بيّن كود استرجاع جديد"
+
+#: admin/class-babilim-admin.php:3875
+msgid "Show the \"Report translation\" entry in the admin toolbar"
+msgstr "عرض خيار \"الإبلاغ عن الترجمة\" فشريط الأدوات ديال الإدارة"
+
+#: admin/class-babilim-cell.php:65
+msgid "Some of this component's text is hard-coded by its author and can't be translated by a language pack."
+msgstr "شي نصوص فهاد المكوّن كتبها المطور مباشرة فالكود وما يمكنش تترجم بحزمة اللغة."
+
+#: admin/class-babilim-admin.php:4441
+msgid "Status"
+msgstr "الحالة"
+
+#: admin/class-babilim-cell.php:154
+msgid "Status unknown"
+msgstr "الحالة مجهولة"
+
+#: admin/class-babilim-admin.php:4259
+msgid "String context"
+msgstr "سياق النص"
+
+#: admin/class-babilim-admin.php:1551
+#: admin/class-babilim-admin.php:4249
+#: admin/class-babilim-admin.php:4988
+msgid "Suggested translation"
+msgstr "الترجمة المقترحة"
+
+#: admin/class-babilim-admin.php:4793
+msgid "Supplementary translation index"
+msgstr "فهرس الترجمات الإضافية"
+
+#: admin/class-babilim-admin.php:2679
+msgid "Supplementary translation index rebuilt."
+msgstr "تعاود بناء فهرس الترجمات التكميلي."
+
+#: admin/class-babilim-admin.php:4819
+msgid "Supplementary translation maintenance"
+msgstr "صيانة الترجمات الإضافية"
+
+#: admin/class-babilim-admin.php:3721
+msgid "Supplementary translations"
+msgstr "ترجمات إضافية"
+
+#. translators: %s: why the sweep was aborted, as a full sentence fragment from brake_message().
+#: includes/class-babilim-default-index.php:532
+#, php-format
+msgid "Sweep aborted without orphaning anything: %s."
+msgstr "الفحص تحبس بلا ما يتيّم شي حاجة: %s."
+
+#. translators: %d: number of files deleted by this sweep.
+#: admin/class-babilim-admin.php:2697
+#, php-format
+msgid "Sweep complete: %d file deleted."
+msgid_plural "Sweep complete: %d files deleted."
+msgstr[0] "التنقية سالات: ما تمسح حتى ملف."
+msgstr[1] "التنقية سالات: تمسح %d ملف."
+msgstr[2] "التنقية سالات: تمسحو ملفين."
+msgstr[3] "التنقية سالات: تمسحو %d ملفات."
+msgstr[4] "التنقية سالات: تمسحو %d ملف."
+msgstr[5] "التنقية سالات: تمسحو %d ملف."
+
+#: admin/class-babilim-admin.php:4908
+msgid "Sweep now"
+msgstr "دير الفحص دابا"
+
+#: admin/class-babilim-admin.php:2341
+#: admin/class-babilim-admin.php:2415
+msgid "Sync complete."
+msgstr "تمات المزامنة."
+
+#: admin/class-babilim-admin.php:1403
+#: admin/class-babilim-admin.php:4266
+msgid "Thank you. Your report was sent."
+msgstr "شكرا. تبعت التقرير ديالك."
+
+#: admin/class-babilim-admin.php:472
+#: admin/class-babilim-admin.php:1160
+#: admin/class-babilim-admin.php:1361
+msgid "That component is not installed on this site, so a translation cannot be requested for it."
+msgstr "هاد المكوّن ماكاينش مثبّت فهاد الموقع، عليه ما يمكنش تطلب ترجمة ليه."
+
+#: admin/class-babilim-admin.php:4558
+msgid "That does not look like a restore code."
+msgstr "هادشي ما بحالش كود استرجاع."
+
+#: admin/class-babilim-admin.php:1751
+msgid "That is not a valid WordPress locale code. Nothing was saved."
+msgstr "هادا ماشي رمز اللغة صالح ديال WordPress. ما تسجل والو."
+
+#: includes/class-babilim-api-client.php:212
+msgid "That is not a valid build identifier."
+msgstr "هادا ماشي معرّف البناء صالح."
 
 #: includes/class-babilim-installer.php:927
 msgid "The change could not be recorded in the translation index; please try again."
 msgstr "ما قدرناش نسجلو التغيير ف فهرس الترجمات؛ عاود حاول."
+
+#: includes/class-babilim-default-index.php:624
+msgid "The cleanup ran, but some of its changes could not be recorded in the translation index; the next cleanup will retry them."
+msgstr "التنظيف تدار، ولكن شي تغييرات ما قدراتش تتسجل فـ فهرس الترجمات؛ التنظيف التالي غادي يعاود يجربها."
+
+#: includes/class-babilim-packager.php:132
+msgid "The component has no files that can be uploaded."
+msgstr "هاد المكون ما فيه حتى ملف يمكن يترفع."
+
+#: includes/class-babilim-packager.php:190
+msgid "The component is not inside the plugins or themes directory."
+msgstr "المكوّن ماشي داخل مجلد الإضافات ولا القوالب."
+
+#: includes/class-babilim-packager.php:185
+#: includes/class-babilim-packager.php:194
+msgid "The component's main file was not found."
+msgstr "الملف الرئيسي د المكوّن ما تلقاش."
+
+#: includes/class-babilim-sync-installer.php:415
+msgid "The download response was missing a usable location."
+msgstr "جواب التحميل ما فيهش موقع صالح للاستعمال."
+
+#: admin/class-babilim-admin.php:3876
+msgid "The entry opens a panel to search the translations Babilim installed on this site and report one of them."
+msgstr "هاد الخيار كيفتح لوحة باش تقلب على الترجمات اللي ثبتها Babilim فهاد الموقع وتبلغ على وحدة منهم."
+
+#. translators: 1: the name of a form field, 2: how many characters it has, 3: the most characters it may have.
+#: admin/class-babilim-admin.php:1522
+#, php-format
+msgid "The field \"%1$s\" is too long: it has %2$d characters and the limit is %3$d. Nothing was sent; please shorten it and try again."
+msgstr "الحقل \"%1$s\" طويل بزاف: فيه %2$d حرف والحد هو %3$d. ما تصيفط والو؛ عافاك قصّرو وعاود جرب."
+
+#. translators: 1: the given domain. 2: the package manifest's own slug. 3: the package manifest's own text_domain.
+#: includes/class-babilim-installer.php:364
+#, php-format
+msgid "The given domain '%1$s' matches neither the package manifest's own slug '%2$s' nor its text_domain '%3$s'."
+msgstr "الدومين المعطى '%1$s' ما كيطابقش لا slug د manifest د الحزمة '%2$s' ولا text_domain ديالها '%3$s'."
+
+#. translators: %s: the locale code the merged index was built for.
+#: includes/class-babilim-default-index.php:874
+#, php-format
+msgid "The merged index for '%s' was rebuilt, but the translation index could not record it; the next rebuild will retry."
+msgstr "الفهرس المدموج ديال '%s' تعاود بناؤه، ولكن فهرس الترجمات ما قدرش يسجلو؛ إعادة البناء التالية غادي تعاود تجرب."
+
+#: admin/class-babilim-admin.php:3432
+msgid "The original text and the translations made from it will be provided to other sites that install the same version."
+msgstr "النص الأصلي والترجمات اللي تعملو منو غادي يتوفرو للمواقع الأخرى اللي مركّبين نفس النسخة."
+
+#: includes/class-babilim-installer.php:1181
+msgid "The package declares no main translation file."
+msgstr "الباكيج ما مصرّح بحتى فيشي ترجمة رئيسي."
+
+#. translators: %s: the expected .mo filename for the package's own text domain.
+#: includes/class-babilim-installer.php:413
+#, php-format
+msgid "The package has no %s for its own text domain."
+msgstr "الحزمة ما فيهاش %s ل text domain ديالها."
+
+#. translators: 1: the package manifest's own kind. 2: the requested kind.
+#: includes/class-babilim-installer.php:311
+#, php-format
+msgid "The package manifest's kind '%1$s' does not match the requested kind '%2$s'."
+msgstr "نوع manifest د الحزمة '%1$s' ما كيطابقش النوع المطلوب '%2$s'."
+
+#: includes/class-babilim-installer.php:1336
+msgid "The package produced no servable main translation file."
+msgstr "الباكيج ما خرّج حتى فيشي ترجمة رئيسي صالح للخدمة."
+
+#. translators: 1: the package's text domain. 2: this site's text domain for the component.
+#: includes/class-babilim-installer.php:346
+#, php-format
+msgid "The package's text domain '%1$s' does not match this site's copy of the component ('%2$s'), so it was not installed."
+msgstr "text domain د الحزمة '%1$s' ما كيطابقش النسخة د هاد الموقع د المكوّن ('%2$s')، وداكشي علاش ما تثبتاتش."
+
+#: includes/class-babilim-upload.php:163
+msgid "The packaged component could not be read."
+msgstr "المكوّن المحزوم ما قدرناش نقراوه."
+
+#: includes/class-babilim-api-client.php:102
+msgid "The registration challenge is not in the expected form."
+msgstr "تحدي التسجيل ماشي بالشكل المتوقع."
+
+#: admin/class-babilim-admin.php:4269
+msgid "The report could not be sent."
+msgstr "ما قدرش التقرير يتصيفط."
+
+#: admin/class-babilim-admin.php:4243
+msgid "The search could not be completed."
+msgstr "ما قدرش البحث يكمل."
+
+#: includes/class-babilim-site.php:847
+msgid "The service asked this site to wait before syncing again."
+msgstr "الخدمة طلبات من هاد الموقع يتسنى قبل ما يزامن مرة أخرى."
+
+#: admin/class-babilim-admin.php:2228
+msgid "The service could not reach your site. A firewall, security plugin or host rule is probably blocking the request; please allow requests to /wp-json/babilim/v1/challenge."
+msgstr "الخدمة ما قدراتش توصل لموقعك. غالبا شي جدار ناري ولا إضافة أمان ولا قاعدة ديال الاستضافة كتبلوكي الطلب؛ عافاك سمح بالطلبات لـ /wp-json/babilim/v1/challenge."
+
+#: includes/class-babilim-upload.php:64
+#: includes/class-babilim-upload.php:69
+msgid "The service's upload offer was incomplete."
+msgstr "عرض الرفع ديال الخدمة كان ناقص."
+
+#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
+#: includes/class-babilim-installer.php:1022
+#, php-format
+msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
+msgstr "text domain '%1$s' (%2$s) أصلا مخدّم لمكوّن آخر مثبت (%3$s)؛ ما تثبت والو."
+
+#: admin/class-babilim-admin.php:3430
+msgid "The upload is kept until you ask Babilim to delete it."
+msgstr "الملفات المرفوعة كتبقى حتى تطلب من Babilim يمسحها."
+
+#: admin/class-babilim-admin.php:4747
+msgid "Theme"
+msgstr "القالب"
+
+#. translators: %s: the theme's version number.
+#: admin/class-babilim-translations-table.php:617
+#, php-format
+msgid "Theme · %s"
+msgstr "قالب · %s"
+
+#: admin/class-babilim-translations-table.php:516
+msgid "Themes"
+msgstr "القوالب"
+
+#: admin/class-babilim-admin.php:3450
+#: includes/class-babilim-upload.php:145
+msgid "There is no upload in progress."
+msgstr "ما كاين حتى رفع جاري."
+
+#: admin/class-babilim-admin.php:3422
+#: includes/class-babilim-upload.php:96
+msgid "There is no upload waiting for confirmation."
+msgstr "ما كاين حتى رفع كيتسنى التأكيد."
+
+#. translators: %s: link to the Settings page, with the text "Settings".
+#: admin/class-babilim-admin.php:3399
+#, php-format
+msgid "These are the languages this site uses. You can change them in %s."
+msgstr "هادو هوما اللغات اللي كيستعملهم هاد الموقع. تقدر تبدّلهم من %s."
+
+#: admin/class-babilim-admin.php:4260
+msgid "These fields will be sent:"
+msgstr "هاد الحقول غادي يتصيفطو:"
+
+#: admin/class-babilim-admin.php:1452
+msgid "This build is not one this site currently knows about for this component/locale."
+msgstr "هاد البناء ماشي واحد من اللي كيعرفهم الموقع دابا لهاد المكوّن/اللغة."
+
+#: admin/class-babilim-admin.php:1364
+msgid "This component does not declare a version number, so a translation cannot be requested for it."
+msgstr "هاد المكوّن ماكيصرّحش برقم النسخة، عليه ما يمكنش تطلب ترجمة ليه."
+
+#: includes/class-babilim-upload.php:112
+msgid "This component is larger than the service accepts, so it cannot be uploaded."
+msgstr "هاد المكوّن كبر من الحجم اللي كتقبل الخدمة، وداكشي علاش ما يمكنش يترفع."
+
+#: admin/class-babilim-admin.php:1205
+msgid "This component was already uploaded. Babilim is checking it now."
+msgstr "هاد المكوّن تحمّل من قبل. Babilim كيتحقق منو دابا."
+
+#. translators: %d: the most characters a version number may have.
+#: admin/class-babilim-admin.php:1371
+#, php-format
+msgid "This component's version number is longer than %d characters, which Babilim cannot handle, so a translation cannot be requested for it."
+msgstr "رقم نسخة هاد المكوّن كتر من %d حرف، وBabilim ما يقدرش يتعامل معاه، عليه ما يمكنش تطلب ترجمة ليه."
+
+#: admin/class-babilim-admin.php:4518
+msgid "This issues a new restore code and the previous one stops working. Continue?"
+msgstr "هاد العملية غادي تصدر كود استرجاع جديد والقديم غادي يوقف خدمتو. واش تكمل؟"
+
+#. translators: %s: Babilim support email address. Do not translate or change it.
+#: admin/class-babilim-admin.php:1993
+#, php-format
+msgid "This network has too many sites to check them one by one, and some of them may be set to erase their Babilim identity when the plugin is deleted. The paid license attached to such a site could then not be restored automatically; you would have to contact Babilim support at %s. To keep the identities, press Cancel, untick \"Delete all Babilim data on uninstall\" in each site's Babilim settings, and deactivate again. Deactivate anyway?"
+msgstr "هاد الشبكة فيها بزاف د المواقع باش نتحققو منهم وحدة وحدة، وشي وحدين فيهم يمكن يكونو معدّين باش يمسحو هوية Babilim ديالهم منين تتحيد الإضافة. الرخصة المدفوعة المرتبطة بموقع بحال هاداك ما غاديش يمكن ترجعها أوتوماتيكيا من بعد؛ خاصك تتواصل مع دعم Babilim على %s. باش تبقي الهويات، ضغط على إلغاء، حيّد العلامة من \"مسح جميع بيانات Babilim منين تحيد التثبيت\" فإعدادات Babilim ديال كل موقع، وعاود عطّل الإضافة. بغيتي تعطّل ولو كان؟"
+
+#: includes/class-babilim-consent.php:87
+msgid "This plugin's own version, so the service can tell you to update it if it's too old to talk to."
+msgstr "نسخة هاد الإضافة نفسها، باش الخدمة تقدر تقول ليك دير تحديث إلا كانت قديمة بزاف ما تقدرش تتواصل معاها."
+
+#: admin/class-babilim-admin.php:1438
+msgid "This report does not name a valid plugin or theme and locale."
+msgstr "هاد التقرير ما فيهش إضافة ولا قالب ولغة صالحين."
+
+#: admin/class-babilim-admin.php:1467
+msgid "This report does not name an installed string."
+msgstr "هاد التقرير ما كيذكرش شي نص مثبت."
+
+#: admin/class-babilim-admin.php:1449
+msgid "This report is missing a valid build to report against."
+msgstr "هاد التقرير ناقصو إصدار صالح باش يتبلغ عليه."
+
+#: admin/class-babilim-admin.php:2542
+msgid "This report will be posted publicly on GitHub and may be kept by third parties."
+msgstr "هاد التقرير غادي يتنشر بشكل عمومي على GitHub و ممكن يبقاو عند أطراف تالتة."
+
+#: admin/class-babilim-admin.php:4572
+msgid "This restore code was not recognised for this site."
+msgstr "كود الاسترجاع هادا ما تعرفش لهاد الموقع."
+
+#: admin/class-babilim-admin.php:3793
+msgid "This site already has an active registration that can no longer be recovered automatically."
+msgstr "هاد الموقع عندو تسجيل نشيط ما بقاش ممكن يتسترجع بشكل تلقائي."
+
+#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
+#: includes/class-babilim-site.php:911
+#, php-format
+msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
+msgstr "هاد الموقع فيه %1$d مكوّن عبر %2$d لغة، وهادشي كيحتاج %3$d دفعات د التحقق؛ Babilim كيقدر يعالج %4$d بحد أقصى ف كل تشغيل. نقّص اللغات المدارة ف الإعدادات ولا عطّل الإضافات والقوالب اللي ما كتستعملهاش، من بعد ضغط عاود تحقق دابا."
+
+#: admin/class-babilim-admin.php:4612
+msgid "This site has no purchase to show a code for."
+msgstr "هاد الموقع ما عندو حتى شراء باش نبيّنو ليه كود."
+
+#: admin/class-babilim-admin.php:3974
+msgid "This site is already licensed. Reload the page."
+msgstr "هاد الموقع عندو ديجا رخصة. عاود حمّل الصفحة."
+
+#: admin/class-babilim-admin.php:3966
+#: admin/class-babilim-admin.php:4564
+#: admin/class-babilim-admin.php:4604
+#: includes/class-babilim-site.php:857
+#: includes/class-babilim-sync-installer.php:405
+msgid "This site is not registered with Babilim yet."
+msgstr "هاد الموقع باقي ما مسجّلش ف Babilim."
+
+#. translators: 1: number of components left out, 2: number of locales left out.
+#: admin/class-babilim-admin.php:2278
+#, php-format
+msgid "This site is over the size the service accepts in one sync, so some items were left out: %1$d components and %2$d locales."
+msgstr "حجم هاد الموقع أكبر من الحجم لي كتقبل الخدمة فمزامنة وحدة، وداكشي علاش ما تضمنوش بعض العناصر: %1$d مكوّن و%2$d لغة."
+
+#: admin/class-babilim-admin.php:3870
+msgid "This site is part of a multisite network, which does not install new translations automatically. Translations that are already installed are still updated."
+msgstr "هاد الموقع جزء من شبكة multisite، اللي ما كتثبتش الترجمات الجديدة بشكل تلقائي. الترجمات اللي ديجا مثبّتة كتبقى كتتحدّث."
+
+#: admin/class-babilim-admin.php:2307
+msgid "This site is verified."
+msgstr "هاد الموقع تم التحقق منو."
+
+#: admin/class-babilim-admin.php:4576
+msgid "This site must be verified first."
+msgstr "خاص نتأكدو من هاد الموقع اللول."
+
+#: includes/class-babilim-consent.php:72
+msgid "This site's URL, so the service can verify you own it."
+msgstr "رابط هاد الموقع، باش الخدمة تقدر تتأكد بلي نتا المالك ديالو."
+
+#: includes/class-babilim-site.php:1483
+msgid "This site's address is too long for Babilim to register."
+msgstr "عنوان هاد الموقع طويل بزاف باش Babilim يسجلو."
+
+#: includes/class-babilim-consent.php:92
+msgid "This site's configured locale."
+msgstr "اللغة المضبوطة ديال هاد الموقع."
+
+#: includes/class-babilim-consent.php:102
+msgid "This site's install public key, used to prove requests genuinely come from this site. Only the public half is ever sent."
+msgstr "المفتاح العمومي ديال تثبيت هاد الموقع، كيتستعمل باش يتثبت بلي الطلبات جاية فعلا من هاد الموقع. كيتبعت غير الجزء العمومي."
+
+#: includes/class-babilim-site.php:1486
+msgid "This site's locale code is not one Babilim can register."
+msgstr "رمز اللغة د هاد الموقع ماشي من اللي Babilim يقدر يسجّلو."
+
+#: admin/class-babilim-admin.php:4267
+msgid "This string can't be reported from this site."
+msgstr "ما يمكنش يتبلّغ على هاد النص من هاد الموقع."
+
+#: admin/class-babilim-admin.php:1475
+msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
+msgstr "هاد النص ماشي من الترجمات المثبتة فهاد الموقع. عاود قلب واختارو من اللائحة."
+
+#: admin/class-babilim-admin.php:1478
+msgid "This translation was updated since you searched. Search again and pick the string from the new list."
+msgstr "هاد الترجمة تحدثات من بعد ما قلبتي. عاود قلب واختار النص من اللائحة الجديدة."
+
+#: admin/class-babilim-admin.php:3426
+msgid "To translate this component, Babilim needs its source."
+msgstr "باش يترجم هاد المكوّن، Babilim خاصو المصدر ديالو."
+
+#: admin/class-babilim-admin.php:4574
+msgid "Too many attempts. Try again tomorrow."
+msgstr "بزاف د المحاولات. عاود جرّب غدا."
+
+#: admin/class-babilim-admin.php:4268
+msgid "Too many reports today. Try again tomorrow."
+msgstr "بزاف د التقارير اليوم. عاود جرّب غدا."
+
+#: includes/class-babilim-site.php:808
+msgid "Too many requests."
+msgstr "بزاف د الطلبات."
+
+#: admin/class-babilim-admin.php:3873
+msgid "Toolbar"
+msgstr "شريط الأدوات"
+
+#: admin/class-babilim-cell.php:139
+msgid "Translating…"
+msgstr "كيترجم…"
+
+#: admin/class-babilim-admin.php:3261
+msgid "Translation does not load"
+msgstr "الترجمة ما كاتتحملش"
+
+#: admin/class-babilim-cell.php:141
+msgid "Translation failed"
+msgstr "فشلات الترجمة"
+
+#. translators: %s: folder path, shown as code.
+#: admin/class-babilim-admin.php:3888
+#, php-format
+msgid "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this."
+msgstr "ملفات الترجمة اللي كتحط ف %s ديما عندها الأولوية على ديال Babilim. كتبقى محفوظة إلا إلا حيّدتي العلامة من هاد الخيار."
+
+#: admin/class-babilim-admin.php:1183
+msgid "Translation requested."
+msgstr "تطلبات الترجمة."
+
+#: admin/class-babilim-admin.php:394
+#: admin/class-babilim-admin.php:395
+#: admin/class-babilim-translations-table.php:442
+msgid "Translations"
+msgstr "الترجمات"
+
+#. translators: Field label (a noun): whether the component is a plugin or a theme.
+#: admin/class-babilim-admin.php:4254
+msgid "Type"
+msgstr "النوع"
+
+#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
+#: admin/class-babilim-admin.php:4242
+msgid "Type at least 2 characters to search."
+msgstr "كتب على الأقل 2 د الحروف باش تقلّب."
+
+#. translators: %d: the unexpected HTTP status code.
+#: includes/class-babilim-api-client.php:605
+#, php-format
+msgid "Unexpected HTTP %d response."
+msgstr "جواب HTTP %d ما كانش متوقع."
+
+#: admin/class-babilim-admin.php:3892
+msgid "Uninstall"
+msgstr "إلغاء التثبيت"
 
 #. translators: %s: the unrecognized kind value.
 #: includes/class-babilim-installer.php:943
@@ -1709,33 +1811,189 @@ msgstr "نوع ما معروفش: %s"
 msgid "Unsafe domain: %s"
 msgstr "دومين ماشي آمن: %s"
 
-#. translators: 1: the text domain in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1022
+#. translators: %s: the invalid locale code.
+#: includes/class-babilim-default-index.php:109
+#: includes/class-babilim-installer.php:949
 #, php-format
-msgid "The text domain '%1$s' (%2$s) is already served for another installed component (%3$s); nothing was installed."
-msgstr "text domain '%1$s' (%2$s) أصلا مخدّم لمكوّن آخر مثبت (%3$s)؛ ما تثبت والو."
+msgid "Unsafe locale: %s"
+msgstr "لغة غير آمنة: %s"
 
-#. translators: 1: the served filename in conflict. 2: the relative file path. 3: the owning component's kind/slug.
-#: includes/class-babilim-installer.php:1075
+#. translators: %s: the invalid slug.
+#: includes/class-babilim-installer.php:372
 #, php-format
-msgid "Rolling back would overwrite '%1$s' (%2$s), which is now served for another installed component (%3$s); nothing was changed."
-msgstr "الرجوع للنسخة السابقة غادي يعوّض '%1$s' (%2$s)، اللي دابا مخدّم لمكوّن آخر مثبت (%3$s)؛ ما تبدل والو."
+msgid "Unsafe slug: %s"
+msgstr "slug غير آمن: %s"
 
-#. translators: %s: the filename missing from the zip.
-#: includes/class-babilim-installer.php:1167
+#. translators: %s: the invalid text domain.
+#: includes/class-babilim-installer.php:375
 #, php-format
-msgid "Zip is missing expected file: %s"
-msgstr "الزيپ ناقصو الفيشي المطلوب: %s"
+msgid "Unsafe text_domain: %s"
+msgstr "text_domain غير آمن: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1171
+#: includes/class-babilim-consent.php:117
+msgid "Up to 20 pending diagnostic events (e.g. a file that failed its integrity check), each just a code, component, and locale, and never any string content or translated text."
+msgstr "حتى 20 ديال أحداث التشخيص المعلقة (بحال ملف فشل فحص السلامة)، كل واحد غير رمز ومكوّن ولغة، وعمرها ما كتجي معاها محتويات النصوص ولا النص المترجم."
+
+#: admin/class-babilim-cell.php:365
+#: admin/class-babilim-translations-table.php:454
+msgid "Update"
+msgstr "تحديث"
+
+#: admin/class-babilim-cell.php:187
+#: admin/class-babilim-cell.php:189
+msgid "Update available"
+msgstr "كاين تحديث"
+
+#: admin/class-babilim-translations-table.php:468
+msgid "Updates"
+msgstr "التحديثات"
+
+#: admin/class-babilim-cell.php:366
+msgid "Updating…"
+msgstr "كيتحدّث…"
+
+#: admin/class-babilim-admin.php:4457
+msgid "Upgrade this site"
+msgstr "رقّي هاد الموقع"
+
+#: admin/class-babilim-admin.php:3435
+msgid "Upload and request"
+msgstr "ارفع وطلب"
+
+#: admin/class-babilim-admin.php:1254
+msgid "Upload cancelled."
+msgstr "تلغى التحميل."
+
+#: admin/class-babilim-admin.php:1286
+msgid "Upload complete — translation requested."
+msgstr "كمل التحميل — تطلبات الترجمة."
+
+#: admin/class-babilim-cell.php:121
+msgid "Upload expired before it finished"
+msgstr "التحميل سالات صلاحيتو قبل ما يكمل"
+
+#: admin/class-babilim-cell.php:133
+#: admin/class-babilim-cell.php:135
+#: admin/class-babilim-cell.php:269
+#: admin/class-babilim-cell.php:271
+msgid "Upload in progress — continue or cancel"
+msgstr "التحميل جاري — كمّل ولا لغي"
+
+#: admin/class-babilim-admin.php:3420
+msgid "Upload this component?"
+msgstr "واش ترفع هاد المكوّن؟"
+
+#: admin/class-babilim-cell.php:118
+msgid "Upload was not accepted"
+msgstr "التحميل ما تقبلش"
+
+#: admin/class-babilim-admin.php:3448
+msgid "Uploading"
+msgstr "كيترفع"
+
+#. translators: 1: number of the part being sent, 2: total number of parts.
+#: admin/class-babilim-admin.php:3453
 #, php-format
-msgid "sha256 mismatch for %s"
-msgstr "sha256 ما كيطابقش ل %s"
+msgid "Uploading part %1$d of %2$d…"
+msgstr "كنرفع الجزء %1$d من %2$d…"
 
-#: includes/class-babilim-installer.php:1181
-msgid "The package declares no main translation file."
-msgstr "الباكيج ما مصرّح بحتى فيشي ترجمة رئيسي."
+#: admin/class-babilim-admin.php:3435
+msgid "Uploading…"
+msgstr "كيترفع…"
+
+#: admin/class-babilim-admin.php:4433
+msgid "Verified"
+msgstr "تمّ التحقّق"
+
+#: includes/class-babilim-site.php:574
+msgid "Verify response was missing site_token."
+msgstr "جواب التحقق كان ناقصو site_token."
+
+#. translators: %s: the component's version number.
+#: admin/class-babilim-translations-table.php:614
+#, php-format
+msgid "Version %s"
+msgstr "النسخة %s"
+
+#: admin/class-babilim-admin.php:4641
+msgid "What is sent when Babilim checks this site"
+msgstr "شنو كيتبعت فاش Babilim كيفحص هاد الموقع"
+
+#: admin/class-babilim-admin.php:3068
+msgid "What is sent when you enable Babilim"
+msgstr "شنو كيتبعت منين تفعّل Babilim"
+
+#: admin/class-babilim-admin.php:3881
+msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
+msgstr "ملي كيوقع شي مشكل داخل Babilim، صيفط تقرير الخطأ لخدمة Babilim باش يتنشر كمشكل عمومي على GitHub. التقرير كيتصيفط على أساس أنه جاي من هاد الموقع، بنفس المصادقة د كاع الطلبات لخرين لخدمة Babilim. الخدمة كتنشر غير رمز الخطأ و النسخ كمشكل عمومي على GitHub؛ المشكل العمومي ما فيه لا عنوان الموقع لا المحتوى لا مسارات الملفات. مطفي بشكل افتراضي."
+
+#: admin/class-babilim-admin.php:1559
+#: admin/class-babilim-admin.php:4992
+msgid "Where you saw this (optional)"
+msgstr "فين شفتي هادشي (اختياري)"
+
+#: admin/class-babilim-admin.php:3869
+msgid "While this is on, translations the service lists as available for the languages you manage are installed during the twice-daily sync."
+msgstr "ملي هادشي يكون مفعل، الترجمات اللي الخدمة كتعرضها متوفرة للغات اللي كتسيرها كيتم تثبيتها وقت المزامنة مرتين في اليوم."
+
+#: admin/class-babilim-cell.php:105
+msgid "WordPress.org"
+msgstr "WordPress.org"
+
+#: admin/class-babilim-admin.php:3255
+msgid "Wrong for this context"
+msgstr "غالط فهاد السياق"
+
+#: admin/class-babilim-admin.php:3249
+msgid "Wrong meaning"
+msgstr "المعنى غالط"
+
+#: admin/class-babilim-admin.php:3257
+msgid "Wrong plural form"
+msgstr "صيغة الجمع غالطة"
+
+#: admin/class-babilim-admin.php:3251
+msgid "Wrong term"
+msgstr "المصطلح غالط"
+
+#: admin/class-babilim-admin.php:3731
+msgid "Yes"
+msgstr "إيه"
+
+#: admin/class-babilim-admin.php:430
+#: admin/class-babilim-admin.php:839
+msgid "You are not allowed to do this."
+msgstr "ما عندكش الصلاحية باش دير هادشي."
+
+#: includes/class-babilim-consent.php:82
+msgid "Your PHP version, for compatibility."
+msgstr "نسخة PHP ديالك، للتوافق."
+
+#: includes/class-babilim-consent.php:77
+msgid "Your WordPress version, to serve compatible translation files."
+msgstr "نسخة WordPress ديالك، باش نقدمو ملفات ترجمة متوافقة."
+
+#. translators: %s: the restore code.
+#: admin/class-babilim-admin.php:4626
+#, php-format
+msgid "Your new restore code: %s. Keep it somewhere safe — the previous code no longer works."
+msgstr "كود الاسترجاع الجديد ديالك: %s. حافظ عليه فبلاصة مأمنة — الكود القديم ما بقاش كيخدم."
+
+#: admin/class-babilim-admin.php:4261
+msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
+msgstr "التقرير ديالك كيتعالج أوتوماتيكيا بنماذج AI و ممكن يحسّن هاد الترجمة لمواقع خرين."
+
+#: admin/class-babilim-admin.php:2232
+msgid "Your site answered, but not with what was expected. The REST API may be rewritten by another plugin, or that endpoint may be cached; please exclude /wp-json/babilim/v1/challenge from caching and rewriting."
+msgstr "موقعك جاوب، ولكن ماشي بالجواب المنتظر. يمكن REST API تبدلات من إضافة أخرى، ولا هاداك الـ endpoint مخزّن فالكاش؛ عافاك استثني /wp-json/babilim/v1/challenge من الكاش ومن إعادة الكتابة."
+
+#: admin/class-babilim-admin.php:2230
+msgid "Your site took too long to answer. Please try again later, and check that your host is not too slow or overloaded."
+msgstr "موقعك طوّل بزاف باش يجاوب. عافاك عاود جرب من بعد، وتأكد بلي الاستضافة ديالك ماشي بطيئة ولا مضغوطة بزاف."
+
+#: includes/class-babilim-installer.php:150
+msgid "Zip has no manifest.json."
+msgstr "ملف zip ما فيهش manifest.json."
 
 #. translators: %s: the filename missing from the zip's default-domain supplement.
 #: includes/class-babilim-installer.php:1187
@@ -1743,85 +2001,15 @@ msgstr "الباكيج ما مصرّح بحتى فيشي ترجمة رئيسي."
 msgid "Zip is missing expected default file: %s"
 msgstr "الزيپ ناقصو الفيشي ديال default المطلوب: %s"
 
-#. translators: %s: the filename whose checksum did not match.
-#: includes/class-babilim-installer.php:1191
+#. translators: %s: the filename missing from the zip.
+#: includes/class-babilim-installer.php:1167
 #, php-format
-msgid "sha256 mismatch for default/%s"
-msgstr "sha256 ما كيطابقش ل default/%s"
+msgid "Zip is missing expected file: %s"
+msgstr "الزيپ ناقصو الفيشي المطلوب: %s"
 
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1214
-#: includes/class-babilim-installer.php:1279
-#: includes/class-babilim-installer.php:1312
-#, php-format
-msgid "Could not stage %s"
-msgstr "ما قدرناش نجهزو %s"
-
-#. translators: %s: the filename that failed to stage.
-#: includes/class-babilim-installer.php:1221
-#, php-format
-msgid "Could not stage default/%s"
-msgstr "ما قدرناش نجهزو default/%s"
-
-#. translators: %s: the .mo filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1263
-#, php-format
-msgid "Entry count mismatch for %s"
-msgstr "عدد المداخل ما كيطابقش لـ %s"
-
-#. translators: %s: the .mo filename whose entry count could not be verified.
-#: includes/class-babilim-installer.php:1272
-#, php-format
-msgid "Could not verify entry count for %s"
-msgstr "ما قدرناش نتحققو من عدد المداخل لـ %s"
-
-#. translators: %s: the .l10n.php filename whose entry count did not match.
-#: includes/class-babilim-installer.php:1293
-#, php-format
-msgid "l10n.php entry count mismatch for %s"
-msgstr "عدد المدخلات د l10n.php ما كيطابقش ل %s"
-
-#: includes/class-babilim-installer.php:1324
-msgid "Default supplement entry count mismatch."
-msgstr "عدد المداخل فالملحق ديال default ما كيطابقش."
-
-#: includes/class-babilim-installer.php:1336
-msgid "The package produced no servable main translation file."
-msgstr "الباكيج ما خرّج حتى فيشي ترجمة رئيسي صالح للخدمة."
-
-#. translators: %s: the filename that could not be prepared for rollback.
-#: includes/class-babilim-installer.php:1628
-#, php-format
-msgid "Could not prepare %s for rollback."
-msgstr "ما قدرناش نحضرو %s ل الرجوع للنسخة السابقة."
-
-#. translators: %s: the filename that could not be backed up.
-#: includes/class-babilim-installer.php:1644
-#, php-format
-msgid "Could not back up %s before replacing it."
-msgstr "ما قدرناش نديرو نسخة احتياطية ديال %s قبل ما نبدلوه."
-
-#. translators: %s: the filename that could not be moved into place.
-#: includes/class-babilim-installer.php:1650
-#, php-format
-msgid "Could not move %s into place."
-msgstr "ما قدرناش نحطو %s فبلاصتو."
-
-#. translators: %s: the filename that could not be read back after it was moved into place.
-#: includes/class-babilim-installer.php:1656
-#, php-format
-msgid "Could not read %s back after moving it into place."
-msgstr "ما قدرناش نقراو %s من جديد من بعد ما تنقل لبلاصتو."
-
-#: includes/class-babilim-locale-label.php:53
-msgid "English (United States)"
-msgstr "الإنجليزية (الولايات المتحدة)"
-
-#. translators: %s: the technical reason the manifest is unavailable.
-#: includes/class-babilim-manifest.php:546
-#, php-format
-msgid "Babilim_Manifest is unavailable: %s"
-msgstr "Babilim_Manifest ماشي متوفر: %s"
+#: includes/class-babilim-manifest.php:608
+msgid "_manifest.json has an unexpected structure"
+msgstr "_manifest.json فيه هيكلة ما متوقعاش"
 
 #. translators: %s: the underlying filesystem error message.
 #: includes/class-babilim-manifest.php:587
@@ -1829,312 +2017,147 @@ msgstr "Babilim_Manifest ماشي متوفر: %s"
 msgid "could not read _manifest.json: %s"
 msgstr "ما قدرناش نقراو _manifest.json: %s"
 
+#. translators: %s: the expected-manifest field that is missing or invalid.
+#: includes/class-babilim-installer.php:524
+#, php-format
+msgid "expected_manifest is missing or has an invalid '%s'."
+msgstr "expected_manifest ناقص ولا فيه '%s' ماشي صالح."
+
+#: includes/class-babilim-installer.php:528
+msgid "expected_manifest's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' ف expected_manifest ماشي معرّف بناء صالح."
+
 #. translators: %s: the underlying JSON parser error message.
 #: includes/class-babilim-manifest.php:601
 #, php-format
 msgid "failed to parse _manifest.json: %s"
 msgstr "ما قدرناش نحللو بنية _manifest.json: %s"
 
-#: includes/class-babilim-manifest.php:608
-msgid "_manifest.json has an unexpected structure"
-msgstr "_manifest.json فيه هيكلة ما متوقعاش"
+#. translators: 1: components that would be orphaned, 2: components managed in total.
+#: includes/class-babilim-default-index.php:762
+#, php-format
+msgid "it would orphan %1$d of %2$d managed components (more than half)"
+msgstr "غادي ييتّم %1$d من %2$d ديال المكوّنات المدارة (أكثر من النص)"
 
-#: includes/class-babilim-packager.php:106
-#: includes/class-babilim-packager.php:115
-#: includes/class-babilim-packager.php:138
-msgid "Could not create the package archive."
-msgstr "ما قدرناش ننشئو أرشيف الحزمة."
+#. translators: 1: the kind of component (plugin or theme), already translated, 2: how many components of that kind.
+#: includes/class-babilim-default-index.php:755
+#, php-format
+msgid "it would orphan every managed %1$s component (%2$d of %2$d)"
+msgstr "غادي ييتّم كل مكوّن %1$s مدار (%2$d من %2$d)"
 
-#: includes/class-babilim-packager.php:125
-msgid "A file in the component could not be read, so it was not packaged."
-msgstr "واحد الملف فالمكوّن ما قدرناش نقراوه، وداكشي علاش ما تحزمش."
+#. translators: %s: the .l10n.php filename whose entry count did not match.
+#: includes/class-babilim-installer.php:1293
+#, php-format
+msgid "l10n.php entry count mismatch for %s"
+msgstr "عدد المدخلات د l10n.php ما كيطابقش ل %s"
 
-#: includes/class-babilim-packager.php:180
-msgid "Only plugins and themes can be packaged."
-msgstr "غير الإضافات والقوالب اللي يقدرو يتحزمو."
+#: includes/class-babilim-installer.php:498
+msgid "manifest.json has an invalid 'default_domain_entries'."
+msgstr "manifest.json فيه 'default_domain_entries' ماشي صالح."
 
-#: includes/class-babilim-packager.php:185
-#: includes/class-babilim-packager.php:194
-msgid "The component's main file was not found."
-msgstr "الملف الرئيسي د المكوّن ما تلقاش."
+#: includes/class-babilim-installer.php:501
+msgid "manifest.json has an invalid 'default_domain_files'."
+msgstr "manifest.json فيه 'default_domain_files' ماشي صالح."
 
-#: includes/class-babilim-packager.php:190
-msgid "The component is not inside the plugins or themes directory."
-msgstr "المكوّن ماشي داخل مجلد الإضافات ولا القوالب."
+#: includes/class-babilim-installer.php:161
+msgid "manifest.json in the zip is not valid JSON."
+msgstr "manifest.json اللي فـ zip ماشي JSON صالح."
 
-#: includes/class-babilim-site.php:348
-#: includes/class-babilim-site.php:939
-#: includes/class-babilim-site.php:1271
-msgid "Babilim ran out of time for this step and will continue on the next check."
-msgstr "Babilim سالا ليه الوقت فهاد المرحلة وغادي يكمل فالفحص التالي."
+#. translators: %s: the manifest.json field that is missing or invalid.
+#: includes/class-babilim-installer.php:470
+#, php-format
+msgid "manifest.json is missing or has an invalid '%s'."
+msgstr "manifest.json ناقص ولا فيه '%s' ماشي صالح."
 
-#: includes/class-babilim-site.php:434
-#: includes/class-babilim-sync-installer.php:315
-msgid "Babilim could not verify this site, so nothing is downloaded or installed until verification succeeds."
-msgstr "Babilim ما قdarch يتحقق من هاد الموقع، وما غاديش يتحمل ولا يتثبت والو حتى ينجح التحقق."
+#: includes/class-babilim-installer.php:483
+msgid "manifest.json is missing or has an invalid 'build_no'."
+msgstr "manifest.json ناقص ولا فيه 'build_no' ماشي صالح."
 
-#: includes/class-babilim-site.php:530
-#: includes/class-babilim-site.php:643
-msgid "Registration response was missing required fields."
-msgstr "جواب التسجيل كانو ناقصين فيه شي حقول ضرورية."
+#: includes/class-babilim-installer.php:474
+msgid "manifest.json is missing or has an invalid 'entries'."
+msgstr "manifest.json ناقص ولا فيه 'entries' ماشي صالح."
 
-#: includes/class-babilim-site.php:536
-#: includes/class-babilim-site.php:650
-msgid "No pending challenge to verify."
-msgstr "ما كاين حتى تحدي معلق للتحقق منو."
+#: includes/class-babilim-installer.php:480
+msgid "manifest.json is missing or has an invalid 'extra_domains'."
+msgstr "manifest.json ناقص ولا فيه 'extra_domains' ماشي صالح."
 
-#: includes/class-babilim-site.php:574
-msgid "Verify response was missing site_token."
-msgstr "جواب التحقق كان ناقصو site_token."
+#: includes/class-babilim-installer.php:477
+msgid "manifest.json is missing or has an invalid 'files'."
+msgstr "manifest.json ناقص ولا فيه 'files' ماشي صالح."
 
-#: includes/class-babilim-site.php:735
-msgid "No site id is on file to rotate a token for."
-msgstr "ما كاين حتى معرف موقع مسجل باش نبدلو ليه التوكن."
+#. translators: %s: the manifest.json field that did not match.
+#: includes/class-babilim-installer.php:165
+#, php-format
+msgid "manifest.json's '%s' does not match the expected value."
+msgstr "'%s' فـ manifest.json ما كيطابقش القيمة المنتظرة."
 
-#: includes/class-babilim-site.php:744
-msgid "Rotate-token response was missing site_token."
-msgstr "جواب تبديل التوكن كان ناقصو site_token."
+#: includes/class-babilim-installer.php:489
+msgid "manifest.json's 'contract' is not a valid version string."
+msgstr "'contract' ف manifest.json ماشي نص إصدار صالح."
+
+#: includes/class-babilim-installer.php:495
+msgid "manifest.json's 'kind' must be 'plugin' or 'theme'."
+msgstr "خاص 'kind' ف manifest.json يكون 'plugin' ولا 'theme'."
+
+#: includes/class-babilim-installer.php:486
+msgid "manifest.json's 'server_build_id' is not a valid build id."
+msgstr "'server_build_id' ف manifest.json ماشي معرّف بناء صالح."
+
+#: includes/class-babilim-installer.php:492
+msgid "manifest.json's 'status' must be 'published'."
+msgstr "خاص 'status' ف manifest.json يكون 'published'."
 
 #: includes/class-babilim-site.php:781
 #: includes/class-babilim-site.php:786
 msgid "nonce must be a hexadecimal string."
 msgstr "خاص nonce يكون نص سداسي عشري."
 
-#: includes/class-babilim-site.php:805
-msgid "No pending challenge for this nonce."
-msgstr "ما كاين حتى تحدي معلق ل هاد nonce."
+#: admin/class-babilim-admin.php:3235
+msgid "per day"
+msgstr "فاليوم"
 
-#: includes/class-babilim-site.php:808
-msgid "Too many requests."
-msgstr "بزاف د الطلبات."
+#: admin/class-babilim-admin.php:4520
+msgid "rc_…"
+msgstr "rc_…"
 
-#: includes/class-babilim-site.php:847
-msgid "The service asked this site to wait before syncing again."
-msgstr "الخدمة طلبات من هاد الموقع يتسنى قبل ما يزامن مرة أخرى."
-
-#. translators: 1: number of components, 2: number of languages, 3: number of check batches needed, 4: the most batches one run can send.
-#: includes/class-babilim-site.php:911
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1171
 #, php-format
-msgid "This site has %1$d components across %2$d languages, which needs %3$d check batches; Babilim can handle at most %4$d per run. Reduce the managed languages in Settings or deactivate unused plugins and themes, then press Check again now."
-msgstr "هاد الموقع فيه %1$d مكوّن عبر %2$d لغة، وهادشي كيحتاج %3$d دفعات د التحقق؛ Babilim كيقدر يعالج %4$d بحد أقصى ف كل تشغيل. نقّص اللغات المدارة ف الإعدادات ولا عطّل الإضافات والقوالب اللي ما كتستعملهاش، من بعد ضغط عاود تحقق دابا."
+msgid "sha256 mismatch for %s"
+msgstr "sha256 ما كيطابقش ل %s"
 
-#: includes/class-babilim-site.php:987
-msgid "Babilim could not finish checking this site."
-msgstr "Babilim ما قدرش يكمل فحص هاد الموقع."
-
-#: includes/class-babilim-site.php:1483
-msgid "This site's address is too long for Babilim to register."
-msgstr "عنوان هاد الموقع طويل بزاف باش Babilim يسجلو."
-
-#: includes/class-babilim-site.php:1486
-msgid "This site's locale code is not one Babilim can register."
-msgstr "رمز اللغة د هاد الموقع ماشي من اللي Babilim يقدر يسجّلو."
-
-#: includes/class-babilim-sync-installer.php:329
-msgid "The download response was missing a usable location."
-msgstr "جواب التحميل ما فيهش موقع صالح للاستعمال."
-
-#: includes/class-babilim-upload.php:64
-#: includes/class-babilim-upload.php:69
-msgid "The service's upload offer was incomplete."
-msgstr "عرض الرفع ديال الخدمة كان ناقص."
-
-#: includes/class-babilim-upload.php:112
-msgid "This component is larger than the service accepts, so it cannot be uploaded."
-msgstr "هاد المكوّن كبر من الحجم اللي كتقبل الخدمة، وداكشي علاش ما يمكنش يترفع."
-
-#: includes/class-babilim-upload.php:163
-msgid "The packaged component could not be read."
-msgstr "المكوّن المحزوم ما قدرناش نقراوه."
-
-#: includes/class-babilim-upload.php:293
-msgid "A part of the upload kept failing, so the upload was cancelled."
-msgstr "جزء من الرفع بقا كيفشل، عاد تلغى الرفع."
-
-#. translators: %s: the file path that could not be read.
-#: includes/class-babilim-wp-fs.php:91
+#. translators: %s: the filename whose checksum did not match.
+#: includes/class-babilim-installer.php:1191
 #, php-format
-msgid "Could not read: %s"
-msgstr "ما قدرناش نقراو: %s"
+msgid "sha256 mismatch for default/%s"
+msgstr "sha256 ما كيطابقش ل default/%s"
 
-#. translators: %d: number of files deleted by this sweep.
-#: admin/class-babilim-admin.php:2261
-#, php-format
-msgid "Sweep complete: %d file deleted."
-msgid_plural "Sweep complete: %d files deleted."
-msgstr[0] "التنقية سالات: ما تمسح حتى ملف."
-msgstr[1] "التنقية سالات: تمسح %d ملف."
-msgstr[2] "التنقية سالات: تمسحو ملفين."
-msgstr[3] "التنقية سالات: تمسحو %d ملفات."
-msgstr[4] "التنقية سالات: تمسحو %d ملف."
-msgstr[5] "التنقية سالات: تمسحو %d ملف."
+#. translators: a kind of component, used in the sentence "it would orphan every managed plugin component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:749
+msgctxt "component kind in the sweep brake message"
+msgid "plugin"
+msgstr "إضافة"
 
-#: admin/class-babilim-cell.php:146
-msgid "Original language"
-msgstr "اللغة الأصلية"
+#. translators: a kind of component, used in the sentence "it would orphan every managed theme component"; keep it a bare noun.
+#: includes/class-babilim-default-index.php:746
+msgctxt "component kind in the sweep brake message"
+msgid "theme"
+msgstr "قالب"
 
-#: admin/class-babilim-admin.php:2156
-msgid "This report will be posted publicly on GitHub and may be kept by third parties."
-msgstr "هاد التقرير غادي يتنشر بشكل عمومي على GitHub و ممكن يبقاو عند أطراف تالتة."
+#. translators: a problem report category: none of the other listed kinds of problem applies.
+#: admin/class-babilim-admin.php:3264
+msgctxt "problem report category"
+msgid "Other"
+msgstr "آخر"
 
-#: admin/class-babilim-admin.php:2157
-msgid "Share this report"
-msgstr "شارك هاد التقرير"
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Available"
+msgstr "متوفرة"
 
-#: admin/class-babilim-admin.php:2158
-msgid "Always share"
-msgstr "Always share"
-
-#: admin/class-babilim-admin.php:2159
-msgid "Don't share"
-msgstr "Don't share"
-
-#: admin/class-babilim-admin.php:3424
-msgid "Error reports"
-msgstr "تقارير الأخطاء"
-
-#: admin/class-babilim-admin.php:3426
-msgid "Share error reports"
-msgstr "شارك تقارير الأخطاء"
-
-#. translators: %d: number of error reports waiting for the owner's decision.
-#: admin/class-babilim-admin.php:2136
-#, php-format
-msgid "%d report is waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgid_plural "%d reports are waiting. \"Always share\" and \"Don't share\" apply to all of them."
-msgstr[0] "ما كاين حتى تقرير كيتسنا. \"Always share\" و \"Don't share\" كيطبقو على التقارير كاملين."
-msgstr[1] "%d تقرير كيتسنا. \"Always share\" و \"Don't share\" كيطبقو عليه."
-msgstr[2] "تقريرين كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم بجوج."
-msgstr[3] "%d تقارير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
-msgstr[4] "%d تقرير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
-msgstr[5] "%d تقرير كيتسناو. \"Always share\" و \"Don't share\" كيطبقو عليهم كاملين."
-
-#: admin/class-babilim-admin.php:3621
-#: admin/class-babilim-admin.php:3657
-msgid "Report translation"
-msgstr "بلّغ على الترجمة"
-
-#: admin/class-babilim-admin.php:3658
-msgid "Search the installed translations"
-msgstr "قلّب فالترجمات لي تثبتات"
-
-#. translators: Button label (a verb): runs the search of installed translations.
-#: admin/class-babilim-admin.php:3660
-msgid "Search"
-msgstr "قلّب"
-
-#: admin/class-babilim-admin.php:3661
-msgid "Babilim has not installed any translation for this language."
-msgstr "Babilim ما ثبّت حتى ترجمة لهاد اللغة."
-
-#: admin/class-babilim-admin.php:3662
-msgid "No installed translation matches."
-msgstr "ما كاينة حتى ترجمة من الترجمات لي تثبتات كتوافق."
-
-#: admin/class-babilim-admin.php:3665
-msgid "The search could not be completed."
-msgstr "ما قدرش البحث يكمل."
-
-#. translators: Button label (a verb): selects this string as the one to report.
-#: admin/class-babilim-admin.php:3669
-msgid "Choose"
-msgstr "اختار"
-
-#. translators: Heading of the step that shows the report before it is sent.
-#: admin/class-babilim-admin.php:3674
-msgid "Preview"
-msgstr "معاينة"
-
-#: admin/class-babilim-admin.php:3682
-msgid "These fields will be sent:"
-msgstr "هاد الحقول غادي يتصيفطو:"
-
-#. translators: Button label (a verb): closes the report panel.
-#: admin/class-babilim-admin.php:3687
-msgid "Close"
-msgstr "سدّ"
-
-#: admin/class-babilim-admin.php:3689
-msgid "This string can't be reported from this site."
-msgstr "ما يمكنش يتبلّغ على هاد النص من هاد الموقع."
-
-#: admin/class-babilim-admin.php:3690
-msgid "Too many reports today. Try again tomorrow."
-msgstr "بزاف د التقارير اليوم. عاود جرّب غدا."
-
-#: admin/class-babilim-admin.php:3691
-msgid "The report could not be sent."
-msgstr "ما قدرش التقرير يتصيفط."
-
-#. translators: Field label (a noun): whether the component is a plugin or a theme.
-#: admin/class-babilim-admin.php:3676
-msgid "Type"
-msgstr "النوع"
-
-#. translators: Field label (a noun): the identifier of the translation package version the string came from.
-#: admin/class-babilim-admin.php:3680
-msgid "Build"
-msgstr "النسخة"
-
-#: admin/class-babilim-admin.php:2131
-msgid "Babilim hit an error. Share an error report?"
-msgstr "Babilim تلاقى مع شي خطأ. واش تشارك تقرير الخطأ؟"
-
-#: admin/class-babilim-admin.php:3427
-msgid "When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default."
-msgstr "ملي كيوقع شي مشكل داخل Babilim، صيفط تقرير الخطأ لخدمة Babilim باش يتنشر كمشكل عمومي على GitHub. التقرير كيتصيفط على أساس أنه جاي من هاد الموقع، بنفس المصادقة د كاع الطلبات لخرين لخدمة Babilim. الخدمة كتنشر غير رمز الخطأ و النسخ كمشكل عمومي على GitHub؛ المشكل العمومي ما فيه لا عنوان الموقع لا المحتوى لا مسارات الملفات. مطفي بشكل افتراضي."
-
-#: admin/class-babilim-admin.php:3683
-msgid "Your report is processed automatically by AI models and may improve this translation for other sites."
-msgstr "التقرير ديالك كيتعالج أوتوماتيكيا بنماذج AI و ممكن يحسّن هاد الترجمة لمواقع خرين."
-
-#. translators: Shown under the search box when fewer than 2 characters were typed; the number 2 is fixed.
-#: admin/class-babilim-admin.php:3664
-msgid "Type at least 2 characters to search."
-msgstr "كتب على الأقل 2 د الحروف باش تقلّب."
-
-#: admin/class-babilim-admin.php:2629
-msgid "Available translations can be installed with one click, and missing ones can be requested. After that, new translations and updates are installed automatically. The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "الترجمات المتوفرة تقدر تثبتها بكليكة وحدة، والناقصين تقدر تطلبهم. من بعد، الترجمات الجداد والتحديثات كيتثبتو أوتوماتيكيا. خدمة Babilim هي اللي كتقرر أشمن ترجمات متوفرة يمكن تتثبت أوتوماتيكيا. فالباقة المجانية، عادة كتسمح غير للإضافات والقوالب اللي عندهم ديجا ترجمة Babilim مثبتة فهاد الموقع، باش التثبيتات التلقائية ما ياخدوش خانة مجانية جديدة."
-
-#: admin/class-babilim-admin.php:3420
-msgid "The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot."
-msgstr "خدمة Babilim هي اللي كتقرر أشمن ترجمات متوفرة يمكن تتثبت أوتوماتيكيا. فالباقة المجانية، عادة كتسمح غير للإضافات والقوالب اللي عندهم ديجا ترجمة Babilim مثبتة فهاد الموقع، باش التثبيتات التلقائية ما ياخدوش خانة مجانية جديدة."
-
-#: admin/class-babilim-admin.php:1387
-msgid "This report does not name an installed string."
-msgstr "هاد التقرير ما كيذكرش شي نص مثبت."
-
-#: admin/class-babilim-admin.php:1395
-msgid "This string is not among the translations installed on this site. Search again and pick it from the list."
-msgstr "هاد النص ماشي من الترجمات المثبتة فهاد الموقع. عاود قلب واختارو من اللائحة."
-
-#: admin/class-babilim-admin.php:1398
-msgid "This translation was updated since you searched. Search again and pick the string from the new list."
-msgstr "هاد الترجمة تحدثات من بعد ما قلبتي. عاود قلب واختار النص من اللائحة الجديدة."
-
-#. translators: 1: plugin or theme name, 2: its version number.
-#: admin/class-babilim-admin.php:2986
-#, php-format
-msgid "Babilim will upload these files from %1$s (version %2$s): every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are used to find the text that needs translating and to identify the plugin or theme."
-msgstr "Babilim غادي يرفع هاد الملفات من %1$s (النسخة %2$s): كل ملف .php و .js، كل ملف block.json، و readme.txt و readme.md و style.css و theme.json اللي فالدوسي الرئيسي ديالو. كيتستعملو باش نلقاو النص اللي خاصو يترجم وباش نعرفو الإضافة ولا القالب."
-
-#: admin/class-babilim-admin.php:2987
-msgid "Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key). Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival."
-msgstr "الملفات اللي عندها أسماء ولا امتدادات أخرى ماشي مضمنة، وكذلك الدوسيات uploads و cache و logs و backup و data و vendor و node_modules و languages، والملفات المخفية، ولا الملفات اللي أسماؤها كتشبه الأسرار الشائعة (wp-config* و .env* و *.sql و *.log و *.pem و *.key). ملفات الكود يقدرو يبقاو فيهم نصوص ولا معطيات ما بغيتيش تشاركها؛ تأكد منهم إلا ما كنتيش متيقن. الخدمة كتمسح نفس الأنواع من الملفات مرة أخرى عند الوصول."
-
-#: includes/class-babilim-consent.php:112
-msgid "Only when you confirm an upload for a plugin or theme that is not on WordPress.org: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in that component's main folder, as a zip, after files that match common secrets are left out."
-msgstr "غير فاش تأكد رفع لإضافة ولا قالب ماشي فـ WordPress.org: كل ملف .php و .js، كل ملف block.json، و readme.txt و readme.md و style.css و theme.json اللي فالدوسي الرئيسي ديال داك المكون، بصيغة zip، من بعد ما كيتحيدو الملفات اللي كتشبه الأسرار الشائعة."
-
-#: includes/class-babilim-packager.php:132
-msgid "The component has no files that can be uploaded."
-msgstr "هاد المكون ما فيه حتى ملف يمكن يترفع."
-
-#: includes/class-babilim-packager.php:110
-msgid "Babilim could not confirm a temporary folder outside the website, so the component was not packaged and nothing was uploaded. Define BABILIM_TEMP_DIR in wp-config.php as a writable folder outside the web root (for example a folder next to, not inside, your site's public directory), or ask your host for one."
-msgstr "Babilim ما قدرش يتأكد من وجود الدوسي المؤقت برا الموقع، وداكشي علاش المكون ما تجمعش فحزمة وما ترفع والو. عرّف BABILIM_TEMP_DIR فـ wp-config.php كدوسي كيقبل الكتابة برا الجذر ديال الموقع (مثلا دوسي حدا الدليل العمومي ديال موقعك، ماشي داخلو)، ولا طلب من الاستضافة ديالك توفر ليك واحد."
-
-#: includes/class-babilim-upload.php:191
-msgid "Babilim was updated while this upload was waiting. The old package was discarded; please confirm the upload again."
-msgstr "Babilim تحدث وهاد الرفع كان كيتسنى. الحزمة القديمة تحيدات؛ عاود أكد الرفع."
+#: admin/class-babilim-cell.php:174
+#: admin/class-babilim-cell.php:201
+#: admin/class-babilim-cell.php:319
+msgctxt "translation status"
+msgid "Installed"
+msgstr "مثبّتة"

@@ -4,7 +4,7 @@ Tags: translation, internationalization, i18n, l10n, language packs
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ If an installed translation reads wrong, report it from the "Report translation"
 More details:
 
 * **Languages.** The list of languages comes from the full WordPress.org locale registry.
-* **Consent first.** The plugin makes no request to the service until you press "Enable Babilim" on its Translations screen. Activating the plugin sends nothing. The screen lists every item that will be sent right above the button.
+* **Consent first.** The plugin makes no request to the service until you press "Enable Babilim" on its Translations screen. Activating the plugin sends nothing. The screen lists every item that will be sent right above the button, and the External services section below lists the same items and every other request.
 * **Translation data only.** Babilim downloads translation files (`.po`, `.mo`, `.json`) and nothing else. It never downloads or runs PHP or JavaScript from anywhere.
 * **Your own overrides.** A translation you place under `custom/` beats anything Babilim provides.
 * **Check, roll back, report.** Babilim checks every installed file against its recorded checksum automatically, twice a day. A translation can be rolled back to the previous build or removed. If a translation reads wrongly you can report it from the same screen.
@@ -42,20 +42,6 @@ Where Babilim writes:
 * It does not touch your plugins' or themes' own files, nor the language files WordPress itself installs.
 
 Named after Babel: language should not stand between people and the web.
-
-== How translations are loaded ==
-
-The loading order, most specific first:
-
-* For a plugin's or theme's own text domain: a site-specific override in `custom/` (if you have set one) beats a translation Babilim provides, which in turn beats an official WordPress.org language pack or the plugin's or theme's own bundled translation.
-* For WordPress core's own `default` text domain: WordPress core's official translation beats any supplementary strings Babilim provides for that domain.
-
-A source only ever fills a gap left by everything ranked above it.
-
-* A site-specific override always wins over Babilim.
-* WordPress core's own official `default` translation always wins over Babilim's supplement for that domain.
-
-Where two installed components would supply different translations for the same core string, Babilim leaves that string out and WordPress falls back to the original English text.
 
 == Installation ==
 
@@ -75,10 +61,27 @@ No. Nothing is sent when the plugin is activated or until you press "Enable Babi
 
 See the "External services" section below. It matches the list shown above the Enable button.
 
+= What does the plugin do with my data? =
+
+The information described under "External services" is the only information the plugin sends, and only after you consent.
+The only exception is a source upload you explicitly confirm, described below.
+
+Error reports are only sent after you choose to share them.
+
+The plugin itself never reads or sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
+Two things you type or confirm can still carry such data if you put it there: the free-text fields of a report, and the code files of a component you choose to upload (see "Uploading a component's source" below).
+
+The site access token and the private key are stored in your site's database and are never included in a page or script sent to a browser.
+Deleting the plugin keeps them by default so that a reinstall can reuse the site's identity. Ticking "Delete all Babilim data on uninstall" removes them.
+
 = Does this plugin modify my site's files or code? =
 
-No. It only writes translation data files into its own `wp-content/languages/babilim/` folder.
+No. It writes translation data files into its own `wp-content/languages/babilim/` folder.
 Those are `.po`, `.mo`, `.json` and the `.l10n.php` files WordPress itself generates from them.
+
+The only other write is the temporary zip of a source upload you confirm.
+It goes to the system temporary directory or a folder named by the BABILIM_TEMP_DIR constant, and only when that folder lies outside the website (see External services).
+
 It never fetches or runs remote PHP, JavaScript or any other executable code.
 
 = Where do the translations come from? =
@@ -91,9 +94,23 @@ Every locale WordPress supports.
 The list is read from the WordPress.org locale registry through the service, and no locale is treated differently from another.
 You can also type in a locale code that is not listed.
 
+= How are translations loaded? =
+
+The loading order, most specific first:
+
+* For a plugin's or theme's own text domain: a site-specific override in `custom/` (if you have set one) beats a translation Babilim provides, which in turn beats an official WordPress.org language pack or the plugin's or theme's own bundled translation.
+* For WordPress core's own `default` text domain: WordPress core's official translation beats any supplementary strings Babilim provides for that domain.
+
+A source only ever fills a gap left by everything ranked above it.
+
+* A site-specific override always wins over Babilim.
+* WordPress core's own official `default` translation always wins over Babilim's supplement for that domain.
+
+Where two installed components would supply different translations for the same core string, Babilim leaves that string out and WordPress falls back to the original English text.
+
 = Which translation wins when there are several? =
 
-See "How translations are loaded" above.
+See "How are translations loaded?" above.
 Your own `custom/` override comes first, then Babilim, then a WordPress.org language pack or the component's bundled translation.
 For WordPress core's own strings, core's official translation comes first.
 
@@ -105,12 +122,15 @@ A setting on the settings screen keeps these files when you purge Babilim's file
 
 = Is the service free? =
 
-Each site domain can use the service for one theme and two plugins that are listed on WordPress.org at no charge.
-Components that are not listed on WordPress.org, and anything beyond that allowance, need a paid license (see "How much does a license cost?").
+The Babilim service has a free plan: each site domain gets slots for one theme and two plugins that are listed on WordPress.org.
+Requesting a translation puts the plugin or theme on a slot; a slot stays used, and a failed translation does not free it.
 
-The allowance is set by the service and may change.
-The plugin contains no limit logic of its own and only shows what the service reports.
-Translation files that were already downloaded keep working regardless of the license.
+Components that are not listed on WordPress.org, and anything beyond those slots, need the paid service plan (see "How much does the paid plan cost?").
+
+The slots are set by the service and may change.
+On the free plan a component takes a slot when you request it (Request translation), even if the service already has a translation for it; only then is it listed as available.
+The plugin enforces no limit of its own and only shows what the service reports.
+Translation files that were already downloaded keep working on any plan.
 
 = Are there limits on downloads? =
 
@@ -184,9 +204,9 @@ The plugin also retries by itself, with longer and longer pauses.
 * If any one site had "Keep my own translation overrides…" ticked, the shared `custom/` folder is kept for the whole network, even if another site had it unticked.
 * Before you deactivate the plugin from the network plugins list, it checks every site's own "Delete all Babilim data on uninstall" setting and asks for confirmation if any site has it ticked. On a very large network it asks without counting.
 
-= How much does a license cost? =
+= How much does the paid plan cost? =
 
-* A license is a one-time purchase per site domain.
+* The paid plan is a one-time purchase per site domain.
 * The current price is shown on the Settings screen next to the Upgrade button and includes any applicable tax.
 * It includes all future translation updates for that site.
 * Payment is handled by Paddle, our merchant of record, on the Babilim checkout page at babilim.org that opens in a new tab. The plugin never sees your payment details.
@@ -208,14 +228,14 @@ Write to hi@babilim.org for support, including restoring a site's license.
 
 = Where do I get help or report a bug? =
 
-* A wrong translation: use **Report a problem** inside the plugin.
+* A wrong translation: use the **Report translation** entry in the admin toolbar, or **Report a problem** on the Translations screen.
 * General questions: the WordPress.org support forum at https://wordpress.org/support/plugin/babilim/
 * A bug or a feature request: open an issue at https://github.com/babilim-org/babilim/issues
 * Security, license or billing matters: write to hi@babilim.org
 
 = I found a wrong translation. =
 
-Use **Report a problem** on the Babilim screen.
+Use the **Report translation** entry in the admin toolbar, or **Report a problem** on the Translations screen.
 You choose a category and may add the text, a suggestion and a note.
 Nothing is sent until you submit the form.
 
@@ -246,7 +266,9 @@ Once you have, requests are made when you use the plugin and on WordPress's own 
 
 **What is sent when you register the site and on every sync.**
 Registration happens when you press "Enable Babilim".
-A sync runs twice a day and whenever you press "Check again now".
+
+A sync runs twice a day, whenever you press "Check again now", right after you press "Enable Babilim", the first time you open the Translations screen before any check has completed, after a purchase or a restore is detected, about 30 seconds after a plugin or theme is activated, deactivated, updated or switched, and in the background when a check runs out of time.
+
 Both send the items listed above the Enable button:
 
 * `home_url`: your site's URL, so the service can confirm that you control the site. The service also calls back to a public endpoint of your own site, `/wp-json/babilim/v1/challenge`, to check a signed answer;
@@ -256,24 +278,42 @@ Both send the items listed above the Enable button:
 * `components`: for every installed plugin and theme, its slug, version, text domain(s), whether it is a WordPress.org listing, its own bundled locales, and which locales you have already installed a Babilim translation for;
 * `client_events`: up to 20 pending diagnostic events (for example, a file that failed its checksum), each consisting only of a code, a component and a locale. No string content or translated text is included.
 
-Every request also carries an `Authorization` header holding the site's access token, and a `User-Agent` of the form `Babilim/<plugin version>; <site URL>`.
+Requests made after the site is verified carry an `Authorization` header holding the site's access token. Three kinds of request do not:
+
+* registration and verification, because no token exists yet;
+* the locale list;
+* the download of a translation package itself, whose signed, short-lived URL comes from the preceding download request.
+
+Every request carries a `User-Agent` of the form `Babilim/<plugin version>; <site URL>`.
 The service sees your server's IP address as part of any web request.
 
 **Automatic downloads during the sync.**
 While "Install available translations automatically" is on (it is on by default; you can turn it off under Settings), the twice-daily sync downloads available translations for the languages you manage without a click.
 Each download sends the identifier of the build.
 
-* The Babilim service decides which available translations may be installed automatically. On the free plan it normally only allows plugins and themes that already have a Babilim translation installed on this site, so that automatic installs do not take up a new free slot.
+* Automatic and one-click installs use the same rule: a translation is installed only when the service lists it as available for this site. The plugin applies the same eligibility rules on every service plan.
+* Which translations are available is the service's answer (see "Is the service free?").
 * Translations you remove yourself are not installed again automatically until you download them by hand.
 * "Remove everything Babilim installed" also turns automatic installation off. Turning it on again later can bring translations back.
 * On a multisite network, new translations are not installed automatically at all. Translations already installed are still updated.
 
+**Registration and the site's own account.**
+
+* `POST /v1/sites`: when you press "Enable Babilim", and again when a retry finds the earlier challenge expired and registers the site anew. It sends the registration items listed above (`home_url`, versions, `site_locale`, `locales`, `install_pub`).
+* `POST /v1/sites/{id}/verify`: right after registration; while the service handles it, it calls your site's challenge endpoint. It is also sent when you press "Re-verify" and when a sync has to try this step again. The request sends the challenge nonce and the signed proof.
+* `GET /v1/sites/{id}`: only after you press "Upgrade this site", while the Settings screen stays open. The plugin asks every 5 seconds, for at most 10 minutes, and stops as soon as the service reports the paid plan. It reads the license kind from the answer and has no request body. Opening Settings does not send it.
+* `POST /v1/sites/{id}/rotate-token`: only when the access token has to be replaced. The request body is an empty JSON object.
+* `POST /v1/sites/{id}/inventory`: the sync described above (twice a day, "Check again now", and the other times listed there), with the `components`, `locales` and `client_events` items.
+* `POST /v1/sites/{id}/checkout`: when you press the button to buy the paid plan. The request body is an empty JSON object and the answer holds the address of the checkout page.
+* `POST /v1/sites/{id}/restore`: when you enter a restore code under Settings. It sends that code.
+* `POST /v1/sites/{id}/restore-code`: when you ask for a new restore code. The request body is an empty JSON object.
+
 **What is sent only when you take an action.**
 
-* Requesting a translation sends the component kind, its slug and version, and the locale.
-* Downloading a translation sends the identifier of the build you chose.
-* Reading the list of locales sends no site data beyond the headers above.
-* Reporting a problem from the Report translation entry in the admin toolbar sends the component, locale and build, the original text, the current translation, the category you chose, and any suggested translation or note you fill in. It does not send the address of the screen you were on.
+* Requesting a translation (`POST /v1/requests`) sends the component kind, its slug and version, and the locale.
+* Downloading a translation (`POST /v1/downloads`) sends the identifier of the build you chose. The service answers with a signed, short-lived address, and the plugin then fetches the package from `/v1/packages/` at that address.
+* Reading the list of locales (`GET /v1/meta/locales`) happens when you open Settings and the languages you can add are listed (the answer is cached for a while), and sends no site data beyond the headers above.
+* Reporting a problem (`POST /v1/feedback`) from the Report translation entry in the admin toolbar sends the component, locale and build, the original text, the current translation, the category you chose, and any suggested translation or note you fill in. It does not send the address of the screen you were on.
 * The service processes every report, including your suggested translation and note, automatically with AI models.
 * Reporting a problem with the older form on the Translations screen sends the component, locale and build, the category you chose, and the current translation, suggested translation, note and screen address you type. That form does not carry the original string.
 
@@ -281,12 +321,14 @@ Each download sends the identifier of the build.
 For a plugin or theme that is not listed on WordPress.org, requesting a translation needs the component's source.
 The service asks for it and the plugin shows a confirmation screen first. Nothing is uploaded until you press "Upload and request".
 
-If you do:
+If you do, the plugin calls `PUT /v1/uploads/{id}/parts/{n}` once for each part of the zip and then `POST /v1/uploads/{id}/complete` with the part list and total size. If you cancel, it calls `DELETE /v1/uploads/{id}`.
+
+The upload covers:
 
 * Babilim will upload these files from the component: every .php and .js file, every block.json file, and the readme.txt, readme.md, style.css and theme.json in its main folder. They are packaged as a zip and uploaded in parts. They are used to find the text that needs translating and to identify the plugin or theme.
 * Files with other names or extensions are not included, nor are the uploads, cache, logs, backup, data, vendor, node_modules and languages folders, hidden files, or files whose names match common secrets (wp-config*, .env*, *.sql, *.log, *.pem, *.key).
 * Code files can still contain text or data you would not want to share; check them if you are unsure. The service removes the same kinds of files again on arrival.
-* The upload is kept by the service until you ask for it to be deleted. It is stored by its hosting provider and processed by AI models.
+* The upload is kept by the service until you ask for it to be deleted: write to hi@babilim.org and name the plugin or theme and its version. It is stored by its hosting provider and processed by AI models.
 * The original text and the translations made from it are provided to other sites that install the same version of the component.
 * By uploading you confirm you have the right to do so.
 
@@ -298,11 +340,11 @@ The temporary zip:
 
 **Error reports (optional, off by default).**
 When something fails inside Babilim, the plugin can send an error report to the Babilim service so it can be published as a public issue on GitHub.
-Nothing is sent until you choose "Share this report" or "Always share" in the notice that appears after an error, or tick "Share error reports" in Settings.
+The report goes to `POST /v1/error-reports`. Nothing is sent until you choose "Share this report" or "Always share" in the notice that appears after an error, or tick "Share error reports" in Settings.
 
 * What is sent: the plugin version, WordPress version, PHP version, the site language code, and for each event a random id, an error code, the action being performed, the place in the plugin where it happened, and the time. The notice that asks for your consent lists all of these.
 * Every code, action and place comes from a fixed list; no free text is sent.
-* Like every other request to the service, the report is sent as coming from your site: it carries the site access token and the User-Agent header with the site address. The service uses them only to accept the request.
+* The report is sent as coming from your site: it carries the site access token and the User-Agent header with the site address. The service uses them only to accept the request.
 * The service publishes only the error code and versions as a public issue. The public issue contains no site address, site name, content, user data, list of plugins and themes, or file path.
 * The report is published publicly on GitHub and may be kept by third parties.
 
@@ -312,19 +354,6 @@ Nothing that can be executed is ever received or run.
 
 The Translations screen shows the same list before you consent, and your consent can be withdrawn at any time with "Disable Babilim".
 
-== Privacy ==
-
-The information described under "External services" is the only information the plugin sends, and only after you consent.
-The only exception is a source upload you explicitly confirm, described above.
-
-Error reports are only sent after you choose to share them.
-
-The plugin itself never reads or sends the content of your posts, pages, comments or media, user names or e-mail addresses, or your WordPress administrator account.
-Two things you type or confirm can still carry such data if you put it there: the free-text fields of a report, and the code files of a component you choose to upload (see "Uploading a component's source" above).
-
-The site access token and the private key are stored in your site's database and are never included in a page or script sent to a browser.
-Deleting the plugin keeps them by default so that a reinstall can reuse the site's identity. Ticking "Delete all Babilim data on uninstall" removes them.
-
 == Screenshots ==
 
 1. The Translations screen before you enable Babilim: what will be sent, and the Enable button.
@@ -333,10 +362,16 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 
 == Changelog ==
 
+= 1.2.0 =
+* Automatic installs now follow the same eligibility rules on every service plan: while the option is on, the plugin installs what the service lists as available for the languages you manage.
+* A refusal from the service is no longer counted as a failed install. The build is not asked for again while the service reports the same thing about it, and is tried again once a week. Nothing is installed from a sync that failed.
+* The Translations screen describes service limits in the service's terms and no longer puts an upgrade link in each cell. A cell with nothing installed is labelled "Not installed".
+* Babilim's admin notices appear only on its own screens, the Dashboard and the Plugins screen, and can be dismissed. The "Report translation" toolbar entry can be turned off in Settings.
+* The External services section lists every request the plugin makes.
+
 = 1.1.0 =
 * Optional error reports: when something fails inside Babilim, you can choose to share an error report so the error code can be published as a public issue. Off by default; nothing is sent until you agree.
 * New "Report translation" entry in the admin toolbar: search the translations Babilim installed on your site, pick one and report a problem with it.
-* Which available translations are installed automatically is now decided by the Babilim service and returned with the sync; the plugin no longer reads the license kind for this.
 * A source upload now contains only the component's code and description files: its .php and .js files, its block.json files, and the readme, style.css and theme.json in its main folder.
 * The temporary zip of a source upload is now only written to a folder confirmed to lie outside the website; when none is available the upload is refused with a message.
 
@@ -353,11 +388,14 @@ Deleting the plugin keeps them by default so that a reinstall can reuse the site
 * Consent-first registration and twice-daily sync with the Babilim translation service.
 * Layered translation loading: your `custom/` overrides, then Babilim, then WordPress.org language packs or bundled translations; WordPress core's own translation first for the `default` text domain.
 * Install, check, roll back, remove and report actions for each translation, and automatic installation of newer builds of translations you already installed, during the twice-daily sync.
-* Automatic installation of available translations for the languages you manage during the twice-daily sync, on by default and switchable in Settings. On the free plan only components that already use a free slot are installed this way, and translations you removed yourself are not installed again.
+* Automatic installation of available translations for the languages you manage during the twice-daily sync, on by default and switchable in Settings. Translations you removed yourself are not installed again.
 * A short notice on the Translations screen says how many translations were installed automatically. "Remove everything Babilim installed" turns automatic installation off. A multisite network does not install new translations automatically.
 * Removal of settings, scheduled events and language files on uninstall, with your `custom/` overrides and your site's identity kept by default.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Automatic installs follow the same rules on every service plan; no action needed.
 
 = 1.1.0 =
 Adds an optional "Report translation" toolbar entry, optional error reports and a smaller source upload. The reports are off until you use or enable them; no action needed.

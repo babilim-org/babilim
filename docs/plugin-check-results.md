@@ -668,3 +668,200 @@ is therefore not backed by a negative control; the `.js`/`.css` file
 scan in `scripts/plugin-check-native.sh` is what covers minified
 scripts.
 
+
+## 1.2.0 first package (zip built from 2c37bee, replaced before upload)
+
+`build/babilim-1.2.0.zip`: 295 files, 4911592 bytes, sha256
+`e5f49813b19dec5c070f1998ad003e1931c7264069d97f57705cc9df3ccd3d34`.
+`make test`, `make contract-check` and `make release-check` all exited 0
+on that commit, and two separate `make zip` runs gave the same hash.
+`docs/` is not in the zip, so this section does not change that hash.
+
+### Plugin Check, phpcs-based checks
+
+`scripts/plugin-check-native.sh` on the unpacked zip, same method as the
+1.1.0 run above:
+
+| Check | Errors | Warnings |
+|---|---|---|
+| `plugin_review_phpcs` | 0 | 0 |
+| `direct_db_queries` | 0 | 0 |
+| `direct_db` | 0 | 0 |
+| `late_escaping` | 0 | 0 |
+| `i18n_usage` | 0 | 0 |
+| `enqueued_scripts_in_footer` | 0 | 0 |
+| `performant_wp_query_params` | 0 | 0 |
+| `enqueued_resources` | 0 | 0 |
+| `setting_sanitization` | 0 | 0 |
+| `write_file` | 0 | 0 |
+| `prefixing` | 0 | 0 |
+| `verify_nonce` | 0 | 0 |
+| `safe_redirect` | 0 | 0 |
+| `offloading_files` | 0 | 0 |
+| `ai_provider` | 0 | 0 |
+| `localhost` | 0 | 0 |
+| `php_error_reporting` | 0 | 0 |
+| `minified_files` (file scan) | 0 | 0 |
+
+The source carries 66 `phpcs:ignore` / `phpcs:disable` annotations in
+`admin/` and `includes/`, each with its reason on the same line.
+
+Negative control: a copy of the unpacked zip with a raw `$_GET` read and
+an unescaped `echo` of it added inside `enqueue_admin_assets()`. The
+script exited non-zero with `plugin_review_phpcs` 0 errors, 4 warnings
+(`InputNotValidated`, `MissingUnslash`, `InputNotSanitized`,
+`NonceVerification`) and `late_escaping` 1 error. Every other check
+stayed at 0.
+
+### Plugin Check, runtime and file checks (WordPress Playground)
+
+Same setup as the 1.1.0 run: the unpacked zip mounted as the plugin,
+Plugin Check 2.1.0 active, WordPress 6.6 / PHP 8.1, one check per `wp
+eval-file` step.
+
+| Check | Errors | Warnings |
+|---|---|---|
+| `plugin_readme` | 0 | 0 |
+| `plugin_uninstall` | 0 | 0 |
+| `direct_file_access` | 0 | 0 |
+| `file_type` | 0 | 0 |
+| `plugin_header_fields` | 0 | 0 |
+| `trademarks` | 0 | 0 |
+| `external_admin_menu_links` | 0 | 0 |
+| `wp_functions_compatibility` | 0 | 0 |
+| `plugin_updater` | 0 | 0 |
+| `code_obfuscation` | 0 | 0 |
+| `plugin_content` | 0 | 0 |
+| `no_unfiltered_uploads` | 0 | 0 |
+| `minified_files` | 0 | 0 |
+
+The first run of this table, on the zip built from the commit before
+2c37bee, gave `plugin_readme` 1 warning,
+`readme_parser_warnings_trimmed_section_description`. The readme parser
+appends every non-standard `== section ==` to Description and cuts the
+result at 2500 words; the longer "External services" section had pushed
+that total to about 2600, so the end of it would not have shown on the
+plugin page. 2c37bee moved "How translations are loaded" and "Privacy"
+into the FAQ (which has a 5000-word limit) without changing their text,
+and `tests/unit/test-readme.php` now keeps that total at 2400 words or
+less. That first run also serves as the negative control for
+`plugin_readme`.
+
+### Behaviour checks (WordPress Playground)
+
+`tests/playground/run-checks.sh` on WordPress 6.6.11 and 7.1.4, PHP 8.1,
+`@wp-playground/cli` 3.1.54: 28 PASS and 0 FAIL on each version. They ran
+on 8626517; the commits after it change only `readme.txt` and tests.
+
+### Browser scenarios
+
+`tests/playground/browser/ux-flow.mjs` with the scenarios `enable`,
+`settings`, `errconsent` and `report`, on d19d4a8 (code identical to
+2c37bee):
+
+| Environment | PASS | FAIL |
+|---|---|---|
+| Playground, WordPress 6.6.11 (mock service) | 169 | 0 |
+| Playground, WordPress 7.1.4 (mock service) | 169 | 0 |
+| WordPress 6.6.4 on `php -S` with SQLite, real verification callback (mock service) | 169 | 0 |
+
+### Live service, two throwaway free sites
+
+Two fresh WordPress 6.6.4 sites (PHP 8.3, SQLite, pretty permalinks,
+site language `zh_TW`, Classic Editor installed), each reachable over a
+temporary public HTTPS tunnel, enabled against the production service.
+Plugin source at d19d4a8.
+
+Site 1:
+
+1. "Enable Babilim" registers and verifies the site.
+2. The `zh_TW` cell for Classic Editor shows "Request translation" and no
+   Download button.
+3. Pressing it opens this confirmation (shown in `zh_TW`; the source
+   string is): "If this plugin or theme is not on one of the free service
+   plan's slots for this site yet, requesting a translation puts it on
+   one. A slot stays used, and a failed translation does not free it.
+   Continue?" (When the service has reported its slot limits, the
+   sentence names them in parentheses after "one".)
+4. After confirming, the cell goes from "Scheduled, waiting to be
+   processed" to "Translating…" to "Available" with a Download button,
+   about two minutes later.
+5. Download installs the translation; the cell shows "Installed" and the
+   plugin's manifest records build `bd_2a0d40a421ee`.
+
+Site 2, for the same component and locale, so that build already exists:
+
+1. Before any request, a direct `POST /v1/downloads` for
+   `bd_2a0d40a421ee` with this site's own token is refused:
+   `403 babilim_slot_required`.
+2. The cell shows "Request translation" and no Download button.
+3. After the same confirmation, the cell is "Available" at once.
+4. Download installs it; the manifest records the same build.
+
+Knowing a build id is not enough: the service serves it only to a site
+whose slot covers the component. Manual Download and automatic installs
+go through the same `POST /v1/downloads` request and the same answer.
+The plugin's install and download code does not read the plan; the plan
+the service reports is used only to word the screen (the Upgrade button
+and the free-plan slot notice).
+
+## 1.2.0 release run (zip built from 17a5d18)
+
+`build/babilim-1.2.0.zip`: 295 files, 4983309 bytes, sha256
+`cc1d62714d4089a004457ca805af25eb7f7c97f87f75752c6e3dafe9a47b3ca9`.
+`make test` (1989 tests), `make stan`, `make contract-check` and
+`make release-check` all exited 0 on that commit, and two separate
+`make zip` runs gave the same hash. This replaces the first 1.2.0 package
+above, which was never uploaded.
+
+### Plugin Check, phpcs-based checks
+
+`scripts/plugin-check-native.sh` on the unpacked zip: all 18 checks
+(`plugin_review_phpcs`, `direct_db_queries`, `direct_db`, `late_escaping`,
+`i18n_usage`, `enqueued_scripts_in_footer`, `performant_wp_query_params`,
+`enqueued_resources`, `setting_sanitization`, `write_file`, `prefixing`,
+`verify_nonce`, `safe_redirect`, `offloading_files`, `ai_provider`,
+`localhost`, `php_error_reporting`, `minified_files`) report 0 errors and
+0 warnings. The source carries 57 `phpcs:ignore` / `phpcs:disable`
+annotations in `admin/` and `includes/`, each with its reason.
+
+### Plugin Check, runtime and file checks (WordPress Playground)
+
+The unpacked zip mounted as the plugin, Plugin Check 2.1.0 active,
+WordPress 6.6 / PHP 8.1, `@wp-playground/cli` 3.1.54, one check per
+`wp eval-file` step through `Default_Check_Repository`, `Check_Context`
+and `Check_Result`: `plugin_readme`, `plugin_uninstall`,
+`direct_file_access`, `file_type`, `plugin_header_fields`, `trademarks`,
+`external_admin_menu_links`, `wp_functions_compatibility`,
+`plugin_updater`, `code_obfuscation`, `plugin_content`,
+`no_unfiltered_uploads` and `minified_files` all report 0 errors and 0
+warnings.
+
+Negative control with the same runner: a copy with the `Stable tag:` line
+removed from `readme.txt` and a new `includes/` file without the
+`ABSPATH` guard gave `plugin_readme` 1 error (`no_stable_tag`) and
+`direct_file_access` 1 error (`missing_direct_file_access_protection`).
+
+### Behaviour checks and browser scenarios (WordPress Playground)
+
+- `tests/playground/run-checks.sh` on WordPress 6.6 and latest: 28 PASS,
+  0 FAIL on each (on 2141d02; the later commits change only tests,
+  translations and screenshots).
+- `tests/playground/run-ux-flow.sh` (noverify) on WordPress 6.6 and
+  latest with the scenarios `enable settings list bulk rowactions
+  screenshots report errconsent notices noquota`: 390 PASS, 0 FAIL on
+  each.
+- `tests/playground/run-neutral-ux-flow.sh` (real callback) with the same
+  scenarios plus `l10n`: 402 PASS and 1 FAIL (`enable-nojs`, a
+  `waitForNavigation` timeout); the `enable` scenario alone, run twice
+  more, gave 28 PASS, 0 FAIL both times.
+
+### Live service, free plan (two throwaway sites)
+
+The same steps as the first 1.2.0 package's section above, against the
+live service: site 1 requests `classic-editor` / `zh_TW` and installs
+build `bd_2a0d40a421ee`; site 2 is refused a direct `POST /v1/downloads`
+for that build with `403 babilim_slot_required` until it requests the
+component, after which the cell is "Available" at once and Download
+installs it. 15 PASS, 0 FAIL. Both test sites were removed from the
+service afterwards.
