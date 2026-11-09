@@ -1,0 +1,40 @@
+name: A translation is wrong or missing
+description: A translation built by Babilim reads badly, has the wrong meaning, or is missing.
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports like this are used to rebuild the translation automatically, so the more exact the better.
+        Please do not paste site addresses or other private details. Everything here is public.
+  - type: input
+    id: component
+    attributes:
+      label: Plugin or theme
+      description: The name and version shown in the Babilim list.
+      placeholder: "Example Plugin 2.4.1"
+    validations:
+      required: true
+  - type: input
+    id: locale
+    attributes:
+      label: Language
+      description: The language name or locale code shown in the Babilim list.
+      placeholder: "de_DE"
+    validations:
+      required: true
+  - type: textarea
+    id: original
+    attributes:
+      label: Original text
+      description: The text in the plugin's original language, if you can find it.
+  - type: textarea
+    id: current
+    attributes:
+      label: Current translation
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Better translation (optional)
