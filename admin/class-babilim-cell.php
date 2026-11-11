@@ -50,7 +50,7 @@ final class Babilim_Cell {
 	 * @param bool       $can_write       Whether this user may write translation files here.
 	 * @param array|null $manifest_record The manifest record for this cell, or null.
 	 * @param string     $site_version    The component version installed on this site, '' when unknown.
-	 * @return array{source:string,installed:bool,is_update:bool,action:?string,action_label:string,busy_label:string,blocked_reason:?string,text:string,title:string,date:string,hardcoded_warning:string}
+	 * @return array{source:string,installed:bool,is_update:bool,action:?string,action_label:string,busy_label:string,blocked_reason:?string,text:string,title:string,date:string,retry:bool,upload_pending:bool,hardcoded_warning:string}
 	 */
 	public static function from_entry( array $entry, string $locale, bool $has_update, bool $can_write, ?array $manifest_record, string $site_version = '' ): array {
 		$cell = self::build( $entry, $locale, $has_update, $can_write, $manifest_record, $site_version );
@@ -62,7 +62,34 @@ final class Babilim_Cell {
 		// translated.
 		$status                    = (string) ( $entry['status'] ?? '' );
 		$flagged                   = true === ( $entry['hardcoded_text_warning'] ?? null ) && in_array( $status, array( 'babilim_installed', 'babilim_available' ), true );
+		// A not-installed cell whose source upload is unfinished: its request button resumes or cancels the upload.
+		$cell['upload_pending']    = null === $manifest_record && 'queued' === $status && ! empty( $entry['upload_pending'] );
 		$cell['hardcoded_warning'] = $flagged ? __( 'Some of this component\'s text is hard-coded by its author and can\'t be translated by a language pack.', 'babilim' ) : '';
+		return $cell;
+	}
+
+	/**
+	 * Re-words a cell for a component that has another translation for
+	 * this language (its own bundled file or a WordPress.org pack), taken
+	 * from the inventory's `bundled_locales`. Installed or not, the cell
+	 * then offers to switch between that translation and Babilim's
+	 * instead of asking for one. Cells without an alternative, update
+	 * and retry actions, and cells with no action keep their wording.
+	 *
+	 * @param array $cell Cell from from_entry().
+	 * @return array The cell with `has_other` set, and the label changed where it applies.
+	 */
+	public static function with_other_translation( array $cell ): array {
+		$cell['has_other'] = true;
+		// An upload in progress keeps its own wording: the button resumes it.
+		if ( ! empty( $cell['installed'] ) || ! empty( $cell['is_update'] ) || ! empty( $cell['upload_pending'] ) ) {
+			return $cell;
+		}
+		if ( 'babilim_download' === $cell['action'] ) {
+			$cell['action_label'] = __( 'Use Babilim translation', 'babilim' );
+		} elseif ( 'babilim_request' === $cell['action'] && empty( $cell['retry'] ) ) {
+			$cell['action_label'] = __( 'Use Babilim translation', 'babilim' );
+		}
 		return $cell;
 	}
 
@@ -384,6 +411,7 @@ final class Babilim_Cell {
 			'text'           => $text,
 			'title'          => $title,
 			'date'           => $date,
+			'retry'          => $retry,
 		);
 	}
 }

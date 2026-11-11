@@ -96,6 +96,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 				continue;
 			}
 			$info  = $installed[ $kind . ':' . $slug ];
+			$other = array_map( 'strval', (array) ( $info['bundled_locales'] ?? array() ) );
 			$cells = array();
 			foreach ( (array) ( $component['locales'] ?? array() ) as $locale => $entry ) {
 				$locale = (string) $locale;
@@ -108,6 +109,10 @@ final class Babilim_Translations_Table extends WP_List_Table {
 				$has_update      = isset( $updates[ $key ] ) || ! empty( $entry['update_available'] );
 				$record           = $manifest_record( $kind, $slug, $locale );
 				$cells[ $locale ] = Babilim_Cell::from_entry( $entry, $locale, $has_update, $can_write, $record, (string) ( $info['version'] ?? '' ) );
+				$cells[ $locale ]['has_other'] = false;
+				if ( in_array( $locale, $other, true ) ) {
+					$cells[ $locale ] = Babilim_Cell::with_other_translation( $cells[ $locale ] );
+				}
 				// What the row actions need beyond the cell itself.
 				$cells[ $locale ]['previous_build_id'] = (string) ( $record['previous_build_id'] ?? '' );
 				$cells[ $locale ]['can_write']         = $can_write;
@@ -650,16 +655,42 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 * @param string $action    babilim_remove or babilim_rollback.
 	 * @param string $component Component name.
 	 * @param string $locale    Language code.
+	 * @param string $other     Kind (plugin|theme) of a component that has another translation for this language, '' when it has none.
 	 * @return string
 	 */
-	public static function confirm_question( string $action, string $component, string $locale ): string {
+	public static function confirm_question( string $action, string $component, string $locale, string $other = '' ): string {
 		$name = Babilim_Locale_Label::name( $locale );
 		if ( 'babilim_remove' === $action ) {
+			if ( 'theme' === $other ) {
+				/* translators: 1: theme name, 2: language name. */
+				return sprintf( __( 'Stop using the Babilim translation of %1$s (%2$s)? WordPress will use the theme\'s own or WordPress.org translation instead. You can switch back at any time.', 'babilim' ), $component, $name );
+			}
+			if ( '' !== $other ) {
+				/* translators: 1: plugin name, 2: language name. */
+				return sprintf( __( 'Stop using the Babilim translation of %1$s (%2$s)? WordPress will use the plugin\'s own or WordPress.org translation instead. You can switch back at any time.', 'babilim' ), $component, $name );
+			}
 			/* translators: 1: component name, 2: language name. */
 			return sprintf( __( 'Remove the %2$s translation of %1$s from this site?', 'babilim' ), $component, $name );
 		}
 		/* translators: 1: component name, 2: language name. */
 		return sprintf( __( 'Roll back the %2$s translation of %1$s to the previous build?', 'babilim' ), $component, $name );
+	}
+
+	/**
+	 * The text of the remove action: "Stop using Babilim translation"
+	 * when every language it would act on has another translation to
+	 * fall back to, otherwise "Remove".
+	 *
+	 * @param array[] $cells Cells of the languages the action covers.
+	 * @return string
+	 */
+	public static function remove_label( array $cells ): string {
+		foreach ( $cells as $cell ) {
+			if ( empty( $cell['has_other'] ) ) {
+				return __( 'Remove', 'babilim' );
+			}
+		}
+		return array() === $cells ? __( 'Remove', 'babilim' ) : __( 'Stop using Babilim translation', 'babilim' );
 	}
 
 	/**
@@ -712,7 +743,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 		$targets = self::row_targets( $item );
 		$labels  = array(
 			'rollback'        => __( 'Roll back', 'babilim' ),
-			'remove'          => __( 'Remove', 'babilim' ),
+			'remove'          => self::remove_label( $targets['remove'] ),
 			'rollback-report' => __( 'Roll back and report', 'babilim' ),
 			'report'          => __( 'Report a problem', 'babilim' ),
 		);
@@ -731,7 +762,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 			if ( 'rollback' === $op ) {
 				$actions[ $op ] = $this->row_button( 'babilim_rollback', $identity, $label, $locale, $item['name'] );
 			} elseif ( 'remove' === $op ) {
-				$actions[ $op ] = $this->row_button( 'babilim_remove', $identity, $label, $locale, $item['name'] );
+				$actions[ $op ] = $this->row_button( 'babilim_remove', $identity, $label, $locale, $item['name'], ! empty( $cell['has_other'] ) ? $item['kind'] : '' );
 			} else {
 				$report = $identity + array( 'build_id' => $cell['title'] );
 				$actions[ $op ] = $this->row_link( 'rollback-report' === $op ? $report + array( 'rollback' => '1' ) : $report, $label, $locale, $item['name'] );
@@ -800,14 +831,15 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 * @param string $label     Button text.
 	 * @param string $locale    Language code.
 	 * @param string $component Component name.
+	 * @param string $other     Kind of a component that has another translation here, '' when none.
 	 * @return string
 	 */
-	private function row_button( string $action, array $identity, string $label, string $locale, string $component ): string {
+	private function row_button( string $action, array $identity, string $label, string $locale, string $component, string $other = '' ): string {
 		$id = 'babilim-row-' . ( count( $this->row_forms ) + 1 );
 		$this->row_forms[] = '<form id="' . esc_attr( $id ) . '" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">'
 			. self::post_fields( $action, $identity, $this->back_args() )
 			. '</form>';
-		return '<button type="submit" form="' . esc_attr( $id ) . '" class="button-link" title="' . esc_attr( $locale ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, $component, $locale ) ) . '" data-babilim-confirm="' . esc_attr( self::confirm_question( $action, $component, $locale ) ) . '" data-babilim-confirmed="1">' . esc_html( $label ) . '</button>';
+		return '<button type="submit" form="' . esc_attr( $id ) . '" class="button-link" title="' . esc_attr( $locale ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, $component, $locale ) ) . '" data-babilim-confirm="' . esc_attr( self::confirm_question( $action, $component, $locale, $other ) ) . '" data-babilim-confirmed="1">' . esc_html( $label ) . '</button>';
 	}
 
 	/**

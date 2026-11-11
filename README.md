@@ -1,6 +1,6 @@
 ![Babilim](.wordpress-org/banner-1544x500.png)
 
-# ![](.wordpress-org/icon-128x128.png) Babilim
+# ![](.wordpress-org/icon-128x128.gif) Babilim
 
 Babilim is a WordPress plugin that fills in missing translations for the plugins and themes installed on your site.
 

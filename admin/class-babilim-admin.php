@@ -1144,7 +1144,7 @@ final class Babilim_Admin {
 			// What the owner removed is not put back by the sync cron.
 			Babilim_Sync_Installer::remember_skip( $kind, $slug, $locale );
 		}
-		$this->finish_component_action( $result, $kind, $slug, $locale, __( 'Removed.', 'babilim' ) );
+		$this->finish_component_action( $result, $kind, $slug, $locale, '' === $this->other_translation_kind( $kind, $slug, $locale ) ? __( 'Removed.', 'babilim' ) : __( 'Babilim translation turned off.', 'babilim' ) );
 	}
 
 	// -- babilim_request -- ask the service for a translation ----------------
@@ -1178,6 +1178,9 @@ final class Babilim_Admin {
 					$this->offer_upload( $component, $locale, $upload );
 					return;
 				}
+				// Asking for the translation is choosing it: a cell the owner
+				// turned off goes back under automatic installs.
+				Babilim_Sync_Installer::clear_skip( $kind, $slug, $locale );
 			}
 		}
 		$this->finish_component_action( $result, $kind, $slug, $locale, __( 'Translation requested.', 'babilim' ) );
@@ -1308,6 +1311,24 @@ final class Babilim_Admin {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * The kind of an installed component when it has another translation
+	 * for $locale (its own bundled file or a WordPress.org pack, from the
+	 * inventory scan), '' when it has none.
+	 *
+	 * @param string $kind   plugin|theme.
+	 * @param string $slug   Component slug.
+	 * @param string $locale Language code.
+	 * @return string
+	 */
+	private function other_translation_kind( string $kind, string $slug, string $locale ): string {
+		$component = $this->installed_component( $kind, $slug );
+		if ( null === $component || ! in_array( $locale, array_map( 'strval', (array) ( $component['bundled_locales'] ?? array() ) ), true ) ) {
+			return '';
+		}
+		return 'theme' === $kind ? 'theme' : 'plugin';
 	}
 
 	/**
@@ -3498,8 +3519,9 @@ final class Babilim_Admin {
 
 		$html = '<div class="wrap"><h1>' . esc_html__( 'Confirm', 'babilim' ) . '</h1>' . $this->render_notices();
 		if ( 'remove' === $op ) {
-			$question = Babilim_Translations_Table::confirm_question( 'babilim_remove', $name, $locale );
-			$button   = __( 'Remove', 'babilim' );
+			$other    = $this->other_translation_kind( $kind, $slug, $locale );
+			$question = Babilim_Translations_Table::confirm_question( 'babilim_remove', $name, $locale, $other );
+			$button   = '' === $other ? __( 'Remove', 'babilim' ) : __( 'Stop using Babilim translation', 'babilim' );
 			$action   = 'babilim_remove';
 		} elseif ( 'rollback' === $op ) {
 			$question = Babilim_Translations_Table::confirm_question( 'babilim_rollback', $name, $locale );
@@ -3568,6 +3590,9 @@ final class Babilim_Admin {
 			'report'          => __( 'Report a problem', 'babilim' ),
 		);
 		$cells  = null === $found || ! isset( $labels[ $op ] ) ? array() : Babilim_Translations_Table::row_targets( $found )[ $op ];
+		if ( 'remove' === $op ) {
+			$labels['remove'] = Babilim_Translations_Table::remove_label( $cells );
+		}
 		if ( null === $found || array() === $cells ) {
 			return $html . '<p>' . esc_html__( 'Nothing to choose.', 'babilim' ) . '</p><p>' . $cancel . '</p></div>';
 		}
@@ -3588,7 +3613,7 @@ final class Babilim_Admin {
 				$action = 'rollback' === $op ? 'babilim_rollback' : 'babilim_remove';
 				$html  .= '<li><form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">'
 					. Babilim_Translations_Table::post_fields( $action, $identity, $back )
-					. '<button type="submit" class="button" title="' . esc_attr( $locale ) . '" data-babilim-confirm="' . esc_attr( Babilim_Translations_Table::confirm_question( $action, (string) $found['name'], $locale ) ) . '" data-babilim-confirmed="1">' . esc_html( $name ) . '</button></form></li>';
+					. '<button type="submit" class="button" title="' . esc_attr( $locale ) . '" data-babilim-confirm="' . esc_attr( Babilim_Translations_Table::confirm_question( $action, (string) $found['name'], $locale, ! empty( $cell['has_other'] ) ? $kind : '' ) ) . '" data-babilim-confirmed="1">' . esc_html( $name ) . '</button></form></li>';
 				continue;
 			}
 			$args  = array( 'page' => self::MENU_SLUG, 'screen' => 'report' ) + $identity + array( 'build_id' => (string) $cell['title'] );

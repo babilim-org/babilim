@@ -4,7 +4,7 @@ Tags: translation, internationalization, i18n, l10n, language packs
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,11 @@ The Enable screen lists what is sent automatically before you agree.
 
 == Changelog ==
 
+= 1.2.2 =
+* When a plugin or theme ships its own translation, you can switch between it and Babilim's translation.
+* No request button for a translation that is already scheduled.
+* Updated bundled German, Dutch and Chinese translations.
+
 = 1.2.1 =
 * A translation the service refused is asked for again when your plan or daily allowance changes.
 * The readme and the Enable screen now describe what is sent in plain language.
@@ -118,6 +123,9 @@ The Enable screen lists what is sent automatically before you agree.
 * First release.
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+Switch between a component's own translation and Babilim's; no action needed.
 
 = 1.2.1 =
 Plainer wording about what is sent; no action needed.

@@ -137,6 +137,11 @@ final class Babilim_Bulk {
 			++$out['ok'];
 			if ( $is_request ) {
 				$state->record_request_answer( $kind, $slug, $locale, $installed, $result );
+				if ( ! is_array( $result->get( 'upload' ) ) ) {
+					// Asking for the translation is choosing it: a cell the owner
+					// turned off goes back under automatic installs.
+					Babilim_Sync_Installer::clear_skip( $kind, $slug, $locale );
+				}
 			}
 		}
 		return $out;

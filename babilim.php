@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Babilim
  * Description:       Fills in missing translations for the plugins and themes already installed on your site.
- * Version:           1.2.1
+ * Version:           1.2.2
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '1.2.1' );
+	define( 'BABILIM_VERSION', '1.2.2' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {
