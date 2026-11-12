@@ -42,7 +42,8 @@ final class Babilim_Cell {
 	 * `unsupported` entry the reason `source_locale` shows "Original
 	 * language" (nothing to translate, no action); any other or missing
 	 * reason shows "Not supported". A `bundled` entry can be requested
-	 * like a `wporg` one.
+	 * like a `wporg` one. A `babilim_bundled` entry (the component ships a
+	 * translation Babilim generated) shows that fact with no action.
 	 *
 	 * @param array      $entry           Locale entry from the last sync.
 	 * @param string     $locale          Locale code.
@@ -137,6 +138,13 @@ final class Babilim_Cell {
 				// Not a dead end: a Babilim translation can still be
 				// requested, exactly as for a wporg cell.
 				return self::cell( 'bundled', false, false, 'babilim_request', null, $text, '' );
+			case 'babilim_bundled':
+				// The component ships a translation Babilim generated: no
+				// download, no request, nothing to switch.
+				$text = 'theme' === ( $entry['kind'] ?? '' )
+					? __( 'Babilim translation bundled with the theme', 'babilim' )
+					: __( 'Babilim translation bundled with the plugin', 'babilim' );
+				return self::cell( 'babilim', false, false, null, 'babilim_bundled', $text, '' );
 			case 'requestable':
 				// The service marks a rejected or expired source upload with
 				// a generic reason code; show it as a failure with a retry.

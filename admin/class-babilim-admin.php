@@ -45,6 +45,9 @@ final class Babilim_Admin {
 	 */
 	public const SETTINGS_SLUG = 'babilim-settings';
 
+	/** The plugin's review page on WordPress.org. */
+	private const RATING_URL = 'https://wordpress.org/support/plugin/babilim/reviews/#new-post';
+
 	/**
 	 * @var string
 	 */
@@ -357,6 +360,8 @@ final class Babilim_Admin {
 		add_action( 'admin_notices', array( $this, 'render_verification_admin_notice' ) );
 		add_action( 'network_admin_notices', array( $this, 'render_verification_admin_notice' ) );
 		add_action( 'admin_notices', array( $this, 'render_error_consent_notice' ) );
+		add_filter( 'admin_footer_text', array( $this, 'rating_footer_text' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'add_rating_row_meta' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . plugin_basename( BABILIM_FILE ), array( $this, 'confirm_deactivate_link' ) );
 		add_filter( 'network_admin_plugin_action_links_' . plugin_basename( BABILIM_FILE ), array( $this, 'confirm_deactivate_link' ) );
 		foreach ( self::ACTIONS as $action ) {
@@ -2159,6 +2164,47 @@ final class Babilim_Admin {
 	 */
 	private static function current_hook_suffix(): string {
 		return isset( $GLOBALS['hook_suffix'] ) && is_string( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
+	}
+
+	/**
+	 * `admin_footer_text` callback: a quiet, always-on rating invitation
+	 * on Babilim's own screens; any other screen keeps core's text.
+	 * Unconditional, no tracking, no dismiss, nothing offered in return.
+	 *
+	 * @param mixed $text Core's footer text.
+	 * @return mixed
+	 */
+	public function rating_footer_text( $text ) {
+		$current = self::current_hook_suffix();
+		$own     = array_filter( array( $this->menu_hook_suffix, $this->settings_hook_suffix ), static fn( $v ) => '' !== $v );
+		if ( '' === $current || ! in_array( $current, $own, true ) ) {
+			return $text;
+		}
+		return '<span id="babilim-rating-footer">' . sprintf(
+			'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+			esc_url( self::RATING_URL ),
+			esc_html__( 'Enjoying Babilim? Please leave a rating on WordPress.org.', 'babilim' )
+		) . '</span>';
+	}
+
+	/**
+	 * `plugin_row_meta` callback: a "Rate Babilim" link on this plugin's
+	 * row of the Plugins list.
+	 *
+	 * @param mixed  $links Row meta links.
+	 * @param mixed  $file  Plugin basename of the row.
+	 * @return mixed
+	 */
+	public function add_rating_row_meta( $links, $file ) {
+		if ( ! is_array( $links ) || plugin_basename( BABILIM_FILE ) !== $file ) {
+			return $links;
+		}
+		$links[] = sprintf(
+			'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+			esc_url( self::RATING_URL ),
+			esc_html__( 'Rate Babilim', 'babilim' )
+		);
+		return $links;
 	}
 
 	/**

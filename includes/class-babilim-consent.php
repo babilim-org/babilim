@@ -112,7 +112,7 @@ final class Babilim_Consent {
 				'field'       => 'components',
 				'label'       => __( 'Installed plugins and themes', 'babilim' ),
 				'value'       => $inventory->request_components(),
-				'description' => __( 'For every installed plugin and theme: its name (slug), version, text domain, whether it is listed on WordPress.org, and the languages it already includes. For each Babilim translation you have installed: which version it is, when it was last checked, and whether it passed its file check.', 'babilim' ),
+				'description' => __( 'For every installed plugin and theme: its name (slug), version, text domain, whether it is listed on WordPress.org, the languages it already includes, and which of those bundled translations Babilim generated (language codes only). For each Babilim translation you have installed: which version it is, when it was last checked, and whether it passed its file check.', 'babilim' ),
 			),
 			array(
 				'field'       => 'source package',

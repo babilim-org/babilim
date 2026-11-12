@@ -18,6 +18,10 @@
  * (install_available()). Both ask the service for the file; whether it
  * may be handed out is the service's answer, never a local rule.
  *
+ * A cell the last sync reports as `babilim_bundled` (the component now
+ * ships the same translation) is never installed; an installed build of
+ * it is removed instead (remove_bundled_duplicates()).
+ *
  * Nothing is downloaded while the site is in the verification-required
  * state (see Babilim_Site::verification_warning()), and a `403
  * verification_required` from the service itself puts the site into that
@@ -350,6 +354,48 @@ final class Babilim_Sync_Installer {
 		}
 		$this->save_refused( $refused, $fp );
 		$this->save_failures( $failures );
+		return $done;
+	}
+
+	/**
+	 * Removes an installed build whose cell the last sync reports as
+	 * `babilim_bundled`, i.e. the component now ships the same
+	 * translation itself. Such a cell is never installed automatically.
+	 * Only a cell with a manifest record is touched. Neither the skip
+	 * list nor the failure counters are involved: a removal that fails is
+	 * simply tried again on the next run. Makes no request, and does
+	 * nothing without consent.
+	 *
+	 * @return array<int,array{kind:string,slug:string,locale:string,result:Babilim_Result}>
+	 */
+	public function remove_bundled_duplicates(): array {
+		$done = array();
+		if ( ! (bool) get_option( Babilim_Site::OPTION_CONSENT, false ) ) {
+			return $done;
+		}
+		$state = $this->state->get();
+		foreach ( (array) ( $state['components'] ?? array() ) as $component ) {
+			$kind = (string) ( $component['kind'] ?? '' );
+			$slug = (string) ( $component['slug'] ?? '' );
+			if ( '' === $kind || '' === $slug || ! is_array( $component['locales'] ?? null ) ) {
+				continue;
+			}
+			foreach ( $component['locales'] as $locale => $cell ) {
+				$locale = (string) $locale;
+				if ( ! is_array( $cell ) || 'babilim_bundled' !== ( $cell['status'] ?? '' ) || '' === $locale ) {
+					continue;
+				}
+				if ( ! $this->site->has_manifest_record( $kind, $slug, $locale ) ) {
+					continue;
+				}
+				$done[] = array(
+					'kind'   => $kind,
+					'slug'   => $slug,
+					'locale' => $locale,
+					'result' => $this->installer->remove( $kind, $slug, $locale ),
+				);
+			}
+		}
 		return $done;
 	}
 

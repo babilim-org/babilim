@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Babilim
+ * Plugin Name:       Babilim – Auto-Translate Plugins & Themes
  * Description:       Fills in missing translations for the plugins and themes already installed on your site.
- * Version:           1.2.2
+ * Version:           1.2.3
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '1.2.2' );
+	define( 'BABILIM_VERSION', '1.2.3' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {

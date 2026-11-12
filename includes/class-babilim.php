@@ -367,6 +367,7 @@ class Babilim {
 	private function install_translations(): void {
 		try {
 			$installer = $this->sync_installer();
+			$installer->remove_bundled_duplicates();
 			$outcomes  = $installer->install_pending_updates();
 			$this->record_install_failures( $outcomes );
 			$left = Babilim_Sync_Installer::MAX_PER_RUN - count( $outcomes );

@@ -1,10 +1,10 @@
-=== Babilim ===
+=== Babilim – Auto-Translate Plugins & Themes ===
 Contributors: babilim
-Tags: translation, internationalization, i18n, l10n, language packs
+Tags: translation, translate, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,7 +72,7 @@ This plugin connects to the Babilim translation service to look up, request and 
 * Service: Babilim, `https://api.babilim.org`.
 * When: **Nothing is sent before you consent.** No request is made when the plugin is activated, and none until you press "Enable Babilim". After that, requests are made when you use the plugin, on WordPress's twice-daily check, and when plugins or themes are installed, activated, deactivated, updated or switched or your plan changes, until you press "Disable Babilim".
 * Sent: your site's URL; the WordPress, PHP and Babilim versions; the languages your site uses; a public key for the site; and short diagnostic codes, never any text content.
-* Sent also: the installed plugins and themes with their versions, text domains, whether they are listed on WordPress.org, the languages each already includes, and the state of any Babilim translation installed.
+* Sent also: the installed plugins and themes with their versions, text domains, whether they are listed on WordPress.org, the languages each already includes (and which Babilim generated), and the state of any Babilim translation installed.
 * Each request includes your site's URL and, when needed, its access token. The service also sees your server's IP address.
 * Only when you act: requesting a translation (component, version, language); reporting a problem (what you fill in or select); a restore code you enter; and, for a component not on WordPress.org, uploading its code files as a zip after you confirm. They may contain anything, so check them first. Uploads and reports are stored and processed with AI models.
 * Optional error reports, off by default, only if you choose to share: an error code, the action, where in the plugin and when it happened, a random report id, versions and the site language. Only the error code and versions are published as a public GitHub issue.
@@ -94,6 +94,11 @@ The Enable screen lists what is sent automatically before you agree.
 3. Settings: the languages to manage and the uninstall choices.
 
 == Changelog ==
+
+= 1.2.3 =
+* A translation a plugin or theme already ships, when Babilim generated it, now counts as installed: no download, no request button, and no free slot used.
+* New display name: Babilim – Auto-Translate Plugins & Themes.
+* A quiet rating link on Babilim's screens and in the Plugins list.
 
 = 1.2.2 =
 * When a plugin or theme ships its own translation, you can switch between it and Babilim's translation.
@@ -123,6 +128,9 @@ The Enable screen lists what is sent automatically before you agree.
 * First release.
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+Translations a component already ships from Babilim no longer use a slot; no action needed.
 
 = 1.2.2 =
 Switch between a component's own translation and Babilim's; no action needed.
