@@ -277,8 +277,13 @@ final class Babilim_Translations_Table extends WP_List_Table {
 			if ( ! self::in_view( $item, $view ) ) {
 				continue;
 			}
-			if ( '' !== $search && false === stripos( $item['name'] . ' ' . $item['slug'], $search ) ) {
-				continue;
+			if ( '' !== $search ) {
+				// /iu folds case for every script; false means invalid UTF-8 in the name, so use the byte-wise test.
+				$hay = $item['name'] . ' ' . $item['slug'];
+				$hit = preg_match( '/' . preg_quote( $search, '/' ) . '/iu', $hay );
+				if ( false === $hit ? false === stripos( $hay, $search ) : 1 !== $hit ) {
+					continue;
+				}
 			}
 			$out[] = $item;
 		}
@@ -368,6 +373,13 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 * @var string[]
 	 */
 	private $row_forms = array();
+
+	/**
+	 * Row checkboxes drawn so far; numbers their ids.
+	 *
+	 * @var int
+	 */
+	private $cb_count = 0;
 
 	/**
 	 * Constructor.
@@ -502,14 +514,14 @@ final class Babilim_Translations_Table extends WP_List_Table {
 			'plugin' => __( 'Plugins', 'babilim' ),
 			'theme'  => __( 'Themes', 'babilim' ),
 		);
-		$html = '<h2 class="nav-tab-wrapper">';
+		$html = '<nav class="nav-tab-wrapper wp-clearfix" aria-label="' . esc_attr__( 'Component', 'babilim' ) . '">';
 		foreach ( $tabs as $kind => $label ) {
 			$count = (int) ( $this->kind_counts[ '' === $kind ? 'all' : $kind ] ?? 0 );
 			$html .= '<a class="nav-tab' . ( $kind === $this->kind ? ' nav-tab-active' : '' ) . '" href="' . esc_url( $this->list_url( 'all' === $this->view ? '' : $this->view, $kind ) ) . '"'
 				. ( $kind === $this->kind ? ' aria-current="page"' : '' ) . '>'
 				. esc_html( $label ) . ' <span class="count">(' . $count . ')</span></a>';
 		}
-		return $html . '</h2>';
+		return $html . '</nav>';
 	}
 
 	/**
@@ -585,7 +597,9 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 * @return string
 	 */
 	protected function column_cb( $item ) {
-		return '<input type="checkbox" name="components[]" value="' . esc_attr( $item['kind'] . ':' . $item['slug'] ) . '" aria-label="' . esc_attr( $item['name'] ) . '" />';
+		$id = 'babilim-cb-' . ++$this->cb_count;
+		return '<input id="' . $id . '" type="checkbox" name="components[]" value="' . esc_attr( $item['kind'] . ':' . $item['slug'] ) . '" />'
+			. '<label for="' . $id . '"><span class="screen-reader-text">' . esc_html( $item['name'] ) . '</span></label>';
 	}
 
 	/**
@@ -921,14 +935,11 @@ final class Babilim_Translations_Table extends WP_List_Table {
 
 		$id = 'babilim-cell-' . ( count( $this->cell_forms ) + 1 );
 		$this->cell_forms[] = '<form id="' . esc_attr( $id ) . '" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">'
-			. '<input type="hidden" name="action" value="' . esc_attr( $cell['action'] ) . '" />'
-			. '<input type="hidden" name="kind" value="' . esc_attr( $item['kind'] ) . '" />'
-			. '<input type="hidden" name="slug" value="' . esc_attr( $item['slug'] ) . '" />'
-			. '<input type="hidden" name="locale" value="' . esc_attr( $locale ) . '" />'
-			. '<input type="hidden" name="s" value="' . esc_attr( $this->search ) . '" />'
-			. '<input type="hidden" name="babilim_locale" value="' . esc_attr( $this->locale_filter ) . '" />'
-			. $this->kind_field()
-			. wp_nonce_field( $cell['action'], '_wpnonce', false, false )
+			. self::post_fields(
+				$cell['action'],
+				array( 'kind' => $item['kind'], 'slug' => $item['slug'], 'locale' => $locale ),
+				array( 's' => $this->search, 'babilim_locale' => $this->locale_filter, 'babilim_kind' => $this->kind )
+			)
 			. '</form>';
 
 		$html = '<button type="submit" form="' . esc_attr( $id ) . '" class="button" data-babilim-idle-label="' . esc_attr( $cell['action_label'] ) . '" data-babilim-busy-label="' . esc_attr( $cell['busy_label'] ) . '">'

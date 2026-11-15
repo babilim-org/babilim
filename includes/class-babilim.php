@@ -502,6 +502,8 @@ class Babilim {
 		add_action( 'upgrader_process_complete', array( $this, 'on_upgrader_process_complete' ), 10, 2 );
 		add_action( 'delete_plugin', array( $this, 'rebuild_default_index_all_locales' ) );
 		add_action( 'deleted_theme', array( $this, 'rebuild_default_index_all_locales' ) );
+		// Fires after the files are gone: the scan taken at delete_plugin still listed it.
+		add_action( 'deleted_plugin', array( 'Babilim_Inventory', 'forget_all' ) );
 		// Fired by Babilim_Installer itself after a successful
 		// install()/rollback()/remove()/degrade(). Only the affected
 		// locale needs rebuilding here, so this uses rebuild() rather
@@ -521,6 +523,7 @@ class Babilim {
 	 * @param mixed ...$args Ignored.
 	 */
 	public function rebuild_default_index_all_locales( ...$args ): void {
+		Babilim_Inventory::forget_all();
 		try {
 			$this->default_index()->rebuild_all();
 		} catch ( \Throwable $e ) {
@@ -558,6 +561,7 @@ class Babilim {
 			unset( $this->forced_inactive_plugins[ $plugin ] );
 			$this->forced_active_plugins[ $plugin ] = true;
 		}
+		Babilim_Inventory::forget_all();
 		try {
 			$this->default_index()->rebuild_all();
 		} catch ( \Throwable $e ) {
@@ -611,6 +615,7 @@ class Babilim {
 			unset( $this->forced_active_plugins[ $plugin ] );
 			$this->forced_inactive_plugins[ $plugin ] = true;
 		}
+		Babilim_Inventory::forget_all();
 		try {
 			$this->default_index()->rebuild_all();
 		} catch ( \Throwable $e ) {
@@ -648,6 +653,7 @@ class Babilim {
 	public function on_active_plugins_option_updated( ...$args ): void {
 		$this->forced_inactive_plugins = array();
 		$this->forced_active_plugins   = array();
+		Babilim_Inventory::forget_all();
 		// The option of any site may have changed: what was read from the other sites is out of date.
 		$this->forget_other_sites_usage();
 	}
@@ -748,9 +754,16 @@ class Babilim {
 	 * removes this site's own expired or unsealed upload staging
 	 * directory. Source packaging staging is not scanned for:
 	 * Babilim_Packager::sweep() leaves every directory it cannot trace to
-	 * this site's own upload record alone.
+	 * this site's own upload record alone. It first puts the `index.php`
+	 * guard into a managed directory that already exists; it never creates
+	 * that directory for it.
 	 */
 	public function run_maintenance(): void {
+		try {
+			Babilim_Paths::ensure_index( $this->fs() );
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
 		try {
 			$this->record_sweep_events( $this->default_index()->sweep_orphans() );
 			$this->default_index()->rebuild_all();

@@ -767,7 +767,9 @@ final class Babilim_Sync_Installer {
 				if ( false === $dash ) {
 					continue;
 				}
-				$created = @hexdec( substr( $name, 0, $dash ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- hexdec() never errors, just returns 0 for an unparsable string; the age check below then simply never matches.
+				// Parse only a pure-hex prefix; anything else counts as 0, so the age check below never matches.
+				$prefix  = substr( $name, 0, $dash );
+				$created = 1 === preg_match( '/^[0-9a-f]+$/i', $prefix ) ? hexdec( $prefix ) : 0;
 				if ( $created <= 0 || ( $now - (int) $created ) < $max_age_seconds ) {
 					continue;
 				}

@@ -1301,11 +1301,12 @@ final class Babilim_Site {
 		if ( ! $this->manifest->is_available() ) {
 			return false;
 		}
+		if ( '' !== $locale ) {
+			$record = $this->manifest->installed( $kind, $slug, $locale );
+			return null !== $record && empty( $record['orphaned_at'] );
+		}
 		foreach ( $this->manifest->all() as $record ) {
-			if ( ( $record['kind'] ?? null ) !== $kind || ( $record['slug'] ?? null ) !== $slug || ! empty( $record['orphaned_at'] ) ) {
-				continue;
-			}
-			if ( '' === $locale || ( $record['locale'] ?? null ) === $locale ) {
+			if ( ( $record['kind'] ?? null ) === $kind && ( $record['slug'] ?? null ) === $slug && empty( $record['orphaned_at'] ) ) {
 				return true;
 			}
 		}

@@ -51,10 +51,10 @@ final class Babilim_Wp_Fs implements Babilim_Fs {
 	 *                          which this operation is: `true` for
 	 *                          anything that can leave a NEW file/
 	 *                          directory at $path (put(), mkdir(), a
-	 *                          rename()/atomic_rename() destination),
+	 *                          rename() destination),
 	 *                          `false` for a read or a removal (get(),
 	 *                          exists(), list(), is_dir(), delete(),
-	 *                          rmdir(), a rename()/atomic_rename()
+	 *                          rmdir(), a rename()
 	 *                          source) -- delete()/rmdir() in particular
 	 *                          must be able to remove ANY extension
 	 *                          `_incoming/` ends up holding, `.php`
@@ -118,50 +118,12 @@ final class Babilim_Wp_Fs implements Babilim_Fs {
 		// assuming some earlier put() under the same directory already
 		// created it.
 		$this->mkdir( dirname( $to ) );
-		return (bool) $this->fs()->move( $from, $to, true );
-	}
-
-	/**
-	 * The same operation as rename(), except when the real, underlying
-	 * WP_Filesystem transfer is `direct` (the common case -- PHP itself
-	 * has ordinary write permission to disk; FTP/SSH2 transports exist
-	 * for when it doesn't): PHP's own native rename() is used instead of
-	 * $wp_filesystem->move(). WordPress core's own
-	 * WP_Filesystem_Direct::move() DELETES $to before renaming $from
-	 * into place -- confirmed byte-identical across WordPress 6.6.9/
-	 * 6.8.10/7.1.2's own core source -- a real window where $to doesn't
-	 * exist at all, which Babilim_Manifest's own cross-request-safe
-	 * write cannot tolerate (see that class's own save() docblock).
-	 * PHP's native rename(), on the same filesystem (guaranteed here:
-	 * both paths always live under Babilim_Paths::root()), overwrites
-	 * $to in one atomic operation with no such window.
-	 *
-	 * A non-`direct` transfer has no local filesystem path for PHP's own
-	 * rename() to operate on at all -- the file genuinely only exists on
-	 * a remote FTP/SSH2 host -- so move() is the only option there;
-	 * Babilim_Manifest's own cross-request lock is what makes that safe
-	 * in that case, not this method.
-	 *
-	 * Not part of the Babilim_Fs interface -- deliberately specific to
-	 * this one real implementation and its own single caller
-	 * (Babilim_Manifest). Every Babilim_Fs test double in this repo has
-	 * no delete-then-rename behavior to begin with (a single in-memory
-	 * operation, or an intentionally-scripted fake for one specific
-	 * test), so there would be nothing for a parallel method to improve
-	 * on there.
-	 *
-	 * @param string $from Source path.
-	 * @param string $to   Destination path.
-	 * @return bool True on success.
-	 */
-	public function atomic_rename( string $from, string $to ): bool {
-		$this->assert_allowed( $from, false );
-		$this->assert_allowed( $to, true );
-		$this->mkdir( dirname( $to ) );
 		$fs = $this->fs();
 		if ( 'direct' === ( $fs->method ?? '' ) ) {
-			return @rename( $from, $to ); // phpcs:ignore WordPress.PHP.NoSilencedErrors,WordPress.WP.AlternativeFunctions.rename_rename -- a real failure (e.g. a cross-device move, which can't happen here since both paths share Babilim_Paths::root()) still returns false, checked by the caller the same as every other write in this class; WP_Filesystem::move() is deliberately not used here -- see this method's own docblock for the real delete-then-rename race in WP_Filesystem_Direct::move() that native rename() avoids.
+			// Native rename() overwrites $to in one atomic step. WP_Filesystem_Direct::move() deletes $to first, leaving a window with no file; that matters for every served file as much as for the manifest. Both paths share Babilim_Paths::root(), so a failure means a broken host: return false and leave $to as it was (no move() fallback).
+			return @rename( $from, $to ); // phpcs:ignore WordPress.PHP.NoSilencedErrors,WordPress.WP.AlternativeFunctions.rename_rename -- see the comment above.
 		}
+		// A non-direct transfer has no local path for native rename().
 		return (bool) $fs->move( $from, $to, true );
 	}
 

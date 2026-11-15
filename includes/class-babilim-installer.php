@@ -228,6 +228,7 @@ final class Babilim_Installer {
 	private function with_install_lock( callable $fn ): Babilim_Result {
 		$root = Babilim_Paths::root();
 		$this->fs->mkdir( $root );
+		Babilim_Paths::ensure_index( $this->fs );
 
 		$wouldblock = 0;
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- a lock file inside the managed directory; no contents are ever written.
@@ -633,6 +634,7 @@ final class Babilim_Installer {
 
 		foreach ( array_merge( array_keys( $record['files'] ?? array() ), array_keys( $record['default_files'] ?? array() ) ) as $relative ) {
 			$this->fs->delete( Babilim_Paths::root() . '/' . $relative );
+			self::invalidate_cache_for_file( Babilim_Paths::root() . '/' . $relative );
 		}
 		self::invalidate_cache_for_dir( Babilim_Paths::dir( $this->kind_dir( $kind ) ) );
 		self::invalidate_cache_for_dir( Babilim_Paths::dir( 'default/_parts' ) );
@@ -724,14 +726,24 @@ final class Babilim_Installer {
 			return $conflict;
 		}
 
+		// Entries are stored relative to the root (older ones may hold
+		// absolute paths); resolve into the current root, and treat a path
+		// that cannot be mapped as "no previous build".
+		$staging = self::history_path( (string) $previous['staging'] );
+		$main    = self::history_paths( (array) $previous['main_served'] );
+		$default = self::history_paths( (array) $previous['default_served'] );
+		if ( null === $staging || null === $main || null === $default ) {
+			return Babilim_Result::error( 'no_previous_version', __( 'No previous build to roll back to.', 'babilim' ) );
+		}
+
 		$plan     = array(
 			'kind_dir'           => $kind_dir,
 			'domain'             => $domain,
 			'locale'             => $locale,
-			'staging'            => $previous['staging'],
+			'staging'            => $staging,
 			'build_id'           => $previous['build_id'],
-			'main_served'        => $previous['main_served'],
-			'default_served'     => $previous['default_served'],
+			'main_served'        => $main,
+			'default_served'     => $default,
 			'component_version' => $previous['component_version'],
 			'pipeline_build_id' => $previous['pipeline_build_id'],
 			'build_no'           => $previous['build_no'],
@@ -766,7 +778,7 @@ final class Babilim_Installer {
 
 	/**
 	 * Removes a component's served files and its manifest record
-	 * entirely. `_versions` history and `custom/` are untouched.
+	 * entirely, plus its `_versions` tree. `custom/` is untouched.
 	 *
 	 * @param string $kind   'plugin'|'theme'.
 	 * @param string $domain Component identity (slug) -- despite the parameter's name, this must be the same slug install() recorded the component under, not necessarily its text domain.
@@ -789,9 +801,11 @@ final class Babilim_Installer {
 
 		foreach ( array_merge( array_keys( $record['files'] ?? array() ), array_keys( $record['default_files'] ?? array() ) ) as $relative ) {
 			$this->fs->delete( Babilim_Paths::root() . '/' . $relative );
+			self::invalidate_cache_for_file( Babilim_Paths::root() . '/' . $relative );
 		}
 		self::invalidate_cache_for_dir( Babilim_Paths::dir( $this->kind_dir( $kind ) ) );
 		self::invalidate_cache_for_dir( Babilim_Paths::dir( 'default/_parts' ) );
+		self::remove_tree( $this->fs, Babilim_Paths::versions_tree( $this->kind_dir( $kind ), $domain, $locale ) );
 
 		$recorded = $this->manifest->remove( $kind, $domain, $locale );
 
@@ -896,15 +910,26 @@ final class Babilim_Installer {
 	 * @param string $path Absolute path under Babilim_Paths::root().
 	 */
 	private function remove_tree_entry( string $path ): void {
+		self::remove_tree( $this->fs, $path );
+	}
+
+	/**
+	 * Removes one file, or one directory and everything below it, through
+	 * $fs. Best-effort: never throws.
+	 *
+	 * @param Babilim_Fs $fs   Filesystem.
+	 * @param string     $path Absolute path under Babilim_Paths::root().
+	 */
+	public static function remove_tree( Babilim_Fs $fs, string $path ): void {
 		try {
-			if ( ! $this->fs->is_dir( $path ) ) {
-				$this->fs->delete( $path );
+			if ( ! $fs->is_dir( $path ) ) {
+				$fs->delete( $path );
 				return;
 			}
-			foreach ( $this->fs->list( $path ) as $name ) {
-				$this->remove_tree_entry( $path . '/' . $name );
+			foreach ( $fs->list( $path ) as $name ) {
+				self::remove_tree( $fs, $path . '/' . $name );
 			}
-			$this->fs->rmdir( $path );
+			$fs->rmdir( $path );
 		} catch ( \Throwable $e ) {
 			// Best-effort -- see remove_managed_tree().
 		}
@@ -957,7 +982,7 @@ final class Babilim_Installer {
 	 * @param string $kind 'plugin'|'theme'.
 	 * @return string 'plugins'|'themes'.
 	 */
-	private function kind_dir( string $kind ): string {
+	public static function kind_dir( string $kind ): string {
 		return 'plugin' === $kind ? 'plugins' : 'themes';
 	}
 
@@ -1393,7 +1418,7 @@ final class Babilim_Installer {
 		$out['domain']                  = 'messages';
 		$out['locale_data']['messages'] = $merged_messages;
 
-		return (string) wp_json_encode( $out );
+		return (string) wp_json_encode( $out, JSON_UNESCAPED_UNICODE );
 	}
 
 	/**
@@ -1465,12 +1490,13 @@ final class Babilim_Installer {
 			'pipeline_build_id' => $plan['pipeline_build_id'],
 			'build_no'           => $plan['build_no'],
 			'built_at'           => $plan['built_at'],
-			'staging'            => $plan['staging'],
-			'main_served'        => $history_main_served,
-			'default_served'     => $history_default_served,
+			'staging'            => self::history_relative( $plan['staging'] ),
+			'main_served'        => array_map( array( self::class, 'history_relative' ), $history_main_served ),
+			'default_served'     => array_map( array( self::class, 'history_relative' ), $history_default_served ),
 		);
 
-		$pruned = array();
+		$pruned      = array();
+		$pruned_dirs = array(); // build_id => staged directory of an entry dropped from history.
 		if ( $push_history ) {
 			// One build appears once: an older entry for the same build
 			// (and, for a record written by an older version, any
@@ -1491,7 +1517,16 @@ final class Babilim_Installer {
 			array_unshift( $history, $history_entry );
 			while ( count( $history ) > self::KEEP_VERSIONS ) {
 				$dropped  = array_pop( $history );
-				$pruned = array_merge( $pruned, array_values( $dropped['main_served'] ?? array() ), array_values( $dropped['default_served'] ?? array() ) );
+				$dir      = self::history_path( (string) ( $dropped['staging'] ?? '' ) );
+				if ( null !== $dir ) {
+					$pruned_dirs[ (string) ( $dropped['build_id'] ?? '' ) ] = $dir;
+				}
+				foreach ( array_merge( array_values( $dropped['main_served'] ?? array() ), array_values( $dropped['default_served'] ?? array() ) ) as $stored ) {
+					$resolved = self::history_path( (string) $stored );
+					if ( null !== $resolved ) {
+						$pruned[] = $resolved;
+					}
+				}
 			}
 		}
 
@@ -1537,6 +1572,14 @@ final class Babilim_Installer {
 		foreach ( $pruned as $stale_path ) {
 			$this->fs->delete( $stale_path );
 		}
+		// The whole staged directory of a dropped build (this is what
+		// removes its `.po`) -- unless that build is still in history.
+		$kept_builds = array_column( $history, 'build_id' );
+		foreach ( $pruned_dirs as $build_id => $dir ) {
+			if ( ! in_array( (string) $build_id, array_map( 'strval', $kept_builds ), true ) ) {
+				self::remove_tree( $this->fs, $dir );
+			}
+		}
 
 		// A served file the previous record owned but this build's
 		// new file set doesn't (e.g. last build shipped a JS catalog,
@@ -1548,6 +1591,7 @@ final class Babilim_Installer {
 		$new_relative = array_merge( array_keys( $files ), array_keys( $default_files ) );
 		foreach ( array_diff( $old_relative, $new_relative ) as $stale_relative ) {
 			$this->fs->delete( Babilim_Paths::root() . '/' . $stale_relative );
+			self::invalidate_cache_for_file( Babilim_Paths::root() . '/' . $stale_relative );
 		}
 
 		// install()/rollback() (both funnel through here) count as a
@@ -1649,6 +1693,7 @@ final class Babilim_Installer {
 			if ( ! $this->fs->rename( $rename_source, $dest ) ) {
 				return Babilim_Result::error( 'rename_failed', sprintf( /* translators: %s: the filename that could not be moved into place. */ __( 'Could not move %s into place.', 'babilim' ), $served_filename ) );
 			}
+			self::invalidate_cache_for_file( $dest );
 			$renamed[]                                     = array( $dest, $rename_source );
 			$history_served_out[ $served_filename ]        = $history_path;
 			$sha = $this->fs->sha256( $dest );
@@ -1702,6 +1747,60 @@ final class Babilim_Installer {
 	}
 
 	/**
+	 * Resolves a stored version-history path into the current root.
+	 * Current entries are relative (`_versions/...`); entries written by
+	 * earlier versions are absolute under whatever root the site had then,
+	 * so everything from the last `/_versions/` on is re-rooted. Anything
+	 * else cannot be mapped and yields null.
+	 *
+	 * @param string $stored Path as stored in a version_history entry.
+	 * @return string|null Absolute path under Babilim_Paths::root(), or null.
+	 */
+	private static function history_path( string $stored ): ?string {
+		$stored = str_replace( '\\', '/', $stored );
+		// Relative form first: a component slug may itself be `_versions`.
+		if ( 0 === strpos( $stored, '_versions/' ) ) {
+			return Babilim_Paths::root() . '/' . $stored;
+		}
+		$at = strrpos( $stored, '/_versions/' );
+		if ( false !== $at ) {
+			return Babilim_Paths::root() . substr( $stored, $at );
+		}
+		return null;
+	}
+
+	/**
+	 * history_path() over a served_filename => path map; null if any value
+	 * cannot be mapped.
+	 *
+	 * @param array $stored Map from a version_history entry.
+	 * @return array|null
+	 */
+	private static function history_paths( array $stored ): ?array {
+		$out = array();
+		foreach ( $stored as $name => $path ) {
+			$resolved = self::history_path( (string) $path );
+			if ( null === $resolved ) {
+				return null;
+			}
+			$out[ $name ] = $resolved;
+		}
+		return $out;
+	}
+
+	/**
+	 * An absolute path under the root, relative to it (the form stored in
+	 * version_history entries).
+	 *
+	 * @param string $absolute Absolute path.
+	 * @return string
+	 */
+	private static function history_relative( string $absolute ): string {
+		$prefix = Babilim_Paths::root() . '/';
+		return 0 === strpos( $absolute, $prefix ) ? substr( $absolute, strlen( $prefix ) ) : $absolute;
+	}
+
+	/**
 	 * The durable "history" duplicate path for a staged file about to be
 	 * consumed by an atomic rename into a serving directory -- stripping
 	 * any existing `_history__` prefix first so repeated rollback()
@@ -1751,6 +1850,20 @@ final class Babilim_Installer {
 	private static function invalidate_cache_for_dir( string $dir ): void {
 		if ( function_exists( 'wp_cache_delete' ) ) {
 			wp_cache_delete( md5( trailingslashit( $dir ) ), 'translation_files' );
+		}
+	}
+
+	/**
+	 * wp_opcache_invalidate() for one served `.l10n.php` file that was
+	 * just moved into place or deleted (other extensions are ignored), so
+	 * a host with opcache.validate_timestamps=0 never keeps serving the
+	 * stale compiled copy. Like Babilim_Default_Index's, but only `.l10n.php` files are acted on.
+	 *
+	 * @param string $file Absolute path of the served file.
+	 */
+	private static function invalidate_cache_for_file( string $file ): void {
+		if ( '.l10n.php' === substr( $file, -9 ) && function_exists( 'wp_opcache_invalidate' ) ) {
+			wp_opcache_invalidate( $file, true );
 		}
 	}
 }

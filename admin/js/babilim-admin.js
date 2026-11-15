@@ -48,7 +48,7 @@
 				stopLicensePolling();
 				return;
 			}
-			window.fetch( url, { credentials: 'same-origin' } )
+			window.fetch( url )
 				.then( function ( response ) {
 					return response.json();
 				} )
@@ -129,11 +129,7 @@
 			if ( form.dataset.babilimSubmitted ) {
 				return;
 			}
-			if ( form.requestSubmit ) {
-				form.requestSubmit();
-			} else {
-				form.submit();
-			}
+			form.requestSubmit();
 		}, parseInt( form.getAttribute( 'data-babilim-autosubmit-delay' ) || '500', 10 ) );
 	} );
 }() );

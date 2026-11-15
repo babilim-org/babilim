@@ -41,9 +41,7 @@
 	}
 
 	function clear( node ) {
-		while ( node.firstChild ) {
-			node.removeChild( node.firstChild );
-		}
+		node.replaceChildren();
 	}
 
 	function post( action, nonce, fields ) {
@@ -55,7 +53,6 @@
 		} );
 		return window.fetch( cfg.ajaxUrl, {
 			method: 'POST',
-			credentials: 'same-origin',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: data.toString()
 		} ).then( function ( response ) {
@@ -72,8 +69,8 @@
 	}
 
 	function closePanel() {
-		if ( panel && panel.parentNode ) {
-			panel.parentNode.removeChild( panel );
+		if ( panel ) {
+			panel.remove();
 		}
 		panel = null;
 		body = null;
@@ -274,7 +271,7 @@
 			'aria-modal': 'true',
 			'aria-labelledby': 'babilim-report-title',
 			tabindex: '-1',
-			style: 'position:fixed;top:40px;right:20px;z-index:100000;width:380px;max-width:calc(100vw - 40px);box-sizing:border-box;max-height:80vh;overflow:auto;background:#fff;color:#1d2327;border:1px solid #c3c4c7;box-shadow:0 2px 8px rgba(0,0,0,.2);padding:12px;'
+			style: 'position:fixed;top:40px;inset-inline-end:20px;z-index:100000;width:380px;max-width:calc(100vw - 40px);box-sizing:border-box;max-height:80vh;overflow:auto;background:#fff;color:#1d2327;border:1px solid #c3c4c7;box-shadow:0 2px 8px rgba(0,0,0,.2);padding:12px;'
 		} );
 		var head = el( 'div', '', { style: 'display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;' } );
 		head.appendChild( el( 'strong', S.title, { id: 'babilim-report-title' } ) );
@@ -303,7 +300,7 @@
 	} );
 
 	document.addEventListener( 'click', function ( event ) {
-		var target = event.target && event.target.closest ? event.target.closest( '#wp-admin-bar-babilim-report > a' ) : null;
+		var target = event.target.closest( '#wp-admin-bar-babilim-report > a' );
 		if ( target ) {
 			event.preventDefault();
 			openPanel( target );

@@ -559,6 +559,7 @@ final class Babilim_Default_Index {
 			$age      = self::orphan_age_seconds( (string) $record['orphaned_at'] );
 			if ( $age >= self::ORPHAN_RECORD_PURGE_DELAY ) {
 				$this->delete_record_files( $record );
+				Babilim_Installer::remove_tree( $this->fs, Babilim_Paths::versions_tree( Babilim_Installer::kind_dir( (string) $record['kind'] ), (string) $record['slug'], (string) $record['locale'] ) );
 				if ( $this->manifest->remove( $record['kind'], $record['slug'], $record['locale'] ) ) {
 					$purged[] = $identity;
 				} else {

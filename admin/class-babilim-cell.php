@@ -233,8 +233,9 @@ final class Babilim_Cell {
 		// previous build: its date does not belong to the installed one.
 		$entry_build = (string) ( $entry['build_id'] ?? '' );
 		$stale       = '' !== $entry_build && $manifest_build !== $entry_build;
-		$text        = $stale ? _x( 'Installed', 'translation status', 'babilim' ) : self::built_text( $entry, true );
-		return self::cell( 'babilim', true, false, null, 'downloaded', $text, $build_id, false, false, $stale ? '' : self::built_date( $entry ) );
+		$date        = $stale ? '' : self::built_date( $entry );
+		$text        = $stale ? _x( 'Installed', 'translation status', 'babilim' ) : self::built_text( $entry, true, $date );
+		return self::cell( 'babilim', true, false, null, 'downloaded', $text, $build_id, false, false, $date );
 	}
 
 	/**
@@ -265,8 +266,8 @@ final class Babilim_Cell {
 	 * @return array
 	 */
 	private static function downloadable_cell( array $entry, bool $can_write, string $build_id ): array {
-		$text = self::built_text( $entry, false );
 		$date = self::built_date( $entry );
+		$text = self::built_text( $entry, false, $date );
 		if ( '' === $build_id ) {
 			return self::cell( 'babilim', false, false, null, 'unknown', $text, '', false, false, $date );
 		}
@@ -326,13 +327,10 @@ final class Babilim_Cell {
 				$text = $known ? sprintf( __( 'Installed · built for %s, new version failed', 'babilim' ), $version ) : __( 'Installed · built for a different version, new version failed', 'babilim' );
 				return self::cell( 'babilim', true, false, 'babilim_request', null, $text, $build_id, true, true );
 			case 'license_required':
-				/* translators: %s: the component version a Babilim translation was built for. */
-				$text = $known ? sprintf( __( 'Installed · built for %s; this plugin or theme is no longer covered by the site\'s service plan', 'babilim' ), $version ) : __( 'Installed · built for a different version; this plugin or theme is no longer covered by the site\'s service plan', 'babilim' );
-				return self::cell( 'babilim', true, false, null, 'license_required', $text, $build_id );
 			case 'quota_exceeded':
 				/* translators: %s: the component version a Babilim translation was built for. */
 				$text = $known ? sprintf( __( 'Installed · built for %s; this plugin or theme is no longer covered by the site\'s service plan', 'babilim' ), $version ) : __( 'Installed · built for a different version; this plugin or theme is no longer covered by the site\'s service plan', 'babilim' );
-				return self::cell( 'babilim', true, false, null, 'quota_exceeded', $text, $build_id );
+				return self::cell( 'babilim', true, false, null, $newer_status, $text, $build_id );
 			default:
 				/* translators: %s: the component version a Babilim translation was built for. */
 				$text = $known ? sprintf( __( 'Installed · built for %s', 'babilim' ), $version ) : __( 'Installed · built for a different version', 'babilim' );
@@ -344,12 +342,12 @@ final class Babilim_Cell {
 	 * "Installed · {date}" or "Available · {date}" from the entry's
 	 * built_at, or the bare word when it has none.
 	 *
-	 * @param array $entry     Locale entry.
-	 * @param bool  $installed Whether the build is installed here.
+	 * @param array  $entry     Locale entry.
+	 * @param bool   $installed Whether the build is installed here.
+	 * @param string $date      built_date( $entry ), computed once by the caller.
 	 * @return string
 	 */
-	private static function built_text( array $entry, bool $installed ): string {
-		$date = self::built_date( $entry );
+	private static function built_text( array $entry, bool $installed, string $date ): string {
 		if ( '' === $date ) {
 			return $installed ? _x( 'Installed', 'translation status', 'babilim' ) : _x( 'Available', 'translation status', 'babilim' );
 		}

@@ -214,8 +214,7 @@ try {
 	$babilim_uninstall_fs       = new Babilim_Wp_Fs();
 	$babilim_uninstall_manifest = new Babilim_Manifest( $babilim_uninstall_fs );
 	// The transform/parse/unzip callables are only ever used by
-	// install() -- neither purge_all() nor remove_managed_tree()
-	// touches them (see Babilim_Installer's own docblock).
+	// install() -- remove_managed_tree() never touches them (see Babilim_Installer's own docblock).
 	$babilim_uninstall_noop = static function () {
 		return false;
 	};
@@ -226,9 +225,8 @@ try {
 		$babilim_uninstall_noop,
 		$babilim_uninstall_noop
 	);
-	// Records first (a no-op error result if the manifest is unreadable),
-	// then whatever else is left under the root, listed or not.
-	$babilim_uninstall_installer->purge_all( $babilim_uninstall_keep_custom );
+	// One pass over the whole tree, listed in the manifest or not: going
+	// through purge_all() first would rewrite the manifest once per record.
 	$babilim_uninstall_installer->remove_managed_tree( $babilim_uninstall_keep_custom );
 } catch ( \Throwable $babilim_uninstall_error ) {
 	// Best-effort -- see this section's own comment above.

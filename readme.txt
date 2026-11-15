@@ -4,7 +4,7 @@ Tags: translation, translate, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,13 @@ The Enable screen lists what is sent automatically before you agree.
 
 == Changelog ==
 
+= 1.2.4 =
+* Rollback works after a site moves to another folder or server.
+* Notices show only to the user who acted.
+* Search and the restore code work with every keyboard.
+* Translation files are never briefly missing during an update.
+* Better layouts on phones and in right-to-left languages.
+
 = 1.2.3 =
 * A translation a plugin or theme already ships, when Babilim generated it, now counts as installed: no download, no request button, and no free slot used.
 * New display name: Babilim – Auto-Translate Plugins & Themes.
@@ -110,24 +117,12 @@ The Enable screen lists what is sent automatically before you agree.
 * The readme and the Enable screen now describe what is sent in plain language.
 * The FAQ explains what the free plan covers.
 
-= 1.2.0 =
-* Automatic and one-click installs use the same installer.
-* A refusal from the service is no longer counted as a failed install.
-* Notices appear only on Babilim's own screens, the Dashboard and the Plugins screen.
-
-= 1.1.0 =
-* Optional error reports, off by default.
-* New "Report translation" entry in the admin toolbar.
-* A source upload now contains only the component's code and description files.
-
-= 1.0.1 =
-* Shows "Original language" for a language a plugin or theme is written in.
-* Detects more bundled translations.
-
-= 1.0.0 =
-* First release.
+Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 1.2.4 =
+Fixes rollback after a site move and improves phone and right-to-left layouts; no action needed.
 
 = 1.2.3 =
 Translations a component already ships from Babilim no longer use a slot; no action needed.

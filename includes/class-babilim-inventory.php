@@ -194,15 +194,38 @@ final class Babilim_Inventory {
 	private $read_file;
 
 	/**
-	 * Memoized $get_themes() result -- populated on first use by either
-	 * theme_components() or is_theme_own_directory(), whichever runs
-	 * first, and reused for the rest of this instance's lifetime rather
-	 * than re-querying on every effective_file() call (see that method's
-	 * docblock).
+	 * Memoized $get_themes() result -- populated on first use by
+	 * theme_components() and reused until the inventory generation
+	 * changes.
 	 *
 	 * @var array|null
 	 */
 	private $themes_cache;
+
+	/**
+	 * Memoized components() / detected_locales() results (null until
+	 * first use), stamped with the $generation they were computed in.
+	 * locales() is deliberately not memoized: it reads options the
+	 * settings screen can change mid-request.
+	 *
+	 * @var array|null
+	 */
+	private $components_cache;
+
+	/** @var string[]|null */
+	private $detected_cache;
+
+	/** @var int */
+	private $cache_generation = 0;
+
+	/**
+	 * Bumped by forget_all() when plugins or themes are installed,
+	 * activated, deactivated, updated or deleted, so every instance
+	 * drops its memos instead of serving the pre-change scan.
+	 *
+	 * @var int
+	 */
+	private static $generation = 0;
 
 	/**
 	 * @param callable      $get_plugins       See the class docblock.
@@ -234,7 +257,29 @@ final class Babilim_Inventory {
 	 * @return array[]
 	 */
 	public function components(): array {
-		return array_merge( $this->plugin_components(), $this->theme_components() );
+		$this->sync_generation();
+		if ( null === $this->components_cache ) {
+			$this->components_cache = array_merge( $this->plugin_components(), $this->theme_components() );
+		}
+		return $this->components_cache;
+	}
+
+	/**
+	 * Drops every instance's memoized scan (components(),
+	 * detected_locales(), themes). Call when the set of installed or
+	 * active plugins or themes changes.
+	 */
+	public static function forget_all(): void {
+		++self::$generation;
+	}
+
+	private function sync_generation(): void {
+		if ( $this->cache_generation !== self::$generation ) {
+			$this->cache_generation = self::$generation;
+			$this->components_cache = null;
+			$this->detected_cache   = null;
+			$this->themes_cache     = null;
+		}
 	}
 
 	/**
@@ -362,6 +407,10 @@ final class Babilim_Inventory {
 	 * @return string[]
 	 */
 	public function detected_locales(): array {
+		$this->sync_generation();
+		if ( null !== $this->detected_cache ) {
+			return $this->detected_cache;
+		}
 		$locales   = array();
 		$locales[] = get_locale();
 
@@ -375,7 +424,8 @@ final class Babilim_Inventory {
 			$locales[] = $locale;
 		}
 
-		return self::normalize_locales( $locales );
+		$this->detected_cache = self::normalize_locales( $locales );
+		return $this->detected_cache;
 	}
 
 	/**
@@ -428,94 +478,13 @@ final class Babilim_Inventory {
 	}
 
 	/**
-	 * The file WordPress core would actually load for $domain at
-	 * $locale right now, by asking core's own text-domain registry
-	 * rather than recomputing its directory-priority rules itself.
-	 * `.l10n.php` is preferred over `.mo` when both exist, matching
-	 * core's own preference (since WordPress 6.5). When the registry's
-	 * directory turns out to be a theme's own stylesheet/template
-	 * directory, the filename core actually loads there has no domain
-	 * prefix at all (`{locale}.mo`/`.l10n.php`, not
-	 * `{domain}-{locale}.mo`/`.l10n.php`) -- see is_theme_own_directory().
-	 *
-	 * @param string $domain Text domain.
-	 * @param string $locale Locale code.
-	 * @return string|null Absolute path, or null if nothing's resolvable
-	 *                      (including when either argument isn't safe to
-	 *                      use as a path component, or the registry
-	 *                      itself isn't available, e.g. too early in the
-	 *                      request).
-	 */
-	public function effective_file( string $domain, string $locale ): ?string {
-		if ( ! Babilim_Paths::is_safe_name( $domain ) || ! Babilim_Paths::is_safe_locale( $locale ) ) {
-			return null;
-		}
-
-		$registry = $GLOBALS['wp_textdomain_registry'] ?? null;
-		if ( ! is_object( $registry ) || ! method_exists( $registry, 'get' ) ) {
-			return null;
-		}
-
-		$dir = $registry->get( $domain, $locale );
-		if ( ! is_string( $dir ) || '' === $dir ) {
-			return null;
-		}
-		$dir = rtrim( $dir, '/' );
-
-		$basename = $this->is_theme_own_directory( $dir ) ? $locale : ( $domain . '-' . $locale );
-
-		$php = $dir . '/' . $basename . '.l10n.php';
-		if ( is_readable( $php ) ) {
-			return $php;
-		}
-
-		$mo = $dir . '/' . $basename . '.mo';
-		if ( is_readable( $mo ) ) {
-			return $mo;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Whether $dir is (at or under) some installed theme's own
-	 * stylesheet or template directory -- the one case where core loads
-	 * a theme's translation file without a domain prefix in its name.
-	 * Queries the injected $get_themes() rather than recomputing theme
-	 * directories some other way, so it always agrees with what
-	 * theme_components() itself used.
-	 *
-	 * @param string $dir Already-normalized (no trailing slash) absolute directory.
-	 * @return bool
-	 */
-	private function is_theme_own_directory( string $dir ): bool {
-		$dir = $dir . '/';
-
-		foreach ( $this->themes() as $theme ) {
-			if ( ! is_object( $theme ) ) {
-				continue;
-			}
-			foreach ( array( 'get_stylesheet_directory', 'get_template_directory' ) as $method ) {
-				if ( ! method_exists( $theme, $method ) ) {
-					continue;
-				}
-				$theme_dir = rtrim( (string) $theme->$method(), '/' );
-				if ( '' !== $theme_dir && 0 === strpos( $dir, $theme_dir . '/' ) ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * The injected $get_themes() result, called at most once per
-	 * instance (see $themes_cache's docblock).
+	 * instance until the generation changes (see $themes_cache's docblock).
 	 *
 	 * @return array
 	 */
 	private function themes(): array {
+		$this->sync_generation();
 		if ( null === $this->themes_cache ) {
 			$this->themes_cache = (array) call_user_func( $this->get_themes );
 		}

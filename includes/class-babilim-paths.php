@@ -177,7 +177,20 @@ final class Babilim_Paths {
 	 * @return string
 	 */
 	public static function version_dir( string $kind, string $domain, string $locale, string $build_id ): string {
-		return self::dir( '_versions' ) . '/' . $kind . '/' . $domain . '/' . $locale . '/' . $build_id;
+		return self::versions_tree( $kind, $domain, $locale ) . '/' . $build_id;
+	}
+
+	/**
+	 * The `_versions/{kind}/{domain}/{locale}` directory holding every
+	 * build directory of one identity (the parent of version_dir()).
+	 *
+	 * @param string $kind   'plugins'|'themes'|'default'.
+	 * @param string $domain Domain or slug.
+	 * @param string $locale Locale code.
+	 * @return string
+	 */
+	public static function versions_tree( string $kind, string $domain, string $locale ): string {
+		return self::dir( '_versions' ) . '/' . $kind . '/' . $domain . '/' . $locale;
 	}
 
 	/**
@@ -306,12 +319,12 @@ final class Babilim_Paths {
 	 *
 	 * @param string $path      Absolute path.
 	 * @param bool   $for_write Whether this check gates a write (put(),
-	 *                          mkdir(), or a rename()/atomic_rename()
+	 *                          mkdir(), or a rename()
 	 *                          destination -- anything that can leave a
 	 *                          NEW file/directory at $path) as opposed to
 	 *                          a read or a removal (get(), exists(),
 	 *                          list(), is_dir(), delete(), rmdir(), or a
-	 *                          rename()/atomic_rename() source). Only
+	 *                          rename() source). Only
 	 *                          affects the `_incoming/{token}/` branch's
 	 *                          own rule (see has_allowed_incoming_write_
 	 *                          extension()): writing there is refused
@@ -475,8 +488,7 @@ final class Babilim_Paths {
 
 	/**
 	 * Creates every directory in DIR_TYPES (plus root()) and drops a
-	 * protective `index.php` and `.htaccess` at root() if not already
-	 * present. Safe to call more than once.
+	 * protective `index.php` at root() if not already present. Safe to call more than once.
 	 *
 	 * @param Babilim_Fs $fs Filesystem to create the layout on.
 	 */
@@ -486,23 +498,19 @@ final class Babilim_Paths {
 			$fs->mkdir( self::dir( $type ) );
 		}
 
-		$index = self::root() . '/index.php';
-		if ( ! $fs->exists( $index ) ) {
-			$fs->put( $index, "<?php\n// Silence is golden.\n" );
-		}
+		self::ensure_index( $fs );
+	}
 
-		$htaccess = self::root() . '/.htaccess';
-		if ( ! $fs->exists( $htaccess ) ) {
-			$fs->put(
-				$htaccess,
-				"<IfModule mod_authz_core.c>\n"
-				. "\tRequire all denied\n"
-				. "</IfModule>\n"
-				. "<IfModule !mod_authz_core.c>\n"
-				. "\tOrder allow,deny\n"
-				. "\tDeny from all\n"
-				. "</IfModule>\n"
-			);
+	/**
+	 * Writes the `index.php` directory-listing guard at root() when it is
+	 * missing. Never creates root() and never overwrites an existing file.
+	 *
+	 * @param Babilim_Fs $fs Filesystem to write on.
+	 */
+	public static function ensure_index( Babilim_Fs $fs ): void {
+		$index = self::root() . '/index.php';
+		if ( $fs->is_dir( self::root() ) && ! $fs->exists( $index ) ) {
+			$fs->put( $index, "<?php\n// Silence is golden.\n" );
 		}
 	}
 

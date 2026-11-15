@@ -687,6 +687,10 @@ final class Babilim_Manifest {
 		if ( null !== $raw ) {
 			return $raw; // A real string, or a WP_Error -- not "missing".
 		}
+		// No managed directory at all: nothing can be mid-replacement, so there is nothing to wait for.
+		if ( ! $this->fs->is_dir( dirname( $path ) ) ) {
+			return null;
+		}
 		usleep( 20000 );
 		return $this->fs->get( $path );
 	}
@@ -1222,46 +1226,18 @@ final class Babilim_Manifest {
 
 	/**
 	 * $tmp -> $to for the manifest's own write, used only from inside
-	 * save()'s own cross-request lock. Deliberately reaches past the
-	 * Babilim_Fs interface's own rename() for one, narrow, real reason:
-	 * WordPress core's own WP_Filesystem_Direct::move() (which
-	 * Babilim_Fs::rename() calls through $wp_filesystem->move(), and
-	 * which every WP_Filesystem transfer method other than `direct` has
-	 * no alternative to) DELETES the destination file BEFORE renaming
-	 * the replacement into place -- byte-identical across WordPress
-	 * 6.6.9/6.8.10/7.1.2's own core source. A real two-process probe
-	 * measured roughly 5-6% of concurrent reads catching `_manifest.json`
-	 * in that exact window (see read_manifest_file()'s own docblock).
-	 *
-	 * When the real, underlying transfer is `direct` (PHP itself has
-	 * ordinary write permission to disk -- the common case; FTP/SSH2
-	 * transports exist specifically for when it doesn't), PHP's own
-	 * native rename() is used instead: on the same filesystem (always
-	 * true here -- both paths live under Babilim_Paths::root()), POSIX
-	 * guarantees this overwrites the destination in one atomic
-	 * operation, with no window where it doesn't exist at all. A
-	 * non-`direct` transfer has no local filesystem path for PHP's own
-	 * rename() to operate on at all (the file genuinely only exists on
-	 * a remote FTP/SSH2 host) -- move() is the only option there, made
-	 * safe by save()'s own lock (no concurrent writer can be caught in
-	 * that window, even though the rename call itself still isn't
-	 * atomic) rather than by this method choosing a different call.
-	 *
-	 * Only Babilim_Wp_Fs (the real, production Babilim_Fs) is special-
-	 * cased -- every Babilim_Fs test double in this repo has no
-	 * delete-then-rename behavior to begin with (a single in-memory
-	 * operation, or an intentionally-scripted fake for a specific test),
-	 * so there is nothing for this to improve on there; ordinary
-	 * rename() is used unchanged.
+	 * save()'s own cross-request lock. It goes through the Babilim_Fs
+	 * interface's rename(): Babilim_Wp_Fs::rename() moves the file with
+	 * PHP's native rename() when the transfer is `direct` (atomic, no
+	 * window where the destination is missing; WP_Filesystem_Direct::move()
+	 * deletes the destination first) and falls back to move() on other
+	 * transports, where the lock is what keeps writers apart.
 	 *
 	 * @param string $from Temp file path.
 	 * @param string $to   Final manifest path.
 	 * @return bool True on success.
 	 */
 	private function rename_manifest_file( string $from, string $to ): bool {
-		if ( $this->fs instanceof Babilim_Wp_Fs ) {
-			return $this->fs->atomic_rename( $from, $to );
-		}
 		return $this->fs->rename( $from, $to );
 	}
 

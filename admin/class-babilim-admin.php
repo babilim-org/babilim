@@ -8,7 +8,7 @@
  * current_user_can('manage_options') first (guard()), sanitize every
  * input, call the real underlying class, record the outcome via
  * add_settings_error() (persisted across the redirect through the
- * `settings_errors` transient -- the same mechanism WordPress core's own
+ * per-user transient -- the same idea as WordPress core's own
  * options.php uses), then wp_safe_redirect() back to this screen. No
  * handler here ever calls exit() itself -- admin-post.php's own request
  * lifecycle ends the request right after firing the action, and skipping
@@ -633,7 +633,7 @@ final class Babilim_Admin {
 			"\n",
 			array(
 				"document.addEventListener('click', function (e) {",
-				"\tvar a = e.target && e.target.closest ? e.target.closest('a[data-babilim-confirm]') : null;",
+				"\tvar a = e.target.closest('a[data-babilim-confirm]');",
 				"\tif (a && !window.confirm(a.getAttribute('data-babilim-confirm'))) {",
 				"\t\te.preventDefault();",
 				"\t}",
@@ -658,22 +658,30 @@ final class Babilim_Admin {
 	 * @return string
 	 */
 	private static function admin_css(): string {
-		return '.babilim-inline{display:inline}.babilim-inline-block{display:inline-block}.babilim-mr-1em{margin-right:1em}'
+		return '.babilim-inline{display:inline}.babilim-inline-block{display:inline-block}.babilim-mr-1em{margin-inline-end:1em}'
 			. '.babilim-cell-list{container-type:inline-size}.babilim-cell-line{display:grid;grid-template-columns:minmax(min-content,max-content) minmax(10em,1fr) max-content;gap:0 1em;align-items:start;padding:2px 0}'
-			. '.babilim-cell-action{position:relative;text-align:right}'
-			// The busy label (and the idle label, so the button never shrinks back) plus room for the spinner is laid out invisibly from the start, so pressing the button never changes the column width; the buttons of a cell fill that width and the spinner is drawn inside the button, left of its text, never over the status column.
+			. '.babilim-cell-action{position:relative;text-align:end}'
+			// The busy label (and the idle label, so the button never shrinks back) plus room for the spinner is laid out invisibly from the start, so pressing the button never changes the column width; the buttons of a cell fill that width and the spinner is drawn inside the button, at the inline start of its text, never over the status column.
 			. '.babilim-cell-action button[data-babilim-busy-label]{min-width:100%}'
-			. '.babilim-cell-action button[data-babilim-busy-label]::after{content:attr(data-babilim-busy-label);display:block;height:0;overflow:hidden;visibility:hidden;padding-left:22px}'
+			. '.babilim-cell-action button[data-babilim-busy-label]::after{content:attr(data-babilim-busy-label);display:block;height:0;overflow:hidden;visibility:hidden;padding-inline-start:22px}'
 			. '.babilim-cell-action button[data-babilim-busy-label]::before{content:attr(data-babilim-idle-label);display:block;height:0;overflow:hidden;visibility:hidden}'
-			. '.babilim-cell-action .spinner{position:absolute;left:5px;top:7px;float:none;width:16px;height:16px;background-size:16px 16px;margin:0}'
+			. '.babilim-cell-action .spinner{position:absolute;inset-inline-start:5px;top:7px;float:none;width:16px;height:16px;background-size:16px 16px;margin:0}'
 			. '.babilim-cell-text{display:contents}.babilim-cell-lang,.babilim-cell-status{display:block}'
 			. '.babilim-cell-status{overflow-wrap:anywhere}.babilim-cell-lang{white-space:normal}.babilim-cell-tail{display:inline-block;max-width:100%}'
 			. '.babilim-choose{margin:1em 0}.babilim-choose li{margin:0 0 .5em}'
 			. '.babilim-locale-links{clear:both;margin:.5em 0 0}.babilim-advanced-first{margin-top:1em}.babilim-account{margin:0}'
 			// One grid per cell: the lines take the cell's columns, so the name column is as wide as the longest name and every status starts at the same x.
 			. '@supports (grid-template-columns:subgrid){.babilim-cell-grid{display:grid;grid-template-columns:minmax(min-content,max-content) minmax(10em,1fr) max-content;column-gap:1em}.babilim-cell-row,.babilim-cell-line,.babilim-cell-warning{grid-column:1/-1}.babilim-cell-row,.babilim-cell-line{display:grid;grid-template-columns:subgrid}}'
-			. '@container (max-width:40em){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:flex;flex-wrap:wrap;align-items:flex-start;gap:2px 1em}.babilim-cell-text{display:block;flex:1 1 10em}.babilim-cell-action{flex:none;margin-left:auto}}'
-			. '@media (max-width:782px){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 0}.babilim-cell-text{display:contents}.babilim-cell-action{text-align:left;margin-left:0;width:max-content}}';
+			. '@container (max-width:40em){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:flex;flex-wrap:wrap;align-items:flex-start;gap:2px 1em}.babilim-cell-text{display:block;flex:1 1 10em}.babilim-cell-action{flex:none;margin-inline-start:auto}}'
+			. '.babilim-report-form textarea,.babilim-report-form input[type=text]{max-width:100%}.babilim-scroll{overflow-x:auto}'
+			. '@media (max-width:782px){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 0}.babilim-cell-text{display:contents}.babilim-cell-action{text-align:start;margin-inline-start:0;width:max-content}'
+			. '.wp-list-table.translations tr:not(.inline-edit-row):not(.no-items) .column-primary~td.column-translations{display:block;padding-block:3px 8px;padding-inline:10px 8px}'
+			. '.wp-list-table.translations tr:not(.inline-edit-row):not(.no-items) td.column-translations::before{display:none}'
+			. '.wp-list-table.translations .column-primary .toggle-row{display:none}'
+			. '.wp-list-table.translations td.column-primary,.wp-list-table.translations tbody th.column-primary{display:block;padding-inline-end:10px}'
+			// WordPress 7.x turns every list-table row into a wrapping flex row on phones; these two tables scroll sideways instead, so their rows stay table rows.
+			. '.babilim-scroll table.fixed{table-layout:auto}.babilim-scroll th{white-space:nowrap}.babilim-scroll tr{display:table-row}'
+			. '}';
 	}
 
 	/**
@@ -872,11 +880,11 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * Records the outcome and persists it across the redirect via the
-	 * `settings_errors` transient -- the same mechanism WordPress core's
-	 * own options.php uses so a notice set on one request still shows on
-	 * the next. See reconcile_persisted_notices(), called once at the top
-	 * of every render.
+	 * Records the outcome and persists this plugin's own errors across
+	 * the redirect in a transient keyed by the acting user, so another
+	 * administrator's page load never shows (or consumes) it. See
+	 * reconcile_persisted_notices(), called once at the top of every
+	 * render.
 	 *
 	 * @param string $code    Machine-readable code.
 	 * @param string $message Human-readable message.
@@ -884,7 +892,16 @@ final class Babilim_Admin {
 	 */
 	private function notice( string $code, string $message, string $type ): void {
 		add_settings_error( 'babilim', $code, $message, $type );
-		set_transient( 'settings_errors', get_settings_errors(), MINUTE_IN_SECONDS );
+		set_transient( self::notices_key(), get_settings_errors( 'babilim' ), MINUTE_IN_SECONDS );
+	}
+
+	/**
+	 * Transient key of the persisted action notices for the current user.
+	 *
+	 * @return string
+	 */
+	private static function notices_key(): string {
+		return 'babilim_notices_' . get_current_user_id();
 	}
 
 	/**
@@ -897,9 +914,10 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * Merges any settings errors persisted by a previous request's
-	 * notice() into this request's own store, then clears the transient
-	 * (settings_errors()' own real-core behavior).
+	 * Merges the current user's notices persisted by a previous request's
+	 * notice() into this request's own store, then deletes them. The
+	 * shared `settings_errors` transient is core's own (options.php
+	 * saves); it is neither read nor deleted here.
 	 */
 	private static function reconcile_persisted_notices(): void {
 		// A notice meant for this user alone (see dispatch_babilim_restore_code()).
@@ -908,7 +926,7 @@ final class Babilim_Admin {
 			add_settings_error( 'babilim', (string) ( $private['code'] ?? '' ), (string) ( $private['message'] ?? '' ), (string) ( $private['type'] ?? 'updated' ) );
 			delete_transient( self::restore_code_notice_key() );
 		}
-		$persisted = get_transient( 'settings_errors' );
+		$persisted = get_transient( self::notices_key() );
 		if ( is_array( $persisted ) ) {
 			foreach ( $persisted as $error ) {
 				add_settings_error(
@@ -919,7 +937,7 @@ final class Babilim_Admin {
 				);
 			}
 		}
-		delete_transient( 'settings_errors' );
+		delete_transient( self::notices_key() );
 	}
 
 	/**
@@ -2265,7 +2283,7 @@ final class Babilim_Admin {
 			"\n",
 			array(
 				"document.addEventListener('click', function (e) {",
-				"\tvar b = e.target && e.target.closest ? e.target.closest('.notice-dismiss') : null;",
+				"\tvar b = e.target.closest('.notice-dismiss');",
 				"\tvar n = b ? b.closest('.notice[data-babilim-dismiss-form]') : null;",
 				"\tif (!n) {",
 				"\t\treturn;",
@@ -2607,10 +2625,13 @@ final class Babilim_Admin {
 			}
 			$html .= '</ul>';
 			$html .= '<p>' . esc_html__( 'This report will be posted publicly on GitHub and may be kept by third parties.', 'babilim' ) . '</p><p>'
-				. $this->error_action_form( 'babilim_error_share_once', __( 'Share this report', 'babilim' ), (string) ( $event['event_id'] ?? '' ), true )
-				. ' ' . $this->error_action_form( 'babilim_error_share_always', __( 'Always share', 'babilim' ), '', false )
-				. ' ' . $this->error_action_form( 'babilim_error_decline', __( 'Don\'t share', 'babilim' ), implode( ',', $ids ), false, 'event_ids' )
-				. '</p>';
+				. $this->error_button( 'babilim-error-share-once', __( 'Share this report', 'babilim' ), true )
+				. ' ' . $this->error_button( 'babilim-error-share-always', __( 'Always share', 'babilim' ), false )
+				. ' ' . $this->error_button( 'babilim-error-decline', __( 'Don\'t share', 'babilim' ), false )
+				. '</p>'
+				. $this->hidden_action_form( 'babilim_error_share_once', 'babilim-error-share-once', array( 'event_id' => (string) ( $event['event_id'] ?? '' ) ) )
+				. $this->hidden_action_form( 'babilim_error_share_always', 'babilim-error-share-always' )
+				. $this->hidden_action_form( 'babilim_error_decline', 'babilim-error-decline', array( 'event_ids' => implode( ',', $ids ) ) );
 			break; // One report at a time; the next shows after this one is answered.
 		}
 		// The close button only hides this notice (it deletes nothing).
@@ -2620,21 +2641,16 @@ final class Babilim_Admin {
 	}
 
 	/**
-	 * One button of the error consent notice.
+	 * One button of the error consent notice; it submits the hidden form
+	 * of the same id, emitted after the paragraph (a form cannot sit in a p).
 	 *
-	 * @param string $action   Action (and nonce) name.
-	 * @param string $label    Button text.
-	 * @param string $event_id Event id (or, for "event_ids", the comma-separated ids) the button applies to; empty for none.
-	 * @param bool   $primary  Whether the button is the primary one.
-	 * @param string $field    Name of the hidden field that carries it.
+	 * @param string $form_id Id of the form the button submits.
+	 * @param string $label   Button text.
+	 * @param bool   $primary Whether the button is the primary one.
 	 * @return string
 	 */
-	private function error_action_form( string $action, string $label, string $event_id, bool $primary, string $field = 'event_id' ): string {
-		$form = $this->action_form( $action, $label, $primary );
-		if ( '' === $event_id ) {
-			return $form;
-		}
-		return str_replace( '<button', '<input type="hidden" name="' . esc_attr( $field ) . '" value="' . esc_attr( $event_id ) . '" /><button', $form );
+	private function error_button( string $form_id, string $label, bool $primary ): string {
+		return '<button type="submit" form="' . esc_attr( $form_id ) . '" class="button' . ( $primary ? ' button-primary' : '' ) . '">' . esc_html( $label ) . '</button>';
 	}
 
 	/**
@@ -2869,7 +2885,12 @@ final class Babilim_Admin {
 			'id'    => true,
 		);
 		return array(
-			'div'      => $common + array( 'data-babilim-dismiss-form' => true ),
+			'div'      => $common + array(
+				'data-babilim-dismiss-form' => true,
+				'tabindex'                  => true,
+				'role'                      => true,
+				'aria-labelledby'           => true,
+			),
 			'span'     => $common + array(
 				'title'       => true,
 				'aria-label'  => true,
@@ -2878,6 +2899,7 @@ final class Babilim_Admin {
 			'p'        => $common,
 			'h1'       => $common,
 			'h2'       => $common,
+			'nav'      => $common + array( 'aria-label' => true ),
 			'hr'       => $common,
 			'ul'       => $common,
 			'li'       => $common,
@@ -2920,6 +2942,10 @@ final class Babilim_Admin {
 				'aria-label'  => true,
 				'aria-describedby' => true,
 				'form'        => true,
+				'autocapitalize' => true,
+				'autocorrect'    => true,
+				'spellcheck'     => true,
+				'autocomplete'   => true,
 			),
 			'select'   => $common + array(
 				'name'     => true,
@@ -3792,9 +3818,9 @@ final class Babilim_Admin {
 			return '';
 		}
 		$names = $this->component_names();
-		$html  = '<h2>' . esc_html__( 'Supplementary translations', 'babilim' ) . '</h2>';
+		$html  = '<h2 id="babilim-supplementary-heading">' . esc_html__( 'Supplementary translations', 'babilim' ) . '</h2>';
 		$html .= '<p class="description">' . esc_html__( "Each component's own contribution to each locale's shared default-domain supplement.", 'babilim' ) . '</p>';
-		$html .= '<table class="wp-list-table widefat fixed striped"><thead><tr>'
+		$html .= '<div class="babilim-scroll" tabindex="0" role="region" aria-labelledby="babilim-supplementary-heading"><table class="wp-list-table widefat fixed striped"><thead><tr>'
 			. '<th>' . esc_html__( 'Component', 'babilim' ) . '</th>'
 			. '<th>' . esc_html__( 'Language', 'babilim' ) . '</th>'
 			. '<th>' . esc_html__( 'Included in index', 'babilim' ) . '</th>'
@@ -3808,7 +3834,7 @@ final class Babilim_Admin {
 				. '<td>' . ( $row['included'] ? (int) $row['entries'] : '—' ) . '</td>'
 				. '<td>' . (int) $row['conflict_count'] . '</td></tr>';
 		}
-		return $html . '</tbody></table>';
+		return $html . '</tbody></table></div>';
 	}
 
 	/**
@@ -3903,14 +3929,14 @@ final class Babilim_Admin {
 		$html .= $this->render_verification_warning();
 		$html .= $this->render_recovery_notice();
 
-		$html .= '<h2 class="nav-tab-wrapper">';
+		$html .= '<nav class="nav-tab-wrapper wp-clearfix" aria-label="' . esc_attr__( 'Settings', 'babilim' ) . '">';
 		foreach ( array(
 			'general'  => __( 'General', 'babilim' ),
 			'advanced' => __( 'Advanced', 'babilim' ),
 		) as $key => $label ) {
-			$html .= '<a class="nav-tab' . ( $key === $tab ? ' nav-tab-active' : '' ) . '" href="' . esc_url( self::page_url( 'settings', array( 'tab' => $key ) ) ) . '">' . esc_html( $label ) . '</a>';
+			$html .= '<a class="nav-tab' . ( $key === $tab ? ' nav-tab-active' : '' ) . '" href="' . esc_url( self::page_url( 'settings', array( 'tab' => $key ) ) ) . '"' . ( $key === $tab ? ' aria-current="page"' : '' ) . '>' . esc_html( $label ) . '</a>';
 		}
-		$html .= '</h2>';
+		$html .= '</nav>';
 
 		$html .= 'advanced' === $tab ? $this->render_settings_advanced() : $this->render_settings_general();
 		$html .= '</div>';
@@ -4158,7 +4184,7 @@ final class Babilim_Admin {
 		$wp_admin_bar->add_node(
 			array(
 				'id'    => 'babilim-report',
-				'title' => __( 'Report translation', 'babilim' ),
+				'title' => '<span class="ab-icon" aria-hidden="true"></span><span class="ab-label">' . esc_html__( 'Report translation', 'babilim' ) . '</span>',
 				'href'  => '#',
 			)
 		);
@@ -4184,6 +4210,18 @@ final class Babilim_Admin {
 		wp_enqueue_script( 'babilim-report-loader' );
 		wp_add_inline_script( 'babilim-report-loader', 'var babilimReportLoader = ' . wp_json_encode( $config ) . ';', 'before' );
 		wp_add_inline_script( 'babilim-report-loader', self::report_loader_js() );
+		// Phone width: core hides every toolbar entry but a few, so show this one as an icon (core's own .ab-label rule keeps the link named).
+		// Attached to a handle of our own: inline CSS on core's `admin-bar` handle is not printed on admin screens (checked in WordPress 6.6).
+		wp_register_style( 'babilim-toolbar', false, array(), BABILIM_VERSION );
+		wp_enqueue_style( 'babilim-toolbar' );
+		wp_add_inline_style(
+			'babilim-toolbar',
+			'#wpadminbar #wp-admin-bar-babilim-report .ab-icon{display:none}'
+			. '#wpadminbar #wp-admin-bar-babilim-report .ab-icon::before{content:"\\f326"}'
+			. '@media screen and (max-width:782px){#wpadminbar li#wp-admin-bar-babilim-report{display:block}#wpadminbar #wp-admin-bar-babilim-report .ab-icon{display:block}}'
+			// Multisite adds core's my-sites entry: below 416px this entry would push my-account onto a second row. The report screen stays reachable from each list row.
+			. '@media screen and (max-width:415px){.multisite #wpadminbar li#wp-admin-bar-babilim-report{display:none}}'
+		);
 	}
 
 	/**
@@ -4211,8 +4249,7 @@ final class Babilim_Admin {
 				"\t\treturn;",
 				"\t}",
 				"\tdocument.addEventListener('click', function (e) {",
-				"\t\tvar t = e.target;",
-				"\t\tvar link = t && t.closest ? t.closest('#wp-admin-bar-babilim-report > a') : null;",
+				"\t\tvar link = e.target.closest('#wp-admin-bar-babilim-report > a');",
 				"\t\tif (!link || 'loaded' === state) {",
 				"\t\t\treturn;",
 				"\t\t}",
@@ -4234,16 +4271,13 @@ final class Babilim_Admin {
 				"\t\t\t\twindow.babilimReport = undefined;",
 				"\t\t\t}",
 				"\t\t\tstate = 'idle';",
-				"\t\t\tif (window.console && window.console.error) {",
-				"\t\t\t\twindow.console.error('Babilim: the report panel could not be loaded (' + why + ').');",
-				"\t\t\t}",
+				"\t\t\tconsole.error('Babilim: the report panel could not be loaded (' + why + ').');",
 				"\t\t};",
 				"\t\tvar data = new window.URLSearchParams();",
 				"\t\tdata.append('action', 'babilim_report_panel');",
 				"\t\tdata.append('_ajax_nonce', cfg.nonce);",
 				"\t\twindow.fetch(cfg.ajaxUrl, {",
 				"\t\t\tmethod: 'POST',",
-				"\t\t\tcredentials: 'same-origin',",
 				"\t\t\theaders: { 'Content-Type': 'application/x-www-form-urlencoded' },",
 				"\t\t\tbody: data.toString()",
 				"\t\t}).then(function (r) {",
@@ -4591,7 +4625,7 @@ final class Babilim_Admin {
 		if ( $paid ) {
 			return '<button type="submit" form="babilim-restore-code-form" class="button" data-babilim-confirm="' . esc_attr__( 'This issues a new restore code and the previous one stops working. Continue?', 'babilim' ) . '">' . esc_html__( 'Show a new restore code', 'babilim' ) . '</button>';
 		}
-		return '<input type="text" name="restore_code" form="babilim-restore-form" required placeholder="' . esc_attr__( 'rc_…', 'babilim' ) . '" aria-label="' . esc_attr__( 'Restore code', 'babilim' ) . '" />'
+		return '<input type="text" name="restore_code" form="babilim-restore-form" required autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="' . esc_attr__( 'rc_…', 'babilim' ) . '" aria-label="' . esc_attr__( 'Restore code', 'babilim' ) . '" />'
 			. ' <button type="submit" form="babilim-restore-form" class="button">' . esc_html__( 'Restore purchase', 'babilim' ) . '</button>'
 			. '<p class="description">' . esc_html__( 'Bought a license for this domain before? Enter the restore code you received at checkout.', 'babilim' ) . '</p>';
 	}
@@ -4627,7 +4661,7 @@ final class Babilim_Admin {
 	 */
 	public function dispatch_babilim_restore(): void {
 		$this->guard( 'babilim_restore' );
-		$code = trim( self::field( 'restore_code' ) );
+		$code = strtolower( trim( self::field( 'restore_code' ) ) );
 		if ( 1 !== preg_match( '/^rc_[0-9a-f]{32}$/D', $code ) ) {
 			$this->notice( 'invalid_restore_code', __( 'That does not look like a restore code.', 'babilim' ), 'error' );
 			wp_safe_redirect( self::page_url( 'settings' ) );
@@ -4864,8 +4898,8 @@ final class Babilim_Admin {
 		}
 		sort( $locales, SORT_STRING );
 
-		$html  = '<h2>' . esc_html__( 'Supplementary translation index', 'babilim' ) . '</h2>';
-		$html .= '<table class="wp-list-table widefat fixed striped"><thead><tr>'
+		$html  = '<h2 id="babilim-index-heading">' . esc_html__( 'Supplementary translation index', 'babilim' ) . '</h2>';
+		$html .= '<div class="babilim-scroll" tabindex="0" role="region" aria-labelledby="babilim-index-heading"><table class="wp-list-table widefat fixed striped"><thead><tr>'
 			. '<th>' . esc_html__( 'Language', 'babilim' ) . '</th>'
 			. '<th>' . esc_html__( 'Built', 'babilim' ) . '</th>'
 			. '<th>' . esc_html__( 'Included', 'babilim' ) . '</th>'
@@ -4885,7 +4919,7 @@ final class Babilim_Admin {
 				. '<td>' . (int) count( (array) ( $meta['conflicts'] ?? array() ) ) . '</td>'
 				. '<td>' . (int) ( $meta['core_dupes'] ?? 0 ) . '</td></tr>';
 		}
-		$html .= '</tbody></table>';
+		$html .= '</tbody></table></div>';
 		return $html;
 	}
 
@@ -5028,16 +5062,13 @@ final class Babilim_Admin {
 		$html  = '<div class="wrap"><h1>' . esc_html__( 'Report a problem', 'babilim' ) . '</h1>';
 		$html .= $this->render_notices();
 
-		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
+		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="babilim-report-form">';
 		$submit_action = $rollback ? 'babilim_rollback_report' : 'babilim_feedback';
 		$html         .= '<input type="hidden" name="action" value="' . esc_attr( $submit_action ) . '" />';
 		$html         .= wp_nonce_field( $submit_action, '_wpnonce', true, false );
-		// kind/slug/locale/build_id are every other required field of
-		// `POST /v1/feedback` per the service's own contract -- marked
-		// `required` here too so a form somehow reached without one (e.g.
-		// navigated to directly, with no query string) fails browser-side
-		// validation instead of silently 422ing the service.
-		$required_fields = array( 'kind', 'slug', 'locale', 'build_id' );
+		// Hidden inputs take no part in browser validation, so none is
+		// marked `required`; the server-side check of kind/slug/locale/
+		// build_id is the guard against a form reached without them.
 		foreach ( array(
 			'kind'         => $kind,
 			'slug'         => $slug,
@@ -5045,8 +5076,7 @@ final class Babilim_Admin {
 			'build_id'     => $build_id,
 			'plural_index' => $plural_index,
 		) as $name => $value ) {
-			$html .= '<input type="hidden" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '"'
-				. ( in_array( $name, $required_fields, true ) ? ' required="required"' : '' ) . ' />';
+			$html .= '<input type="hidden" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 		}
 
 		$html .= '<p><label for="babilim-category">' . esc_html__( 'Category', 'babilim' ) . '</label><br />';
