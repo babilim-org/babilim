@@ -600,7 +600,16 @@ final class Babilim_Admin {
 		wp_register_style( 'babilim-admin', false, array(), BABILIM_VERSION );
 		wp_enqueue_style( 'babilim-admin' );
 		wp_add_inline_style( 'babilim-admin', self::admin_css() );
-		wp_enqueue_script( 'babilim-admin', plugins_url( 'admin/js/babilim-admin.js', BABILIM_FILE ), array(), BABILIM_VERSION, true );
+		wp_enqueue_script( 'babilim-admin', plugins_url( 'admin/js/babilim-admin.js', BABILIM_FILE ), array( 'wp-a11y' ), BABILIM_VERSION, true );
+		// Strings the script shows or speaks (also used by the dialog and editor scripts).
+		$strings = array(
+			'working' => __( 'Working…', 'babilim' ),
+			'failed'  => __( 'Babilim could not finish this. Reload the page and try again.', 'babilim' ),
+			'confirm' => __( 'Confirm', 'babilim' ),
+			'cancel'  => __( 'Cancel', 'babilim' ),
+			'close'   => __( 'Close', 'babilim' ),
+		);
+		wp_add_inline_script( 'babilim-admin', 'window.babilimAdmin = ' . wp_json_encode( array( 'strings' => $strings ) ) . ';', 'before' );
 	}
 
 	/**
@@ -668,6 +677,9 @@ final class Babilim_Admin {
 			. '.babilim-cell-action .spinner{position:absolute;inset-inline-start:5px;top:7px;float:none;width:16px;height:16px;background-size:16px 16px;margin:0}'
 			. '.babilim-cell-text{display:contents}.babilim-cell-lang,.babilim-cell-status{display:block}'
 			. '.babilim-cell-status{overflow-wrap:anywhere}.babilim-cell-lang{white-space:normal}.babilim-cell-tail{display:inline-block;max-width:100%}'
+			// The native modal dialog (guide: overscroll containment on the dialog and its backdrop; no overflow lock on html/body).
+			. '.babilim-dialog{max-width:min(40rem,calc(100vw - 2rem));max-height:calc(100vh - 4rem);overflow:auto;padding:1rem 1.5rem;border:1px solid #c3c4c7;border-radius:4px}.babilim-dialog:modal{overscroll-behavior:contain}.babilim-dialog::backdrop{overflow:hidden;overscroll-behavior:contain;background:rgba(0,0,0,.5)}'
+			. '.babilim-dialog h1{margin-top:0}.babilim-dialog-actions{display:flex;flex-wrap:wrap;gap:.5em;justify-content:flex-end}'
 			. '.babilim-choose{margin:1em 0}.babilim-choose li{margin:0 0 .5em}'
 			. '.babilim-locale-links{clear:both;margin:.5em 0 0}.babilim-advanced-first{margin-top:1em}.babilim-account{margin:0}'
 			// One grid per cell: the lines take the cell's columns, so the name column is as wide as the longest name and every status starts at the same x.
@@ -2887,6 +2899,8 @@ final class Babilim_Admin {
 		return array(
 			'div'      => $common + array(
 				'data-babilim-dismiss-form' => true,
+				'data-babilim-native'       => true,
+				'data-babilim-dialog'       => true,
 				'tabindex'                  => true,
 				'role'                      => true,
 				'aria-labelledby'           => true,
@@ -2916,6 +2930,7 @@ final class Babilim_Admin {
 				'title'        => true,
 				'aria-label'   => true,
 				'aria-current' => true,
+				'data-babilim-dialog-link' => true,
 			),
 			'form'     => $common + array(
 				'method'                   => true,
@@ -2925,6 +2940,8 @@ final class Babilim_Admin {
 				'data-babilim-autosubmit'  => true,
 				'data-babilim-autosubmit-delay' => true,
 				'data-babilim-poll-url'    => true,
+				'data-babilim-native'      => true,
+				'data-babilim-dialog'      => true,
 			),
 			'label'    => $common + array(
 				'for' => true,
@@ -3513,7 +3530,7 @@ final class Babilim_Admin {
 	 */
 	private function render_upload_confirm(): string {
 		$pending = Babilim_Upload::pending();
-		$html    = '<div class="wrap"><h1>' . esc_html__( 'Upload this component?', 'babilim' ) . '</h1>' . $this->render_notices();
+		$html    = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Upload this component?', 'babilim' ) . '</h1>' . $this->render_notices();
 		if ( null === $pending ) {
 			return $html . '<p>' . esc_html__( 'There is no upload waiting for confirmation.', 'babilim' ) . '</p><p><a class="button" href="' . esc_url( self::page_url( 'translations' ) ) . '">' . esc_html__( 'Back', 'babilim' ) . '</a></p></div>';
 		}
@@ -3541,12 +3558,12 @@ final class Babilim_Admin {
 	 */
 	private function render_upload_progress(): string {
 		$pending = Babilim_Upload::pending();
-		$html    = '<div class="wrap"><h1>' . esc_html__( 'Uploading', 'babilim' ) . '</h1>' . $this->render_notices();
+		$html    = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Uploading', 'babilim' ) . '</h1>' . $this->render_notices();
 		if ( null === $pending || ! isset( $pending['zip'] ) ) {
 			return $html . '<p>' . esc_html__( 'There is no upload in progress.', 'babilim' ) . '</p><p><a class="button" href="' . esc_url( self::page_url( 'translations' ) ) . '">' . esc_html__( 'Back', 'babilim' ) . '</a></p></div>';
 		}
 		/* translators: 1: number of the part being sent, 2: total number of parts. */
-		$html .= '<p>' . esc_html( sprintf( __( 'Uploading part %1$d of %2$d…', 'babilim' ), min( (int) $pending['next'], (int) $pending['parts'] ), (int) $pending['parts'] ) ) . '</p>';
+		$html .= '<p class="babilim-upload-line">' . esc_html( sprintf( __( 'Uploading part %1$d of %2$d…', 'babilim' ), min( (int) $pending['next'], (int) $pending['parts'] ), (int) $pending['parts'] ) ) . '</p>';
 		$id    = (string) $pending['upload_id'];
 		$html .= $this->upload_form( 'babilim_upload_step', __( 'Continue', 'babilim' ), true, $id, '', true, max( 500, max( 0, (int) ( $pending['not_before'] ?? 0 ) - time() ) * 1000 ) );
 		$html .= $this->upload_form( 'babilim_upload_cancel', __( 'Cancel', 'babilim' ), false, $id );
@@ -3589,7 +3606,7 @@ final class Babilim_Admin {
 		$name      = null !== $component && '' !== (string) ( $component['name'] ?? '' ) ? (string) $component['name'] : $slug;
 		$cancel    = '<a class="button" href="' . esc_url( self::page_url( 'translations', $back ) ) . '">' . esc_html__( 'Cancel', 'babilim' ) . '</a>';
 
-		$html = '<div class="wrap"><h1>' . esc_html__( 'Confirm', 'babilim' ) . '</h1>' . $this->render_notices();
+		$html = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Confirm', 'babilim' ) . '</h1>' . $this->render_notices();
 		if ( 'remove' === $op ) {
 			$other    = $this->other_translation_kind( $kind, $slug, $locale );
 			$question = Babilim_Translations_Table::confirm_question( 'babilim_remove', $name, $locale, $other );
@@ -3646,7 +3663,7 @@ final class Babilim_Admin {
 			$back['view'] = $view;
 		}
 		$cancel = '<a class="button" href="' . esc_url( self::page_url( 'translations', $back ) ) . '">' . esc_html__( 'Cancel', 'babilim' ) . '</a>';
-		$html   = '<div class="wrap"><h1>' . esc_html__( 'Choose a language', 'babilim' ) . '</h1>' . $this->render_notices();
+		$html   = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Choose a language', 'babilim' ) . '</h1>' . $this->render_notices();
 
 		$found = null;
 		foreach ( $this->list_items( $this->state()->get() ) as $item ) {
@@ -3690,7 +3707,7 @@ final class Babilim_Admin {
 			}
 			$args  = array( 'page' => self::MENU_SLUG, 'screen' => 'report' ) + $identity + array( 'build_id' => (string) $cell['title'] );
 			$args += 'rollback-report' === $op ? array( 'rollback' => '1' ) : array();
-			$html .= '<li><a class="button" href="' . esc_url( admin_url( 'admin.php?' . http_build_query( $args, '', '&', PHP_QUERY_RFC3986 ) ) ) . '" title="' . esc_attr( $locale ) . '">' . esc_html( $name ) . '</a></li>';
+			$html .= '<li><a class="button" data-babilim-dialog-link="1" href="' . esc_url( admin_url( 'admin.php?' . http_build_query( $args, '', '&', PHP_QUERY_RFC3986 ) ) ) . '" title="' . esc_attr( $locale ) . '">' . esc_html( $name ) . '</a></li>';
 		}
 		return $html . '</ul><p>' . $cancel . '</p></div>';
 	}
@@ -4049,7 +4066,7 @@ final class Babilim_Admin {
 			return '';
 		}
 		$poll_url = admin_url( 'admin-ajax.php?action=babilim_license_status&_ajax_nonce=' . wp_create_nonce( 'babilim_license_status' ) );
-		return '<form id="babilim-checkout-form" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" target="_blank" rel="noopener" data-babilim-poll-url="' . esc_url( $poll_url ) . '">'
+		return '<form id="babilim-checkout-form" method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" target="_blank" rel="noopener" data-babilim-native="1" data-babilim-poll-url="' . esc_url( $poll_url ) . '">'
 			. '<input type="hidden" name="action" value="babilim_checkout" />'
 			. wp_nonce_field( 'babilim_checkout', '_wpnonce', true, false )
 			. '</form>';
@@ -5059,7 +5076,7 @@ final class Babilim_Admin {
 		$rollback     = '1' === self::field_get( 'rollback' );
 		$plural_index = self::field_get( 'plural_index' );
 
-		$html  = '<div class="wrap"><h1>' . esc_html__( 'Report a problem', 'babilim' ) . '</h1>';
+		$html  = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Report a problem', 'babilim' ) . '</h1>';
 		$html .= $this->render_notices();
 
 		$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="babilim-report-form">';

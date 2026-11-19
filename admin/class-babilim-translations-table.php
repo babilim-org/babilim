@@ -818,7 +818,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 				$args[ $key ] = $value;
 			}
 		}
-		return '<a href="' . esc_url( admin_url( 'admin.php?' . http_build_query( $args, '', '&', PHP_QUERY_RFC3986 ) ) ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, (string) $item['name'] ) ) . '">' . esc_html( $label ) . '</a>';
+		return '<a href="' . esc_url( admin_url( 'admin.php?' . http_build_query( $args, '', '&', PHP_QUERY_RFC3986 ) ) ) . '" data-babilim-dialog-link="1" aria-label="' . esc_attr( self::action_aria_label( $label, (string) $item['name'] ) ) . '">' . esc_html( $label ) . '</a>';
 	}
 
 	/**
@@ -832,7 +832,7 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 */
 	private function row_link( array $args, string $label, string $locale, string $component ): string {
 		$url = admin_url( 'admin.php?' . http_build_query( array( 'page' => 'babilim', 'screen' => 'report' ) + $args, '', '&', PHP_QUERY_RFC3986 ) );
-		return '<a href="' . esc_url( $url ) . '" title="' . esc_attr( $locale ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, $component, $locale ) ) . '">' . esc_html( $label ) . '</a>';
+		return '<a href="' . esc_url( $url ) . '" data-babilim-dialog-link="1" title="' . esc_attr( $locale ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, $component, $locale ) ) . '">' . esc_html( $label ) . '</a>';
 	}
 
 	/**

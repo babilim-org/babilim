@@ -1,10 +1,10 @@
 === Babilim – Auto-Translate Plugins & Themes ===
 Contributors: babilim
-Tags: translation, translate, automatic translation, localization, i18n
+Tags: translation, language pack, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,11 @@ The Enable screen lists what is sent automatically before you agree.
 
 == Changelog ==
 
+= 1.3.0 =
+* Actions finish on the same page.
+* Confirmations and source uploads open in a dialog.
+* Every screen still works without JavaScript.
+
 = 1.2.4 =
 * Rollback works after a site moves to another folder or server.
 * Notices show only to the user who acted.
@@ -112,14 +117,12 @@ The Enable screen lists what is sent automatically before you agree.
 * No request button for a translation that is already scheduled.
 * Updated bundled German, Dutch and Chinese translations.
 
-= 1.2.1 =
-* A translation the service refused is asked for again when your plan or daily allowance changes.
-* The readme and the Enable screen now describe what is sent in plain language.
-* The FAQ explains what the free plan covers.
-
 Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Actions finish on the same page and confirmations open in a dialog; no action needed.
 
 = 1.2.4 =
 Fixes rollback after a site move and improves phone and right-to-left layouts; no action needed.
