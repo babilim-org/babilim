@@ -172,6 +172,10 @@
 			showForm();
 		} );
 		row.appendChild( choose );
+		if ( cfg.editorUrl ) {
+			var edit = el( 'a', S.edit, { 'class': 'button-link', href: cfg.editorUrl + '&kind=' + encodeURIComponent( candidate.kind ) + '&slug=' + encodeURIComponent( candidate.slug ) + '&locale=' + encodeURIComponent( candidate.locale ) + '&ref=' + encodeURIComponent( candidate.ref ) } );
+			row.appendChild( edit );
+		}
 		return row;
 	}
 

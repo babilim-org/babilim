@@ -1847,7 +1847,7 @@ final class Babilim_Installer {
 	 *
 	 * @param string $dir Directory whose cached lookup to invalidate.
 	 */
-	private static function invalidate_cache_for_dir( string $dir ): void {
+	public static function invalidate_cache_for_dir( string $dir ): void {
 		if ( function_exists( 'wp_cache_delete' ) ) {
 			wp_cache_delete( md5( trailingslashit( $dir ) ), 'translation_files' );
 		}
@@ -1861,7 +1861,7 @@ final class Babilim_Installer {
 	 *
 	 * @param string $file Absolute path of the served file.
 	 */
-	private static function invalidate_cache_for_file( string $file ): void {
+	public static function invalidate_cache_for_file( string $file ): void {
 		if ( '.l10n.php' === substr( $file, -9 ) && function_exists( 'wp_opcache_invalidate' ) ) {
 			wp_opcache_invalidate( $file, true );
 		}

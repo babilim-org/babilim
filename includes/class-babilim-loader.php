@@ -449,7 +449,7 @@ final class Babilim_Loader {
 			$locale_data[ $key ]     = $merged;
 			$decoded['locale_data'] = $locale_data;
 
-			return is_string( $translations ) ? wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE ) : $decoded;
+			return is_string( $translations ) ? wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP ) : $decoded;
 		} catch ( \Throwable $e ) {
 			self::log_error( $e );
 			self::report_failure( 'loader.script_translations' );

@@ -193,6 +193,21 @@ if ( function_exists( 'is_multisite' ) && is_multisite() && function_exists( 'ge
 // On a single site, delete_site_option() deletes the ordinary option.
 if ( function_exists( 'delete_site_option' ) ) {
 	delete_site_option( 'babilim_manifest_write_failure' );
+	// The overrides table's schema version and the "rebuild custom/" flag
+	// (Babilim_Override_Writer::DIRTY_OPTION; a literal here because no class
+	// is loaded -- test-uninstall.php's name-coverage guard finds that constant
+	// and requires this exact string): network-wide too, deleted whether or
+	// not custom/ is kept.
+	delete_site_option( 'babilim_db_version' );
+	delete_site_option( 'babilim_overrides_dirty' );
+}
+
+// -- The overrides table: one table for the whole network, dropped only
+// when no site asked to keep custom/ (the same decision as the files
+// below, made once). Plain core calls only, before any class is required.
+if ( ! $babilim_uninstall_keep_custom && isset( $GLOBALS['wpdb'] ) && is_object( $GLOBALS['wpdb'] ) ) {
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange -- the plugin's own table.
+	$GLOBALS['wpdb']->query( $GLOBALS['wpdb']->prepare( 'DROP TABLE IF EXISTS %i', $GLOBALS['wpdb']->base_prefix . 'babilim_overrides' ) );
 }
 
 // -- Everything below needs this plugin's own class files: the shared

@@ -32,6 +32,8 @@ final class Babilim_Paths {
 		'default/_parts',
 		'custom/plugins',
 		'custom/themes',
+		'custom/_backup/plugins',
+		'custom/_backup/themes',
 		'_versions',
 	);
 

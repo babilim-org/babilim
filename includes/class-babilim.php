@@ -109,6 +109,21 @@ class Babilim {
 	private $admin;
 
 	/**
+	 * @var Babilim_Inventory|null
+	 */
+	private $inventory;
+
+	/**
+	 * @var Babilim_Override_Writer|null
+	 */
+	private $override_writer;
+
+	/**
+	 * @var Babilim_Editor|null
+	 */
+	private $editor;
+
+	/**
 	 * Per-locale cache for core_has()'s own real-file reads -- see that
 	 * method's own docblock. `null` means "checked, core has no
 	 * translation for this locale at all" (as distinct from "not checked
@@ -229,6 +244,13 @@ class Babilim {
 		// autoloaded; add_option() leaves one that already exists alone.
 		add_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 1, '', false );
 		add_option( Babilim_Error_Reporter::OPTION_SHARE, '0', '', false );
+		// The overrides table, once per schema version (dbDelta() is idempotent).
+		try {
+			global $wpdb;
+			( new Babilim_Wpdb_Overrides( $wpdb ) )->upgrade();
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
 		update_option( 'babilim_version', BABILIM_VERSION, true ); // Read on every request, so autoloaded.
 	}
 
@@ -242,6 +264,7 @@ class Babilim {
 		$this->register_maintenance_cron();
 		$this->register_sync_cron();
 		add_action( 'rest_api_init', array( $this, 'register_challenge_route' ) );
+		add_action( 'rest_api_init', array( new Babilim_Editor_Rest( array( $this, 'editor' ) ), 'register' ) );
 
 		// Admin-only code (consent/settings/overview/detail/report screens,
 		// the action handlers behind them) is loaded only for an admin
@@ -777,6 +800,21 @@ class Babilim {
 		}
 		try {
 			( new Babilim_Packager() )->sweep( Babilim_Upload::pending() );
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+		try {
+			// The overrides table, when the upgrade step could not create it (no-op once recorded).
+			global $wpdb;
+			( new Babilim_Wpdb_Overrides( $wpdb ) )->upgrade();
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+		try {
+			// Scopes whose custom/ files could not be written earlier.
+			if ( array() !== (array) get_site_option( Babilim_Override_Writer::DIRTY_OPTION, array() ) ) {
+				$this->override_writer()->retry_dirty();
+			}
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 		}
@@ -1458,7 +1496,21 @@ class Babilim {
 	 */
 	private function site(): Babilim_Site {
 		if ( null === $this->site ) {
-			$inventory = new Babilim_Inventory(
+			$inventory = $this->inventory();
+			$this->site = new Babilim_Site( new Babilim_Wp_Http(), BABILIM_API_BASE, $this->state(), $inventory, $this->manifest() );
+		}
+		return $this->site;
+	}
+
+	/**
+	 * This request's single, shared Babilim_Inventory (the sync, the
+	 * string catalog and the editor all read the same memoized scan).
+	 *
+	 * @return Babilim_Inventory
+	 */
+	private function inventory(): Babilim_Inventory {
+		if ( null === $this->inventory ) {
+			$this->inventory = new Babilim_Inventory(
 				array( $this, 'get_plugins_for_inventory' ),
 				'wp_get_themes',
 				static function ( $name ) {
@@ -1470,9 +1522,112 @@ class Babilim {
 				},
 				array( $this, 'get_users_locales' )
 			);
-			$this->site = new Babilim_Site( new Babilim_Wp_Http(), BABILIM_API_BASE, $this->state(), $inventory, $this->manifest() );
 		}
-		return $this->site;
+		return $this->inventory;
+	}
+
+	/**
+	 * This request's Babilim_Override_Writer, shared by the editor and the
+	 * daily retry of scopes that could not be written. Its Plural-Forms
+	 * header comes from the string catalog, see override_plural_header().
+	 *
+	 * @return Babilim_Override_Writer
+	 */
+	private function override_writer(): Babilim_Override_Writer {
+		if ( null === $this->override_writer ) {
+			global $wpdb;
+			$this->override_writer = new Babilim_Override_Writer(
+				$this->fs(),
+				new Babilim_Wpdb_Overrides( $wpdb ),
+				$this->manifest(),
+				array( $this, 'transform_mo_to_l10n_php' ),
+				array( $this, 'parse_entries' ),
+				array( $this, 'override_plural_header' )
+			);
+		}
+		return $this->override_writer;
+	}
+
+	/**
+	 * The Plural-Forms header for a scope's custom/ files: the rule of the
+	 * files now in force (the string catalog's), else the built-in table.
+	 *
+	 * @param array $scope Scope: kind, slug, domain, locale.
+	 * @return string
+	 */
+	public function override_plural_header( array $scope ): string {
+		$locale = (string) ( $scope['locale'] ?? '' );
+		try {
+			foreach ( $this->inventory()->components() as $component ) {
+				if ( ( $component['kind'] ?? null ) === ( $scope['kind'] ?? '' ) && ( $component['slug'] ?? null ) === ( $scope['slug'] ?? '' ) ) {
+					return (string) $this->string_catalog()->load( $component, (string) ( $scope['domain'] ?? '' ), $locale )['plural_forms'];
+				}
+			}
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+		return Babilim_Plural_Forms::header( $locale );
+	}
+
+	/**
+	 * @return Babilim_String_Catalog
+	 */
+	private function string_catalog(): Babilim_String_Catalog {
+		return new Babilim_String_Catalog(
+			$this->manifest(),
+			array( $this, 'parse_entries' ),
+			array( 'Babilim_String_Catalog', 'read_po' ),
+			array( $this, 'list_file_names' ),
+			array( $this, 'read_local_file' ),
+			array( $this->inventory(), 'language_dirs' )
+		);
+	}
+
+	/**
+	 * The editor service, built on first use (registering its routes builds nothing).
+	 *
+	 * @return Babilim_Editor
+	 */
+	public function editor(): Babilim_Editor {
+		if ( null === $this->editor ) {
+			global $wpdb;
+			$inventory    = $this->inventory();
+			$this->editor = new Babilim_Editor(
+				new Babilim_Wpdb_Overrides( $wpdb ),
+				$this->string_catalog(),
+				$this->override_writer(),
+				array( $inventory, 'components' ),
+				array( $inventory, 'locales' ),
+				static function (): string {
+					return gmdate( 'Y-m-d H:i:s' );
+				},
+				'get_current_user_id'
+			);
+		}
+		return $this->editor;
+	}
+
+	/**
+	 * String catalog `$list_dir`: bare file names of a directory, [] when
+	 * it is missing or unreadable.
+	 *
+	 * @param string $dir Absolute directory.
+	 * @return string[]
+	 */
+	public function list_file_names( string $dir ): array {
+		$names = '' !== $dir && is_dir( $dir ) ? @scandir( $dir ) : false; // phpcs:ignore WordPress.PHP.NoSilencedErrors -- scandir() warns on an unreadable directory; false is handled below.
+		return false === $names ? array() : array_values( array_diff( $names, array( '.', '..' ) ) );
+	}
+
+	/**
+	 * String catalog `$read_file`: a local translation file's bytes, or false.
+	 *
+	 * @param string $path Absolute path.
+	 * @return string|false
+	 */
+	public function read_local_file( string $path ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a plain read of a local translation file, as the loader does; no WP_Filesystem set-up is possible here.
+		return is_file( $path ) ? @file_get_contents( $path ) : false; // phpcs:ignore WordPress.PHP.NoSilencedErrors -- a failed read is handled by the caller.
 	}
 
 	/**
@@ -1484,6 +1639,7 @@ class Babilim {
 	private function admin(): Babilim_Admin {
 		if ( null === $this->admin ) {
 			$this->admin = new Babilim_Admin( $this->fs(), null, null, $this->manifest() );
+			$this->admin->set_editor( array( $this, 'editor' ) );
 		}
 		return $this->admin;
 	}

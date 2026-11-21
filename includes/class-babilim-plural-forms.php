@@ -1,0 +1,62 @@
+<?php
+/**
+ * Plural rules of the WordPress locales.
+ *
+ * Reads includes/plural-forms.php (generated from the GlotPress locale
+ * registry) so the editor can write a correct `Plural-Forms` header for
+ * any locale and know how many forms a plural string needs. A locale that
+ * is not in the table gets the common two-form rule.
+ *
+ * @package Babilim
+ */
+
+declare(strict_types=1);
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Locale to plural rule.
+ */
+final class Babilim_Plural_Forms {
+
+	private const DEFAULT_HEADER = 'nplurals=2; plural=n != 1;';
+
+	/**
+	 * Locale to array( nplurals, expression ); null until first use.
+	 *
+	 * @var array<string,array{0:int,1:string}>|null
+	 */
+	private static $rules = null;
+
+	/**
+	 * The `Plural-Forms` header value for a locale.
+	 *
+	 * @param string $locale WordPress locale such as fr_FR.
+	 * @return string
+	 */
+	public static function header( string $locale ): string {
+		if ( null === self::$rules ) {
+			self::$rules = require BABILIM_DIR . 'includes/plural-forms.php';
+		}
+		$rule = self::$rules[ $locale ] ?? null;
+		return null === $rule ? self::DEFAULT_HEADER : 'nplurals=' . $rule[0] . '; plural=' . $rule[1] . ';';
+	}
+
+	/**
+	 * The number of plural forms a `Plural-Forms` header declares.
+	 *
+	 * @param string $header Header value.
+	 * @return int 1 to 6; 2 when the header has no usable count.
+	 */
+	public static function nplurals( string $header ): int {
+		if ( preg_match( '/nplurals\s*=\s*(\d+)/', $header, $m ) ) {
+			$n = (int) $m[1];
+			if ( $n >= 1 && $n <= 6 ) {
+				return $n;
+			}
+		}
+		return 2;
+	}
+}

@@ -4,7 +4,7 @@ Tags: translation, language pack, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 2.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ Fills in missing translations for the plugins and themes already installed on yo
 * Use any WordPress language. None is ranked, preferred or left out.
 * Nothing is sent until you agree, not even when you activate the plugin.
 * Your own `custom/` overrides always win over Babilim.
+* Edit any translation on your site. Your changes survive plugin, theme and translation updates.
+* No API key needed.
 
 Babilim finds the plugins and themes on your site that have no translation for your language and lets you request one from the Babilim translation service.
 The plugin needs that service to work. It has a free plan and an optional paid plan (see the FAQ).
@@ -55,7 +57,9 @@ The Babilim service makes them with AI and stores them. The plugin downloads tra
 
 = Which translation wins, and can I keep my own? =
 
-Your own file in `wp-content/languages/babilim/custom/` beats Babilim, which beats a WordPress.org language pack or the plugin's or theme's bundled translation. For WordPress core's own `default` text domain, core's official translation beats Babilim's.
+Your own changes come first: the ones you make under **Babilim > Edit translations**, and files you place in wp-content/languages/babilim/custom/. They beat Babilim, which beats a WordPress.org language pack or the plugin's or theme's bundled translation.
+
+Files you placed there yourself are imported into the editor and backed up in custom/_backup/. For WordPress core's own `default` text domain, core's official translation beats Babilim's.
 
 = What happens when I deactivate or delete the plugin? =
 
@@ -92,8 +96,14 @@ The Enable screen lists what is sent automatically before you agree.
 1. The Translations screen before you enable Babilim: what will be sent, and the Enable button.
 2. The Translations screen after enabling: each installed plugin and theme with its translation status per language.
 3. Settings: the languages to manage and the uninstall choices.
+4. The translation editor: search a component's strings and save your own wording, with the original and its placeholders kept intact.
 
 == Changelog ==
+
+= 2.0.0 =
+* New: edit any plugin or theme translation under Babilim > Edit translations.
+* Your changes are checked before saving and stay in place through updates.
+* The editor works without enabling the Babilim service.
 
 = 1.3.0 =
 * Actions finish on the same page.
@@ -112,14 +122,12 @@ The Enable screen lists what is sent automatically before you agree.
 * New display name: Babilim – Auto-Translate Plugins & Themes.
 * A quiet rating link on Babilim's screens and in the Plugins list.
 
-= 1.2.2 =
-* When a plugin or theme ships its own translation, you can switch between it and Babilim's translation.
-* No request button for a translation that is already scheduled.
-* Updated bundled German, Dutch and Chinese translations.
-
 Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+Adds a translation editor; no action needed.
 
 = 1.3.0 =
 Actions finish on the same page and confirmations open in a dialog; no action needed.

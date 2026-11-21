@@ -376,6 +376,40 @@ final class Babilim_Admin {
 	}
 
 	/**
+	 * The editor service factory (built on first use); set by Babilim::admin().
+	 *
+	 * @var callable|null
+	 */
+	private $editor_factory = null;
+
+	/**
+	 * The hook suffix of the editor submenu page; empty until register_menu() runs.
+	 *
+	 * @var string
+	 */
+	private $editor_hook_suffix = '';
+
+	/**
+	 * @param callable $factory fn(): Babilim_Editor -- called only when the editor page is shown.
+	 */
+	public function set_editor( callable $factory ): void {
+		$this->editor_factory = $factory;
+	}
+
+	/**
+	 * Menu callback of the editor page: the same kses allow-list as every other screen.
+	 */
+	public function render_editor(): void {
+		if ( null === $this->editor_factory ) {
+			return;
+		}
+		$editor = call_user_func( $this->editor_factory );
+		if ( $editor instanceof Babilim_Editor ) {
+			echo wp_kses( Babilim_Editor_Page::render( $editor ), self::allowed_admin_html() );
+		}
+	}
+
+	/**
 	 * `admin_menu` callback.
 	 */
 	public function register_menu(): void {
@@ -411,6 +445,15 @@ final class Babilim_Admin {
 			array( $this, 'render' )
 		);
 		$this->settings_hook_suffix = is_string( $settings_suffix ) ? $settings_suffix : '';
+		$editor_suffix             = add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Edit translations', 'babilim' ),
+			__( 'Edit translations', 'babilim' ),
+			self::network_capability(),
+			Babilim_Editor_Page::SLUG,
+			array( $this, 'render_editor' )
+		);
+		$this->editor_hook_suffix   = is_string( $editor_suffix ) ? $editor_suffix : '';
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 	}
 
@@ -586,7 +629,8 @@ final class Babilim_Admin {
 	 * @param string $hook The current admin screen's own hook suffix.
 	 */
 	public function enqueue_admin_assets( string $hook ): void {
-		if ( '' === $this->menu_hook_suffix || ( $hook !== $this->menu_hook_suffix && $hook !== $this->settings_hook_suffix ) ) {
+		$is_editor = '' !== $this->editor_hook_suffix && $hook === $this->editor_hook_suffix;
+		if ( '' === $this->menu_hook_suffix || ( $hook !== $this->menu_hook_suffix && $hook !== $this->settings_hook_suffix && ! $is_editor ) ) {
 			return;
 		}
 		// The explicit BABILIM_VERSION -- not the parameter's own `false`
@@ -610,6 +654,14 @@ final class Babilim_Admin {
 			'close'   => __( 'Close', 'babilim' ),
 		);
 		wp_add_inline_script( 'babilim-admin', 'window.babilimAdmin = ' . wp_json_encode( array( 'strings' => $strings ) ) . ';', 'before' );
+		if ( $is_editor && null !== $this->editor_factory ) {
+			$editor = call_user_func( $this->editor_factory );
+			$config = $editor instanceof Babilim_Editor ? Babilim_Editor_Page::settings( $editor ) : null;
+			if ( null !== $config ) {
+				wp_enqueue_script( 'babilim-editor', plugins_url( 'admin/js/babilim-editor.js', BABILIM_FILE ), array( 'wp-a11y', 'babilim-admin' ), BABILIM_VERSION, true );
+				wp_add_inline_script( 'babilim-editor', 'window.babilimEditor = ' . wp_json_encode( $config ) . ';', 'before' );
+			}
+		}
 	}
 
 	/**
@@ -674,6 +726,8 @@ final class Babilim_Admin {
 			. '.babilim-cell-action button[data-babilim-busy-label]{min-width:100%}'
 			. '.babilim-cell-action button[data-babilim-busy-label]::after{content:attr(data-babilim-busy-label);display:block;height:0;overflow:hidden;visibility:hidden;padding-inline-start:22px}'
 			. '.babilim-cell-action button[data-babilim-busy-label]::before{content:attr(data-babilim-idle-label);display:block;height:0;overflow:hidden;visibility:hidden}'
+			// The editor link sits in the status column under the status; the button spans both rows of its line, so the line is about as tall as the button.
+			. '.babilim-cell-edit{display:block;grid-column:2}.babilim-cell-action{grid-column:3;grid-row:1/span 2}'
 			. '.babilim-cell-action .spinner{position:absolute;inset-inline-start:5px;top:7px;float:none;width:16px;height:16px;background-size:16px 16px;margin:0}'
 			. '.babilim-cell-text{display:contents}.babilim-cell-lang,.babilim-cell-status{display:block}'
 			. '.babilim-cell-status{overflow-wrap:anywhere}.babilim-cell-lang{white-space:normal}.babilim-cell-tail{display:inline-block;max-width:100%}'
@@ -685,14 +739,21 @@ final class Babilim_Admin {
 			// One grid per cell: the lines take the cell's columns, so the name column is as wide as the longest name and every status starts at the same x.
 			. '@supports (grid-template-columns:subgrid){.babilim-cell-grid{display:grid;grid-template-columns:minmax(min-content,max-content) minmax(10em,1fr) max-content;column-gap:1em}.babilim-cell-row,.babilim-cell-line,.babilim-cell-warning{grid-column:1/-1}.babilim-cell-row,.babilim-cell-line{display:grid;grid-template-columns:subgrid}}'
 			. '@container (max-width:40em){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:flex;flex-wrap:wrap;align-items:flex-start;gap:2px 1em}.babilim-cell-text{display:block;flex:1 1 10em}.babilim-cell-action{flex:none;margin-inline-start:auto}}'
+			// The editor screen: list beside the editing area; one column on a phone. Logical properties only, so a right-to-left language mirrors it.
+			. '.babilim-ed-layout{display:grid;grid-template-columns:minmax(0,22em) minmax(0,1fr);gap:1em 2em;align-items:start}.babilim-ed-list{margin:0;padding:0;list-style:none}.babilim-ed-list li{margin:0}'
+			. '.babilim-ed-list button{display:block;width:100%;text-align:start;padding:.4em .6em;border:0;border-inline-start:3px solid transparent;border-bottom:1px solid #dcdcde;background:none;cursor:pointer;overflow-wrap:anywhere}.babilim-ed-list button[aria-current=true]{border-inline-start-color:#2271b1;background:#f0f6fc}'
+			. '.babilim-ed-list small{display:block;color:#50575e}.babilim-ed-pager{display:flex;gap:.5em;align-items:center;margin-top:.5em}.babilim-ed-edit textarea{display:block;width:100%;box-sizing:border-box;min-height:5em}'
+			. '.babilim-ed-edit [aria-invalid=true]{border-color:#d63638}.babilim-ed-problem{color:#d63638;margin:.25em 0 1em}.babilim-ed-source{background:#f6f7f7;padding:.5em .75em;white-space:pre-wrap;overflow-wrap:anywhere}.babilim-ed-actions{display:flex;flex-wrap:wrap;gap:.5em;align-items:center;margin-top:1em}'
+			. '.babilim-ed-actions .spinner{float:none;margin:0}.babilim-ed-status{min-height:1.5em}'
 			. '.babilim-report-form textarea,.babilim-report-form input[type=text]{max-width:100%}.babilim-scroll{overflow-x:auto}'
-			. '@media (max-width:782px){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 0}.babilim-cell-text{display:contents}.babilim-cell-action{text-align:start;margin-inline-start:0;width:max-content}'
+			. '@media (max-width:782px){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 0}.babilim-cell-text{display:contents}.babilim-cell-edit,.babilim-cell-action{grid-column:auto;grid-row:auto}.babilim-cell-action{text-align:start;margin-inline-start:0;width:max-content}'
 			. '.wp-list-table.translations tr:not(.inline-edit-row):not(.no-items) .column-primary~td.column-translations{display:block;padding-block:3px 8px;padding-inline:10px 8px}'
 			. '.wp-list-table.translations tr:not(.inline-edit-row):not(.no-items) td.column-translations::before{display:none}'
 			. '.wp-list-table.translations .column-primary .toggle-row{display:none}'
 			. '.wp-list-table.translations td.column-primary,.wp-list-table.translations tbody th.column-primary{display:block;padding-inline-end:10px}'
 			// WordPress 7.x turns every list-table row into a wrapping flex row on phones; these two tables scroll sideways instead, so their rows stay table rows.
 			. '.babilim-scroll table.fixed{table-layout:auto}.babilim-scroll th{white-space:nowrap}.babilim-scroll tr{display:table-row}'
+			. '.babilim-ed-layout{grid-template-columns:minmax(0,1fr)}'
 			. '}';
 	}
 
@@ -2814,6 +2875,13 @@ final class Babilim_Admin {
 		$this->guard( 'babilim_purge_all', true );
 		$result = $this->installer()->purge_all( self::keep_custom_on_purge() );
 		if ( $result->is_ok() ) {
+			if ( ! $result->get( 'kept_custom', true ) && null !== $this->editor_factory ) {
+				// The custom/ files are gone: their rows must not come back on the next save.
+				$editor = ( $this->editor_factory )();
+				if ( $editor instanceof Babilim_Editor ) {
+					$editor->forget_all();
+				}
+			}
 			// Everything is gone: cron must not put it all back.
 			update_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 0, false );
 			$removed = count( $result->get( 'removed', array() ) );
@@ -2910,7 +2978,11 @@ final class Babilim_Admin {
 				'aria-label'  => true,
 				'aria-hidden' => true,
 			),
-			'p'        => $common,
+			'p'        => $common + array(
+				'role'      => true,
+				'aria-live' => true,
+			),
+			'noscript' => $common,
 			'h1'       => $common,
 			'h2'       => $common,
 			'nav'      => $common + array( 'aria-label' => true ),
@@ -4338,16 +4410,19 @@ final class Babilim_Admin {
 		if ( ! $this->consent()->granted() || ! (bool) get_option( self::OPTION_TOOLBAR_REPORT, true ) ) {
 			wp_send_json_error( array( 'code' => 'unavailable' ) );
 		}
-		wp_send_json_success(
-			array(
-				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-				'searchNonce' => wp_create_nonce( 'babilim_translation_search' ),
-				'reportNonce' => wp_create_nonce( 'babilim_translation_report' ),
-				'locale'      => determine_locale(),
-				'categories'  => self::FEEDBACK_CATEGORIES,
-				'strings'     => self::report_strings(),
-			)
+		$config = array(
+			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+			'searchNonce' => wp_create_nonce( 'babilim_translation_search' ),
+			'reportNonce' => wp_create_nonce( 'babilim_translation_report' ),
+			'locale'      => determine_locale(),
+			'categories'  => self::FEEDBACK_CATEGORIES,
+			'strings'     => self::report_strings(),
 		);
+		// Only for a user the editor page and its routes accept.
+		if ( Babilim_Editor_Rest::allowed() ) {
+			$config['editorUrl'] = admin_url( 'admin.php?page=' . Babilim_Editor_Page::SLUG );
+		}
+		wp_send_json_success( $config );
 	}
 
 	/**
@@ -4370,6 +4445,7 @@ final class Babilim_Admin {
 			'translation'   => __( 'Current translation', 'babilim' ),
 			/* translators: Button label (a verb): selects this string as the one to report. */
 			'choose'        => __( 'Choose', 'babilim' ),
+			'edit'          => __( 'Edit this text', 'babilim' ),
 			'category'      => __( 'Category', 'babilim' ),
 			'suggested'     => __( 'Suggested translation', 'babilim' ),
 			'note'          => __( 'Note (optional)', 'babilim' ),

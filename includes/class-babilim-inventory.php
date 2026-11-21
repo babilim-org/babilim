@@ -648,7 +648,6 @@ final class Babilim_Inventory {
 			$file = (string) $file;
 			$data = is_array( $data ) ? $data : array();
 
-			$plugin_root = '.' === dirname( $file ) || '' === dirname( $file );
 			$dir_name    = self::plugin_dir_name_from_file( $file );
 			$slug        = self::plugin_slug_from_file( $file, $update );
 
@@ -661,20 +660,7 @@ final class Babilim_Inventory {
 			}
 			list( $slug, $text_domain ) = $identity;
 
-			if ( $plugin_root ) {
-				// A root-file plugin shares WP_PLUGIN_DIR with every
-				// other plugin: no fallback directories for it.
-				$scan_dirs = array( self::plugin_dir() . $domain_path );
-			} else {
-				$base      = self::plugin_dir() . '/' . $dir_name;
-				$scan_dirs = array( $base . $domain_path );
-				if ( '' === $domain_path ) {
-					foreach ( self::PLUGIN_FALLBACK_DOMAIN_PATHS as $fallback ) {
-						$scan_dirs[] = $base . $fallback;
-					}
-				}
-			}
-			$scan = $this->scan_dirs( $scan_dirs, array( $text_domain ), false );
+			$scan = $this->scan_dirs( self::plugin_scan_dirs( $file, $domain_path ), array( $text_domain ), false );
 
 			$is_wporg = self::has_third_party_update_uri( $data )
 				? false
@@ -703,6 +689,49 @@ final class Babilim_Inventory {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * The directories the scan reads a component's own translation files
+	 * from (a theme: its Domain Path; a plugin: its Domain Path, or -- when
+	 * it declares none -- its own folder plus the usual fallbacks). Built
+	 * from the inventory's own data only, so a caller never supplies a path.
+	 *
+	 * @param array $component A components() entry.
+	 * @return string[] Absolute directories, no trailing slash; [] for an unknown component.
+	 */
+	public function language_dirs( array $component ): array {
+		$kind = (string) ( $component['kind'] ?? '' );
+		if ( 'plugin' === $kind ) {
+			return self::plugin_scan_dirs( (string) ( $component['main_file'] ?? '' ), (string) ( $component['domain_path'] ?? '' ) );
+		}
+		if ( 'theme' === $kind ) {
+			$themes = $this->themes();
+			$key    = (string) ( $component['stylesheet'] ?? '' );
+			return isset( $themes[ $key ] ) ? array( $this->theme_dir( $themes[ $key ] ) . (string) ( $component['domain_path'] ?? '' ) ) : array();
+		}
+		return array();
+	}
+
+	/**
+	 * @param string $file        Plugin file relative to WP_PLUGIN_DIR.
+	 * @param string $domain_path Normalized Domain Path ('' when none).
+	 * @return string[]
+	 */
+	private static function plugin_scan_dirs( string $file, string $domain_path ): array {
+		if ( '.' === dirname( $file ) || '' === dirname( $file ) ) {
+			// A root-file plugin shares WP_PLUGIN_DIR with every
+			// other plugin: no fallback directories for it.
+			return array( self::plugin_dir() . $domain_path );
+		}
+		$base = self::plugin_dir() . '/' . self::plugin_dir_name_from_file( $file );
+		$dirs = array( $base . $domain_path );
+		if ( '' === $domain_path ) {
+			foreach ( self::PLUGIN_FALLBACK_DOMAIN_PATHS as $fallback ) {
+				$dirs[] = $base . $fallback;
+			}
+		}
+		return $dirs;
 	}
 
 	/**
@@ -736,8 +765,7 @@ final class Babilim_Inventory {
 				$domain_path = '/languages';
 			}
 
-			$dir  = $this->theme_dir( $theme );
-			$scan = $this->scan_dirs( array( $dir . $domain_path ), array( $text_domain ), true );
+			$scan = $this->scan_dirs( array( $this->theme_dir( $theme ) . $domain_path ), array( $text_domain ), true );
 
 			$is_wporg = $this->is_wporg_from_transient( $update, $stylesheet, 'url', 'wordpress.org/themes/', true );
 			if ( ! $is_wporg ) {

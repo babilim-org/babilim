@@ -884,8 +884,9 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Translations column: one line per language -- the language name and
-	 * the status text (together in one block) and the action cell. Wide
+	 * Translations column: one line per language -- the language name, the
+	 * status text and, under the status, the editor link (together in one
+	 * block) and the action cell, which holds only the button. Wide
 	 * cells show three columns that all the lines of the cell share, so
 	 * every status starts at the same x; a cell too narrow for that puts the name
 	 * above the status with the button still at the right; below the
@@ -898,12 +899,14 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 */
 	protected function column_translations( $item ) {
 		$html = '<div class="babilim-cell-list"><div class="babilim-cell-grid">';
+		$edit = Babilim_Editor_Rest::allowed(); // Once per row, not per language.
 		foreach ( $item['cells'] as $locale => $cell ) {
 			$locale = (string) $locale;
 			$html  .= '<div class="babilim-cell-row"><div class="babilim-cell-line">'
 				. '<span class="babilim-cell-text">'
 				. '<span class="babilim-cell-lang" title="' . esc_attr( $locale ) . '">' . esc_html( Babilim_Locale_Label::name( $locale ) ) . '</span>'
 				. '<span class="babilim-cell-status" title="' . esc_attr( $cell['title'] ) . '">' . self::status_html( $cell['text'], (string) ( $cell['date'] ?? '' ) ) . '</span>'
+				. ( $edit ? '<span class="babilim-cell-edit">' . self::edit_link( $item, $locale ) . '</span>' : '' )
 				. '</span>'
 				. '<span class="babilim-cell-action">' . $this->cell_button( $item, $locale, $cell ) . '</span>'
 				. '</div>'
@@ -912,6 +915,18 @@ final class Babilim_Translations_Table extends WP_List_Table {
 				. '</div>';
 		}
 		return $html . '</div></div>';
+	}
+
+	/**
+	 * The link to the translation editor for one component and language.
+	 *
+	 * @param array  $item   Row.
+	 * @param string $locale Language code.
+	 * @return string
+	 */
+	private static function edit_link( array $item, string $locale ): string {
+		$label = __( 'Edit translations', 'babilim' );
+		return '<a href="' . esc_url( Babilim_Editor_Page::url( $item['kind'], $item['slug'], $locale ) ) . '" aria-label="' . esc_attr( self::action_aria_label( $label, (string) $item['name'], $locale ) ) . '">' . esc_html( $label ) . '</a>';
 	}
 
 	/**
