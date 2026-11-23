@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Babilim – Auto-Translate Plugins & Themes
- * Description:       Fills in missing translations for the plugins and themes already installed on your site.
- * Version:           2.0.0
+ * Plugin Name:       Babilim – Auto Translation & Language Packs
+ * Description:       Auto-translate every plugin and theme on your site, then fine-tune any line in a fast built-in editor. Your edits survive updates.
+ * Version:           2.1.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '2.0.0' );
+	define( 'BABILIM_VERSION', '2.1.0' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {
@@ -135,6 +135,7 @@ function babilim_deactivate( $network_wide = false ) {
 		wp_clear_scheduled_hook( 'babilim_maintenance' );
 		wp_clear_scheduled_hook( 'babilim_sync' );
 		wp_clear_scheduled_hook( 'babilim_sync_once' );
+		wp_clear_scheduled_hook( 'babilim_remap_overrides' );
 		Babilim_Error_Reporter::for_site()->clear_all();
 	};
 	// A network-wide deactivation runs once, on the main site: every

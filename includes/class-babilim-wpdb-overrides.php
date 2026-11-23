@@ -179,6 +179,25 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 		return false !== $done;
 	}
 
+	public function mark( array $scope, array $row ): bool {
+		$wpdb = $this->wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
+		$done = $wpdb->query(
+			$wpdb->prepare(
+				'UPDATE %i SET status = %s, match_ref = %s, component_version = %s WHERE scope = %s AND ref = %s AND plural_index = %d AND is_draft = 0 AND status <> %s',
+				$this->table(),
+				(string) ( $row['status'] ?? self::STATUS_ACTIVE ),
+				(string) ( $row['match_ref'] ?? '' ),
+				(string) ( $row['component_version'] ?? '' ),
+				self::scope_key( $scope ),
+				(string) ( $row['ref'] ?? '' ),
+				(int) ( $row['plural_index'] ?? 0 ),
+				self::STATUS_OFF
+			)
+		);
+		return false !== $done;
+	}
+
 	public function delete( array $scope, string $ref, bool $draft = false ): bool {
 		$wpdb = $this->wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.

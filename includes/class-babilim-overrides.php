@@ -57,6 +57,18 @@ interface Babilim_Overrides {
 	public function put( array $scope, array $row, bool $draft = false ): bool;
 
 	/**
+	 * Sets only status, match_ref and component_version of one saved row,
+	 * keyed by (scope, ref, plural_index); every other column, the text and
+	 * its history above all, stays as it is now. A row that is gone or was
+	 * switched off meanwhile is left alone.
+	 *
+	 * @param array $scope Scope.
+	 * @param array $row   Row: ref, plural_index, status, match_ref, component_version.
+	 * @return bool False only when the store failed.
+	 */
+	public function mark( array $scope, array $row ): bool;
+
+	/**
 	 * Deletes every plural form of one string.
 	 *
 	 * @param array  $scope Scope.

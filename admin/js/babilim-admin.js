@@ -263,6 +263,10 @@
 		d.showModal();
 	}
 
+	// The editor script asks its own questions through the same dialog.
+	window.babilimAdmin = window.babilimAdmin || {};
+	window.babilimAdmin.ask = ask;
+
 	// Puts a screen's .wrap content into the dialog: opens it, or swaps the
 	// content of the one already open (focus then moves to the new title).
 	function showScreen( next ) {

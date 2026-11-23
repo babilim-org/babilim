@@ -92,6 +92,19 @@ final class Babilim_Override_Writer {
 	}
 
 	/**
+	 * Runs $fn under the manifest lock this writer's regenerate() takes too
+	 * (reentrant, so the rebuild inside $fn does not wait on it): callers
+	 * that read rows, decide and write them use it so two requests cannot
+	 * interleave.
+	 *
+	 * @param callable $fn Returns a non-null value.
+	 * @return mixed What $fn returned, or null when the lock could not be taken ($fn did not run).
+	 */
+	public function locked( callable $fn ) {
+		return $this->manifest->with_lock( $fn );
+	}
+
+	/**
 	 * Imports the strings of custom/ files this editor did not write into
 	 * the rows (after backing the files up). Nothing is replaced here.
 	 *

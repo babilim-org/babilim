@@ -3,7 +3,7 @@
  * The translation editor's REST routes (`babilim/v1/editor/...`): thin
  * handlers over Babilim_Editor.
  *
- * Why: the editor page talks to the server through these five routes with
+ * Why: the editor page talks to the server through these routes with
  * cookie authentication and the `X-WP-Nonce` header (action `wp_rest`),
  * which core checks before any callback runs, so a request without a valid
  * nonce is an anonymous one and fails the capability check. Every route
@@ -115,6 +115,24 @@ final class Babilim_Editor_Rest {
 					return is_string( $v ) && in_array( $v, Babilim_Editor::FILTERS, true );
 				},
 			),
+			'source' => array(
+				'required'          => false,
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => array( __CLASS__, 'clean' ),
+				'validate_callback' => static function ( $v ): bool {
+					return is_string( $v ) && ( '' === $v || in_array( $v, Babilim_Editor::SOURCES, true ) );
+				},
+			),
+			'sort'   => array(
+				'required'          => false,
+				'type'              => 'string',
+				'default'           => 'default',
+				'sanitize_callback' => array( __CLASS__, 'clean' ),
+				'validate_callback' => static function ( $v ): bool {
+					return is_string( $v ) && in_array( $v, Babilim_Editor::SORTS, true );
+				},
+			),
 			'search' => array(
 				'required'          => false,
 				'type'              => 'string',
@@ -143,21 +161,21 @@ final class Babilim_Editor_Rest {
 				},
 			),
 		);
-		$to     = array(
-			'required'          => true,
+		$optional_ref = array(
+			'required'          => false,
 			'type'              => 'string',
+			'default'           => '',
 			'sanitize_callback' => array( __CLASS__, 'clean' ),
-			'validate_callback' => static function ( $v ): bool {
-				return is_string( $v ) && 1 === preg_match( '/^(original|\d{1,3})$/D', $v );
-			},
+			'validate_callback' => $list['ref']['validate_callback'],
 		);
 
 		$routes = array(
 			array( '/editor/strings', WP_REST_Server::READABLE, 'strings', $scope + $list ),
 			array( '/editor/history', WP_REST_Server::READABLE, 'history', $scope + array( 'ref' => $ref ) ),
 			array( '/editor/draft', WP_REST_Server::CREATABLE, 'draft', $scope + array( 'ref' => $ref, 'msgstr' => $msgstr ) ),
-			array( '/editor/save', WP_REST_Server::CREATABLE, 'save', $scope + array( 'ref' => $ref, 'msgstr' => $msgstr ) ),
-			array( '/editor/revert', WP_REST_Server::CREATABLE, 'revert', $scope + array( 'ref' => $ref, 'to' => $to ) ),
+			array( '/editor/discard', WP_REST_Server::CREATABLE, 'discard', $scope + array( 'ref' => $optional_ref ) ),
+			array( '/editor/publish', WP_REST_Server::CREATABLE, 'publish', $scope ),
+			array( '/editor/remove', WP_REST_Server::CREATABLE, 'remove', $scope + array( 'ref' => $ref ) ),
 		);
 		foreach ( $routes as $r ) {
 			register_rest_route(
@@ -197,7 +215,7 @@ final class Babilim_Editor_Rest {
 	}
 
 	/**
-	 * @param string          $action  strings|history|draft|save|revert.
+	 * @param string          $action  strings|history|draft|discard|publish|remove.
 	 * @param WP_REST_Request $request Request.
 	 * @return WP_REST_Response|WP_Error
 	 */
@@ -216,6 +234,8 @@ final class Babilim_Editor_Rest {
 							$scope,
 							array(
 								'filter' => (string) $request->get_param( 'filter' ),
+								'source' => (string) $request->get_param( 'source' ),
+								'sort'   => (string) $request->get_param( 'sort' ),
 								'search' => (string) $request->get_param( 'search' ),
 								'page'   => (int) $request->get_param( 'page' ),
 								'ref'    => $ref,
@@ -227,17 +247,17 @@ final class Babilim_Editor_Rest {
 				case 'draft':
 					$result = $editor->save_draft( $scope, $ref, (array) $request->get_param( 'msgstr' ) );
 					break;
-				case 'save':
-					$result = $editor->save( $scope, $ref, (array) $request->get_param( 'msgstr' ) );
+				case 'discard':
+					$result = $editor->discard( $scope, $ref );
+					break;
+				case 'remove':
+					$result = $editor->remove( $scope, $ref );
 					break;
 				default:
-					$result = $editor->revert( $scope, $ref, (string) $request->get_param( 'to' ) );
+					$result = $editor->publish( $scope );
 			}
 			if ( $result->is_ok() ) {
 				return rest_ensure_response( $result->data() );
-			}
-			if ( 'check_failed' === $result->code() ) {
-				return new WP_Error( 'babilim_check_failed', $result->message(), array( 'status' => 422, 'problems' => $result->get( 'problems', array() ) ) );
 			}
 			return new WP_Error( 'babilim_' . $result->code(), $result->message(), array( 'status' => 400 ) );
 		} catch ( \Throwable $e ) {

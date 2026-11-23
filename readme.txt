@@ -1,14 +1,14 @@
-=== Babilim – Auto-Translate Plugins & Themes ===
+=== Babilim – Auto Translation & Language Packs ===
 Contributors: babilim
 Tags: translation, language pack, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Fills in missing translations for the plugins and themes already installed on your site.
+Auto-translate every plugin and theme on your site, then fine-tune any line in a fast built-in editor. Your edits survive updates.
 
 == Description ==
 
@@ -100,6 +100,14 @@ The Enable screen lists what is sent automatically before you agree.
 
 == Changelog ==
 
+= 2.1.0 =
+* New editor layout: the string list on top and the editing area below, each scrolling on its own.
+* Edit several strings, then press Save once. Until then every edit is kept as a draft.
+* Problems show while you edit; a draft with a problem is not published.
+* New filters, a wider search and sorting.
+* After an update your changes move to the new version; changed originals wait under "Needs review".
+* New name: Babilim – Auto Translation & Language Packs.
+
 = 2.0.0 =
 * New: edit any plugin or theme translation under Babilim > Edit translations.
 * Your changes are checked before saving and stay in place through updates.
@@ -117,14 +125,12 @@ The Enable screen lists what is sent automatically before you agree.
 * Translation files are never briefly missing during an update.
 * Better layouts on phones and in right-to-left languages.
 
-= 1.2.3 =
-* A translation a plugin or theme already ships, when Babilim generated it, now counts as installed: no download, no request button, and no free slot used.
-* New display name: Babilim – Auto-Translate Plugins & Themes.
-* A quiet rating link on Babilim's screens and in the Plugins list.
-
 Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+New editor layout with drafts and one Save button; no action needed.
 
 = 2.0.0 =
 Adds a translation editor; no action needed.

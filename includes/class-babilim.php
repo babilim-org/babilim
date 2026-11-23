@@ -124,6 +124,11 @@ class Babilim {
 	private $editor;
 
 	/**
+	 * @var Babilim_Override_Remap|null
+	 */
+	private $override_remap;
+
+	/**
 	 * Per-locale cache for core_has()'s own real-file reads -- see that
 	 * method's own docblock. `null` means "checked, core has no
 	 * translation for this locale at all" (as distinct from "not checked
@@ -532,6 +537,9 @@ class Babilim {
 		// locale needs rebuilding here, so this uses rebuild() rather
 		// than the all-locales sweep the other triggers above use.
 		add_action( 'babilim_layer_changed', array( $this, 'rebuild_default_index_one_locale' ) );
+		// A new Babilim build changes the string list an override is matched against.
+		add_action( 'babilim_layer_changed', array( $this, 'schedule_remap' ) );
+		add_action( Babilim_Override_Remap::HOOK, array( $this, 'run_remap' ) );
 	}
 
 	/**
@@ -725,6 +733,7 @@ class Babilim {
 			$this->rebuild_default_index_all_locales();
 			if ( 'translation' !== $type ) {
 				$this->schedule_sync_once();
+				$this->schedule_remap();
 			}
 		}
 	}
@@ -748,6 +757,38 @@ class Babilim {
 				return;
 			}
 			wp_schedule_single_event( time() + 30, self::SYNC_ONCE_HOOK );
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+	}
+
+	/**
+	 * Schedules one override remap about 60 seconds from now (local work: no
+	 * consent needed) unless one is already pending. The delay lets the
+	 * update finish copying files, and the batch of updates in one request
+	 * share a single run.
+	 *
+	 * @param mixed ...$args Ignored (hook arguments).
+	 */
+	public function schedule_remap( ...$args ): void {
+		if ( $this->self_deactivated ) {
+			return;
+		}
+		try {
+			if ( false === wp_next_scheduled( Babilim_Override_Remap::HOOK ) ) {
+				wp_schedule_single_event( time() + 60, Babilim_Override_Remap::HOOK );
+			}
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
+	}
+
+	/**
+	 * `babilim_remap_overrides` cron callback.
+	 */
+	public function run_remap(): void {
+		try {
+			$this->override_remap()->run_all();
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 		}
@@ -810,6 +851,7 @@ class Babilim {
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 		}
+		$this->run_remap();
 		try {
 			// Scopes whose custom/ files could not be written earlier.
 			if ( array() !== (array) get_site_option( Babilim_Override_Writer::DIRTY_OPTION, array() ) ) {
@@ -1524,6 +1566,23 @@ class Babilim {
 			);
 		}
 		return $this->inventory;
+	}
+
+	/**
+	 * The override remap engine, built on first use.
+	 *
+	 * @return Babilim_Override_Remap
+	 */
+	private function override_remap(): Babilim_Override_Remap {
+		if ( null === $this->override_remap ) {
+			global $wpdb;
+			$this->override_remap = new Babilim_Override_Remap(
+				new Babilim_Wpdb_Overrides( $wpdb ),
+				$this->string_catalog(),
+				array( $this->inventory(), 'components' )
+			);
+		}
+		return $this->override_remap;
 	}
 
 	/**

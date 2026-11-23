@@ -62,6 +62,54 @@ final class Babilim_Locale_Label {
 	}
 
 	/**
+	 * A name a person can read in a menu: name() when a list has one, else
+	 * the language's own name from PHP's intl extension (ICU data, no
+	 * network), else the code. wp_get_available_translations() is not used:
+	 * with a cold cache it calls api.wordpress.org.
+	 *
+	 * @param string $locale Locale code such as de_DE.
+	 * @return string
+	 */
+	public static function display_name( string $locale ): string {
+		$name = self::name( $locale );
+		if ( $name !== $locale || '' === $locale || ! class_exists( 'Locale' ) ) {
+			return $name;
+		}
+		// Language and region only: intl would add a variant mark such as FORMAL or AO90.
+		$language = \Locale::getPrimaryLanguage( $locale );
+		if ( \Locale::getDisplayLanguage( $locale, $locale ) === $language ) {
+			return $name; // ICU has no name for this language; keep the complete code.
+		}
+		$region = \Locale::getRegion( $locale );
+		$base   = $language . ( '' !== $region ? '_' . $region : '' );
+		$own    = \Locale::getDisplayName( $base, $locale );
+		return is_string( $own ) && '' !== trim( $own ) && $own !== $locale ? $own : $name;
+	}
+
+	/**
+	 * display_name() for a set of codes shown together (a menu). Two codes
+	 * whose names read the same, such as de_DE and de_DE_formal, both get
+	 * their code appended, so no two options look alike.
+	 *
+	 * @param string[] $locales Locale codes.
+	 * @return array<string,string> Code => name, in the order given.
+	 */
+	public static function display_names( array $locales ): array {
+		$names = array();
+		foreach ( $locales as $locale ) {
+			$names[ (string) $locale ] = self::display_name( (string) $locale );
+		}
+		$count = array_count_values( $names );
+		foreach ( $names as $code => $name ) {
+			if ( $count[ $name ] > 1 && $name !== $code ) {
+				/* translators: 1: language name, 2: locale code */
+				$names[ $code ] = sprintf( __( '%1$s – %2$s', 'babilim' ), $name, $code );
+			}
+		}
+		return $names;
+	}
+
+	/**
 	 * Forgets the per-request map. Test-only.
 	 */
 	public static function reset_for_tests(): void {

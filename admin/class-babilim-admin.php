@@ -658,6 +658,8 @@ final class Babilim_Admin {
 			$editor = call_user_func( $this->editor_factory );
 			$config = $editor instanceof Babilim_Editor ? Babilim_Editor_Page::settings( $editor ) : null;
 			if ( null !== $config ) {
+				// The workbench's own styles: only here, and only when there is a workbench to style.
+				wp_add_inline_style( 'babilim-admin', Babilim_Editor_Page::css() );
 				wp_enqueue_script( 'babilim-editor', plugins_url( 'admin/js/babilim-editor.js', BABILIM_FILE ), array( 'wp-a11y', 'babilim-admin' ), BABILIM_VERSION, true );
 				wp_add_inline_script( 'babilim-editor', 'window.babilimEditor = ' . wp_json_encode( $config ) . ';', 'before' );
 			}
@@ -739,12 +741,6 @@ final class Babilim_Admin {
 			// One grid per cell: the lines take the cell's columns, so the name column is as wide as the longest name and every status starts at the same x.
 			. '@supports (grid-template-columns:subgrid){.babilim-cell-grid{display:grid;grid-template-columns:minmax(min-content,max-content) minmax(10em,1fr) max-content;column-gap:1em}.babilim-cell-row,.babilim-cell-line,.babilim-cell-warning{grid-column:1/-1}.babilim-cell-row,.babilim-cell-line{display:grid;grid-template-columns:subgrid}}'
 			. '@container (max-width:40em){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:flex;flex-wrap:wrap;align-items:flex-start;gap:2px 1em}.babilim-cell-text{display:block;flex:1 1 10em}.babilim-cell-action{flex:none;margin-inline-start:auto}}'
-			// The editor screen: list beside the editing area; one column on a phone. Logical properties only, so a right-to-left language mirrors it.
-			. '.babilim-ed-layout{display:grid;grid-template-columns:minmax(0,22em) minmax(0,1fr);gap:1em 2em;align-items:start}.babilim-ed-list{margin:0;padding:0;list-style:none}.babilim-ed-list li{margin:0}'
-			. '.babilim-ed-list button{display:block;width:100%;text-align:start;padding:.4em .6em;border:0;border-inline-start:3px solid transparent;border-bottom:1px solid #dcdcde;background:none;cursor:pointer;overflow-wrap:anywhere}.babilim-ed-list button[aria-current=true]{border-inline-start-color:#2271b1;background:#f0f6fc}'
-			. '.babilim-ed-list small{display:block;color:#50575e}.babilim-ed-pager{display:flex;gap:.5em;align-items:center;margin-top:.5em}.babilim-ed-edit textarea{display:block;width:100%;box-sizing:border-box;min-height:5em}'
-			. '.babilim-ed-edit [aria-invalid=true]{border-color:#d63638}.babilim-ed-problem{color:#d63638;margin:.25em 0 1em}.babilim-ed-source{background:#f6f7f7;padding:.5em .75em;white-space:pre-wrap;overflow-wrap:anywhere}.babilim-ed-actions{display:flex;flex-wrap:wrap;gap:.5em;align-items:center;margin-top:1em}'
-			. '.babilim-ed-actions .spinner{float:none;margin:0}.babilim-ed-status{min-height:1.5em}'
 			. '.babilim-report-form textarea,.babilim-report-form input[type=text]{max-width:100%}.babilim-scroll{overflow-x:auto}'
 			. '@media (max-width:782px){.babilim-cell-grid,.babilim-cell-row{display:block}.babilim-cell-line{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 0}.babilim-cell-text{display:contents}.babilim-cell-edit,.babilim-cell-action{grid-column:auto;grid-row:auto}.babilim-cell-action{text-align:start;margin-inline-start:0;width:max-content}'
 			. '.wp-list-table.translations tr:not(.inline-edit-row):not(.no-items) .column-primary~td.column-translations{display:block;padding-block:3px 8px;padding-inline:10px 8px}'
@@ -753,7 +749,6 @@ final class Babilim_Admin {
 			. '.wp-list-table.translations td.column-primary,.wp-list-table.translations tbody th.column-primary{display:block;padding-inline-end:10px}'
 			// WordPress 7.x turns every list-table row into a wrapping flex row on phones; these two tables scroll sideways instead, so their rows stay table rows.
 			. '.babilim-scroll table.fixed{table-layout:auto}.babilim-scroll th{white-space:nowrap}.babilim-scroll tr{display:table-row}'
-			. '.babilim-ed-layout{grid-template-columns:minmax(0,1fr)}'
 			. '}';
 	}
 
@@ -2983,6 +2978,10 @@ final class Babilim_Admin {
 				'aria-live' => true,
 			),
 			'noscript' => $common,
+			'fieldset' => $common,
+			'legend'   => $common,
+			'section'  => $common + array( 'aria-label' => true ),
+			'aside'    => $common + array( 'aria-label' => true ),
 			'h1'       => $common,
 			'h2'       => $common,
 			'nav'      => $common + array( 'aria-label' => true ),
@@ -3042,6 +3041,7 @@ final class Babilim_Admin {
 				'disabled' => true,
 			),
 			'option'   => $common + array(
+				'lang'     => true,
 				'title'    => true,
 				'value'    => true,
 				'selected' => true,
@@ -3058,6 +3058,8 @@ final class Babilim_Admin {
 			'button'   => $common + array(
 				'title'                    => true,
 				'aria-label'               => true,
+				'aria-describedby'         => true,
+				'aria-disabled'            => true,
 				'type'                     => true,
 				'disabled'                 => true,
 				'form'                     => true,

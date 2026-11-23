@@ -15,7 +15,10 @@
  * service. Paths come only from Babilim_Paths and the inventory's language
  * directories, never from a request.
  *
- * Why callables: the readers are injected so tests need no real files and no
+ * Each entry also carries `references` (the `#:` source locations of a
+ * `.po`/`.pot`, relative file names only, at most REF_MAX) and the entries
+ * come in the template's order, so the editor can show them as the author
+ * wrote them. Why callables: the readers are injected so tests need no real files and no
  * WordPress; read_po() is the real `.po`/`.pot` reader (WordPress core's
  * pomo `PO` class, which the caller must be able to load).
  *
@@ -28,6 +31,9 @@ defined( 'ABSPATH' ) || exit;
  * Builds the string catalog of one component + text domain + locale.
  */
 final class Babilim_String_Catalog {
+
+	/** Most source locations kept per string. */
+	private const REF_MAX = 20;
 
 	/**
 	 * @var Babilim_Manifest
@@ -83,7 +89,7 @@ final class Babilim_String_Catalog {
 	 * @param string $path Absolute path.
 	 * Empty when the file is unreadable or pomo is not loaded.
 	 *
-	 * @return list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[]}>
+	 * @return list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[]}>
 	 */
 	public static function read_po( string $path ): array {
 		try {
@@ -97,7 +103,7 @@ final class Babilim_String_Catalog {
 			if ( true !== $po->import_from_file( $path ) ) {
 				return array();
 			}
-			/** @var list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[]}> $rows */
+			/** @var list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[]}> $rows */
 			$rows = array();
 			if ( array() !== $po->headers ) {
 				$block = '';
@@ -110,6 +116,7 @@ final class Babilim_String_Catalog {
 					'msgid_plural' => '',
 					'msgstr'       => array( $block ),
 					'comments'     => array(),
+					'references'   => array(),
 				);
 			}
 			foreach ( $po->entries as $entry ) {
@@ -125,12 +132,34 @@ final class Babilim_String_Catalog {
 					'msgid_plural' => $entry->is_plural ? (string) $entry->plural : '',
 					'msgstr'       => array_map( 'strval', array_values( (array) $entry->translations ) ),
 					'comments'     => $comments,
+					'references'   => self::references( $entry->references ),
 				);
 			}
 			return $rows;
 		} catch ( \Throwable $e ) {
 			return array();
 		}
+	}
+
+	/**
+	 * The `#:` locations worth showing: a relative file name with an optional
+	 * line number, nothing that points outside the component (no leading
+	 * slash, no `..`).
+	 *
+	 * @param mixed $list Translation_Entry::$references.
+	 * @return string[]
+	 */
+	private static function references( $list ): array {
+		$out = array();
+		foreach ( (array) $list as $ref ) {
+			if ( 1 === preg_match( '#^(?!/)(?!.*\.\.)[A-Za-z0-9_./@+-]{1,200}(?::\d{1,7})?$#D', (string) $ref ) ) {
+				$out[] = (string) $ref;
+				if ( count( $out ) >= self::REF_MAX ) {
+					break;
+				}
+			}
+		}
+		return $out;
 	}
 
 	/**
@@ -246,18 +275,23 @@ final class Babilim_String_Catalog {
 	 * @return array
 	 */
 	private function merge( array $layers, string $build_id, bool $shipped, ?array $record, array $component, array $empty ): array {
-		$meta    = array();
-		$chosen  = array();
-		$sources = array();
-		$plural  = null;
+		$meta       = array();
+		$chosen     = array();
+		$sources    = array();
+		$plural     = null;
+		$own_refs   = array();
+		$other_refs = array();
+		$layer_refs = array();
 
-		foreach ( $layers as $layer ) {
+		foreach ( $layers as $k => $layer ) {
 			$sources[ $layer['source'] ] = true;
 			if ( null === $plural && null !== $layer['header'] ) {
 				$plural = $layer['header'];
 			}
+			$layer_refs[ $k ] = array();
 			foreach ( $layer['rows'] as $row ) {
-				$ref = Babilim_Translation_Search::ref( $row['msgctxt'], $row['msgid'] );
+				$ref                 = Babilim_Translation_Search::ref( $row['msgctxt'], $row['msgid'] );
+				$layer_refs[ $k ][] = $ref;
 				if ( ! isset( $meta[ $ref ] ) ) {
 					$meta[ $ref ] = array(
 						'ref'          => $ref,
@@ -265,6 +299,7 @@ final class Babilim_String_Catalog {
 						'msgid'        => $row['msgid'],
 						'msgid_plural' => '',
 						'comments'     => array(),
+						'references'   => array(),
 						'source'       => 'none',
 						'msgstr'       => array(),
 						'build_id'     => '',
@@ -276,13 +311,40 @@ final class Babilim_String_Catalog {
 				if ( array() === $meta[ $ref ]['comments'] ) {
 					$meta[ $ref ]['comments'] = $row['comments'];
 				}
+				if ( array() !== $row['references'] ) {
+					if ( 'bundled' === $layer['source'] ) {
+						$own_refs[ $ref ] = $own_refs[ $ref ] ?? $row['references'];
+					} else {
+						$other_refs[ $ref ] = $other_refs[ $ref ] ?? $row['references'];
+					}
+				}
 				if ( $layer['counts'] && ! isset( $chosen[ $ref ] ) && '' !== implode( '', $row['msgstr'] ) ) {
-					$chosen[ $ref ]          = true;
-					$meta[ $ref ]['source']  = $layer['source'];
-					$meta[ $ref ]['msgstr']  = $row['msgstr'];
+					$chosen[ $ref ]           = true;
+					$meta[ $ref ]['source']   = $layer['source'];
+					$meta[ $ref ]['msgstr']   = $row['msgstr'];
 					$meta[ $ref ]['build_id'] = 'babilim' === $layer['source'] ? $build_id : '';
 				}
 			}
+		}
+
+		// The template's order: what the author shipped first, then the translation files; strings only in a compiled file follow.
+		$order = array();
+		foreach ( array( array( 'bundled', 'pot' ), array( 'bundled', 'po' ), array( 'babilim', 'po' ), array( 'wporg', 'po' ) ) as $want ) {
+			foreach ( $layers as $k => $layer ) {
+				if ( $layer['source'] === $want[0] && $layer['type'] === $want[1] ) {
+					foreach ( $layer_refs[ $k ] as $ref ) {
+						$order[ $ref ] = true;
+					}
+				}
+			}
+		}
+		$sorted = array();
+		foreach ( $order as $ref => $unused ) {
+			$sorted[ $ref ] = $meta[ $ref ];
+		}
+		$meta = $sorted + $meta;
+		foreach ( $meta as $ref => $unused ) {
+			$meta[ $ref ]['references'] = $own_refs[ $ref ] ?? $other_refs[ $ref ] ?? array();
 		}
 
 		if ( array() === $layers ) {
@@ -311,7 +373,7 @@ final class Babilim_String_Catalog {
 	 * @param string $source 'babilim'|'wporg'|'bundled'.
 	 * @param string $path   Absolute path.
 	 * @param string $type   'mo'|'php'|'json'|'po'|'pot'. A `.po`/`.pot` lists strings, comments and plural source forms but never supplies the effective translation (core loads only `.mo`/`.l10n.php`; a `.po` can be fuzzy or stale), and a `.pot` has no header of its own.
-	 * @return array{source:string,counts:bool,rows:array[],header:?string}
+	 * @return array{source:string,type:string,counts:bool,rows:array[],header:?string}
 	 */
 	private function layer( string $source, string $path, string $type ): array {
 		$rows   = array();
@@ -355,7 +417,7 @@ final class Babilim_String_Catalog {
 					}
 					continue;
 				}
-				$rows[] = self::row( (string) ( $row['msgctxt'] ?? '' ), (string) $row['msgid'], (string) ( $row['msgid_plural'] ?? '' ), $msgstr, array_map( 'strval', (array) ( $row['comments'] ?? array() ) ) );
+				$rows[] = self::row( (string) ( $row['msgctxt'] ?? '' ), (string) $row['msgid'], (string) ( $row['msgid_plural'] ?? '' ), $msgstr, array_map( 'strval', (array) ( $row['comments'] ?? array() ) ), array_map( 'strval', (array) ( $row['references'] ?? array() ) ) );
 			}
 		}
 
@@ -366,6 +428,7 @@ final class Babilim_String_Catalog {
 
 		return array(
 			'source' => $source,
+			'type'   => $type,
 			'counts' => 'po' !== $type && 'pot' !== $type,
 			'rows'   => $rows,
 			'header' => $header,
@@ -378,10 +441,12 @@ final class Babilim_String_Catalog {
 	 * @param string   $msgid_plural Plural source form.
 	 * @param string[] $msgstr       Translated forms.
 	 * @param string[] $comments     Comments.
+	 * @param string[] $references   Source locations.
 	 * @return array
 	 */
-	private static function row( string $msgctxt, string $msgid, string $msgid_plural, array $msgstr, array $comments ): array {
+	private static function row( string $msgctxt, string $msgid, string $msgid_plural, array $msgstr, array $comments, array $references = array() ): array {
 		return array(
+			'references'   => $references,
 			'msgctxt'      => $msgctxt,
 			'msgid'        => $msgid,
 			'msgid_plural' => $msgid_plural,

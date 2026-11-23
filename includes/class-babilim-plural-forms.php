@@ -59,4 +59,41 @@ final class Babilim_Plural_Forms {
 		}
 		return 2;
 	}
+
+	/**
+	 * What each plural form is for: the first three numbers (0 to 299) the
+	 * rule maps to it, `, `-joined, with `…` when there are more. The editor's
+	 * plural tabs use it instead of a language-specific name such as "few".
+	 * 299 because Arabic's last form has only 100, 101 and 102 below 200.
+	 *
+	 * @param string $header A `Plural-Forms` header value.
+	 * @return string[] One entry per form; array() when the rule cannot be read or core's evaluator is not loaded.
+	 */
+	public static function examples( string $header ): array {
+		// Same pattern as WP_Translation_File::get_plural_expression_from_header(), the trailing `;` removed as core does.
+		if ( ! class_exists( 'Plural_Forms' ) || 1 !== preg_match( '/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $m ) ) {
+			return array();
+		}
+		$n = (int) $m[1];
+		if ( $n < 1 || $n > 6 ) {
+			return array();
+		}
+		try {
+			$rule = new Plural_Forms( rtrim( trim( $m[2] ), ';' ) );
+			$seen = array_fill( 0, $n, array() );
+			for ( $i = 0; $i < 300; $i++ ) {
+				$form = (int) $rule->get( $i );
+				if ( $form >= 0 && $form < $n ) {
+					$seen[ $form ][] = $i;
+				}
+			}
+		} catch ( \Throwable $e ) {
+			return array();
+		}
+		$out = array();
+		foreach ( $seen as $numbers ) {
+			$out[] = implode( ', ', array_slice( $numbers, 0, 3 ) ) . ( count( $numbers ) > 3 ? '…' : '' );
+		}
+		return $out;
+	}
 }

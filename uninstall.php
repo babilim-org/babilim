@@ -167,6 +167,7 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		wp_clear_scheduled_hook( 'babilim_sync' );
 		wp_clear_scheduled_hook( 'babilim_sync_once' );
 		wp_clear_scheduled_hook( 'babilim_maintenance' );
+		wp_clear_scheduled_hook( 'babilim_remap_overrides' );
 
 		return $babilim_keep_custom;
 	}
