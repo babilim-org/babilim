@@ -28,6 +28,9 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 	/** @var wpdb */
 	private $wpdb;
 
+	/** @var bool Set once the table was found; a missing table is probed again. */
+	private $found = false;
+
 	/**
 	 * @param wpdb $wpdb Database object.
 	 */
@@ -92,17 +95,14 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 		}
 	}
 
-	public function drop(): void {
-		$wpdb = $this->wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $this->table() ) );
-	}
-
 	public function ready(): bool {
+		if ( $this->found ) {
+			return true;
+		}
 		$wpdb  = $this->wpdb;
 		$table = $this->table();
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- schema probe.
-		return $table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+		return $this->found = ( $table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) );
 	}
 
 	public function rows( array $scope, bool $drafts = false ): array {
@@ -138,45 +138,62 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 		return $out;
 	}
 
-	public function put( array $scope, array $row, bool $draft = false ): bool {
-		$s        = (string) ( $row['status'] ?? self::STATUS_ACTIVE );
+	const COLUMNS = 'scope, ref, plural_index, is_draft, kind, slug, domain, locale, msgctxt, msgid, msgid_plural, msgstr, status, origin, component_version, base_source, base_build, base_msgstr, match_ref, history, feedback_build, modified_gmt, modified_by';
+
+	const PLACEHOLDERS = '(%s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)';
+
+	const ON_DUPLICATE = ' ON DUPLICATE KEY UPDATE kind = VALUES(kind), slug = VALUES(slug), domain = VALUES(domain), locale = VALUES(locale), msgctxt = VALUES(msgctxt), msgid = VALUES(msgid), msgid_plural = VALUES(msgid_plural), msgstr = VALUES(msgstr), status = VALUES(status), origin = VALUES(origin), component_version = VALUES(component_version), base_source = VALUES(base_source), base_build = VALUES(base_build), base_msgstr = VALUES(base_msgstr), match_ref = VALUES(match_ref), history = VALUES(history), feedback_build = VALUES(feedback_build), modified_gmt = VALUES(modified_gmt), modified_by = VALUES(modified_by)';
+
+	/** The values of one row, in COLUMNS order, for prepare(). */
+	private static function values( array $scope, array $row, bool $draft ): array {
 		$modified = (string) ( $row['modified_gmt'] ?? '' );
-		$wpdb     = $this->wpdb;
 		$history  = wp_json_encode( is_array( $row['history'] ?? null ) ? array_values( $row['history'] ) : array() );
-		// One atomic upsert on the `entry` unique key.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
-		$done = $wpdb->query(
-			$wpdb->prepare(
-				'INSERT INTO %i (scope, ref, plural_index, is_draft, kind, slug, domain, locale, msgctxt, msgid, msgid_plural, msgstr, status, origin, component_version, base_source, base_build, base_msgstr, match_ref, history, feedback_build, modified_gmt, modified_by)'
-				. ' VALUES (%s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)'
-				. ' ON DUPLICATE KEY UPDATE kind = VALUES(kind), slug = VALUES(slug), domain = VALUES(domain), locale = VALUES(locale), msgctxt = VALUES(msgctxt), msgid = VALUES(msgid), msgid_plural = VALUES(msgid_plural), msgstr = VALUES(msgstr), status = VALUES(status), origin = VALUES(origin), component_version = VALUES(component_version), base_source = VALUES(base_source), base_build = VALUES(base_build), base_msgstr = VALUES(base_msgstr), match_ref = VALUES(match_ref), history = VALUES(history), feedback_build = VALUES(feedback_build), modified_gmt = VALUES(modified_gmt), modified_by = VALUES(modified_by)',
-				$this->table(),
-				self::scope_key( $scope ),
-				(string) ( $row['ref'] ?? '' ),
-				(int) ( $row['plural_index'] ?? 0 ),
-				(int) $draft,
-				(string) $scope['kind'],
-				(string) $scope['slug'],
-				(string) $scope['domain'],
-				(string) $scope['locale'],
-				(string) ( $row['msgctxt'] ?? '' ),
-				(string) ( $row['msgid'] ?? '' ),
-				(string) ( $row['msgid_plural'] ?? '' ),
-				(string) ( $row['msgstr'] ?? '' ),
-				$s,
-				(string) ( $row['origin'] ?? 'editor' ),
-				(string) ( $row['component_version'] ?? '' ),
-				(string) ( $row['base_source'] ?? '' ),
-				(string) ( $row['base_build'] ?? '' ),
-				(string) ( $row['base_msgstr'] ?? '' ),
-				(string) ( $row['match_ref'] ?? '' ),
-				false === $history ? '[]' : $history,
-				(string) ( $row['feedback_build'] ?? '' ),
-				'' === $modified ? gmdate( 'Y-m-d H:i:s' ) : $modified,
-				(int) ( $row['modified_by'] ?? 0 )
-			)
+		return array(
+			self::scope_key( $scope ),
+			(string) ( $row['ref'] ?? '' ),
+			(int) ( $row['plural_index'] ?? 0 ),
+			(int) $draft,
+			(string) $scope['kind'],
+			(string) $scope['slug'],
+			(string) $scope['domain'],
+			(string) $scope['locale'],
+			(string) ( $row['msgctxt'] ?? '' ),
+			(string) ( $row['msgid'] ?? '' ),
+			(string) ( $row['msgid_plural'] ?? '' ),
+			(string) ( $row['msgstr'] ?? '' ),
+			(string) ( $row['status'] ?? self::STATUS_ACTIVE ),
+			(string) ( $row['origin'] ?? 'editor' ),
+			(string) ( $row['component_version'] ?? '' ),
+			(string) ( $row['base_source'] ?? '' ),
+			(string) ( $row['base_build'] ?? '' ),
+			(string) ( $row['base_msgstr'] ?? '' ),
+			(string) ( $row['match_ref'] ?? '' ),
+			false === $history ? '[]' : $history,
+			(string) ( $row['feedback_build'] ?? '' ),
+			'' === $modified ? gmdate( 'Y-m-d H:i:s' ) : $modified,
+			(int) ( $row['modified_by'] ?? 0 ),
 		);
-		return false !== $done;
+	}
+
+	public function put( array $scope, array $row, bool $draft = false ): bool {
+		return $this->put_many( $scope, array( $row ), $draft );
+	}
+
+	public function put_many( array $scope, array $rows, bool $draft = false ): bool {
+		$wpdb = $this->wpdb;
+		foreach ( array_chunk( array_values( $rows ), self::BATCH_MAX ) as $chunk ) {
+			$args = array( $this->table() );
+			foreach ( $chunk as $row ) {
+				$args = array_merge( $args, self::values( $scope, $row, $draft ) );
+			}
+			// One atomic multi-row upsert on the `entry` unique key.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- the plugin's own table; COLUMNS, PLACEHOLDERS and ON_DUPLICATE are SQL literals (class constants the sniff cannot follow) and every value goes through prepare() as %s/%d.
+			$done = $wpdb->query( $wpdb->prepare( 'INSERT INTO %i (' . self::COLUMNS . ') VALUES ' . implode( ', ', array_fill( 0, count( $chunk ), self::PLACEHOLDERS ) ) . self::ON_DUPLICATE, $args ) );
+			if ( false === $done ) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public function mark( array $scope, array $row ): bool {
@@ -198,6 +215,19 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 		return false !== $done;
 	}
 
+	public function mark_feedback( array $scope, string $ref, string $build ): bool {
+		$wpdb = $this->wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
+		return false !== $wpdb->query( $wpdb->prepare(
+			'UPDATE %i SET feedback_build = %s WHERE scope = %s AND ref = %s AND base_build = %s AND is_draft = 0',
+			$this->table(),
+			$build,
+			self::scope_key( $scope ),
+			$ref,
+			$build
+		) );
+	}
+
 	public function delete( array $scope, string $ref, bool $draft = false ): bool {
 		$wpdb = $this->wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
@@ -213,14 +243,61 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 		return false !== $wpdb->query( $wpdb->prepare( 'DELETE FROM %i', $this->table() ) );
 	}
 
-	public function scopes(): array {
+	public function scopes( string $status = '' ): array {
+		$wpdb = $this->wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
+		$found = '' === $status ? $wpdb->get_results(
+			$wpdb->prepare( 'SELECT DISTINCT kind, slug, domain, locale FROM %i WHERE is_draft = %d ORDER BY kind, slug, domain, locale', $this->table(), 0 ),
+			'ARRAY_A'
+		) : $wpdb->get_results(
+			$wpdb->prepare( 'SELECT DISTINCT kind, slug, domain, locale FROM %i WHERE is_draft = %d AND status = %s ORDER BY kind, slug, domain, locale', $this->table(), 0, $status ),
+			'ARRAY_A'
+		);
+		return self::scope_list( $found );
+	}
+
+	public function scope_versions(): array {
 		$wpdb = $this->wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
 		$found = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT DISTINCT kind, slug, domain, locale FROM %i WHERE is_draft = %d ORDER BY kind, slug, domain, locale', $this->table(), 0 ),
+			$wpdb->prepare( 'SELECT DISTINCT kind, slug, domain, locale, component_version FROM %i WHERE is_draft = %d AND status <> %s ORDER BY kind, slug, domain, locale', $this->table(), 0, self::STATUS_OFF ),
 			'ARRAY_A'
 		);
 		$out   = array();
+		foreach ( (array) $found as $r ) {
+			$out[] = array(
+				'kind'              => (string) $r['kind'],
+				'slug'              => (string) $r['slug'],
+				'domain'            => (string) $r['domain'],
+				'locale'            => (string) $r['locale'],
+				'component_version' => (string) $r['component_version'],
+			);
+		}
+		return $out;
+	}
+
+	public function feedback_scopes( string $since ): array {
+		$wpdb = $this->wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own table.
+		$found = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT kind, slug, domain, locale FROM %i WHERE is_draft = %d AND origin = 'editor' AND base_source = 'babilim' AND base_build <> '' AND status = %s AND modified_gmt >= %s AND feedback_build <> base_build ORDER BY kind, slug, domain, locale",
+				$this->table(),
+				0,
+				self::STATUS_ACTIVE,
+				$since
+			),
+			'ARRAY_A'
+		);
+		return self::scope_list( $found );
+	}
+
+	/**
+	 * @param mixed $found get_results() output.
+	 * @return array<int,array{kind:string,slug:string,domain:string,locale:string}>
+	 */
+	private static function scope_list( $found ): array {
+		$out = array();
 		foreach ( (array) $found as $r ) {
 			$out[] = array(
 				'kind'   => (string) $r['kind'],

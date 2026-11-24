@@ -52,6 +52,14 @@
 	const LOGGED_OUT = { loggedOut: true };
 	const FILTERS = [ 'all', 'untranslated', 'edited', 'problems', 'review' ];
 	const lang = S.scope.locale.replace( /_/g, '-' );
+	// The admin page's own language (the user's), for dates and times. A tag the browser does not know (or that is malformed, which makes toLocaleString throw) falls back to undefined: the browser's own language.
+	const uiLang = ( () => {
+		try {
+			return Intl.DateTimeFormat.supportedLocalesOf( document.documentElement.lang )[ 0 ];
+		} catch ( e ) {
+			return undefined;
+		}
+	} )();
 
 	let items = [];
 	let page = 1;
@@ -60,6 +68,7 @@
 	let examples = [];
 	let filter = 'all';
 	let run = 0;
+	let loading = null;
 	let cur = null;
 	let base = [];
 	let hist = [];
@@ -118,8 +127,8 @@
 	// -- REST --------------------------------------------------------------
 
 	const scope = () => ( { kind: S.scope.kind, slug: S.scope.slug, domain: S.scope.domain, locale: S.scope.locale } );
-	const send = ( path, method, params, keepalive ) => {
-		const init = { method, credentials: 'same-origin', headers: { 'X-WP-Nonce': S.nonce, Accept: 'application/json' } };
+	const send = ( path, method, params, keepalive, signal ) => {
+		const init = { method, signal, headers: { 'X-WP-Nonce': S.nonce, Accept: 'application/json' } };
 		let url = S.restUrl + path;
 		const join = () => ( url.includes( '?' ) ? '&' : '?' );
 		if ( 'GET' === method ) {
@@ -134,7 +143,7 @@
 		return keepalive ? go( { ...init, keepalive: true } ).catch( () => go( init ) ) : go( init );
 	};
 	// core's wp_ajax_rest_nonce answers with the bare nonce (10 hex characters); anything else (0, -1, a login page) means the session is gone.
-	const freshNonce = () => window.fetch( S.nonceUrl, { credentials: 'same-origin' } )
+	const freshNonce = () => window.fetch( S.nonceUrl )
 		.then( ( res ) => ( res.ok ? res.text() : '' ) )
 		.then( ( text ) => {
 			const nonce = text.trim();
@@ -147,13 +156,13 @@
 		.catch( () => false );
 	const expired = ( r ) => 403 === r.status && r.data && 'rest_cookie_invalid_nonce' === r.data.code;
 	// An expired nonce is renewed once and the same request is sent once more; a second refusal means logged out.
-	const call = async ( path, method, params, keepalive ) => {
-		let r = await send( path, method, params, keepalive );
+	const call = async ( path, method, params, keepalive, signal ) => {
+		let r = await send( path, method, params, keepalive, signal );
 		if ( expired( r ) ) {
 			if ( ! await freshNonce() ) {
 				throw LOGGED_OUT;
 			}
-			r = await send( path, method, params, keepalive );
+			r = await send( path, method, params, keepalive, signal );
 			if ( expired( r ) ) {
 				throw LOGGED_OUT;
 			}
@@ -214,7 +223,7 @@
 		if ( st ) {
 			s0.append( icon( st[ 0 ] ), el( 'span', st[ 2 ] ) );
 		}
-		const o = el( 'span', '', { dir: 'auto' } );
+		const o = el( 'span', '', { dir: 'auto', lang: 'en' } );
 		o.append( el( 'span', item.msgid.slice( 0, 100 ) ) );
 		if ( '' !== item.msgid_plural ) {
 			o.append( el( 'span', ' ' + str.pluralTag, { class: 'pl' } ) );
@@ -243,7 +252,6 @@
 		rows = items.map( ( item ) => {
 			const b = el( 'button', '', { type: 'button', tabindex: '-1' } );
 			fillRow( b, item );
-			b.addEventListener( 'click', () => choose( item, true ) );
 			const li = el( 'li' );
 			li.appendChild( b );
 			els.list.appendChild( li );
@@ -252,7 +260,15 @@
 		stop = Math.max( 0, items.findIndex( ( x ) => cur && x.ref === cur.ref ) );
 		markCurrent();
 	};
-	// One tab stop for the whole list: the arrow keys move between rows, a click (Enter, Space) opens one.
+	// One listener for the whole list: a click (Enter, Space) opens the row under it.
+	els.list.addEventListener( 'click', ( e ) => {
+		const b = e.target && e.target.closest ? e.target.closest( 'button' ) : null;
+		const i = rows.indexOf( b );
+		if ( i >= 0 ) {
+			choose( items[ i ], true );
+		}
+	} );
+	// One tab stop for the whole list: the arrow keys move between rows.
 	els.list.addEventListener( 'keydown', ( e ) => {
 		const i = rows.indexOf( e.target );
 		const to = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: rows.length - 1 }[ e.key ];
@@ -357,12 +373,72 @@
 	};
 
 	// -- loading a page of strings --------------------------------------------
+	let fetchingList = false;
+	const renderListOffer = ( box, state, focus = false ) => {
+		box.replaceChildren();
+		if ( 'needs_consent' === state ) {
+			box.appendChild( el( 'a', str.textListConsent, { href: S.translationsUrl } ) );
+			return;
+		}
+		const message = { pending: str.textListPending, not_wporg: str.textListNotWporg, unavailable: str.textListUnavailable }[ state ];
+		if ( message ) {
+			box.appendChild( el( 'p', message ) );
+		}
+		if ( 'pending' !== state && 'can_fetch' !== state ) {
+			return;
+		}
+		const label = 'pending' === state ? str.checkTextList : str.getTextList;
+		const description = 'babilim-ed-text-list-description';
+		const button = el( 'button', label, { type: 'button', class: 'button', 'aria-describedby': description } );
+		box.append( button, el( 'p', str.textListDisclosure, { id: description, class: 'description' } ) );
+		if ( focus ) {
+			button.focus();
+		}
+		button.addEventListener( 'click', async () => {
+			if ( fetchingList ) {
+				return;
+			}
+			fetchingList = true;
+			button.setAttribute( 'aria-disabled', 'true' );
+			button.textContent = admin.working;
+			const spinner = el( 'span', '', { class: 'spinner is-active', 'aria-hidden': 'true' } );
+			button.after( spinner );
+			speak( admin.working );
+			try {
+				const r = await call( 'editor/string-list', 'POST', scope() );
+				if ( ! r.ok ) {
+					throw r;
+				}
+				if ( 'pending' === r.data.status ) {
+					speak( str.textListPending );
+					renderListOffer( box, 'pending', document.activeElement === button );
+				} else {
+					await load( page, cur ? '' : 'first', ! cur && document.activeElement === button );
+					if ( 'unavailable' === r.data.status ) {
+						speak( str.textListUnavailable );
+					}
+				}
+			} catch ( e ) {
+				fail( e );
+			} finally {
+				fetchingList = false;
+				spinner.remove();
+				button.removeAttribute( 'aria-disabled' );
+				button.textContent = label;
+			}
+		} );
+	};
 
 	const load = async ( p, pick, focus ) => {
 		const my = ++run;
+		// A newer request makes the older one pointless: the server stops waiting for its answer.
+		if ( loading ) {
+			loading.abort();
+		}
+		loading = new AbortController();
 		els.list.setAttribute( 'aria-busy', 'true' );
 		try {
-			const r = await call( 'editor/strings', 'GET', { ...scope(), filter, source: els.source.value, sort: els.sort.value, search: els.search.value.trim(), page: p } );
+			const r = await call( 'editor/strings', 'GET', { ...scope(), filter, source: els.source.value, sort: els.sort.value, search: els.search.value.trim(), page: p }, false, loading.signal );
 			if ( my !== run ) {
 				return;
 			}
@@ -376,7 +452,13 @@
 			examples = r.data.plural_examples || [];
 			renderTop( r.data );
 			renderList();
+			const offer = r.data.list && 'local' !== r.data.list;
 			renderPager( items.length ? '' : ( r.data.no_source ? str.noSource : str.empty ) );
+			if ( offer ) {
+				const box = el( 'div' );
+				els.pager.appendChild( box );
+				renderListOffer( box, r.data.list );
+			}
 			const fresh = cur && items.find( ( x ) => x.ref === cur.ref );
 			if ( items.length && ( 'first' === pick || 'last' === pick ) ) {
 				choose( 'first' === pick ? items[ 0 ] : items[ items.length - 1 ], focus );
@@ -403,11 +485,15 @@
 
 	const describe = ( i ) => fields[ i ].setAttribute( 'aria-describedby', problems[ i ].map( ( n ) => n.id ).concat( 'babilim-ed-state' ).join( ' ' ) );
 	const shown = () => problems.some( ( p ) => p.length );
-	const selectTab = ( i, focus ) => tabs.forEach( ( t, k ) => {
+	// `user`: the person chose this tab (click, arrow keys, find-in-page), so it is scrolled into view; opening a string or showing problems never moves the page.
+	const selectTab = ( i, focus, user ) => tabs.forEach( ( t, k ) => {
 		t.setAttribute( 'aria-selected', k === i ? 'true' : 'false' );
 		t.setAttribute( 'tabindex', k === i ? '0' : '-1' );
 		if ( k === i ) {
 			panels[ k ].removeAttribute( 'hidden' );
+			if ( user || focus ) {
+				t.scrollIntoView( { block: 'nearest', inline: 'nearest' } );
+			}
 			if ( focus ) {
 				t.focus();
 			}
@@ -452,7 +538,7 @@
 		} else if ( cur.draft ) {
 			const at = when( cur.draft_at );
 			const first = el( 'p' );
-			first.append( el( 'strong', str.draftSaved.replace( '%s', () => ( at instanceof Date ? at.toLocaleTimeString() : at ) ) ), el( 'span', ' ' + str.draftVisitors ) );
+			first.append( el( 'strong', str.draftSaved.replace( '%s', () => ( at instanceof Date ? at.toLocaleTimeString( uiLang ) : at ) ) ), el( 'span', ' ' + str.draftVisitors ) );
 			const text = ( live( cur ) ? cur.override.msgstr : cur.current )[ 0 ] || str.noTranslation;
 			box.append( first, el( 'p', str.liveNow.replace( '%1$s', () => text ).replace( '%2$s', () => srcName( cur ) ) ) );
 		} else {
@@ -513,7 +599,7 @@
 
 	const stamp = ( at, tag ) => {
 		const d = when( at );
-		const s = el( 'span', d instanceof Date ? d.toLocaleString() : d );
+		const s = el( 'span', d instanceof Date ? d.toLocaleString( uiLang ) : d );
 		const w = el( 'div', '', { class: 'when' } );
 		w.append( s );
 		if ( tag ) {
@@ -529,15 +615,15 @@
 		const dl = el( 'dl', '', { class: 'babilim-ed-dl' } );
 		dl.append( el( 'dt', str.srcLabel ), el( 'dd', srcName( cur ) ) );
 		if ( cur.msgctxt ) {
-			dl.append( el( 'dt', str.context ), el( 'dd', cur.msgctxt, { dir: 'auto' } ) );
+			dl.append( el( 'dt', str.context ), el( 'dd', cur.msgctxt, { dir: 'auto', lang: 'en' } ) );
 		}
-		cur.comments.forEach( ( c ) => dl.append( el( 'dt', str.note ), el( 'dd', c, { dir: 'auto' } ) ) );
+		cur.comments.forEach( ( c ) => dl.append( el( 'dt', str.note ), el( 'dd', c, { dir: 'auto', lang: 'en' } ) ) );
 		if ( cur.references.length ) {
 			const dd = el( 'dd' );
 			cur.references.forEach( ( r ) => dd.append( el( 'code', r ) ) );
 			dl.append( el( 'dt', str.found ), dd );
 		}
-		const ol = el( 'ol', '', { class: 'babilim-ed-hist' } );
+		const ol = el( 'ol', '', { class: 'babilim-ed-hist', role: 'list' } );
 		const entry = ( head, text, restoreOf ) => {
 			const li = el( 'li' );
 			li.append( head, el( 'p', text || str.noTranslation, { dir: 'auto', lang } ) );
@@ -561,9 +647,9 @@
 		if ( live( cur ) ) {
 			entry( stamp( catalogName( cur ) ), cur.current.join( ' / ' ), gone ? null : cur.current );
 		}
-		els.aside.append( el( 'h3', str.details ), dl );
+		els.aside.append( el( 'h2', str.details ), dl );
 		if ( ol.children.length ) {
-			els.aside.append( el( 'h3', str.history ), ol );
+			els.aside.append( el( 'h2', str.history ), ol );
 		}
 	};
 	const loadHistory = async ( item ) => {
@@ -624,7 +710,7 @@
 			return n;
 		};
 		const line = ( chars, tag, word ) => {
-			const p = el( 'p', '', { class: 'babilim-ed-source', dir: 'auto' } );
+			const p = el( 'p', '', { class: 'babilim-ed-source', dir: 'auto', lang: 'en' } );
 			const mid = part( chars, tag, word );
 			p.append( el( 'span', chars.slice( 0, head ).join( '' ) ) );
 			if ( mid ) {
@@ -648,7 +734,7 @@
 	};
 	const card = ( title, body, label, text ) => {
 		const sec = el( 'section' );
-		const h = el( 'h3', title );
+		const h = el( 'h2', title );
 		const b = el( 'button', label, { type: 'button', class: 'button button-compact' } );
 		b.addEventListener( 'click', () => choice( text ) );
 		sec.append( h, el( 'p', body || str.noTranslation, { dir: 'auto', lang } ), b );
@@ -678,7 +764,7 @@
 		const diff = el( 'div', '', { class: 'babilim-ed-diff' } );
 		[ [ str.oldOriginal, was ], [ str.newOriginal, now ] ].forEach( ( [ title, line ] ) => {
 			const d = el( 'div' );
-			d.append( el( 'h3', title ), line );
+			d.append( el( 'h2', title ), line );
 			diff.append( d );
 		} );
 		// What is live now for the new string (the owner may have published a text for it already), else the catalog's.
@@ -723,7 +809,6 @@
 
 	const guard = ( e ) => {
 		e.preventDefault();
-		e.returnValue = '';
 	};
 	const arm = () => {
 		if ( ! armed ) {
@@ -1075,9 +1160,9 @@
 		};
 		e.replaceChildren();
 		if ( '' !== item.msgid_plural ) {
-			e.append( el( 'h3', str.sourceSingular ), el( 'p', item.msgid, { class: 'babilim-ed-source', dir: 'auto' } ), el( 'h3', str.sourcePlural ), el( 'p', item.msgid_plural, { class: 'babilim-ed-source', dir: 'auto' } ) );
+			e.append( el( 'h2', str.sourceSingular ), el( 'p', item.msgid, { class: 'babilim-ed-source', dir: 'auto', lang: 'en' } ), el( 'h2', str.sourcePlural ), el( 'p', item.msgid_plural, { class: 'babilim-ed-source', dir: 'auto', lang: 'en' } ) );
 		} else {
-			e.append( el( 'h3', str.original ), el( 'p', item.msgid, { class: 'babilim-ed-source', dir: 'auto' } ) );
+			e.append( el( 'h2', str.original ), el( 'p', item.msgid, { class: 'babilim-ed-source', dir: 'auto', lang: 'en' } ) );
 		}
 		if ( n >= 4 ) {
 			const head = el( 'div', '', { class: 'babilim-ed-labelrow' } );
@@ -1091,8 +1176,8 @@
 				const ta = field( i, text );
 				ta.setAttribute( 'aria-labelledby', t.id );
 				p.append( ta );
-				t.addEventListener( 'click', () => selectTab( i, false ) );
-				p.addEventListener( 'beforematch', () => selectTab( i, false ) );
+				t.addEventListener( 'click', () => selectTab( i, false, true ) );
+				p.addEventListener( 'beforematch', () => selectTab( i, false, true ) );
 				tabLabel.push( formLabel( i ) );
 				tabs.push( t );
 				panels.push( p );

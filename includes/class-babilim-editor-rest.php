@@ -9,8 +9,8 @@
  * nonce is an anonymous one and fails the capability check. Every route
  * checks the capability itself (permission_callback), never just "logged
  * in": `manage_options`, or `manage_network_options` on multisite. Arguments
- * are declared with validate_callback and sanitize_callback; a translation
- * text is deliberately not run through sanitize_text_field (it would strip
+ * are declared with JSON Schema keywords (enum, pattern, maxLength, ...) that
+ * core validates; a translation text is deliberately not run through sanitize_text_field (it would strip
  * the markup a translation must keep), it is only cast to strings and left
  * to Babilim_Override_Check. Errors are WP_Error with an explicit status;
  * nothing returned carries a file path or the site token.
@@ -45,132 +45,101 @@ final class Babilim_Editor_Rest {
 	 * `rest_api_init` callback.
 	 */
 	public function register(): void {
-		$scope = array(
+		// Checks are core JSON Schema keywords (enum, pattern, min/max): core validates them before any
+		// callback runs and OPTIONS publishes them. `\z`, not `$`: a trailing newline must not pass.
+		$scope        = array(
 			'kind'   => array(
-				'required'          => true,
-				'type'              => 'string',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return 'plugin' === $v || 'theme' === $v;
-				},
+				'required' => true,
+				'type'     => 'string',
+				'enum'     => array( 'plugin', 'theme' ),
 			),
 			'slug'   => array(
-				'required'          => true,
-				'type'              => 'string',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => array( __CLASS__, 'is_name' ),
+				'required' => true,
+				'type'     => 'string',
+				'pattern'  => '^[A-Za-z0-9_-]+\z',
 			),
 			'domain' => array(
-				'required'          => false,
-				'type'              => 'string',
-				'default'           => '',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return '' === $v || self::is_name( $v );
-				},
+				'required' => false,
+				'type'     => 'string',
+				'default'  => '',
+				'pattern'  => '^[A-Za-z0-9_-]*\z',
 			),
 			'locale' => array(
-				'required'          => true,
-				'type'              => 'string',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && Babilim_Paths::is_safe_locale( $v );
-				},
+				'required' => true,
+				'type'     => 'string',
+				'pattern'  => '^[A-Za-z0-9_@-]+\z',
 			),
 		);
-		$ref   = array(
-			'required'          => true,
-			'type'              => 'string',
-			'sanitize_callback' => array( __CLASS__, 'clean' ),
-			'validate_callback' => static function ( $v ): bool {
-				return is_string( $v ) && 1 === preg_match( '/^[0-9a-f]{64}$/D', $v );
-			},
+		$ref          = array(
+			'required' => true,
+			'type'     => 'string',
+			'pattern'  => '^[0-9a-f]{64}\z',
 		);
-		$msgstr = array(
+		$msgstr       = array(
 			'required'          => true,
 			'type'              => 'array',
-			'items'             => array( 'type' => 'string' ),
+			'minItems'          => 1,
+			'maxItems'          => 6,
+			'items'             => array(
+				'type'      => 'string',
+				'maxLength' => 65535,
+			),
+			// A sanitize_callback replaces core's default parse (which would validate the schema), so validation is asked for explicitly.
+			// Core's array check turns a plain string into a list (wp_parse_list) and passes it, while the sanitizer below would store the whole string as one form: only a real array may reach the schema check.
+			'validate_callback' => static function ( $v, $request, $key ) {
+				return is_array( $v ) ? rest_validate_request_arg( $v, $request, $key ) : false;
+			},
+			// Keys dropped: the forms are a list.
 			'sanitize_callback' => static function ( $v ): array {
 				return array_values( array_map( 'strval', (array) $v ) );
 			},
-			'validate_callback' => static function ( $v ): bool {
-				if ( ! is_array( $v ) || array() === $v || count( $v ) > 6 ) {
-					return false;
-				}
-				foreach ( $v as $form ) {
-					if ( ! is_string( $form ) || strlen( $form ) > 65535 ) {
-						return false;
-					}
-				}
-				return true;
-			},
 		);
-		$list   = array(
+		$list         = array(
 			'filter' => array(
-				'required'          => false,
-				'type'              => 'string',
-				'default'           => 'all',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && in_array( $v, Babilim_Editor::FILTERS, true );
-				},
+				'required' => false,
+				'type'     => 'string',
+				'default'  => 'all',
+				'enum'     => Babilim_Editor::FILTERS,
 			),
 			'source' => array(
-				'required'          => false,
-				'type'              => 'string',
-				'default'           => '',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && ( '' === $v || in_array( $v, Babilim_Editor::SOURCES, true ) );
-				},
+				'required' => false,
+				'type'     => 'string',
+				'default'  => '',
+				'enum'     => array_merge( array( '' ), Babilim_Editor::SOURCES ),
 			),
 			'sort'   => array(
-				'required'          => false,
-				'type'              => 'string',
-				'default'           => 'default',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && in_array( $v, Babilim_Editor::SORTS, true );
-				},
+				'required' => false,
+				'type'     => 'string',
+				'default'  => 'default',
+				'enum'     => Babilim_Editor::SORTS,
 			),
 			'search' => array(
 				'required'          => false,
 				'type'              => 'string',
 				'default'           => '',
+				'maxLength'         => 200,
+				'validate_callback' => 'rest_validate_request_arg',
 				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && strlen( $v ) <= 200;
-				},
 			),
 			'page'   => array(
-				'required'          => false,
-				'type'              => 'integer',
-				'default'           => 1,
-				'sanitize_callback' => 'absint',
-				'validate_callback' => static function ( $v ): bool {
-					return ( is_int( $v ) || ( is_string( $v ) && 1 === preg_match( '/^\d{1,6}$/D', $v ) ) ) && (int) $v >= 1;
-				},
+				'required' => false,
+				'type'     => 'integer',
+				'default'  => 1,
+				'minimum'  => 1,
+				'maximum'  => 999999,
 			),
 			'ref'    => array(
-				'required'          => false,
-				'type'              => 'string',
-				'default'           => '',
-				'sanitize_callback' => array( __CLASS__, 'clean' ),
-				'validate_callback' => static function ( $v ): bool {
-					return is_string( $v ) && ( '' === $v || 1 === preg_match( '/^[0-9a-f]{64}$/D', $v ) );
-				},
+				'required' => false,
+				'type'     => 'string',
+				'default'  => '',
+				'pattern'  => '^([0-9a-f]{64})?\z',
 			),
 		);
-		$optional_ref = array(
-			'required'          => false,
-			'type'              => 'string',
-			'default'           => '',
-			'sanitize_callback' => array( __CLASS__, 'clean' ),
-			'validate_callback' => $list['ref']['validate_callback'],
-		);
+		$optional_ref = $list['ref'];
 
 		$routes = array(
 			array( '/editor/strings', WP_REST_Server::READABLE, 'strings', $scope + $list ),
+			array( '/editor/string-list', WP_REST_Server::CREATABLE, 'string-list', $scope ),
 			array( '/editor/history', WP_REST_Server::READABLE, 'history', $scope + array( 'ref' => $ref ) ),
 			array( '/editor/draft', WP_REST_Server::CREATABLE, 'draft', $scope + array( 'ref' => $ref, 'msgstr' => $msgstr ) ),
 			array( '/editor/discard', WP_REST_Server::CREATABLE, 'discard', $scope + array( 'ref' => $optional_ref ) ),
@@ -208,18 +177,14 @@ final class Babilim_Editor_Rest {
 	}
 
 	/**
-	 * @param mixed $v Value.
-	 */
-	public static function is_name( $v ): bool {
-		return is_string( $v ) && Babilim_Paths::is_safe_name( $v );
-	}
-
-	/**
-	 * @param string          $action  strings|history|draft|discard|publish|remove.
+	 * @param string          $action  strings|string-list|history|draft|discard|publish|remove.
 	 * @param WP_REST_Request $request Request.
 	 * @return WP_REST_Response|WP_Error
 	 */
 	private function handle( string $action, $request ) {
+		if ( 'string-list' === $action && ! wp_verify_nonce( (string) $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) ) {
+			return new WP_Error( 'rest_cookie_invalid_nonce', __( 'The editor session has expired.', 'babilim' ), array( 'status' => 403 ) );
+		}
 		try {
 			$editor = call_user_func( $this->editor );
 			$scope  = $editor->scope( (string) $request->get_param( 'kind' ), (string) $request->get_param( 'slug' ), (string) $request->get_param( 'domain' ), (string) $request->get_param( 'locale' ) );
@@ -242,6 +207,9 @@ final class Babilim_Editor_Rest {
 							)
 						)
 					);
+				case 'string-list':
+					$result = $editor->fetch_string_list( $scope );
+					break;
 				case 'history':
 					return rest_ensure_response( array( 'history' => $editor->history( $scope, $ref ) ) );
 				case 'draft':

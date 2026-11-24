@@ -25,6 +25,9 @@ interface Babilim_Overrides {
 	/** Entries kept in a row's `history`, newest first. */
 	const HISTORY_MAX = 10;
 
+	/** Rows per statement in put_many(). */
+	const BATCH_MAX = 200;
+
 	/**
 	 * Whether the table exists.
 	 *
@@ -57,6 +60,18 @@ interface Babilim_Overrides {
 	public function put( array $scope, array $row, bool $draft = false ): bool;
 
 	/**
+	 * Upserts many rows of one scope the same way put() does one, in batches of
+	 * at most BATCH_MAX rows per statement. Rows already written stay when a
+	 * later batch fails; the caller may repeat them with put().
+	 *
+	 * @param array $scope Scope.
+	 * @param array $rows  Rows, as for put().
+	 * @param bool  $draft Store as draft rows.
+	 * @return bool
+	 */
+	public function put_many( array $scope, array $rows, bool $draft = false ): bool;
+
+	/**
 	 * Sets only status, match_ref and component_version of one saved row,
 	 * keyed by (scope, ref, plural_index); every other column, the text and
 	 * its history above all, stays as it is now. A row that is gone or was
@@ -67,6 +82,9 @@ interface Babilim_Overrides {
 	 * @return bool False only when the store failed.
 	 */
 	public function mark( array $scope, array $row ): bool;
+
+	/** Records feedback for all saved forms of this string on the same base build. */
+	public function mark_feedback( array $scope, string $ref, string $build ): bool;
 
 	/**
 	 * Deletes every plural form of one string.
@@ -79,11 +97,28 @@ interface Babilim_Overrides {
 	public function delete( array $scope, string $ref, bool $draft = false ): bool;
 
 	/**
-	 * Every scope that has at least one saved row.
+	 * Every scope that has at least one saved row (with this status, when given).
 	 *
+	 * @param string $status Only scopes with a saved row of this status; '' for any.
 	 * @return array<int,array{kind:string,slug:string,domain:string,locale:string}>
 	 */
-	public function scopes(): array;
+	public function scopes( string $status = '' ): array;
+
+	/**
+	 * Each scope with each component_version its rows (not switched off) carry.
+	 *
+	 * @return array<int,array{kind:string,slug:string,domain:string,locale:string,component_version:string}>
+	 */
+	public function scope_versions(): array;
+
+	/**
+	 * Scopes with a saved editor row that may still be shared: active, on a
+	 * Babilim build, edited at or after $since, feedback not yet sent for its build.
+	 *
+	 * @param string $since Lower bound of modified_gmt.
+	 * @return array<int,array{kind:string,slug:string,domain:string,locale:string}>
+	 */
+	public function feedback_scopes( string $since ): array;
 
 	/**
 	 * Deletes every row, saved and draft, of every scope.

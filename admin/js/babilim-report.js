@@ -16,7 +16,6 @@
 	var panel = null;
 	var body = null;
 	var selected = null;
-	var opener = null;
 
 	var SHOW_MAX = 300;
 	var MIN_QUERY = 2;
@@ -68,36 +67,10 @@
 		body.appendChild( close );
 	}
 
+	// The dialog's close event (Esc, the Close buttons) does the clean-up; the browser gives focus back to the toolbar entry.
 	function closePanel() {
 		if ( panel ) {
-			panel.remove();
-		}
-		panel = null;
-		body = null;
-		selected = null;
-		if ( opener && opener.focus && document.body.contains( opener ) ) {
-			opener.focus();
-		}
-		opener = null;
-	}
-
-	// Keeps Tab and Shift+Tab inside the open dialog.
-	function trapTab( event ) {
-		var items = panel.querySelectorAll( 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])' );
-		if ( ! items.length ) {
-			event.preventDefault();
-			panel.focus();
-			return;
-		}
-		var first = items[ 0 ];
-		var last = items[ items.length - 1 ];
-		var active = document.activeElement;
-		if ( event.shiftKey && ( active === first || active === panel || ! panel.contains( active ) ) ) {
-			event.preventDefault();
-			last.focus();
-		} else if ( ! event.shiftKey && ( active === last || ! panel.contains( active ) ) ) {
-			event.preventDefault();
-			first.focus();
+			panel.close();
 		}
 	}
 
@@ -265,17 +238,21 @@
 		body.appendChild( send );
 	}
 
-	function openPanel( trigger ) {
+	function openPanel() {
 		if ( panel ) {
 			return;
 		}
-		panel = el( 'div', '', {
+		// A native modal <dialog>: the browser makes the page behind inert, keeps Tab inside, handles Esc and returns focus.
+		panel = el( 'dialog', '', {
 			id: 'babilim-report-panel',
-			role: 'dialog',
-			'aria-modal': 'true',
 			'aria-labelledby': 'babilim-report-title',
-			tabindex: '-1',
-			style: 'position:fixed;top:40px;inset-inline-end:20px;z-index:100000;width:380px;max-width:calc(100vw - 40px);box-sizing:border-box;max-height:80vh;overflow:auto;background:#fff;color:#1d2327;border:1px solid #c3c4c7;box-shadow:0 2px 8px rgba(0,0,0,.2);padding:12px;'
+			style: 'position:fixed;margin:0;top:calc(var(--wp-admin--admin-bar--height,32px) + 8px);inset-inline-end:20px;inset-inline-start:auto;width:380px;max-width:calc(100vw - 40px);box-sizing:border-box;max-height:80dvh;overflow:auto;overscroll-behavior:contain;background:#fff;color:#1d2327;border:1px solid #c3c4c7;box-shadow:0 2px 8px rgba(0,0,0,.2);padding:12px;'
+		} );
+		panel.addEventListener( 'close', function () {
+			panel.remove();
+			panel = null;
+			body = null;
+			selected = null;
 		} );
 		var head = el( 'div', '', { style: 'display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;' } );
 		head.appendChild( el( 'strong', S.title, { id: 'babilim-report-title' } ) );
@@ -286,28 +263,19 @@
 		body = el( 'div' );
 		panel.appendChild( body );
 		document.body.appendChild( panel );
-		opener = trigger || null;
 		showSearch();
+		panel.showModal();
 		var first = panel.querySelector( 'input' );
-		( first || panel ).focus();
+		if ( first ) {
+			first.focus();
+		}
 	}
-
-	document.addEventListener( 'keydown', function ( event ) {
-		if ( ! panel ) {
-			return;
-		}
-		if ( 'Escape' === event.key ) {
-			closePanel();
-		} else if ( 'Tab' === event.key ) {
-			trapTab( event );
-		}
-	} );
 
 	document.addEventListener( 'click', function ( event ) {
 		var target = event.target.closest( '#wp-admin-bar-babilim-report > a' );
 		if ( target ) {
 			event.preventDefault();
-			openPanel( target );
+			openPanel();
 		}
 	} );
 }() );

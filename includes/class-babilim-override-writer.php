@@ -155,6 +155,11 @@ final class Babilim_Override_Writer {
 		return isset( $this->dirty()[ self::key( $scope ) ] );
 	}
 
+	/** Queues a scope before changing the rows its served files depend on. */
+	public function mark_dirty( array $scope ): bool {
+		return self::valid( $scope ) && $this->mark( $scope, true );
+	}
+
 	// -- generation -----------------------------------------------------
 
 	private function write( array $scope ): Babilim_Result {
@@ -300,16 +305,16 @@ final class Babilim_Override_Writer {
 
 	// -- adoption -------------------------------------------------------
 
-	/**
-	 * @param array $scope Scope.
-	 * @return int|null Strings imported; null when a file could not be backed up or read.
-	 */
-	private function take_over( array $scope ): ?int {
-		$foreign = $this->foreign( $scope );
-		if ( array() === $foreign ) {
-			return 0;
-		}
+	/** @return array<string|int,string[]> Texts in custom files pending adoption, keyed by context and msgid. */
+	public function pending_texts( array $scope ): array {
+		return $this->foreign_texts( $this->foreign( $scope ) );
+	}
 
+	/**
+	 * @param array<string,string> $foreign Custom files pending adoption.
+	 * @return array<string|int,string[]>
+	 */
+	private function foreign_texts( array $foreign ): array {
 		$strings = array(); // key => forms (key is `ctx EOT msgid`).
 		$source  = isset( $foreign['mo'] ) ? $foreign['mo'] : ( $foreign['l10n.php'] ?? null );
 		if ( null !== $source ) {
@@ -332,6 +337,19 @@ final class Babilim_Override_Writer {
 			}
 		}
 
+		return $strings;
+	}
+
+	/**
+	 * @param array $scope Scope.
+	 * @return int|null Strings imported; null when a file could not be backed up or read.
+	 */
+	private function take_over( array $scope ): ?int {
+		$foreign = $this->foreign( $scope );
+		if ( array() === $foreign ) {
+			return 0;
+		}
+		$strings = $this->foreign_texts( $foreign );
 		foreach ( $foreign as $ext => $path ) {
 			$bytes = $this->fs->get( $path );
 			if ( ! is_string( $bytes ) ) {
@@ -350,6 +368,7 @@ final class Babilim_Override_Writer {
 		$count = 0;
 		$now   = gmdate( 'Y-m-d H:i:s' );
 		foreach ( $strings as $key => $forms ) {
+			$key   = (string) $key; // An all-digit msgid came back as an int array key.
 			$at    = strpos( $key, "\x04" );
 			$ctx   = false === $at ? '' : substr( $key, 0, $at );
 			$msgid = false === $at ? $key : substr( $key, $at + 1 );
@@ -416,7 +435,7 @@ final class Babilim_Override_Writer {
 			return $first;
 		}
 		foreach ( $this->fs->list( $dir, $base . '.*' ) as $name ) {
-			if ( substr( $name, -strlen( $ext ) - 1 ) === '.' . $ext && $bytes === $this->fs->get( $dir . '/' . $name ) ) {
+			if ( str_ends_with( $name, '.' . $ext ) && $bytes === $this->fs->get( $dir . '/' . $name ) ) {
 				return '';
 			}
 		}
@@ -451,7 +470,7 @@ final class Babilim_Override_Writer {
 		if ( ! is_string( $bytes ) ) {
 			return '';
 		}
-		if ( '.json' === substr( $path, -5 ) ) {
+		if ( str_ends_with( $path, '.json' ) ) {
 			$decoded = json_decode( $bytes, true );
 			return is_array( $decoded ) && is_string( $decoded['generator'] ?? null ) ? trim( $decoded['generator'] ) : '';
 		}
@@ -512,10 +531,13 @@ final class Babilim_Override_Writer {
 		return is_array( $stored ) ? $stored : array();
 	}
 
-	private function mark( array $scope, bool $dirty ): void {
+	private function mark( array $scope, bool $dirty ): bool {
 		$all = $this->dirty();
 		$key = self::key( $scope );
 		if ( $dirty ) {
+			if ( isset( $all[ $key ] ) ) {
+				return true;
+			}
 			$all[ $key ] = array(
 				'kind'   => $scope['kind'],
 				'slug'   => $scope['slug'],
@@ -525,12 +547,11 @@ final class Babilim_Override_Writer {
 		} elseif ( isset( $all[ $key ] ) ) {
 			unset( $all[ $key ] );
 		} else {
-			return;
+			return true;
 		}
 		if ( array() === $all ) {
-			delete_site_option( self::DIRTY_OPTION );
-		} else {
-			update_site_option( self::DIRTY_OPTION, $all );
+			return delete_site_option( self::DIRTY_OPTION );
 		}
+		return update_site_option( self::DIRTY_OPTION, $all );
 	}
 }

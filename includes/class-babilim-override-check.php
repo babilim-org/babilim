@@ -275,7 +275,7 @@ final class Babilim_Override_Check {
 	 */
 	private static function markup_copied( string $text, array $pieces, string $tail ): bool {
 		if ( '' !== $tail ) {
-			if ( substr( $text, -strlen( $tail ) ) !== $tail ) {
+			if ( ! str_ends_with( $text, $tail ) ) {
 				return false;
 			}
 			$text = substr( $text, 0, -strlen( $tail ) );

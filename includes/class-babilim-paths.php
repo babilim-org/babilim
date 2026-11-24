@@ -35,6 +35,7 @@ final class Babilim_Paths {
 		'custom/_backup/plugins',
 		'custom/_backup/themes',
 		'_versions',
+		'_strings',
 	);
 
 	/**
@@ -576,6 +577,10 @@ final class Babilim_Paths {
 		return (string) preg_replace( '#/+#', '/', $path );
 	}
 
+	public static function strings_file( string $kind, string $slug ): string {
+		return self::dir( '_strings' ) . "/{$kind}-{$slug}.json";
+	}
+
 	/**
 	 * The extension half of is_allowed(). See that method's docblock
 	 * for the full set of forms this allows.
@@ -585,6 +590,10 @@ final class Babilim_Paths {
 	 * @return bool
 	 */
 	private static function has_allowed_extension( string $normalized, string $root ): bool {
+		if ( 0 === strpos( $normalized, $root . '/_strings/' ) ) {
+			return dirname( $normalized ) === $root . '/_strings'
+				&& 1 === preg_match( '/^(?:plugin|theme)-[A-Za-z0-9_-]+(?:\.tmp-[0-9a-f]{16})?\.json$/D', basename( $normalized ) );
+		}
 		$basename = basename( $normalized );
 		if ( '' === $basename ) {
 			return false;

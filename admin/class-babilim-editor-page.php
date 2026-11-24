@@ -53,11 +53,23 @@ final class Babilim_Editor_Page {
 	 * The page body for the current request.
 	 *
 	 * @param Babilim_Editor $editor Editor service.
+	 * @param callable|null  $loco_factory Local import service factory.
+	 * @param callable|null  $notices List notice renderer.
 	 */
-	public static function render( Babilim_Editor $editor ): string {
+	public static function render( Babilim_Editor $editor, ?callable $loco_factory = null, ?callable $notices = null ): string {
 		$q = self::query();
 		if ( '' === $q['kind'] && '' === $q['slug'] && '' === $q['locale'] ) {
-			return self::render_list( $editor );
+			$loco = null === $loco_factory ? null : $loco_factory();
+			if ( null !== $loco && 'preview' === $q['loco'] ) {
+				$counts = $loco->preview();
+				return self::loco_preview( $counts, $loco->warning() );
+			}
+			$offered = null === $loco ? 0 : $loco->offered();
+			$notice  = null === $notices ? '' : $notices();
+			if ( null !== $loco && '' !== $loco->warning() ) {
+				$notice .= '<div class="notice notice-warning inline"><p>' . esc_html( $loco->warning() ) . '</p></div>';
+			}
+			return self::render_list( $editor, $notice, $offered );
 		}
 		$scope = self::resolve( $editor, $q );
 		if ( null === $scope ) {
@@ -84,6 +96,7 @@ final class Babilim_Editor_Page {
 			'restUrl'  => rest_url( 'babilim/v1/' ),
 			'nonce'    => wp_create_nonce( 'wp_rest' ),
 			'nonceUrl' => admin_url( 'admin-ajax.php?action=rest-nonce' ),
+			'translationsUrl' => admin_url( 'admin.php?page=' . Babilim_Admin::MENU_SLUG ),
 			'scope'    => $scope,
 			'nplurals' => Babilim_Plural_Forms::nplurals( Babilim_Plural_Forms::header( $scope['locale'] ) ),
 			'localeName' => Babilim_Locale_Label::display_name( $scope['locale'] ),
@@ -106,7 +119,7 @@ final class Babilim_Editor_Page {
 	}
 
 	/**
-	 * @return array{kind:string,slug:string,domain:string,locale:string,ref:string}
+	 * @return array{kind:string,slug:string,domain:string,locale:string,ref:string,loco:string}
 	 */
 	private static function query(): array {
 		$get = static function ( string $key ): string {
@@ -124,6 +137,7 @@ final class Babilim_Editor_Page {
 			'domain' => $get( 'domain' ),
 			'locale' => $get( 'locale' ),
 			'ref'    => $get( 'ref' ),
+			'loco'   => $get( 'loco' ),
 		);
 	}
 
@@ -161,8 +175,49 @@ final class Babilim_Editor_Page {
 		return $editor->scope( $q['kind'], $q['slug'], $domain, $q['locale'] );
 	}
 
-	private static function render_list( Babilim_Editor $editor ): string {
-		$html = '<div class="wrap"><h1>' . esc_html__( 'Edit translations', 'babilim' ) . '</h1><hr class="wp-header-end" />';
+	/**
+	 * @param array<string,int> $counts Import counters.
+	 * @return string[]
+	 */
+	public static function loco_counts( array $counts ): array {
+		return array(
+			sprintf( /* translators: %s: Number of files. */ __( 'Files: %s.', 'babilim' ), number_format_i18n( $counts['files'] ) ),
+			sprintf( /* translators: %s: Number of strings imported. */ __( 'Imported: %s.', 'babilim' ), number_format_i18n( $counts['imported'] ) ),
+			sprintf( /* translators: %s: Number of strings with identical translations. */ __( 'Already identical: %s.', 'babilim' ), number_format_i18n( $counts['same'] ) ),
+			sprintf( /* translators: %s: Number of strings whose existing translation or draft was kept. */ __( 'Kept your existing translation: %s.', 'babilim' ), number_format_i18n( $counts['conflicts'] ) ),
+			sprintf( /* translators: %s: Number of imported strings missing from the current list. */ __( 'Imported, but no longer used in this version: %s.', 'babilim' ), number_format_i18n( $counts['orphans'] ) ),
+			sprintf( /* translators: %s: Number of strings kept as drafts. */ __( 'Kept as drafts to fix: %s.', 'babilim' ), number_format_i18n( $counts['unchecked'] ) ),
+			sprintf( /* translators: %s: Number of strings skipped. */ __( 'Skipped: %s.', 'babilim' ), number_format_i18n( $counts['skipped'] ) ),
+		);
+	}
+
+	private static function loco_preview( array $counts, string $warning ): string {
+		$html = '<div class="wrap" data-babilim-dialog="1"><h1>' . esc_html__( 'Review the import', 'babilim' ) . '</h1>';
+		if ( '' !== $warning ) {
+			$html .= '<div class="notice notice-warning inline"><p>' . esc_html( $warning ) . '</p></div>';
+		}
+		$html .= '<ul>';
+		foreach ( self::loco_counts( $counts ) as $line ) {
+			$html .= '<li>' . esc_html( $line ) . '</li>';
+		}
+		$html .= '</ul><p>' . esc_html__( "Loco Translate's files are not changed. Deactivate Loco Translate yourself when you are ready.", 'babilim' ) . '</p>';
+		if ( $counts['files'] > 0 ) {
+			$html .= '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">'
+				. '<input type="hidden" name="action" value="babilim_loco_import" />'
+				. wp_nonce_field( 'babilim_loco_import', '_wpnonce', true, false )
+				. '<button type="submit" class="button button-primary">' . esc_html__( 'Import from Loco Translate', 'babilim' ) . '</button></form>';
+		}
+		return $html . '</div>';
+	}
+
+	private static function render_list( Babilim_Editor $editor, string $notices, int $loco_files ): string {
+		$html = '<div class="wrap"><h1>' . esc_html__( 'Edit translations', 'babilim' ) . '</h1><hr class="wp-header-end" />' . $notices;
+		if ( $loco_files > 0 ) {
+			/* translators: %s: Number of Loco Translate files. */
+			$message = sprintf( _n( 'Found %s Loco Translate file you can import.', 'Found %s Loco Translate files you can import.', $loco_files, 'babilim' ), number_format_i18n( $loco_files ) );
+			$html .= '<div class="notice notice-info inline"><p>' . esc_html( $message ) . ' <a data-babilim-dialog-link="1" href="'
+				. esc_url( admin_url( 'admin.php?page=' . self::SLUG . '&loco=preview' ) ) . '">' . esc_html__( 'Review the import', 'babilim' ) . '</a></p></div>';
+		}
 		$rows   = '';
 		$review = $editor->review_counts();
 		foreach ( $editor->components() as $c ) {
@@ -288,7 +343,7 @@ final class Babilim_Editor_Page {
 		}
 		return $html . '</select></div></div>'
 			. '<div class="babilim-ed-bench"><div class="babilim-ed-listbox"><div class="babilim-ed-cols" aria-hidden="true"><span>' . esc_html__( 'Status', 'babilim' ) . '</span><span>' . esc_html__( 'Original', 'babilim' ) . '</span><span>' . esc_html__( 'Translation', 'babilim' ) . '</span><span>' . esc_html__( 'Source', 'babilim' ) . '</span></div>'
-			. '<ul id="babilim-ed-list" class="babilim-ed-list"></ul><div id="babilim-ed-pager" class="babilim-ed-pager"></div></div>'
+			. '<ul id="babilim-ed-list" class="babilim-ed-list" role="list"></ul><div id="babilim-ed-pager" class="babilim-ed-pager"></div></div>'
 			. '<div class="babilim-ed-work"><section class="babilim-ed-main" aria-label="' . esc_attr__( 'Edit the selected string', 'babilim' ) . '"><div id="babilim-ed-review" class="babilim-ed-review"></div><div id="babilim-ed-edit" class="babilim-ed-edit"></div></section>'
 			. '<aside id="babilim-ed-aside" class="babilim-ed-aside" aria-label="' . esc_attr__( 'Details and history', 'babilim' ) . '"></aside></div></div></div>';
 	}
@@ -413,6 +468,13 @@ final class Babilim_Editor_Page {
 			'deleteAsk'      => __( 'Delete your translation of this text? It is not shown anywhere on the site.', 'babilim' ),
 			'deleted'        => __( 'Translation deleted.', 'babilim' ),
 			'noSource'       => __( 'No strings found. This plugin or theme does not ship a translation template.', 'babilim' ),
+			'getTextList'    => __( 'Get the text list from Babilim', 'babilim' ),
+			'textListDisclosure' => __( "Sends the plugin's or theme's name and version to Babilim.", 'babilim' ),
+			'checkTextList'  => __( 'Check again', 'babilim' ),
+			'textListPending' => __( 'Babilim is preparing the list. This takes a few minutes.', 'babilim' ),
+			'textListConsent' => __( 'Enable Babilim to get the text list for this plugin or theme.', 'babilim' ),
+			'textListNotWporg' => __( 'Babilim cannot list the text of this plugin or theme: it is not on WordPress.org and it ships no translation template.', 'babilim' ),
+			'textListUnavailable' => __( 'Babilim found no translatable text in this version.', 'babilim' ),
 		);
 	}
 
@@ -449,7 +511,7 @@ final class Babilim_Editor_Page {
 			. '.babilim-ed-chip{justify-self:start;padding:1px 6px;border:1px solid #c3c4c7;border-radius:9px;font-size:11px;color:#50575e;background:#fff}.babilim-ed-chip-yours{border-color:' . $accent . '}'
 			. '.babilim-ed-pager{display:flex;align-items:center;gap:.5em;padding:6px 12px}'
 			. '.babilim-ed-work{display:grid;grid-template-columns:minmax(0,1fr) 19rem;min-height:0}.babilim-ed-main,.babilim-ed-aside{padding:14px 18px}.babilim-ed-aside{border-inline-start:1px solid #c3c4c7;background:#fbfbfc}'
-			. '.babilim-ed-edit h3,.babilim-ed-aside h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#646970}'
+			. '.babilim-ed-edit h2,.babilim-ed-aside h2{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#646970}'
 			. '.babilim-ed-source{margin:0 0 12px;padding:8px 10px;background:#f6f7f7;border:1px solid #e0e0e0;white-space:pre-wrap;overflow-wrap:anywhere}'
 			. '.babilim-ed-labelrow{display:flex;align-items:baseline;gap:10px;margin-block-end:4px}.babilim-ed-labelrow label{font-weight:600}.babilim-ed-labelrow .button-link{margin-inline-start:auto;font-size:12px}'
 			. '.babilim-ed-edit textarea{display:block;width:100%;box-sizing:border-box;min-height:4.5em;margin-block-end:8px;resize:vertical}.babilim-ed-edit [aria-invalid=true]{border-color:#cc1818;box-shadow:0 0 0 1px #cc1818}'
@@ -457,20 +519,20 @@ final class Babilim_Editor_Page {
 			. '.babilim-ed-state{margin:6px 0 0;padding:6px 10px;border-inline-start:4px solid #f0b849;background:#fef8ee}.babilim-ed-state[hidden]{display:none}.babilim-ed-state p{margin:0}.babilim-ed-state p+p{margin-block-start:3px}.babilim-ed-state.is-problem{border-inline-start-color:#cc1818;background:#fcf0f0}'
 			. '.babilim-ed-actions .button[hidden]{display:none}.babilim-ed-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-block-start:10px}.babilim-ed-keys{display:flex;flex-wrap:wrap;gap:4px 12px;color:#646970;font-size:12px}.babilim-ed-keys kbd{padding:2px 4px;border:1px solid #c3c4c7;border-radius:3px;background:#f6f7f7;font-size:11px}'
 			. '.babilim-ed-tabs{display:flex;overflow-x:auto;margin-block-end:8px;border-block-end:1px solid #c3c4c7}.babilim-ed-tabs [role=tab]{position:relative;flex:none;display:inline-flex;align-items:center;gap:5px;padding:8px 12px;border:0;background:none;font:inherit;color:inherit;cursor:pointer}'
-			. '.babilim-ed-tabs [role=tab][aria-selected=true]{font-weight:600}.babilim-ed-tabs [role=tab][aria-selected=true]::after{content:"";position:absolute;inset:auto 0 0;border-block-end:3px solid ' . $accent . '}.babilim-ed-tabs .is-problem{color:#cc1818}'
+			. '.babilim-ed-tabs [role=tab][aria-selected=true]::after{content:"";position:absolute;inset:auto 0 0;border-block-end:3px solid ' . $accent . '}.babilim-ed-tabs .is-problem{color:#cc1818}'
 			. '.babilim-ed-dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;margin:0 0 16px}.babilim-ed-dl dt{color:#646970}.babilim-ed-dl dd{margin:0;overflow-wrap:anywhere}'
 			. '.babilim-ed-hist{margin:0;padding:0;list-style:none}.babilim-ed-hist li{padding:8px 0;border-block-start:1px solid #dcdcde}.babilim-ed-hist .when{display:flex;justify-content:space-between;gap:8px;color:#646970;font-size:12px}.babilim-ed-hist p{margin:3px 0 0}'
 			. '.babilim-ed-tag{padding:0 5px;border:1px solid #c3c4c7;font-size:11px;font-weight:600}.babilim-ed-tag-draft{color:#8a5c00;border-color:#f0b849;background:#fef8ee}'
-			. '.babilim-ed-review:not(:empty){margin-block-end:14px}.babilim-ed-review .notice{margin:0 0 12px}.babilim-ed-review h2,.babilim-ed-review h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#646970}'
+			. '.babilim-ed-review:not(:empty){margin-block-end:14px}.babilim-ed-review .notice{margin:0 0 12px}.babilim-ed-review h2{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#646970}'
 			. '.babilim-ed-diff,.babilim-ed-choice{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:0 0 12px}.babilim-ed-diff .babilim-ed-source{margin:0}'
 			. '.babilim-ed-review del{background:#fcf0f0;color:#8a1f11;text-decoration:line-through}.babilim-ed-review ins{background:#eff9f1;color:#1a6b34;text-decoration:underline;text-decoration-thickness:2px}'
-			. '.babilim-ed-choice section{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid #c3c4c7}.babilim-ed-choice h3{color:#1d2327;text-transform:none;letter-spacing:0;font-size:13px}.babilim-ed-choice p{flex:1;margin:0;overflow-wrap:anywhere}.babilim-ed-choice .button{align-self:start}'
+			. '.babilim-ed-choice section{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid #c3c4c7}.babilim-ed-choice h2{color:#1d2327;text-transform:none;letter-spacing:0;font-size:13px}.babilim-ed-choice p{flex:1;margin:0;overflow-wrap:anywhere}.babilim-ed-choice .button{align-self:start}'
 			. '.babilim-ed-orphan-note{margin:0 0 10px}'
 			. '@media (max-width:782px){'
 			. '.babilim-ed-diff,.babilim-ed-choice{grid-template-columns:minmax(0,1fr)}'
 			. '.babilim-ed{height:auto;min-height:0;padding-block-end:7rem}'
 			. '.babilim-ed-save{position:fixed;inset-inline:0;bottom:0;z-index:5;margin:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:#fff;border-block-start:1px solid #c3c4c7;box-shadow:0 -2px 6px rgba(0,0,0,.06)}'
-			. '#babilim-ed-discard-all{display:none}.babilim-ed-save .button-primary{margin-inline-start:auto}'
+			. 'html:has(.babilim-ed){scroll-padding-block-end:9rem}.babilim-ed-save .button-primary{margin-inline-start:auto}'
 			. '.babilim-ed-field,.babilim-ed-field input[type=search],.babilim-ed-field select{width:100%;min-width:0}.babilim-ed-filter{flex-wrap:nowrap;overflow-x:auto;width:100%;min-width:0}.babilim-ed-filter label{flex:none}'
 			. '.babilim-ed-bench{display:block}.babilim-ed-listbox{max-height:45dvh;border-block-end-width:1px}.babilim-ed-cols{display:none}'
 			. '.babilim-ed-list button{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"o o" "t t" "s c";row-gap:2px;padding-block:8px}.babilim-ed-list button>span{white-space:normal}'

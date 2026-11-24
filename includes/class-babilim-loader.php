@@ -1,6 +1,8 @@
 <?php
 /**
- * The translation-loading layer: four WordPress core filters plus the
+ * The translation-loading layer: four WordPress core filters, the
+ * `load_textdomain` action (records each load's original file so the
+ * outer fill-in only answers core's just-in-time load), plus the
  * `default` text domain's supplement loader.
  *
  * Every public callback here wraps its body in a `\Throwable` catch-all,
@@ -72,6 +74,15 @@ final class Babilim_Loader {
 	private const KINDS = array( 'plugins', 'themes' );
 
 	/**
+	 * Priority of the lang_dir_for_domain and load_translation_file
+	 * callbacks: after every ordinary plugin (the default 10 or a small
+	 * number), so a directory or file another plugin resolved is seen and
+	 * kept. Ten below PHP_INT_MAX leaves room for code a site deliberately
+	 * runs last of all.
+	 */
+	private const LATE = PHP_INT_MAX - 10;
+
+	/**
 	 * Recursive-lock flags, keyed by domain -- load_textdomain() itself
 	 * applies the `load_translation_file` filter again for the domain
 	 * it's loading, so without this a layer load below would recurse
@@ -80,6 +91,24 @@ final class Babilim_Loader {
 	 * @var array<string,bool>
 	 */
 	private static $translation_lock = array();
+
+	/**
+	 * Directory lang_dir_for_domain() last answered, keyed
+	 * "{domain}\0{locale}" -- the one core's just-in-time loader builds
+	 * its candidate from (`{dir}{domain}-{locale}.mo`, or `{dir}{locale}.mo`
+	 * for a theme's own directory).
+	 *
+	 * @var array<string,string>
+	 */
+	private static $jit_dirs = array();
+
+	/**
+	 * Original file of the current outer load_textdomain() per domain,
+	 * from the `load_textdomain` action (see note_load_textdomain()).
+	 *
+	 * @var array<string,string>
+	 */
+	private static $originals = array();
 
 	/**
 	 * How many times this class's own is_dir()/is_readable() probes have
@@ -111,13 +140,36 @@ final class Babilim_Loader {
 		self::$registered = true;
 		++self::$run_count;
 
-		add_filter( 'lang_dir_for_domain', array( __CLASS__, 'lang_dir_for_domain' ), 10, 3 );
-		add_filter( 'load_translation_file', array( __CLASS__, 'load_translation_file' ), 10, 3 );
+		add_filter( 'lang_dir_for_domain', array( __CLASS__, 'lang_dir_for_domain' ), self::LATE, 3 );
+		add_filter( 'load_translation_file', array( __CLASS__, 'load_translation_file' ), self::LATE, 3 );
 		add_filter( 'load_script_translation_file', array( __CLASS__, 'load_script_translation_file' ), 10, 3 );
 		add_filter( 'load_script_translations', array( __CLASS__, 'load_script_translations' ), 10, 4 );
 
 		add_action( 'after_setup_theme', array( __CLASS__, 'load_default_supplements' ), 10, 0 );
 		add_action( 'change_locale', array( __CLASS__, 'load_default_supplements' ), 10, 1 );
+		add_action( 'load_textdomain', array( __CLASS__, 'note_load_textdomain' ), 10, 2 );
+	}
+
+	/**
+	 * `load_textdomain` action: remembers the file core is about to load
+	 * for $domain, as given before any filter rewrites it. Babilim's own
+	 * nested layer loads (domain locked) are not recorded, so the value
+	 * stays the outer load's. load_translation_file() compares its
+	 * directory with the just-in-time directory (see $jit_dirs). Records
+	 * only; same guards as the other callbacks.
+	 *
+	 * @param mixed $domain Text domain.
+	 * @param mixed $mofile Original `.mo` path.
+	 */
+	public static function note_load_textdomain( $domain, $mofile ): void {
+		try {
+			if ( is_string( $domain ) && is_string( $mofile ) && empty( self::$translation_lock[ $domain ] )
+				&& Babilim_Paths::is_safe_name( $domain ) && self::root_exists() ) {
+				self::$originals[ $domain ] = $mofile;
+			}
+		} catch ( \Throwable $e ) {
+			self::log_error( $e );
+		}
 	}
 
 	/**
@@ -126,6 +178,8 @@ final class Babilim_Loader {
 	 */
 	public static function reset_for_tests(): void {
 		self::$translation_lock = array();
+		self::$jit_dirs         = array();
+		self::$originals        = array();
 		self::$fs_probe_count   = 0;
 		self::reset_messages_cache_for_tests();
 	}
@@ -149,20 +203,19 @@ final class Babilim_Loader {
 	}
 
 	/**
-	 * `lang_dir_for_domain` filter: return WordPress core's own
-	 * registered directory unchanged whenever core already has a file
-	 * for this domain+locale there -- either the ordinary
-	 * `{domain}-{locale}` form, or (for a theme's own language directory,
-	 * which core registers without a domain prefix) the bare `{locale}`
-	 * form. Only substitute our own directory when core has nothing
-	 * registered ($path === false) or its registered location has
-	 * neither form for this locale and we do.
-	 *
-	 * When we do substitute, a site's own `custom/` override always wins
-	 * over our `babilim/` supplement (checked in that order, matching
-	 * load_translation_file()'s own layering) -- a domain with only a
-	 * `custom/` file, and no `babilim/` supplement at all, must still
-	 * trigger core's just-in-time load.
+	 * `lang_dir_for_domain` filter, run late (LATE): a directory core or
+	 * another plugin already resolved is returned unchanged, whether or
+	 * not it holds a file for this locale -- including core's fallback to
+	 * the directory load_plugin_textdomain()/load_theme_textdomain()
+	 * registered. Only when nobody resolved one ($path === false) is our
+	 * own directory offered: custom/ first, then babilim/, whichever has a
+	 * file. When a kept directory has no file, load_translation_file()
+	 * answers core's outer load with our file instead, so the domain is
+	 * still served (see there). The answer is remembered per
+	 * domain+locale: it is the directory core's just-in-time loader builds
+	 * its candidate from, which is what limits that fill-in to JIT loads.
+	 * Only the last answer is kept (last answer wins): a later lookup for
+	 * the same domain+locale replaces it, and a false answer clears it.
 	 *
 	 * The returned directory always ends with a trailing slash: core's
 	 * own JIT loader builds the candidate file path by simple
@@ -170,39 +223,49 @@ final class Babilim_Loader {
 	 * its own registered paths already do -- returning a bare directory
 	 * here would silently glue the domain onto the last path segment.
 	 *
-	 * @param string|false $path   Core's currently resolved directory, or false.
+	 * @param string|false $path   The directory resolved so far, or false.
 	 * @param string       $domain Text domain.
 	 * @param string       $locale Locale code.
 	 * @return string|false
 	 */
 	public static function lang_dir_for_domain( $path, string $domain, string $locale ) {
+		$result = $path;
 		try {
-			if ( ! Babilim_Paths::is_safe_name( $domain ) || ! Babilim_Paths::is_safe_locale( $locale ) ) {
-				return $path;
-			}
-			if ( ! self::root_exists() ) {
-				return $path;
-			}
-
-			if ( is_string( $path ) && '' !== $path ) {
-				$registered = trailingslashit( $path );
-				if ( self::has_mo_or_l10n( $registered . "{$domain}-{$locale}" )
-					|| self::has_mo_or_l10n( $registered . $locale )
-				) {
-					return $path;
-				}
-			}
-
-			foreach ( self::LAYER_TYPES as $layer_template ) {
-				foreach ( self::KINDS as $kind ) {
-					$dir = Babilim_Paths::dir( sprintf( $layer_template, $kind ) );
-					if ( self::has_mo_or_l10n( "{$dir}/{$domain}-{$locale}" ) ) {
-						return trailingslashit( $dir );
-					}
-				}
+			$result = self::resolve_lang_dir( $path, $domain, $locale );
+			if ( is_string( $result ) && '' !== $result ) {
+				self::$jit_dirs[ "{$domain}\0{$locale}" ] = trailingslashit( $result );
+			} else {
+				unset( self::$jit_dirs[ "{$domain}\0{$locale}" ] );
 			}
 		} catch ( \Throwable $e ) {
 			self::log_error( $e );
+		}
+		return $result;
+	}
+
+	/**
+	 * The directory lang_dir_for_domain() answers (see there).
+	 *
+	 * @param string|false $path   The directory resolved so far, or false.
+	 * @param string       $domain Text domain.
+	 * @param string       $locale Locale code.
+	 * @return string|false
+	 */
+	private static function resolve_lang_dir( $path, string $domain, string $locale ) {
+		if ( false !== $path || ! Babilim_Paths::is_safe_name( $domain ) || ! Babilim_Paths::is_safe_locale( $locale ) ) {
+			return $path;
+		}
+		if ( ! self::root_exists() ) {
+			return $path;
+		}
+
+		foreach ( self::LAYER_TYPES as $layer_template ) {
+			foreach ( self::KINDS as $kind ) {
+				$dir = Babilim_Paths::dir( sprintf( $layer_template, $kind ) );
+				if ( self::has_mo_or_l10n( "{$dir}/{$domain}-{$locale}" ) ) {
+					return trailingslashit( $dir );
+				}
+			}
 		}
 		return $path;
 	}
@@ -218,11 +281,27 @@ final class Babilim_Loader {
 	}
 
 	/**
-	 * `load_translation_file` filter: side-loads a site's `custom/`
+	 * `load_translation_file` filter, run late (LATE) so any rewrite by
+	 * another plugin has happened: side-loads a site's `custom/`
 	 * override and our own `babilim/` supplement, in that order (each
 	 * only when it's actually readable), then returns $file unchanged so
 	 * WordPress core still loads its own original file afterwards to
-	 * fill whatever gaps remain. The `default` domain never goes through
+	 * fill whatever gaps remain. The translation controller answers from
+	 * the file loaded first, so custom/ wins over babilim/, which wins
+	 * over $file.
+	 *
+	 * Outer fill-in (just-in-time loads only): when core's load of $file
+	 * cannot succeed (see has_file_or_sibling()), core's outer
+	 * load would fail and core would put NOOP_Translations in place of
+	 * everything loaded nested. Then the last readable layer is not
+	 * loaded nested but returned as $file, so the outer load succeeds
+	 * with it; the layers before it are still loaded nested first. This
+	 * applies only when the load's original file lies in the directory
+	 * lang_dir_for_domain() answered (is_jit_load()), so an immediate
+	 * load that core follows with another attempt (6.6's
+	 * load_plugin_textdomain()) is left to fail and move on. The sibling
+	 * check keeps a plugin's own `.mo` from being taken over on core's
+	 * first, `.l10n.php` pass. The `default` domain never goes through
 	 * this layering -- it has its own supplement loader, see
 	 * load_default_supplements().
 	 *
@@ -305,6 +384,7 @@ final class Babilim_Loader {
 			return $file;
 		}
 
+		$fill = null;
 		try {
 			if ( '' === $locale ) {
 				$locale = determine_locale();
@@ -319,12 +399,26 @@ final class Babilim_Loader {
 				return $file;
 			}
 
+			$layers = array();
+			foreach ( self::LAYER_TYPES as $layer_template ) {
+				foreach ( self::KINDS as $kind ) {
+					$layer = self::readable_layer_file( sprintf( $layer_template, $kind ), $domain, $locale );
+					if ( null !== $layer ) {
+						$layers[] = $layer;
+					}
+				}
+			}
+			if ( ! $layers ) {
+				return $file;
+			}
+			if ( is_string( $file ) && self::is_jit_load( $domain, $locale ) && ! self::has_file_or_sibling( $file ) ) {
+				$fill = array_pop( $layers );
+			}
+
 			self::$translation_lock[ $domain ] = true;
 			try {
-				foreach ( self::LAYER_TYPES as $layer_template ) {
-					foreach ( self::KINDS as $kind ) {
-						self::load_layer_if_readable( sprintf( $layer_template, $kind ), $domain, $locale );
-					}
+				foreach ( $layers as $layer ) {
+					load_textdomain( $domain, $layer, $locale );
 				}
 			} finally {
 				unset( self::$translation_lock[ $domain ] );
@@ -333,29 +427,64 @@ final class Babilim_Loader {
 			self::log_error( $e );
 			self::report_failure( 'loader.translation_file' );
 		}
-		return $file;
+		return $fill ?? $file;
 	}
 
 	/**
-	 * If a translation file exists for $type/$domain/$locale, loads it
-	 * via load_textdomain() -- .mo preferred, falling back to .l10n.php.
-	 * A no-op if neither is readable. Never loads both: the `return`
-	 * after the `.mo` branch is what keeps this to exactly one call.
+	 * The file a layer serves for $type/$domain/$locale -- `.mo`
+	 * preferred, falling back to `.l10n.php` -- or null when neither is
+	 * readable. One file per layer, never both.
 	 *
 	 * @param string $type   One of Babilim_Paths' DIR_TYPES.
 	 * @param string $domain Text domain.
 	 * @param string $locale Locale code.
+	 * @return string|null
 	 */
-	private static function load_layer_if_readable( string $type, string $domain, string $locale ): void {
-		$mo = Babilim_Paths::file( $type, $domain, $locale, 'mo' );
-		if ( self::probe_is_readable( $mo ) ) {
-			load_textdomain( $domain, $mo, $locale );
-			return;
+	private static function readable_layer_file( string $type, string $domain, string $locale ): ?string {
+		foreach ( array( 'mo', 'l10n.php' ) as $ext ) {
+			$path = Babilim_Paths::file( $type, $domain, $locale, $ext );
+			if ( self::probe_is_readable( $path ) ) {
+				return $path;
+			}
 		}
-		$php = Babilim_Paths::file( $type, $domain, $locale, 'l10n.php' );
-		if ( self::probe_is_readable( $php ) ) {
-			load_textdomain( $domain, $php, $locale );
+		return null;
+	}
+
+	/**
+	 * Whether the current outer load is core's just-in-time load: its
+	 * original file (from the `load_textdomain` action, before any filter
+	 * rewrote it) sits in the directory lang_dir_for_domain() last
+	 * answered for this domain+locale. WordPress 6.6's immediate
+	 * load_plugin_textdomain()/load_theme_textdomain() first try
+	 * WP_LANG_DIR/{plugins,themes}/, which is not that directory, so core
+	 * still goes on to the component's own file.
+	 *
+	 * @param string $domain Text domain.
+	 * @param string $locale Locale code.
+	 * @return bool
+	 */
+	private static function is_jit_load( string $domain, string $locale ): bool {
+		$dir = self::$jit_dirs[ "{$domain}\0{$locale}" ] ?? null;
+		$mo  = self::$originals[ $domain ] ?? null;
+		return null !== $dir && null !== $mo && trailingslashit( dirname( $mo ) ) === $dir;
+	}
+
+	/**
+	 * Whether core's load of $file can succeed without the fill-in. Core
+	 * tries `.l10n.php` first, then `.mo`; with translation_file_format
+	 * `mo` it tries only `.mo`. So a `.l10n.php` candidate counts as
+	 * present when it or its `.mo` sibling is readable (the `.mo` pass
+	 * still follows), while a `.mo` candidate is core's last try and
+	 * counts only itself.
+	 *
+	 * @param string $file Candidate path core or an earlier filter gave.
+	 * @return bool
+	 */
+	private static function has_file_or_sibling( string $file ): bool {
+		if ( self::probe_is_readable( $file ) ) {
+			return true;
 		}
+		return str_ends_with( $file, '.l10n.php' ) && self::probe_is_readable( substr( $file, 0, -9 ) . '.mo' );
 	}
 
 	/**

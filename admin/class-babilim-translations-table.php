@@ -598,8 +598,9 @@ final class Babilim_Translations_Table extends WP_List_Table {
 	 */
 	protected function column_cb( $item ) {
 		$id = 'babilim-cb-' . ++$this->cb_count;
-		return '<input id="' . $id . '" type="checkbox" name="components[]" value="' . esc_attr( $item['kind'] . ':' . $item['slug'] ) . '" />'
-			. '<label for="' . $id . '"><span class="screen-reader-text">' . esc_html( $item['name'] ) . '</span></label>';
+		// Label first, as core's list tables do: label-covers-full-cell widens the click target and core's hover style reads the input after it.
+		return '<label class="label-covers-full-cell" for="' . $id . '"><span class="screen-reader-text">' . esc_html( $item['name'] ) . '</span></label>'
+			. '<input id="' . $id . '" type="checkbox" name="components[]" value="' . esc_attr( $item['kind'] . ':' . $item['slug'] ) . '" />';
 	}
 
 	/**

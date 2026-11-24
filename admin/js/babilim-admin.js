@@ -47,19 +47,19 @@
 ( function () {
 	'use strict';
 
-	var WRAP = '#wpbody-content .wrap';
-	var pollTimer = null;
-	var pollRun = 0;
-	var lastError = null;
+	const WRAP = '#wpbody-content .wrap';
+	let pollTimer = null;
+	let pollRun = 0;
+	let lastError = null;
 	// One in-place send at a time: a second result would otherwise land on a
 	// .wrap that the first answer already replaced.
-	var busy = false;
+	let busy = false;
 	// The one open dialog, and a counter that goes up whenever a dialog
 	// closes: a timer or an answer that began before then is dropped.
-	var dialog = null;
-	var dialogRun = 0;
+	let dialog = null;
+	let dialogRun = 0;
 	// The button whose confirm dialog was just accepted: its submit goes through.
-	var accepted = null;
+	let accepted = null;
 
 	function stopLicensePolling() {
 		pollRun++;
@@ -71,10 +71,10 @@
 
 	function startLicensePolling( url ) {
 		stopLicensePolling();
-		var started = Date.now();
+		const started = Date.now();
 		// One request at a time: the next one is scheduled only after the
 		// previous has finished, so a slow answer never piles requests up.
-		var run = pollRun;
+		const run = pollRun;
 		function schedule() {
 			if ( run === pollRun ) {
 				pollTimer = window.setTimeout( tick, 5000 );
@@ -115,7 +115,7 @@
 	// back to wp.a11y. role=alert (not toggling aria-live on one node) because
 	// a role that is fixed at insertion time is the reliable way to get an
 	// assertive region.
-	var stack = [];
+	const stack = [];
 
 	function speak( message, politeness ) {
 		if ( ! message ) {
@@ -123,12 +123,12 @@
 		}
 		// close() clears `open` at once but its close event comes later, so a
 		// dialog that was just closed must not receive the message.
-		var top = null;
-		for ( var i = stack.length - 1; i >= 0 && ! top; i-- ) {
+		let top = null;
+		for ( let i = stack.length - 1; i >= 0 && ! top; i-- ) {
 			top = stack[ i ].dialog.open ? stack[ i ] : null;
 		}
 		if ( top ) {
-			var node = 'assertive' === politeness ? top.alert : top.status;
+			const node = 'assertive' === politeness ? top.alert : top.status;
 			// The same text twice is not announced again unless it changes.
 			node.textContent = node.textContent === message ? message + '\u00a0' : message;
 		} else if ( window.wp && window.wp.a11y ) {
@@ -141,18 +141,17 @@
 	// tells two forms apart across a page swap. Never the form id: cell and
 	// row ids are numbered per render, so after a swap one id can be another component.
 	function signature( form ) {
-		return Array.prototype.filter.call( form.querySelectorAll( 'input[type=hidden]' ), function ( input ) {
-			return '_wpnonce' !== input.name && '_wp_http_referer' !== input.name && 'confirmed' !== input.name;
-		} ).map( function ( input ) {
-			return input.name + '=' + input.value;
-		} ).join( '&' );
+		return Array.from( form.querySelectorAll( 'input[type=hidden]' ) )
+			.filter( ( input ) => '_wpnonce' !== input.name && '_wp_http_referer' !== input.name && 'confirmed' !== input.name )
+			.map( ( input ) => input.name + '=' + input.value )
+			.join( '&' );
 	}
 
 	function findButton( form, text ) {
-		var sig = signature( form );
-		var buttons = document.querySelectorAll( WRAP + ' button' );
-		for ( var i = 0; i < buttons.length; i++ ) {
-			var other = buttons[ i ].form;
+		const sig = signature( form );
+		const buttons = document.querySelectorAll( WRAP + ' button' );
+		for ( let i = 0; i < buttons.length; i++ ) {
+			const other = buttons[ i ].form;
 			if ( other && text === buttons[ i ].textContent && sig === signature( other ) ) {
 				return buttons[ i ];
 			}
@@ -163,24 +162,20 @@
 	// Where core's common.js puts page notices: after .wp-header-end, else after
 	// the first h1/h2 of the content.
 	function placeAfterHeading( wrap, nodes ) {
-		var anchor = wrap.querySelector( '.wp-header-end' ) || wrap.querySelector( 'h1, h2' );
+		const anchor = wrap.querySelector( '.wp-header-end' ) || wrap.querySelector( 'h1, h2' );
 		if ( anchor ) {
-			anchor.after.apply( anchor, nodes );
+			anchor.after( ...nodes );
 		} else {
-			wrap.prepend.apply( wrap, nodes );
+			wrap.prepend( ...nodes );
 		}
-	}
-
-	function hasClass( node, name ) {
-		return ( ' ' + ( node.getAttribute( 'class' ) || '' ) + ' ' ).indexOf( ' ' + name + ' ' ) > -1;
 	}
 
 	function armAutosubmit( root ) {
-		var form = root.querySelector( 'form[data-babilim-autosubmit]' );
+		const form = root.querySelector( 'form[data-babilim-autosubmit]' );
 		if ( ! form ) {
 			return;
 		}
-		var run = dialogRun;
+		const run = dialogRun;
 		window.setTimeout( function () {
 			if ( form.dataset.babilimSubmitted || run !== dialogRun ) {
 				return;
@@ -192,9 +187,9 @@
 	// screen: the dialog showing a server screen (tracked in `dialog`; closing
 	// it stops the autosubmit). A question dialog opened over it is not tracked.
 	function makeDialog( screen ) {
-		var d = document.createElement( 'dialog' );
+		const d = document.createElement( 'dialog' );
 		d.className = 'babilim-dialog';
-		var live = { status: element( 'p', '', { role: 'status', class: 'screen-reader-text', 'data-babilim-live': '', 'data-babilim-keep': '' } ), alert: element( 'p', '', { role: 'alert', class: 'screen-reader-text', 'data-babilim-live': '', 'data-babilim-keep': '' } ) };
+		const live = { status: element( 'p', '', { role: 'status', class: 'screen-reader-text', 'data-babilim-live': '', 'data-babilim-keep': '' } ), alert: element( 'p', '', { role: 'alert', class: 'screen-reader-text', 'data-babilim-live': '', 'data-babilim-keep': '' } ) };
 		live.dialog = d;
 		d.appendChild( live.status );
 		d.appendChild( live.alert );
@@ -202,8 +197,8 @@
 		if ( screen ) {
 			// A visible way out that is not Cancel: closes, sends nothing (the
 			// close handler below stops any autosubmit). Kept across content swaps.
-			var out = element( 'div', '', { class: 'babilim-dialog-actions', 'data-babilim-keep': '' } );
-			var closeButton = element( 'button', strings().close, { type: 'button', class: 'button' } );
+			const out = element( 'div', '', { class: 'babilim-dialog-actions', 'data-babilim-keep': '' } );
+			const closeButton = element( 'button', strings().close, { type: 'button', class: 'button' } );
 			closeButton.addEventListener( 'click', function () {
 				d.close();
 			} );
@@ -226,7 +221,7 @@
 	}
 
 	function element( tag, text, attrs ) {
-		var node = document.createElement( tag );
+		const node = document.createElement( tag );
 		node.textContent = text;
 		Object.keys( attrs || {} ).forEach( function ( key ) {
 			node.setAttribute( key, attrs[ key ] );
@@ -237,24 +232,18 @@
 	// Asks the question in a modal; calls yes() only when Confirm is pressed.
 	// Cancel and Esc send nothing; the browser puts focus back on the opener.
 	function ask( question, yes ) {
-		var d = makeDialog( false );
-		var title = element( 'p', question, { id: 'babilim-dialog-question' } );
+		const d = makeDialog( false );
+		const title = element( 'p', question, { id: 'babilim-dialog-question' } );
 		d.setAttribute( 'aria-labelledby', 'babilim-dialog-question' );
-		var no = element( 'button', strings().cancel, { type: 'button', class: 'button', autofocus: '' } );
-		var ok = element( 'button', strings().confirm, { type: 'button', class: 'button button-primary' } );
-		no.addEventListener( 'click', function () {
-			d.close( 'cancel' );
-		} );
-		ok.addEventListener( 'click', function () {
-			d.close( 'confirm' );
-		} );
-		var actions = element( 'div', '', { class: 'babilim-dialog-actions' } );
-		actions.appendChild( no );
-		actions.appendChild( ok );
-		d.appendChild( title );
-		d.appendChild( actions );
+		// <form method="dialog">: the browser closes the dialog with the pressed button's value as returnValue.
+		const form = element( 'form', '', { method: 'dialog', class: 'babilim-dialog-actions' } );
+		form.append(
+			element( 'button', strings().cancel, { value: 'cancel', class: 'button', autofocus: '' } ),
+			element( 'button', strings().confirm, { value: 'confirm', class: 'button button-primary' } )
+		);
+		d.append( title, form );
 		d.addEventListener( 'close', function () {
-			var chosen = d.returnValue;
+			const chosen = d.returnValue;
 			d.returnValue = '';
 			if ( 'confirm' === chosen ) {
 				yes();
@@ -270,24 +259,22 @@
 	// Puts a screen's .wrap content into the dialog: opens it, or swaps the
 	// content of the one already open (focus then moves to the new title).
 	function showScreen( next ) {
-		var fresh = ! dialog;
-		var d = dialog || makeDialog( true );
-		var h1 = next.querySelector( 'h1' );
-		var notice = next.querySelector( '.notice, .updated, .error' );
-		var line = next.querySelector( '.babilim-upload-line' );
+		const fresh = ! dialog;
+		const d = dialog || makeDialog( true );
+		const h1 = next.querySelector( 'h1' );
+		const notice = next.querySelector( '.notice, .updated, .error' );
+		const line = next.querySelector( '.babilim-upload-line' );
 		if ( h1 ) {
 			h1.setAttribute( 'id', 'babilim-dialog-title' );
 			d.setAttribute( 'aria-labelledby', 'babilim-dialog-title' );
 		}
 		// The live nodes stay where they are; only the screen's own content is swapped.
-		Array.prototype.slice.call( d.children ).forEach( function ( child ) {
+		[ ...d.children ].forEach( ( child ) => {
 			if ( ! child.hasAttribute( 'data-babilim-keep' ) ) {
 				child.remove();
 			}
 		} );
-		Array.prototype.slice.call( next.children ).forEach( function ( child ) {
-			d.appendChild( child );
-		} );
+		d.append( ...next.children );
 		if ( d.babilimClose ) {
 			d.appendChild( d.babilimClose );
 		}
@@ -313,8 +300,8 @@
 			throw new Error( 'status ' + response.status );
 		}
 		return response.text().then( function ( html ) {
-			var page = new window.DOMParser().parseFromString( html, 'text/html' );
-			var next = page.querySelector( WRAP );
+			const page = new window.DOMParser().parseFromString( html, 'text/html' );
+			const next = page.querySelector( WRAP );
 			if ( ! next ) {
 				throw new Error( 'no container' );
 			}
@@ -323,17 +310,17 @@
 	}
 
 	function sendInPlace( form, submitter, button ) {
-		var wrap = document.querySelector( WRAP );
-		var text = button ? button.textContent : '';
-		var spinner = null;
+		const wrap = document.querySelector( WRAP );
+		const text = button ? button.textContent : '';
+		let spinner = null;
 		// A form inside the dialog reports its errors there, and its answer
 		// is dropped when the dialog is dismissed meanwhile.
-		var inDialog = form.closest( 'dialog' );
-		var run = dialogRun;
+		const inDialog = form.closest( 'dialog' );
+		const run = dialogRun;
 		busy = true;
 		wrap.setAttribute( 'aria-busy', 'true' );
 		if ( button ) {
-			var label = button.getAttribute( 'data-babilim-busy-label' );
+			const label = button.getAttribute( 'data-babilim-busy-label' );
 			if ( null !== label ) {
 				button.textContent = label;
 			}
@@ -362,7 +349,7 @@
 			}
 			lastError = document.createElement( 'div' );
 			lastError.className = 'notice notice-error';
-			var p = document.createElement( 'p' );
+			const p = document.createElement( 'p' );
 			p.textContent = strings().failed;
 			lastError.appendChild( p );
 			placeAfterHeading( inDialog || wrap, [ lastError ] );
@@ -372,7 +359,6 @@
 		window.fetch( form.getAttribute( 'action' ) || window.location.href, {
 			method: 'POST',
 			body: new window.FormData( form, submitter ),
-			credentials: 'same-origin',
 		} )
 			.then( readWrap )
 			.then( function ( answer ) {
@@ -398,19 +384,13 @@
 				// Core leaves .inline (and the legacy .below-h2) notices where they
 				// are, so the page behind already shows them; a notice the page
 				// already has, word for word, is not added a second time.
-				var present = Array.prototype.map.call( document.querySelectorAll( '#wpbody-content > .notice, #wpbody-content > .updated, #wpbody-content > .error' ), function ( n ) {
-					return n.textContent;
-				} );
-				var notices = Array.prototype.filter.call(
-					answer.page.querySelectorAll( '#wpbody-content > .notice, #wpbody-content > .updated, #wpbody-content > .error' ),
-					function ( n ) {
-						return ! hasClass( n, 'inline' ) && ! hasClass( n, 'below-h2' ) && present.indexOf( n.textContent ) < 0;
-					}
-				);
+				const present = Array.from( document.querySelectorAll( '#wpbody-content > .notice, #wpbody-content > .updated, #wpbody-content > .error' ), ( n ) => n.textContent );
+				const notices = Array.from( answer.page.querySelectorAll( '#wpbody-content > .notice, #wpbody-content > .updated, #wpbody-content > .error' ) )
+					.filter( ( n ) => ! n.matches( '.inline, .below-h2' ) && ! present.includes( n.textContent ) );
 				// The plugin's own result notice sits inside the .wrap. Read it
 				// before foreign page notices (core's update nag...) are moved
 				// in ahead of it; those are moved but never announced.
-				var first = answer.next.querySelector( '.notice, .updated, .error' );
+				const first = answer.next.querySelector( '.notice, .updated, .error' );
 				wrap.replaceWith( answer.next );
 				busy = false;
 				lastError = null;
@@ -427,7 +407,10 @@
 				if ( answer.url ) {
 					window.history.replaceState( null, '', answer.url );
 				}
-				var again = button ? findButton( form, text ) : null;
+				if ( answer.page.title ) {
+					document.title = answer.page.title;
+				}
+				let again = button ? findButton( form, text ) : null;
 				if ( ! again ) {
 					again = answer.next.querySelector( 'h1' );
 					if ( again ) {
@@ -444,17 +427,17 @@
 
 	document.addEventListener( 'submit',
 		function ( event ) {
-			var form = event.target;
+			const form = event.target;
 			if ( ! form || 'FORM' !== form.tagName ) {
 				return;
 			}
-			var native = form.closest( '[data-babilim-native]' ) || 'post' !== String( form.method ).toLowerCase();
+			const native = form.closest( '[data-babilim-native]' ) || 'post' !== String( form.method ).toLowerCase();
 			if ( busy && ! native ) {
 				event.preventDefault();
 				return;
 			}
-			var button = event.submitter || form.querySelector( 'button[type=submit]' );
-			var message = button ? button.getAttribute( 'data-babilim-confirm' ) : null;
+			const button = event.submitter || form.querySelector( 'button[type=submit]' );
+			const message = button ? button.getAttribute( 'data-babilim-confirm' ) : null;
 			if ( null !== message && accepted !== button ) {
 				event.preventDefault();
 				ask( message, function () {
@@ -467,7 +450,7 @@
 			// Remember that this form went out, so a pending autosubmit
 			// timer does not send the same batch a second time.
 			form.dataset.babilimSubmitted = '1';
-			var pollUrl = 'babilim-checkout-form' === form.id ? form.getAttribute( 'data-babilim-poll-url' ) : null;
+			const pollUrl = 'babilim-checkout-form' === form.id ? form.getAttribute( 'data-babilim-poll-url' ) : null;
 			if ( pollUrl ) {
 				// The form opens the checkout page in a new tab (never
 				// preventDefault here); this tab polls until the site is
@@ -476,7 +459,7 @@
 			}
 
 			if ( button && button.hasAttribute( 'data-babilim-confirmed' ) && ! form.querySelector( 'input[name=confirmed]' ) ) {
-				var field = document.createElement( 'input' );
+				const field = document.createElement( 'input' );
 				field.type = 'hidden';
 				field.name = 'confirmed';
 				field.value = '1';
@@ -491,12 +474,12 @@
 
 			// Native send: the busy label and spinner, then the browser
 			// does the rest.
-			var label = button ? button.getAttribute( 'data-babilim-busy-label' ) : null;
+			const label = button ? button.getAttribute( 'data-babilim-busy-label' ) : null;
 			if ( null !== label ) {
 				button.textContent = label;
-				var spinner = document.createElement( 'span' );
+				const spinner = document.createElement( 'span' );
 				spinner.className = 'spinner is-active';
-				button.parentNode.insertBefore( spinner, button.nextSibling );
+				button.after( spinner );
 				// Disabled after the submit has been taken, so the browser
 				// still sends the form.
 				setTimeout(
@@ -513,7 +496,7 @@
 	// A link that opens a screen in the dialog; anything that goes wrong
 	// sends the browser to the link itself.
 	document.addEventListener( 'click', function ( event ) {
-		var link = event.target && event.target.closest ? event.target.closest( 'a[data-babilim-dialog-link]' ) : null;
+		const link = event.target && event.target.closest ? event.target.closest( 'a[data-babilim-dialog-link]' ) : null;
 		if ( ! link || 0 !== event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ) {
 			return;
 		}
@@ -521,8 +504,8 @@
 		if ( busy ) {
 			return;
 		}
-		var href = link.href;
-		window.fetch( href, { credentials: 'same-origin' } )
+		const href = link.href;
+		window.fetch( href )
 			.then( readWrap )
 			.then( function ( answer ) {
 				if ( ! answer.next.hasAttribute( 'data-babilim-dialog' ) ) {

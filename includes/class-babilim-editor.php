@@ -16,7 +16,7 @@
  *
  * A scope is array{kind,slug,domain,locale}; scope() is the only place a
  * request's names are turned into one, so every other method trusts it.
- * Nothing here talks to the service or makes an HTTP request.
+ * Only the explicit text-list action delegates a service request.
  *
  * Drafts: a draft is checked when it is stored (the answer carries the
  * problems; it is kept either way) and publish() turns every draft that
@@ -64,7 +64,10 @@ final class Babilim_Editor {
 	/** @var callable fn(): int */
 	private $user_id;
 
-	public function __construct( Babilim_Overrides $overrides, Babilim_String_Catalog $catalog, Babilim_Override_Writer $writer, callable $components, callable $locales, callable $now, callable $user_id ) {
+	/** @var Babilim_String_List|null */
+	private $string_list;
+
+	public function __construct( Babilim_Overrides $overrides, Babilim_String_Catalog $catalog, Babilim_Override_Writer $writer, callable $components, callable $locales, callable $now, callable $user_id, ?Babilim_String_List $string_list = null ) {
 		$this->overrides  = $overrides;
 		$this->catalog    = $catalog;
 		$this->writer     = $writer;
@@ -72,6 +75,7 @@ final class Babilim_Editor {
 		$this->locales    = $locales;
 		$this->now        = $now;
 		$this->user_id    = $user_id;
+		$this->string_list = $string_list;
 	}
 
 	/**
@@ -173,7 +177,7 @@ final class Babilim_Editor {
 	 *
 	 * @param array $scope Scope.
 	 * @param array $query Keys filter, source, search, sort, page, ref.
-	 * @return array{total:int,pages:int,page:int,nplurals:int,live:bool,no_source:bool,counts:array,progress:string[],pending:array,plural_examples:string[],items:array[]}
+	 * @return array{total:int,pages:int,page:int,nplurals:int,live:bool,no_source:bool,list:string,counts:array,progress:string[],pending:array,plural_examples:string[],items:array[]}
 	 */
 	public function strings( array $scope, array $query ): array {
 		$L       = $this->load( $scope );
@@ -260,6 +264,7 @@ final class Babilim_Editor {
 			'nplurals'        => $L['nplurals'],
 			'live'            => ! $this->writer->is_dirty( $scope ),
 			'no_source'       => array() === ( $L['cat']['sources'] ?? array() ),
+			'list'            => $this->list_state( $L['c'], $L['cat'] ),
 			'counts'          => $counts,
 			'progress'        => array(
 				sprintf( /* translators: %d: number of strings in the list. */ _n( '%d string', '%d strings', $counts['all'], 'babilim' ), $counts['all'] ),
@@ -283,6 +288,10 @@ final class Babilim_Editor {
 	 * @return Babilim_Result Ok with `draft`, `at`, `problems`, `pending`.
 	 */
 	public function save_draft( array $scope, string $ref, array $msgstr ): Babilim_Result {
+		return $this->writer->locked( fn(): Babilim_Result => $this->save_draft_locked( $scope, $ref, $msgstr ) ) ?? $this->not_saved();
+	}
+
+	private function save_draft_locked( array $scope, string $ref, array $msgstr ): Babilim_Result {
 		$L   = $this->load( $scope );
 		$ctx = $this->context( $scope, $ref, $L );
 		if ( $ctx instanceof Babilim_Result ) {
@@ -301,13 +310,13 @@ final class Babilim_Editor {
 			$draft    = false;
 			$at       = '';
 		} else {
-			if ( ! $this->put_draft( $scope, $ref, $ctx, $msgstr ) ) {
+			if ( ! $this->put_draft( $scope, $ref, $ctx, $msgstr, $L['drafts'][ $ref ] ?? array() ) ) {
 				return $this->not_saved();
 			}
 			$draft    = true;
 			$problems = $this->check_draft( $ctx['msgid'], $ctx['msgid_plural'], $msgstr, array() !== $on || $ctx['review'], (array) ( $ctx['entry']['msgstr'] ?? array() ), $ctx['nplurals'] );
 		}
-		$L = $this->refreshed( $scope, $L );
+		$L = $this->refreshed( $scope, $L, false );
 		return Babilim_Result::ok(
 			array(
 				'draft'    => $draft,
@@ -327,6 +336,10 @@ final class Babilim_Editor {
 	 * @return Babilim_Result Ok with `discarded` (strings) and `pending`.
 	 */
 	public function discard( array $scope, string $ref = '' ): Babilim_Result {
+		return $this->writer->locked( fn(): Babilim_Result => $this->discard_locked( $scope, $ref ) ) ?? $this->not_saved();
+	}
+
+	private function discard_locked( array $scope, string $ref ): Babilim_Result {
 		if ( ! $this->overrides->ready() ) {
 			return $this->no_table();
 		}
@@ -337,7 +350,7 @@ final class Babilim_Editor {
 				++$discarded;
 			}
 		}
-		$L = $this->refreshed( $scope, $L );
+		$L = $this->refreshed( $scope, $L, false );
 		return Babilim_Result::ok(
 			array(
 				'discarded' => $discarded,
@@ -468,6 +481,8 @@ final class Babilim_Editor {
 	 * No route or screen calls this any more (the editor drafts and publish()
 	 * makes them live); it stays as the single-string entry the rule tests use.
 	 *
+	 * @internal Kept for the rule tests; not part of the editor's public surface.
+	 *
 	 * @param array    $scope  Scope.
 	 * @param string   $ref    String reference.
 	 * @param string[] $msgstr Forms.
@@ -488,7 +503,7 @@ final class Babilim_Editor {
 
 		$problems = Babilim_Override_Check::problems( $ctx['msgid'], $ctx['msgid_plural'], $msgstr, $ctx['nplurals'] );
 		if ( array() !== $problems ) {
-			$this->put_draft( $scope, $ref, $ctx, $msgstr );
+			$this->put_draft( $scope, $ref, $ctx, $msgstr, $this->by_ref( $this->overrides->rows( $scope, true ), $ref ) );
 			return Babilim_Result::error( 'check_failed', __( 'The translation did not pass the checks, so it was not saved. Your text is kept as a draft.', 'babilim' ), array( 'problems' => $problems ) );
 		}
 
@@ -538,6 +553,10 @@ final class Babilim_Editor {
 	 * @return Babilim_Result Ok with `live`, `reason`, `pending`; or error `not_removable`.
 	 */
 	public function remove( array $scope, string $ref ): Babilim_Result {
+		return $this->writer->locked( fn(): Babilim_Result => $this->remove_locked( $scope, $ref ) ) ?? $this->not_saved();
+	}
+
+	private function remove_locked( array $scope, string $ref ): Babilim_Result {
 		if ( ! $this->overrides->ready() ) {
 			return $this->no_table();
 		}
@@ -570,12 +589,8 @@ final class Babilim_Editor {
 		if ( ! $this->overrides->ready() ) {
 			return $out;
 		}
-		foreach ( $this->overrides->scopes() as $scope ) {
-			$marked = false;
-			foreach ( $this->overrides->rows( $scope ) as $row ) {
-				$marked = $marked || Babilim_Overrides::STATUS_REVIEW === $row['status'];
-			}
-			if ( ! $marked || null === $this->component( (string) $scope['kind'], (string) $scope['slug'] ) ) {
+		foreach ( $this->overrides->scopes( Babilim_Overrides::STATUS_REVIEW ) as $scope ) {
+			if ( null === $this->component( (string) $scope['kind'], (string) $scope['slug'] ) ) {
 				continue;
 			}
 			$n = count( $this->load( $scope )['review'] );
@@ -624,6 +639,49 @@ final class Babilim_Editor {
 		);
 	}
 
+	public function fetch_string_list( array $scope ): Babilim_Result {
+		$c = $this->component( (string) $scope['kind'], (string) $scope['slug'] );
+		if ( null === $c || null === $this->string_list ) {
+			return Babilim_Result::error( 'unknown_component', __( 'That plugin or theme is not available here.', 'babilim' ) );
+		}
+		$cat   = $this->catalog->load( $c, (string) $scope['domain'], (string) $scope['locale'] );
+		$state = $this->list_state( $c, $cat );
+		if ( 'local' === $state || 'unavailable' === $state ) {
+			return Babilim_Result::ok( array( 'status' => 'local' === $state ? 'ready' : 'unavailable' ) );
+		}
+		$result = $this->string_list->fetch( $c );
+		if ( $result->is_ok() ) {
+			$this->catalog->forget(); // The text list is one of its layers.
+			$key = self::list_pending_key( $c );
+			if ( 'pending' === $result->get( 'status' ) ) {
+				set_site_transient( $key, true, HOUR_IN_SECONDS );
+			} else {
+				delete_site_transient( $key );
+			}
+		}
+		return $result;
+	}
+
+	private function list_state( ?array $component, array $catalog ): string {
+		if ( ! empty( $catalog['current'] ) ) {
+			return 'local';
+		}
+		if ( ! empty( $catalog['list_unavailable'] ) ) {
+			return 'unavailable';
+		}
+		if ( empty( $component['is_wporg'] ) ) {
+			return 'not_wporg';
+		}
+		if ( null === $this->string_list || ! $this->string_list->granted() ) {
+			return 'needs_consent';
+		}
+		return get_site_transient( self::list_pending_key( $component ) ) ? 'pending' : 'can_fetch';
+	}
+
+	private static function list_pending_key( array $component ): string {
+		return 'babilim_list_' . hash( 'sha256', $component['kind'] . '/' . $component['slug'] . '/' . $component['version'] );
+	}
+
 	/**
 	 * Adds what the marked rows mean to $L: `review` (new ref => the first
 	 * old string pointing at it, in row order), `folded` (every old ref that
@@ -665,9 +723,12 @@ final class Babilim_Editor {
 	 *
 	 * @param array $scope Scope.
 	 * @param array $L     load().
+	 * @param bool  $saved Read the saved rows again (the write touched them).
 	 */
-	private function refreshed( array $scope, array $L ): array {
-		$L['saved']  = $this->group( $this->overrides->rows( $scope ) );
+	private function refreshed( array $scope, array $L, bool $saved = true ): array {
+		if ( $saved ) {
+			$L['saved'] = $this->group( $this->overrides->rows( $scope ) );
+		}
 		$L['drafts'] = $this->group( $this->overrides->rows( $scope, true ) );
 		return $this->marks( $L );
 	}
@@ -734,20 +795,20 @@ final class Babilim_Editor {
 	 * @param string   $ref    String reference.
 	 * @param array    $ctx    ctx_from().
 	 * @param string[] $msgstr Forms.
+	 * @param array[]  $old    The string's draft rows as they are now, put back on failure.
 	 */
-	private function put_draft( array $scope, string $ref, array $ctx, array $msgstr ): bool {
+	private function put_draft( array $scope, string $ref, array $ctx, array $msgstr, array $old ): bool {
 		$rows = array();
 		foreach ( $msgstr as $i => $form ) {
 			$rows[] = $this->row( $ctx, $i, $form, array() ) + array( 'status' => Babilim_Overrides::STATUS_ACTIVE );
 		}
-		$old = $this->overrides->rows( $scope, true );
 		if ( ! $this->overrides->delete( $scope, $ref, true ) ) {
 			return false;
 		}
 		foreach ( $rows as $row ) {
 			if ( ! $this->overrides->put( $scope, $row, true ) ) {
 				$this->overrides->delete( $scope, $ref, true );
-				foreach ( $this->by_ref( $old, $ref ) as $o ) {
+				foreach ( $old as $o ) {
 					$this->overrides->put( $scope, $o, true );
 				}
 				return false;
@@ -776,9 +837,7 @@ final class Babilim_Editor {
 			$was = $old[ $i ] ?? null;
 			$row = $this->row( $ctx, $i, $form, $was ?? array() ) + array( 'status' => Babilim_Overrides::STATUS_ACTIVE );
 			if ( $base ) {
-				$row['base_source'] = null === $entry || 'none' === $entry['source'] ? '' : (string) $entry['source'];
-				$row['base_build']  = $build;
-				$row['base_msgstr'] = null === $entry ? '' : (string) ( $entry['msgstr'][ $i ] ?? '' );
+				$row += self::base_fields( $entry, $i );
 			} elseif ( null !== $was ) {
 				$row['base_source'] = $was['base_source'];
 				$row['base_build']  = $was['base_build'];
@@ -961,11 +1020,26 @@ final class Babilim_Editor {
 			'msgid_plural'      => $ctx['msgid_plural'],
 			'msgstr'            => $form,
 			'origin'            => 'editor',
-			'component_version' => $ctx['current'] ? (string) ( $ctx['component']['version'] ?? '' ) : (string) ( $was['component_version'] ?? $ctx['saved'][0]['component_version'] ?? '' ),
+			'component_version' => self::row_version( $ctx['current'], $ctx['component'], $was, $ctx['saved'] ),
 			'match_ref'         => (string) ( $was['match_ref'] ?? '' ),
 			'feedback_build'    => (string) ( $was['feedback_build'] ?? '' ),
 			'modified_gmt'      => (string) call_user_func( $this->now ),
 			'modified_by'       => (int) call_user_func( $this->user_id ),
+		);
+	}
+
+	/** The catalog version belongs only to strings in the current list. */
+	public static function row_version( bool $current, array $component, array $was, array $saved ): string {
+		return $current ? (string) ( $component['version'] ?? '' ) : (string) ( $was['component_version'] ?? $saved[0]['component_version'] ?? '' );
+	}
+
+	/** The translation underneath an override, captured at the time of saving. */
+	public static function base_fields( ?array $entry, int $i ): array {
+		$source = (string) ( $entry['source'] ?? 'none' );
+		return array(
+			'base_source' => 'none' === $source ? '' : $source,
+			'base_build'  => 'babilim' === $source ? (string) $entry['build_id'] : '',
+			'base_msgstr' => (string) ( $entry['msgstr'][ $i ] ?? '' ),
 		);
 	}
 

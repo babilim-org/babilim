@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Babilim – Auto Translation & Language Packs
  * Description:       Auto-translate every plugin and theme on your site, then fine-tune any line in a fast built-in editor. Your edits survive updates.
- * Version:           2.1.0
+ * Version:           2.2.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            Babilim
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'BABILIM_VERSION' ) ) {
-	define( 'BABILIM_VERSION', '2.1.0' );
+	define( 'BABILIM_VERSION', '2.2.0' );
 }
 
 if ( ! defined( 'BABILIM_FILE' ) ) {

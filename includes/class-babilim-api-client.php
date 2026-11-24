@@ -454,6 +454,15 @@ final class Babilim_Api_Client {
 	}
 
 	/**
+	 * @param array    $payload Component kind, slug and version.
+	 * @param int|null $timeout Request timeout in seconds.
+	 * @return array|WP_Error The ready, pending or unavailable answer.
+	 */
+	public function strings( array $payload, ?int $timeout = null ) {
+		return $this->send( 'POST', '/v1/strings', $payload, true, false, $timeout );
+	}
+
+	/**
 	 * `POST /v1/error-reports` -- sends error events the site owner agreed
 	 * to share. Auth required; never retried within the request.
 	 *

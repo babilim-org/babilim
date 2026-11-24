@@ -41,6 +41,15 @@ final class Babilim_Override_Remap {
 	private $components;
 
 	/**
+	 * Scope + component version already found to have no current list, so a
+	 * later run of this object skips the catalog load. A component that only
+	 * exists on WordPress.org has no list until the owner fetches one.
+	 *
+	 * @var array<string,true>
+	 */
+	private $no_list = array();
+
+	/**
 	 * @param Babilim_Overrides      $overrides  Override store.
 	 * @param Babilim_String_Catalog $catalog    String lists.
 	 * @param callable               $components fn(): array -- Babilim_Inventory::components().
@@ -60,8 +69,21 @@ final class Babilim_Override_Remap {
 		if ( ! $this->overrides->ready() ) {
 			return 0;
 		}
+		$installed = array();
+		foreach ( (array) call_user_func( $this->components ) as $c ) {
+			$installed[ ( $c['kind'] ?? '' ) . '/' . ( $c['slug'] ?? '' ) ] = (string) ( $c['version'] ?? '' );
+		}
+		// Only scopes with a row on another version are read in full; run() decides the rest.
+		$stale = array();
+		foreach ( $this->overrides->scope_versions() as $s ) {
+			$at = $s['kind'] . '/' . $s['slug'];
+			if ( isset( $installed[ $at ] ) && $installed[ $at ] !== $s['component_version'] ) {
+				unset( $s['component_version'] );
+				$stale[ implode( '/', $s ) ] = $s;
+			}
+		}
 		$done = 0;
-		foreach ( $this->overrides->scopes() as $scope ) {
+		foreach ( $stale as $scope ) {
 			if ( '' === $this->run( $scope )['skipped'] ) {
 				++$done;
 			}
@@ -102,8 +124,13 @@ final class Babilim_Override_Remap {
 			return array( 'changed' => 0, 'skipped' => 'up_to_date' );
 		}
 
+		$memo = (string) $scope['kind'] . '/' . (string) $scope['slug'] . '/' . (string) $scope['domain'] . '/' . (string) $scope['locale'] . '@' . $version;
+		if ( isset( $this->no_list[ $memo ] ) ) {
+			return array( 'changed' => 0, 'skipped' => 'no_current_list' );
+		}
 		$cat = $this->catalog->load( $component, (string) $scope['domain'], (string) $scope['locale'] );
 		if ( ! $cat['current'] || array() === $cat['entries'] ) {
+			$this->no_list[ $memo ] = true;
 			return array( 'changed' => 0, 'skipped' => 'no_current_list' );
 		}
 		$entries = $cat['entries'];
@@ -152,19 +179,6 @@ final class Babilim_Override_Remap {
 			}
 		}
 		return array( 'changed' => count( $changed ), 'skipped' => '' );
-	}
-
-	/**
-	 * Similarity of two source strings, 0..1: Dice coefficient of their
-	 * character trigrams, after NFC, lower-casing and whitespace folding.
-	 *
-	 * @param string $a One string.
-	 * @param string $b Another.
-	 */
-	public static function similarity( string $a, string $b ): float {
-		$ga = self::grams( $a );
-		$gb = self::grams( $b );
-		return self::dice( $ga, $gb );
 	}
 
 	/**

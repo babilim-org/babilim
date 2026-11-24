@@ -119,6 +119,16 @@ class Babilim {
 	private $override_writer;
 
 	/**
+	 * @var Babilim_String_Catalog|null
+	 */
+	private $string_catalog;
+
+	/**
+	 * @var array<string,string> Plural-Forms header by path, noted by parse_entries().
+	 */
+	private $plural_headers = array();
+
+	/**
 	 * @var Babilim_Editor|null
 	 */
 	private $editor;
@@ -243,12 +253,13 @@ class Babilim {
 		// version change. (Nothing is installed from a sync answer that was
 		// not just refreshed: run_sync() checks is_ok() first.)
 		delete_option( Babilim_Sync_Installer::OPTION_FAILURES );
-		// The two settings the General form saves through the Settings API
+		// Settings the General form saves through the Settings API
 		// (which cannot say autoload=false) are created here first, with
 		// the defaults the code already reads them with, so they are not
 		// autoloaded; add_option() leaves one that already exists alone.
 		add_option( Babilim_Sync_Installer::OPTION_AUTO_INSTALL, 1, '', false );
 		add_option( Babilim_Error_Reporter::OPTION_SHARE, '0', '', false );
+		add_option( Babilim_Edit_Feedback::OPTION_SHARE, '0', '', false );
 		// The overrides table, once per schema version (dbDelta() is idempotent).
 		try {
 			global $wpdb;
@@ -355,6 +366,36 @@ class Babilim {
 			return;
 		}
 		$this->install_translations();
+		$this->flush_edit_feedback();
+	}
+
+	/** Send opted-in editor feedback after a successful recurring sync. */
+	private function flush_edit_feedback(): void {
+		// The override table is network-wide, but service identities are per site.
+		if ( is_multisite() ) {
+			return;
+		}
+		try {
+			if ( '1' !== get_option( Babilim_Edit_Feedback::OPTION_SHARE, '0' ) ) {
+				return;
+			}
+			$identity = $this->site()->identity();
+			if ( null === $identity ) {
+				return;
+			}
+			global $wpdb;
+			$client = new Babilim_Api_Client( new Babilim_Wp_Http(), BABILIM_API_BASE, $identity['token'] );
+			( new Babilim_Edit_Feedback(
+				new Babilim_Wpdb_Overrides( $wpdb ),
+				array( $client, 'feedback' ),
+				array( new Babilim_Consent(), 'granted' ),
+				'get_option',
+				static fn( string $name, int $value ): bool => update_option( $name, $value, false ),
+				'time'
+			) )->flush();
+		} catch ( \Throwable $e ) {
+			$this->log_error( $e );
+		}
 	}
 
 	/**
@@ -539,6 +580,7 @@ class Babilim {
 		add_action( 'babilim_layer_changed', array( $this, 'rebuild_default_index_one_locale' ) );
 		// A new Babilim build changes the string list an override is matched against.
 		add_action( 'babilim_layer_changed', array( $this, 'schedule_remap' ) );
+		add_action( 'babilim_layer_changed', array( $this, 'forget_string_catalog' ) );
 		add_action( Babilim_Override_Remap::HOOK, array( $this, 'run_remap' ) );
 	}
 
@@ -759,6 +801,17 @@ class Babilim {
 			wp_schedule_single_event( time() + 30, self::SYNC_ONCE_HOOK );
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
+		}
+	}
+
+	/**
+	 * Drops the string catalog's per-request memo: a layer changed.
+	 *
+	 * @param mixed ...$args Ignored (hook arguments).
+	 */
+	public function forget_string_catalog( ...$args ): void {
+		if ( null !== $this->string_catalog ) {
+			$this->string_catalog->forget();
 		}
 	}
 
@@ -1154,11 +1207,24 @@ class Babilim {
 			if ( false === $file ) {
 				return array();
 			}
+			// headers() comes from the same parse (WP 6.5+, names in lower case); plural_header_of() hands it out.
+			$this->plural_headers[ $path ] = (string) ( $file->headers()['plural-forms'] ?? '' );
 			return (array) $file->entries();
 		} catch ( \Throwable $e ) {
 			$this->log_error( $e );
 			return array();
 		}
+	}
+
+	/**
+	 * The Plural-Forms header of a file parse_entries() just read, so the
+	 * string catalog need not read the whole file again.
+	 *
+	 * @param string $path Absolute path.
+	 * @return string|null Null when the file was not parsed through parse_entries().
+	 */
+	public function plural_header_of( string $path ): ?string {
+		return $this->plural_headers[ $path ] ?? null;
 	}
 
 	/**
@@ -1628,17 +1694,31 @@ class Babilim {
 		return Babilim_Plural_Forms::header( $locale );
 	}
 
-	/**
-	 * @return Babilim_String_Catalog
-	 */
+	private function string_list(): Babilim_String_List {
+		return new Babilim_String_List(
+			$this->fs(),
+			function ( array $payload ) {
+				$token = $this->site()->token();
+				if ( null === $token ) {
+					return new WP_Error( 'needs_consent', __( 'Enable Babilim to get the text list for this plugin or theme.', 'babilim' ) );
+				}
+				return ( new Babilim_Api_Client( new Babilim_Wp_Http(), BABILIM_API_BASE, $token ) )->strings( $payload );
+			},
+			array( new Babilim_Consent(), 'granted' )
+		);
+	}
+
 	private function string_catalog(): Babilim_String_Catalog {
-		return new Babilim_String_Catalog(
+		// One catalog per request, so its memo is shared by the editor, the remap and the Loco import.
+		return $this->string_catalog ??= new Babilim_String_Catalog(
 			$this->manifest(),
 			array( $this, 'parse_entries' ),
 			array( 'Babilim_String_Catalog', 'read_po' ),
 			array( $this, 'list_file_names' ),
 			array( $this, 'read_local_file' ),
-			array( $this->inventory(), 'language_dirs' )
+			array( $this->inventory(), 'language_dirs' ),
+			array( $this->string_list(), 'get' ),
+			array( $this, 'plural_header_of' )
 		);
 	}
 
@@ -1651,6 +1731,7 @@ class Babilim {
 		if ( null === $this->editor ) {
 			global $wpdb;
 			$inventory    = $this->inventory();
+			$string_list  = $this->string_list();
 			$this->editor = new Babilim_Editor(
 				new Babilim_Wpdb_Overrides( $wpdb ),
 				$this->string_catalog(),
@@ -1660,10 +1741,37 @@ class Babilim {
 				static function (): string {
 					return gmdate( 'Y-m-d H:i:s' );
 				},
-				'get_current_user_id'
+				'get_current_user_id',
+				$string_list
 			);
 		}
 		return $this->editor;
+	}
+
+	public function loco_import(): Babilim_Loco_Import {
+		global $wpdb;
+		$inventory = $this->inventory();
+		return new Babilim_Loco_Import(
+			new Babilim_Wpdb_Overrides( $wpdb ),
+			$this->string_catalog(),
+			$this->override_writer(),
+			$this->override_remap(),
+			array( $inventory, 'components' ),
+			array( $inventory, 'locales' ),
+			function ( string $dir ): array {
+				$root = realpath( WP_LANG_DIR );
+				if ( false === $root || realpath( $dir ) !== $root . '/loco/' . basename( $dir ) ) {
+					return array();
+				}
+				return array_values( array_filter( $this->list_file_names( $dir ), static function ( string $name ) use ( $dir ): bool {
+					$path = $dir . '/' . $name;
+					return is_file( $path ) && ! is_link( $path );
+				} ) );
+			},
+			array( 'Babilim_String_Catalog', 'read_po' ),
+			static fn(): string => gmdate( 'Y-m-d H:i:s' ),
+			'get_current_user_id'
+		);
 	}
 
 	/**
@@ -1699,6 +1807,7 @@ class Babilim {
 		if ( null === $this->admin ) {
 			$this->admin = new Babilim_Admin( $this->fs(), null, null, $this->manifest() );
 			$this->admin->set_editor( array( $this, 'editor' ) );
+			$this->admin->set_loco_import( array( $this, 'loco_import' ) );
 		}
 		return $this->admin;
 	}

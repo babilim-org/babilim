@@ -19,7 +19,7 @@
  * every other option and transient, both scheduled events, and every
  * Babilim-managed language file under `WP_LANG_DIR/babilim/` -- served
  * files, `default/` supplements, history and the manifest. The site
- * owner's "Keep my own translation overrides" setting decides whether `custom/`
+ * owner's "Keep my translations" setting decides whether `custom/`
  * (and the root's guard files) stay. The plugin stores no post meta and
  * two user meta keys (`babilim_verification_dismissed` and
  * `babilim_error_notice_hidden`, the notices each user closed, one value
@@ -36,8 +36,8 @@
  * own options behind. The language-file
  * cleanup is different: `WP_LANG_DIR` is one physical directory shared
  * by the whole network, so it is purged exactly once, *after* every
- * site's own option cleanup has run -- and if any one site had "Keep my own
- * translation overrides" on, `custom/` is kept for the whole shared tree,
+ * site's own option cleanup has run. If any one site had "Keep my translations"
+ * on, `custom/` is kept for the whole shared tree,
  * regardless of what any other site (or whichever site happens to be
  * processed last) had set. A site's own override files living under a
  * folder every other site can also read from is exactly the kind of
@@ -82,7 +82,7 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 	 * The site identity (keypair, site id, token) is deleted only when this
 	 * site's "Delete all Babilim data on uninstall" setting is on.
 	 *
-	 * @return bool Whether this site's own "Keep my own translation overrides"
+	 * @return bool Whether this site's own "Keep my translations"
 	 *              setting was on (the default when the option was
 	 *              never saved) -- read before the option itself is
 	 *              deleted, so the caller can fold it into the decision
@@ -119,6 +119,9 @@ if ( ! function_exists( 'babilim_uninstall_clean_current_site_state' ) ) {
 		delete_option( 'babilim_state' );
 		delete_option( 'babilim_client_events' );
 		delete_option( 'babilim_share_errors' );
+		delete_option( 'babilim_share_edits' );
+		delete_option( 'babilim_share_edits_since' );
+		delete_option( 'babilim_edit_feedback_wait' );
 		delete_option( 'babilim_error_awaiting' );
 		delete_option( 'babilim_error_queue' );
 		// The remembered plugin main file -> wp.org slug map: derived data, always removed.
@@ -201,6 +204,29 @@ if ( function_exists( 'delete_site_option' ) ) {
 	// not custom/ is kept.
 	delete_site_option( 'babilim_db_version' );
 	delete_site_option( 'babilim_overrides_dirty' );
+}
+
+// -- The text-list "asked recently" markers (Babilim_Editor::list_pending_key()):
+// site transients named `babilim_list_` + a hash, so the name is not a literal
+// that delete_site_transient() could be given. WordPress keeps a site transient
+// as `_site_transient_{name}` plus a `_site_transient_timeout_{name}` row, in
+// the options table on a single site and in sitemeta on multisite. Both rows go.
+if ( isset( $GLOBALS['wpdb'] ) && is_object( $GLOBALS['wpdb'] ) ) {
+	$babilim_uninstall_db    = $GLOBALS['wpdb'];
+	$babilim_uninstall_multi = function_exists( 'is_multisite' ) && is_multisite();
+	$babilim_uninstall_table = $babilim_uninstall_multi ? $babilim_uninstall_db->sitemeta : $babilim_uninstall_db->options;
+	$babilim_uninstall_col   = $babilim_uninstall_multi ? 'meta_key' : 'option_name';
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- WordPress's own table; the rows are not reachable through the transient API without their hashed names.
+	$babilim_uninstall_db->query(
+		$babilim_uninstall_db->prepare(
+			'DELETE FROM %i WHERE %i LIKE %s OR %i LIKE %s',
+			$babilim_uninstall_table,
+			$babilim_uninstall_col,
+			$babilim_uninstall_db->esc_like( '_site_transient_babilim_list_' ) . '%',
+			$babilim_uninstall_col,
+			$babilim_uninstall_db->esc_like( '_site_transient_timeout_babilim_list_' ) . '%'
+		)
+	);
 }
 
 // -- The overrides table: one table for the whole network, dropped only

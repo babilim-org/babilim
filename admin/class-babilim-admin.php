@@ -92,6 +92,7 @@ final class Babilim_Admin {
 	 * @var string[]
 	 */
 	private const ACTIONS = array(
+		'babilim_loco_import',
 		'babilim_download',
 		'babilim_rollback',
 		'babilim_remove',
@@ -126,7 +127,7 @@ final class Babilim_Admin {
 	 *
 	 * @var string
 	 */
-	private const SUPPORT_EMAIL = 'hi@babilim.org';
+	private const SUPPORT_EMAIL = 'support@babilim.org';
 
 	/**
 	 * Option holding the "Delete all Babilim data on uninstall" choice
@@ -382,6 +383,13 @@ final class Babilim_Admin {
 	 */
 	private $editor_factory = null;
 
+	/** @var callable|null fn(): Babilim_Loco_Import */
+	private $loco_factory = null;
+
+	public function set_loco_import( callable $factory ): void {
+		$this->loco_factory = $factory;
+	}
+
 	/**
 	 * The hook suffix of the editor submenu page; empty until register_menu() runs.
 	 *
@@ -405,8 +413,24 @@ final class Babilim_Admin {
 		}
 		$editor = call_user_func( $this->editor_factory );
 		if ( $editor instanceof Babilim_Editor ) {
-			echo wp_kses( Babilim_Editor_Page::render( $editor ), self::allowed_admin_html() );
+			$notices = function (): string {
+				self::reconcile_persisted_notices();
+				return $this->render_notices();
+			};
+			echo wp_kses( Babilim_Editor_Page::render( $editor, $this->loco_factory, $notices ), self::allowed_admin_html() );
 		}
+	}
+
+	public function dispatch_babilim_loco_import(): void {
+		$this->guard( 'babilim_loco_import', true );
+		if ( null !== $this->loco_factory ) {
+			$loco = ( $this->loco_factory )();
+			$counts = $loco->run();
+			$warning = $loco->warning();
+			$message = implode( ' ', Babilim_Editor_Page::loco_counts( $counts ) );
+			$this->notice( 'loco_import', '' === $warning ? $message : $warning . ' ' . $message, '' === $warning ? 'success' : 'warning' );
+		}
+		wp_safe_redirect( admin_url( 'admin.php?page=' . Babilim_Editor_Page::SLUG ) );
 	}
 
 	/**
@@ -438,7 +462,7 @@ final class Babilim_Admin {
 		);
 		$settings_suffix             = add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Babilim Settings', 'babilim' ),
+			__( 'Babilim settings', 'babilim' ),
 			__( 'Settings', 'babilim' ),
 			self::CAPABILITY,
 			self::SETTINGS_SLUG,
@@ -734,7 +758,7 @@ final class Babilim_Admin {
 			. '.babilim-cell-text{display:contents}.babilim-cell-lang,.babilim-cell-status{display:block}'
 			. '.babilim-cell-status{overflow-wrap:anywhere}.babilim-cell-lang{white-space:normal}.babilim-cell-tail{display:inline-block;max-width:100%}'
 			// The native modal dialog (guide: overscroll containment on the dialog and its backdrop; no overflow lock on html/body).
-			. '.babilim-dialog{max-width:min(40rem,calc(100vw - 2rem));max-height:calc(100vh - 4rem);overflow:auto;padding:1rem 1.5rem;border:1px solid #c3c4c7;border-radius:4px}.babilim-dialog:modal{overscroll-behavior:contain}.babilim-dialog::backdrop{overflow:hidden;overscroll-behavior:contain;background:rgba(0,0,0,.5)}'
+			. '.babilim-dialog{max-width:min(40rem,calc(100vw - 2rem));max-height:calc(100dvh - 4rem);overflow:auto;padding:1rem 1.5rem;border:1px solid #c3c4c7;border-radius:4px}.babilim-dialog:modal{overscroll-behavior:contain}.babilim-dialog::backdrop{overflow:hidden;overscroll-behavior:contain;background:rgba(0,0,0,.5)}'
 			. '.babilim-dialog h1{margin-top:0}.babilim-dialog-actions{display:flex;flex-wrap:wrap;gap:.5em;justify-content:flex-end}'
 			. '.babilim-choose{margin:1em 0}.babilim-choose li{margin:0 0 .5em}'
 			. '.babilim-locale-links{clear:both;margin:.5em 0 0}.babilim-advanced-first{margin-top:1em}.babilim-account{margin:0}'
@@ -1797,6 +1821,7 @@ final class Babilim_Admin {
 			Babilim_Sync_Installer::OPTION_AUTO_INSTALL => array( 'integer', array( $this, 'sanitize_auto_install' ) ),
 			self::OPTION_TOOLBAR_REPORT                => array( 'integer', array( $this, 'sanitize_toolbar_report' ) ),
 			Babilim_Error_Reporter::OPTION_SHARE       => array( 'string', array( $this, 'sanitize_share_errors' ) ),
+			Babilim_Edit_Feedback::OPTION_SHARE        => array( 'string', array( $this, 'sanitize_share_edits' ) ),
 			self::OPTION_KEEP_CUSTOM                   => array( 'integer', array( $this, 'sanitize_keep_custom' ) ),
 		);
 		$this->settings_rejected = false;
@@ -1824,6 +1849,8 @@ final class Babilim_Admin {
 		add_filter( 'option_page_capability_' . self::SETTINGS_GROUP, array( self::class, 'settings_capability' ) );
 		add_action( 'update_option_' . Babilim_Error_Reporter::OPTION_SHARE, array( $this, 'on_share_errors_updated' ), 10, 2 );
 		add_action( 'add_option_' . Babilim_Error_Reporter::OPTION_SHARE, array( $this, 'on_share_errors_added' ), 10, 2 );
+		add_action( 'update_option_' . Babilim_Edit_Feedback::OPTION_SHARE, array( $this, 'on_share_edits_updated' ), 10, 2 );
+		add_action( 'add_option_' . Babilim_Edit_Feedback::OPTION_SHARE, array( $this, 'on_share_edits_updated' ), 10, 2 );
 	}
 
 	/**
@@ -1946,6 +1973,29 @@ final class Babilim_Admin {
 			return get_option( Babilim_Error_Reporter::OPTION_SHARE );
 		}
 		return 'on' === $value || 1 === $value || '1' === $value ? '1' : '0';
+	}
+
+	/** @param mixed $value Submitted sharing choice. */
+	public function sanitize_share_edits( $value ): string {
+		if ( is_multisite() || ! $this->consent()->granted_db() ) {
+			return (string) get_option( Babilim_Edit_Feedback::OPTION_SHARE, '0' );
+		}
+		return (string) $this->checkbox_value( $value, Babilim_Edit_Feedback::OPTION_SHARE );
+	}
+
+	/**
+	 * Store the UTC start of each opt-in. On first save the add hook
+	 * supplies the option name in place of the old value.
+	 *
+	 * @param mixed $old Previous value or option name.
+	 * @param mixed $value Stored value.
+	 */
+	public function on_share_edits_updated( $old, $value ): void {
+		if ( '1' === $value && '1' !== (string) $old ) {
+			update_option( Babilim_Edit_Feedback::OPTION_SINCE, gmdate( 'Y-m-d H:i:s' ), false );
+		} elseif ( '0' === $value ) {
+			delete_option( Babilim_Edit_Feedback::OPTION_SINCE );
+		}
 	}
 
 	/**
@@ -2967,6 +3017,7 @@ final class Babilim_Admin {
 				'tabindex'                  => true,
 				'role'                      => true,
 				'aria-labelledby'           => true,
+				'aria-hidden'               => true,
 			),
 			'span'     => $common + array(
 				'title'       => true,
@@ -2986,7 +3037,7 @@ final class Babilim_Admin {
 			'h2'       => $common,
 			'nav'      => $common + array( 'aria-label' => true ),
 			'hr'       => $common,
-			'ul'       => $common,
+			'ul'       => $common + array( 'role' => true ),
 			'li'       => $common,
 			'br'       => array( 'class' => true ),
 			'em'       => $common,
@@ -4069,14 +4120,22 @@ final class Babilim_Admin {
 		$html .= '<tr><th scope="row">' . esc_html__( 'Error reports', 'babilim' ) . '</th><td>'
 			. '<label><input type="checkbox" name="' . esc_attr( Babilim_Error_Reporter::OPTION_SHARE ) . '" ' . checked( Babilim_Error_Reporter::for_site()->sharing_enabled(), true, false ) . ' /> '
 			. esc_html__( 'Share error reports', 'babilim' ) . '</label>'
-			. '<p class="description">' . esc_html__( 'When something fails inside Babilim, send an error report to the Babilim service so it can be published as a public issue on GitHub. The report is sent as coming from this site, with the same authentication as every other request to the Babilim service. The service publishes only the error code and versions as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default.', 'babilim' ) . '</p></td></tr>';
+			. '<p class="description">' . esc_html__( 'When something fails inside Babilim, send an error report to the Babilim service: what failed, where and when, a random report ID, the versions and the site language. Only the error, where it happened and the versions are published as a public issue on GitHub; the public issue contains no site address, content or file paths. Off by default.', 'babilim' ) . '</p></td></tr>';
 
-		$html .= '<tr><th scope="row">' . esc_html__( 'Custom overrides', 'babilim' ) . '</th><td>'
+		if ( $granted && ! is_multisite() ) {
+			$share  = esc_attr( Babilim_Edit_Feedback::OPTION_SHARE );
+			$html .= '<tr><th scope="row">' . esc_html__( 'Translation edits', 'babilim' ) . '</th><td>'
+				. '<input type="checkbox" id="' . $share . '" name="' . $share . '" aria-describedby="' . $share . '-description" ' . checked( '1', get_option( Babilim_Edit_Feedback::OPTION_SHARE, '0' ), false ) . ' /> '
+				. '<label for="' . $share . '">' . esc_html__( 'Share my edits with Babilim', 'babilim' ) . '</label>'
+				. '<p class="description" id="' . $share . '-description">' . esc_html__( "When you change a translation that came from Babilim, your version is sent with the original text, Babilim's translation, the plugin or theme, the language and the build. Babilim processes it with AI models and may use it to improve that translation for every site. Off by default.", 'babilim' ) . '</p></td></tr>';
+		}
+
+		$html .= '<tr><th scope="row">' . esc_html__( 'Your own translations', 'babilim' ) . '</th><td>'
 			. '<label><input type="checkbox" name="' . esc_attr( self::OPTION_KEEP_CUSTOM ) . '" ' . checked( self::keep_custom_on_purge(), true, false ) . ' /> '
-			. esc_html__( 'Keep my own translation overrides when purging everything or uninstalling this plugin.', 'babilim' ) . '</label>'
+			. esc_html__( 'Keep my translations when removing everything or uninstalling Babilim.', 'babilim' ) . '</label>'
 			. '<p class="description">' . sprintf(
 				/* translators: %s: folder path, shown as code. */
-				esc_html__( "Translation files you put in %s always take priority over Babilim's. They are kept unless you uncheck this.", 'babilim' ),
+				esc_html__( "Your edits and the files you put in %s always take priority over Babilim's. Unchecking this deletes them when you remove everything or uninstall.", 'babilim' ),
 				'<code>' . esc_html( self::custom_dir_label() ) . '</code>'
 			) . '</p></td></tr>';
 
@@ -4214,7 +4273,7 @@ final class Babilim_Admin {
 		$allowed = apply_filters( 'babilim_checkout_hosts', array( 'babilim.org' ) );
 		foreach ( is_array( $allowed ) ? $allowed : array() as $domain ) {
 			$domain = strtolower( trim( (string) $domain, '. ' ) );
-			if ( '' !== $domain && ( $host === $domain || substr( $host, -strlen( $domain ) - 1 ) === '.' . $domain ) ) {
+			if ( '' !== $domain && ( $host === $domain || str_ends_with( $host, '.' . $domain ) ) ) {
 				return true;
 			}
 		}
@@ -5116,7 +5175,7 @@ final class Babilim_Admin {
 
 	/**
 	 * "Remove everything Babilim installed" -- purge_all(), respecting
-	 * the "Keep my own translation overrides" setting above. A separate button, not
+	 * the "Keep my translations" setting above. A separate button, not
 	 * folded into the maintenance ones: this deletes every installed
 	 * component's files/manifest records outright, not a routine
 	 * reconciliation. Writes to the network-wide shared translation

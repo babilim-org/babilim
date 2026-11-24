@@ -65,6 +65,15 @@ final class Babilim_String_Catalog {
 	 */
 	private $language_dirs;
 
+	/** @var callable|null */
+	private $string_list;
+
+	/** @var callable|null */
+	private $plural_header;
+
+	/** @var array<string,array> The last load() result of this request (one entry: a long run over many scopes holds one catalog), by component version, domain and locale. */
+	private $memo = array();
+
 	/**
 	 * @param Babilim_Manifest $manifest      Installed-build records.
 	 * @param callable         $parse_entries fn( string $path ): array -- a `.mo`/`.l10n.php` as key => msgstr (NUL-joined plural forms), as Babilim::parse_entries().
@@ -72,14 +81,18 @@ final class Babilim_String_Catalog {
 	 * @param callable         $list_dir      fn( string $dir ): string[] -- bare file names; [] when the directory is missing.
 	 * @param callable         $read_file     fn( string $path ): string|false -- file bytes.
 	 * @param callable         $language_dirs fn( array $component ): string[] -- the component's own translation directories, i.e. Babilim_Inventory::language_dirs().
+	 * @param callable|null    $string_list   fn( array $component ): ?array -- the fetched text list.
+	 * @param callable|null    $plural_header fn( string $path ): ?string -- the Plural-Forms header of a file $parse_entries just read; null: read the file for it.
 	 */
-	public function __construct( Babilim_Manifest $manifest, callable $parse_entries, callable $read_po, callable $list_dir, callable $read_file, callable $language_dirs ) {
+	public function __construct( Babilim_Manifest $manifest, callable $parse_entries, callable $read_po, callable $list_dir, callable $read_file, callable $language_dirs, ?callable $string_list = null, ?callable $plural_header = null ) {
 		$this->manifest      = $manifest;
 		$this->parse_entries = $parse_entries;
 		$this->read_po       = $read_po;
 		$this->list_dir      = $list_dir;
 		$this->read_file     = $read_file;
 		$this->language_dirs = $language_dirs;
+		$this->string_list   = $string_list;
+		$this->plural_header = $plural_header;
 	}
 
 	/**
@@ -89,7 +102,7 @@ final class Babilim_String_Catalog {
 	 * @param string $path Absolute path.
 	 * Empty when the file is unreadable or pomo is not loaded.
 	 *
-	 * @return list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[]}>
+	 * @return list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[],flags:string[]}>
 	 */
 	public static function read_po( string $path ): array {
 		try {
@@ -103,7 +116,7 @@ final class Babilim_String_Catalog {
 			if ( true !== $po->import_from_file( $path ) ) {
 				return array();
 			}
-			/** @var list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[]}> $rows */
+			/** @var list<array{msgctxt:string,msgid:string,msgid_plural:string,msgstr:string[],comments:string[],references:string[],flags:string[]}> $rows */
 			$rows = array();
 			if ( array() !== $po->headers ) {
 				$block = '';
@@ -117,6 +130,7 @@ final class Babilim_String_Catalog {
 					'msgstr'       => array( $block ),
 					'comments'     => array(),
 					'references'   => array(),
+					'flags'        => array(),
 				);
 			}
 			foreach ( $po->entries as $entry ) {
@@ -126,13 +140,16 @@ final class Babilim_String_Catalog {
 						$comments[] = trim( (string) $comment );
 					}
 				}
+				$forms = (array) $entry->translations;
+				ksort( $forms, SORT_NUMERIC );
 				$rows[] = array(
 					'msgctxt'      => (string) $entry->context,
 					'msgid'        => (string) $entry->singular,
 					'msgid_plural' => $entry->is_plural ? (string) $entry->plural : '',
-					'msgstr'       => array_map( 'strval', array_values( (array) $entry->translations ) ),
+					'msgstr'       => array_map( 'strval', $forms ),
 					'comments'     => $comments,
 					'references'   => self::references( $entry->references ),
+					'flags'        => array_map( 'trim', (array) $entry->flags ),
 				);
 			}
 			return $rows;
@@ -166,14 +183,28 @@ final class Babilim_String_Catalog {
 	 * @param array  $component Component from Babilim_Inventory::components().
 	 * @param string $domain    Text domain (the component's own or one of its extra domains).
 	 * @param string $locale    Locale code.
-	 * @return array{entries:array<string,array>,plural_forms:string,current:bool,sources:string[]}
+	 * @return array{entries:array<string,array>,plural_forms:string,current:bool,sources:string[],list_unavailable:bool}
 	 */
 	public function load( array $component, string $domain, string $locale ): array {
+		$key = implode( "\0", array( (string) ( $component['kind'] ?? '' ), (string) ( $component['slug'] ?? '' ), (string) ( $component['version'] ?? '' ), $domain, $locale ) );
+		if ( ! isset( $this->memo[ $key ] ) ) {
+			$this->memo = array( $key => $this->read( $component, $domain, $locale ) );
+		}
+		return $this->memo[ $key ];
+	}
+
+	/** Drops the memo: call when a layer or the fetched text list changed within the request. */
+	public function forget(): void {
+		$this->memo = array();
+	}
+
+	private function read( array $component, string $domain, string $locale ): array {
 		$empty = array(
 			'entries'      => array(),
 			'plural_forms' => Babilim_Plural_Forms::header( $locale ),
 			'current'      => false,
 			'sources'      => array(),
+			'list_unavailable' => false,
 		);
 
 		$kind = (string) ( $component['kind'] ?? '' );
@@ -238,7 +269,7 @@ final class Babilim_String_Catalog {
 			$dir     = rtrim( (string) $dir, '/' );
 			$listing = $this->names( $dir );
 			foreach ( $listing as $file ) {
-				if ( '.pot' !== substr( $file, -4 ) ) {
+				if ( ! str_ends_with( $file, '.pot' ) ) {
 					continue;
 				}
 				$base = substr( $file, 0, -4 );
@@ -262,6 +293,18 @@ final class Babilim_String_Catalog {
 			$layers[]        = $layer;
 		}
 
+		$list = null === $this->string_list ? null : call_user_func( $this->string_list, $component );
+		if ( null !== $list ) {
+			if ( $list['unavailable'] || $domain !== $list['text_domain'] || array() === $list['strings'] ) {
+				$empty['list_unavailable'] = true;
+			} else {
+				$rows = array();
+				foreach ( $list['strings'] as $row ) {
+					$rows[] = $row + array( 'msgctxt' => '', 'msgid_plural' => '', 'comments' => array(), 'references' => array() );
+				}
+				$layers[] = array( 'source' => 'none', 'type' => 'list', 'counts' => false, 'header' => null, 'rows' => $rows );
+			}
+		}
 		return $this->merge( $layers, $build_id, count( $bundled ) > 0, $record, $component, $empty );
 	}
 
@@ -355,10 +398,11 @@ final class Babilim_String_Catalog {
 		return array(
 			'entries'      => $meta,
 			'plural_forms' => $plural ?? $empty['plural_forms'],
-			'current'      => $shipped || ( null !== $record && '' !== $version && (string) ( $record['component_version'] ?? '' ) === $version ),
+			'current'      => $shipped || isset( $sources['none'] ) || ( null !== $record && '' !== $version && (string) ( $record['component_version'] ?? '' ) === $version ),
+			'list_unavailable' => $empty['list_unavailable'],
 			'sources'      => array_values(
 				array_filter(
-					array( 'babilim', 'wporg', 'bundled' ),
+					array( 'babilim', 'wporg', 'bundled', 'none' ),
 					static function ( string $s ) use ( $sources ): bool {
 						return isset( $sources[ $s ] );
 					}
@@ -390,8 +434,13 @@ final class Babilim_String_Catalog {
 				$rows[] = self::row( false === $at ? '' : substr( $key, 0, $at ), $msgid, '', self::forms( $value ), array() );
 			}
 			if ( 'mo' === $type ) {
-				$bytes  = call_user_func( $this->read_file, $path );
-				$header = is_string( $bytes ) ? Babilim_Mo_Writer::read_header( $bytes, 'Plural-Forms' ) : null;
+				$known = null === $this->plural_header ? null : call_user_func( $this->plural_header, $path );
+				if ( null === $known ) {
+					$bytes  = call_user_func( $this->read_file, $path );
+					$header = is_string( $bytes ) ? Babilim_Mo_Writer::read_header( $bytes, 'Plural-Forms' ) : null;
+				} else {
+					$header = '' === $known ? null : $known;
+				}
 			}
 		} elseif ( 'json' === $type ) {
 			$bytes   = call_user_func( $this->read_file, $path );
