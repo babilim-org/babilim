@@ -288,11 +288,15 @@ final class Babilim_Editor {
 	 * @return Babilim_Result Ok with `draft`, `at`, `problems`, `pending`.
 	 */
 	public function save_draft( array $scope, string $ref, array $msgstr ): Babilim_Result {
-		return $this->writer->locked( fn(): Babilim_Result => $this->save_draft_locked( $scope, $ref, $msgstr ) ) ?? $this->not_saved();
+		// Take a fresh catalog snapshot before locking. Drafts never publish files.
+		$this->catalog->forget();
+		$catalog = $this->load_catalog( $scope );
+		return $this->writer->locked( fn(): Babilim_Result => $this->save_draft_locked( $scope, $ref, $msgstr, $catalog ) ) ?? $this->not_saved();
 	}
 
-	private function save_draft_locked( array $scope, string $ref, array $msgstr ): Babilim_Result {
-		$L   = $this->load( $scope );
+	/** @param array{c:?array,cat:array,entries:array,nplurals:int} $catalog Catalog snapshot. */
+	private function save_draft_locked( array $scope, string $ref, array $msgstr, array $catalog ): Babilim_Result {
+		$L   = $this->load_rows( $scope, $catalog );
 		$ctx = $this->context( $scope, $ref, $L );
 		if ( $ctx instanceof Babilim_Result ) {
 			return $ctx;
@@ -624,17 +628,31 @@ final class Babilim_Editor {
 	 * @return array{c:?array,cat:array,entries:array,saved:array,drafts:array,nplurals:int,review:array,folded:array,orphan:array}
 	 */
 	private function load( array $scope ): array {
+		return $this->load_rows( $scope, $this->load_catalog( $scope ) );
+	}
+
+	/** @return array{c:?array,cat:array,entries:array,nplurals:int} */
+	private function load_catalog( array $scope ): array {
 		$c     = $this->component( (string) $scope['kind'], (string) $scope['slug'] );
 		$cat   = null === $c ? array() : $this->catalog->load( $c, (string) $scope['domain'], (string) $scope['locale'] );
+		return array(
+			'c'        => $c,
+			'cat'      => $cat,
+			'entries'  => (array) ( $cat['entries'] ?? array() ),
+			'nplurals' => Babilim_Plural_Forms::nplurals( (string) ( $cat['plural_forms'] ?? Babilim_Plural_Forms::header( (string) $scope['locale'] ) ) ),
+		);
+	}
+
+	/**
+	 * @param array{c:?array,cat:array,entries:array,nplurals:int} $catalog Catalog snapshot.
+	 * @return array{c:?array,cat:array,entries:array,saved:array,drafts:array,nplurals:int,review:array,folded:array,orphan:array}
+	 */
+	private function load_rows( array $scope, array $catalog ): array {
 		$ready = $this->overrides->ready(); // No table: the catalog alone, no SELECT.
 		return $this->marks(
-			array(
-				'c'        => $c,
-				'cat'      => $cat,
-				'entries'  => (array) ( $cat['entries'] ?? array() ),
+			$catalog + array(
 				'saved'    => $ready ? $this->group( $this->overrides->rows( $scope ) ) : array(),
 				'drafts'   => $ready ? $this->group( $this->overrides->rows( $scope, true ) ) : array(),
-				'nplurals' => Babilim_Plural_Forms::nplurals( (string) ( $cat['plural_forms'] ?? Babilim_Plural_Forms::header( (string) $scope['locale'] ) ) ),
 			)
 		);
 	}

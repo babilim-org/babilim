@@ -4,7 +4,7 @@ Tags: translation, language pack, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,10 @@ The Enable screen lists what is sent automatically before you agree.
 
 == Changelog ==
 
+= 2.2.1 =
+* Saving drafts on large plugins no longer holds up other Babilim tasks.
+* Safer Loco Translate imports with many files.
+
 = 2.2.0 =
 * New: import your custom translations from Loco Translate.
 * New: optionally share your edits with Babilim.
@@ -109,14 +113,12 @@ The Enable screen lists what is sent automatically before you agree.
 * Your changes are checked before saving and stay in place through updates.
 * The editor works without enabling the Babilim service.
 
-= 1.3.0 =
-* Actions finish on the same page.
-* Confirmations and source uploads open in a dialog.
-* Every screen still works without JavaScript.
-
 Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 2.2.1 =
+Performance and reliability fixes. No action needed.
 
 = 2.2.0 =
 Adds Loco Translate import, optional edit sharing and text lists for plugins and themes without a template. No action needed.
@@ -126,6 +128,3 @@ New editor layout with drafts and one Save button; no action needed.
 
 = 2.0.0 =
 Adds a translation editor; no action needed.
-
-= 1.3.0 =
-Actions finish on the same page and confirmations open in a dialog; no action needed.

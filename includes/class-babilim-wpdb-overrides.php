@@ -23,7 +23,7 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 	const OPTION_DB_VERSION = 'babilim_db_version';
 
 	/** Schema version this code creates. */
-	const DB_VERSION = '1';
+	const DB_VERSION = '2';
 
 	/** @var wpdb */
 	private $wpdb;
@@ -43,9 +43,9 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
 	}
 
 	/**
-	 * Creates or updates the table, then records the schema version once the
-	 * table is there. dbDelta() needs one field per line and two spaces
-	 * after PRIMARY KEY, and wants KEY rather than INDEX.
+	 * Records the schema version once the table and its indexes are ready.
+	 * dbDelta() needs one field per line, two spaces after PRIMARY KEY, and
+	 * KEY rather than INDEX.
 	 */
 	public function install(): void {
 		if ( ! function_exists( 'dbDelta' ) ) {
@@ -80,12 +80,40 @@ final class Babilim_Wpdb_Overrides implements Babilim_Overrides {
   modified_by bigint(20) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY  (id),
   UNIQUE KEY entry (scope,ref,plural_index,is_draft),
-  KEY status (scope,status)
+  KEY draft_status (is_draft,status)
 ) {$charset};";
 		dbDelta( $sql );
-		if ( $this->ready() ) {
+		if ( $this->ready() && $this->upgrade_indexes() ) {
 			update_site_option( self::OPTION_DB_VERSION, self::DB_VERSION );
 		}
+	}
+
+	/** dbDelta adds the new index but leaves the redundant one behind. */
+	private function upgrade_indexes(): bool {
+		$wpdb        = $this->wpdb;
+		$indexes_sql = $wpdb->prepare( 'SHOW INDEX FROM %i', $this->table() );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- prepared schema probe. Column 2 is Key_name.
+		$indexes = $wpdb->get_col( $indexes_sql, 2 );
+		if ( ! in_array( 'draft_status', $indexes, true ) ) {
+			return false;
+		}
+		if ( ! in_array( 'status', $indexes, true ) ) {
+			return true;
+		}
+		// Another upgrader can drop the same key between SHOW INDEX and ALTER TABLE.
+		$suppressed = $wpdb->suppress_errors( true );
+		try {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- plugin schema migration.
+			$dropped = $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i DROP INDEX %i', $this->table(), 'status' ) );
+		} finally {
+			$wpdb->suppress_errors( $suppressed );
+		}
+		if ( false !== $dropped ) {
+			return true;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- prepared schema probe.
+		$indexes = $wpdb->get_col( $indexes_sql, 2 );
+		return in_array( 'draft_status', $indexes, true ) && ! in_array( 'status', $indexes, true );
 	}
 
 	/** Runs install() unless this schema version is already recorded. */

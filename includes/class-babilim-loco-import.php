@@ -109,12 +109,19 @@ final class Babilim_Loco_Import {
 		if ( ! $this->ready() ) {
 			return self::COUNTS;
 		}
-		$result = $this->writer->locked( fn(): array => $this->process( $this->files(), true ) );
-		if ( ! is_array( $result ) ) {
-			$this->warning = __( 'The translation could not be saved.', 'babilim' );
-			return self::COUNTS;
+		$counts = self::COUNTS;
+		// Give each file a fresh lease and let other writers run between files.
+		foreach ( $this->files() as $path => $file ) {
+			$result = $this->writer->locked( fn(): array => $this->process( array( $path => $file ), true ) );
+			if ( ! is_array( $result ) ) {
+				$this->warning = __( 'The translation could not be saved.', 'babilim' );
+				break; // The shared lock timed out; preserve counts for files already processed.
+			}
+			foreach ( $counts as $key => $count ) {
+				$counts[ $key ] = $count + $result[ $key ];
+			}
 		}
-		return $result;
+		return $counts;
 	}
 
 	public function warning(): string {
