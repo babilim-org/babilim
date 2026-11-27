@@ -112,7 +112,54 @@ final class Babilim_String_Catalog {
 			if ( ! class_exists( 'PO', false ) ) {
 				return array();
 			}
-			$po = new PO();
+			// Keep normalized rows directly in the parser's keyed map. Core still
+			// handles syntax, headers and duplicate keys, but entries are projected
+			// as they arrive so their objects are not kept for a second full pass.
+			$project = static function ( Translation_Entry $entry ): array {
+				$comments = array();
+				foreach ( array( $entry->extracted_comments, $entry->translator_comments ) as $comment ) {
+					$comment = trim( (string) $comment );
+					if ( '' !== $comment ) {
+						$comments[] = $comment;
+					}
+				}
+				$forms = (array) $entry->translations;
+				ksort( $forms, SORT_NUMERIC );
+				return array(
+					'msgctxt'      => (string) $entry->context,
+					'msgid'        => (string) $entry->singular,
+					'msgid_plural' => $entry->is_plural ? (string) $entry->plural : '',
+					'msgstr'       => array_map( 'strval', $forms ),
+					'comments'     => $comments,
+					'references'   => self::references( $entry->references ),
+					'flags'        => array_map( 'trim', (array) $entry->flags ),
+				);
+			};
+			$po = new class( $project ) extends PO {
+				/** @var Closure */
+				private $project;
+
+				public function __construct( Closure $project ) {
+					$this->project = $project;
+				}
+
+				/** @return array<array|Translation_Entry> Projected rows or entries inserted by core. */
+				public function imported_entries(): array {
+					return $this->entries;
+				}
+
+				public function add_entry( $entry ) {
+					if ( is_array( $entry ) ) {
+						$entry = new Translation_Entry( $entry );
+					}
+					$key = $entry->key();
+					if ( false === $key ) {
+						return false;
+					}
+					$this->entries[ $key ] = ( $this->project )( $entry );
+					return true;
+				}
+			};
 			if ( true !== $po->import_from_file( $path ) ) {
 				return array();
 			}
@@ -133,24 +180,9 @@ final class Babilim_String_Catalog {
 					'flags'        => array(),
 				);
 			}
-			foreach ( $po->entries as $entry ) {
-				$comments = array();
-				foreach ( array( $entry->extracted_comments, $entry->translator_comments ) as $comment ) {
-					if ( '' !== trim( (string) $comment ) ) {
-						$comments[] = trim( (string) $comment );
-					}
-				}
-				$forms = (array) $entry->translations;
-				ksort( $forms, SORT_NUMERIC );
-				$rows[] = array(
-					'msgctxt'      => (string) $entry->context,
-					'msgid'        => (string) $entry->singular,
-					'msgid_plural' => $entry->is_plural ? (string) $entry->plural : '',
-					'msgstr'       => array_map( 'strval', $forms ),
-					'comments'     => $comments,
-					'references'   => self::references( $entry->references ),
-					'flags'        => array_map( 'trim', (array) $entry->flags ),
-				);
+			// Core may populate entries through a different insertion method.
+			foreach ( $po->imported_entries() as $entry ) {
+				$rows[] = $entry instanceof Translation_Entry ? $project( $entry ) : $entry;
 			}
 			return $rows;
 		} catch ( \Throwable $e ) {
@@ -233,13 +265,13 @@ final class Babilim_String_Catalog {
 		$listing     = $this->names( $babilim_dir );
 		foreach ( array( 'mo', 'json' ) as $ext ) {
 			if ( in_array( $name . '.' . $ext, $listing, true ) ) {
-				$layers[] = $this->layer( 'babilim', $babilim_dir . '/' . $name . '.' . $ext, $ext );
+				$layers[] = array( 'babilim', $babilim_dir . '/' . $name . '.' . $ext, $ext );
 			}
 		}
 		if ( '' !== $build_id ) {
 			$history = Babilim_Paths::version_dir( $dir_type, $slug, $locale, $build_id );
 			if ( Babilim_Paths::is_allowed( $history, false ) && in_array( $name . '.po', $this->names( $history ), true ) ) {
-				$layers[] = $this->layer( 'babilim', $history . '/' . $name . '.po', 'po' );
+				$layers[] = array( 'babilim', $history . '/' . $name . '.po', 'po' );
 			}
 		}
 
@@ -251,13 +283,13 @@ final class Babilim_String_Catalog {
 				if ( in_array( $name . '.' . $ext, $listing, true ) ) {
 					// Only .mo/.l10n.php are loaded by core; a .po lists strings only.
 					$has_pack = $has_pack || 'po' !== $ext;
-					$layers[] = $this->layer( 'wporg', $pack_dir . '/' . $name . '.' . $ext, 'po' === $ext ? 'po' : ( 'mo' === $ext ? 'mo' : 'php' ) );
+					$layers[] = array( 'wporg', $pack_dir . '/' . $name . '.' . $ext, 'l10n.php' === $ext ? 'php' : $ext );
 				}
 			}
 			$json = '/^' . preg_quote( $name, '/' ) . '-[0-9a-f]{32}\.json$/D';
 			foreach ( $listing as $file ) {
 				if ( 1 === preg_match( $json, $file ) ) {
-					$layers[] = $this->layer( 'wporg', $pack_dir . '/' . $file, 'json' );
+					$layers[] = array( 'wporg', $pack_dir . '/' . $file, 'json' );
 				}
 			}
 		}
@@ -274,7 +306,7 @@ final class Babilim_String_Catalog {
 				}
 				$base = substr( $file, 0, -4 );
 				if ( $own ? ! in_array( $base, $extras, true ) : $base === $domain ) {
-					$bundled[] = $this->layer( 'bundled', $dir . '/' . $file, 'pot' );
+					$bundled[] = array( 'bundled', $dir . '/' . $file, 'pot' );
 				}
 			}
 			// The .mo first: core loads it, never the .po, so its header is the one in force.
@@ -284,61 +316,66 @@ final class Babilim_String_Catalog {
 			}
 			foreach ( $files as $file => $type ) {
 				if ( in_array( $file, $listing, true ) ) {
-					$bundled[] = $this->layer( 'bundled', $dir . '/' . $file, $type );
+					$bundled[] = array( 'bundled', $dir . '/' . $file, $type );
 				}
 			}
 		}
-		foreach ( $bundled as $layer ) {
-			$layer['counts'] = $layer['counts'] && ! $has_pack;
-			$layers[]        = $layer;
-		}
+		return $this->merge( array_merge( $layers, $bundled ), $has_pack, $build_id, array() !== $bundled, $record, $component, $domain, $empty );
+	}
 
+	/** Yields one parsed layer at a time so the merge only holds one input. */
+	private function layers( array $files, bool $has_pack, array $component, string $domain ): Generator {
+		foreach ( $files as $file ) {
+			list( $source, $path, $type ) = $file;
+			$counts = 'po' !== $type && 'pot' !== $type && ( ! $has_pack || 'bundled' !== $source );
+			yield array( 'source' => $source, 'type' => $type, 'counts' => $counts, 'rows' => $this->rows( $path, $type ) );
+		}
 		$list = null === $this->string_list ? null : call_user_func( $this->string_list, $component );
 		if ( null !== $list ) {
 			if ( $list['unavailable'] || $domain !== $list['text_domain'] || array() === $list['strings'] ) {
-				$empty['list_unavailable'] = true;
-			} else {
-				$rows = array();
-				foreach ( $list['strings'] as $row ) {
-					$rows[] = $row + array( 'msgctxt' => '', 'msgid_plural' => '', 'comments' => array(), 'references' => array() );
-				}
-				$layers[] = array( 'source' => 'none', 'type' => 'list', 'counts' => false, 'header' => null, 'rows' => $rows );
+				return true;
 			}
+			yield array( 'source' => 'none', 'type' => 'list', 'counts' => false, 'rows' => $list['strings'] );
 		}
-		return $this->merge( $layers, $build_id, count( $bundled ) > 0, $record, $component, $empty );
+		return false;
 	}
 
 	/**
-	 * @param array[]    $layers   In priority order.
+	 * Exhaust both generators: the row iterator returns the plural header and
+	 * the layer iterator returns whether the text list was unavailable.
+	 *
+	 * @param array[]    $files    In priority order.
+	 * @param bool       $has_pack Whether core will use the pack instead of bundled translations.
 	 * @param string     $build_id Installed Babilim build id.
 	 * @param bool       $shipped  Whether the component ships any template or translation file.
 	 * @param array|null $record   Manifest record.
 	 * @param array      $component Component.
+	 * @param string     $domain Text domain.
 	 * @param array      $empty    Result for no sources.
 	 * @return array
 	 */
-	private function merge( array $layers, string $build_id, bool $shipped, ?array $record, array $component, array $empty ): array {
+	private function merge( array $files, bool $has_pack, string $build_id, bool $shipped, ?array $record, array $component, string $domain, array $empty ): array {
 		$meta       = array();
-		$chosen     = array();
 		$sources    = array();
 		$plural     = null;
 		$own_refs   = array();
-		$other_refs = array();
-		$layer_refs = array();
+		$order      = array( 'bundled/pot' => array(), 'bundled/po' => array(), 'babilim/po' => array(), 'wporg/po' => array() );
 
-		foreach ( $layers as $k => $layer ) {
+		$layers = $this->layers( $files, $has_pack, $component, $domain );
+		foreach ( $layers as $layer ) {
 			$sources[ $layer['source'] ] = true;
-			if ( null === $plural && null !== $layer['header'] ) {
-				$plural = $layer['header'];
-			}
-			$layer_refs[ $k ] = array();
+
+			$order_key = $layer['source'] . '/' . $layer['type'];
 			foreach ( $layer['rows'] as $row ) {
-				$ref                 = Babilim_Translation_Search::ref( $row['msgctxt'], $row['msgid'] );
-				$layer_refs[ $k ][] = $ref;
+				$ctx = $row['msgctxt'] ?? '';
+				$ref = Babilim_Translation_Search::ref( $ctx, $row['msgid'] );
+				if ( isset( $order[ $order_key ] ) ) {
+					$order[ $order_key ][ $ref ] = true;
+				}
 				if ( ! isset( $meta[ $ref ] ) ) {
 					$meta[ $ref ] = array(
 						'ref'          => $ref,
-						'msgctxt'      => $row['msgctxt'],
+						'msgctxt'      => $ctx,
 						'msgid'        => $row['msgid'],
 						'msgid_plural' => '',
 						'comments'     => array(),
@@ -349,54 +386,49 @@ final class Babilim_String_Catalog {
 					);
 				}
 				if ( '' === $meta[ $ref ]['msgid_plural'] ) {
-					$meta[ $ref ]['msgid_plural'] = $row['msgid_plural'];
+					$meta[ $ref ]['msgid_plural'] = $row['msgid_plural'] ?? '';
 				}
 				if ( array() === $meta[ $ref ]['comments'] ) {
-					$meta[ $ref ]['comments'] = $row['comments'];
+					$meta[ $ref ]['comments'] = $row['comments'] ?? array();
 				}
-				if ( array() !== $row['references'] ) {
+				if ( ! empty( $row['references'] ) ) {
 					if ( 'bundled' === $layer['source'] ) {
-						$own_refs[ $ref ] = $own_refs[ $ref ] ?? $row['references'];
-					} else {
-						$other_refs[ $ref ] = $other_refs[ $ref ] ?? $row['references'];
+						if ( ! isset( $own_refs[ $ref ] ) ) {
+							$meta[ $ref ]['references'] = $row['references'];
+							$own_refs[ $ref ] = true;
+						}
+					} elseif ( array() === $meta[ $ref ]['references'] ) {
+						$meta[ $ref ]['references'] = $row['references'];
 					}
 				}
-				if ( $layer['counts'] && ! isset( $chosen[ $ref ] ) && '' !== implode( '', $row['msgstr'] ) ) {
-					$chosen[ $ref ]           = true;
+				if ( $layer['counts'] && 'none' === $meta[ $ref ]['source'] && '' !== implode( '', $row['msgstr'] ) ) {
 					$meta[ $ref ]['source']   = $layer['source'];
 					$meta[ $ref ]['msgstr']   = $row['msgstr'];
 					$meta[ $ref ]['build_id'] = 'babilim' === $layer['source'] ? $build_id : '';
 				}
 			}
+			if ( null === $plural && $layer['rows'] instanceof Generator ) {
+				$plural = $layer['rows']->getReturn();
+			}
+			unset( $layer, $row );
 		}
+		$empty['list_unavailable'] = $layers->getReturn();
 
 		// The template's order: what the author shipped first, then the translation files; strings only in a compiled file follow.
-		$order = array();
-		foreach ( array( array( 'bundled', 'pot' ), array( 'bundled', 'po' ), array( 'babilim', 'po' ), array( 'wporg', 'po' ) ) as $want ) {
-			foreach ( $layers as $k => $layer ) {
-				if ( $layer['source'] === $want[0] && $layer['type'] === $want[1] ) {
-					foreach ( $layer_refs[ $k ] as $ref ) {
-						$order[ $ref ] = true;
-					}
-				}
+		$sorted = array();
+		foreach ( $order as $refs ) {
+			foreach ( $refs as $ref => $unused ) {
+				$sorted[ $ref ] = $meta[ $ref ];
 			}
 		}
-		$sorted = array();
-		foreach ( $order as $ref => $unused ) {
-			$sorted[ $ref ] = $meta[ $ref ];
-		}
-		$meta = $sorted + $meta;
-		foreach ( $meta as $ref => $unused ) {
-			$meta[ $ref ]['references'] = $own_refs[ $ref ] ?? $other_refs[ $ref ] ?? array();
-		}
 
-		if ( array() === $layers ) {
+		if ( array() === $sources ) {
 			return $empty;
 		}
 
 		$version = (string) ( $component['version'] ?? '' );
 		return array(
-			'entries'      => $meta,
+			'entries'      => $sorted + $meta,
 			'plural_forms' => $plural ?? $empty['plural_forms'],
 			'current'      => $shipped || isset( $sources['none'] ) || ( null !== $record && '' !== $version && (string) ( $record['component_version'] ?? '' ) === $version ),
 			'list_unavailable' => $empty['list_unavailable'],
@@ -412,15 +444,14 @@ final class Babilim_String_Catalog {
 	}
 
 	/**
-	 * Reads one file into a layer: its rows and its Plural-Forms header.
+	 * Normalizes one row at a time. Returns the Plural-Forms header after iteration.
+	 * The caller must exhaust the generator before requesting its return value.
 	 *
-	 * @param string $source 'babilim'|'wporg'|'bundled'.
 	 * @param string $path   Absolute path.
 	 * @param string $type   'mo'|'php'|'json'|'po'|'pot'. A `.po`/`.pot` lists strings, comments and plural source forms but never supplies the effective translation (core loads only `.mo`/`.l10n.php`; a `.po` can be fuzzy or stale), and a `.pot` has no header of its own.
-	 * @return array{source:string,type:string,counts:bool,rows:array[],header:?string}
+	 * @return Generator<int,array,mixed,?string>
 	 */
-	private function layer( string $source, string $path, string $type ): array {
-		$rows   = array();
+	private function rows( string $path, string $type ): Generator {
 		$header = null;
 
 		if ( 'mo' === $type || 'php' === $type ) {
@@ -431,7 +462,7 @@ final class Babilim_String_Catalog {
 				}
 				$at    = strpos( $key, "\x04" );
 				$msgid = explode( "\0", false === $at ? $key : substr( $key, $at + 1 ) )[0];
-				$rows[] = self::row( false === $at ? '' : substr( $key, 0, $at ), $msgid, '', self::forms( $value ), array() );
+				yield self::row( false === $at ? '' : substr( $key, 0, $at ), $msgid, '', self::forms( $value ), array() );
 			}
 			if ( 'mo' === $type ) {
 				$known = null === $this->plural_header ? null : call_user_func( $this->plural_header, $path );
@@ -455,18 +486,17 @@ final class Babilim_String_Catalog {
 					continue;
 				}
 				$at     = strpos( $key, "\x04" );
-				$rows[] = self::row( false === $at ? '' : substr( $key, 0, $at ), false === $at ? $key : substr( $key, $at + 1 ), '', self::forms( $forms ), array() );
+				yield self::row( false === $at ? '' : substr( $key, 0, $at ), false === $at ? $key : substr( $key, $at + 1 ), '', self::forms( $forms ), array() );
 			}
 		} else {
 			foreach ( (array) call_user_func( $this->read_po, $path ) as $row ) {
-				$msgstr = self::forms( $row['msgstr'] ?? array() );
 				if ( '' === (string) ( $row['msgid'] ?? '' ) ) {
-					if ( 'pot' !== $type && 1 === preg_match( '/^Plural-Forms:[ \t]*(.+)$/mi', implode( '', $msgstr ), $m ) ) {
+					if ( 'pot' !== $type && 1 === preg_match( '/^Plural-Forms:[ \t]*(.+)$/mi', implode( '', self::forms( $row['msgstr'] ?? array() ) ), $m ) ) {
 						$header = trim( $m[1] );
 					}
 					continue;
 				}
-				$rows[] = self::row( (string) ( $row['msgctxt'] ?? '' ), (string) $row['msgid'], (string) ( $row['msgid_plural'] ?? '' ), $msgstr, array_map( 'strval', (array) ( $row['comments'] ?? array() ) ), array_map( 'strval', (array) ( $row['references'] ?? array() ) ) );
+				yield self::row( (string) ( $row['msgctxt'] ?? '' ), (string) $row['msgid'], (string) ( $row['msgid_plural'] ?? '' ), array(), self::row_text( (array) ( $row['comments'] ?? array() ) ), self::row_text( (array) ( $row['references'] ?? array() ) ) );
 			}
 		}
 
@@ -475,13 +505,17 @@ final class Babilim_String_Catalog {
 			$header = null;
 		}
 
-		return array(
-			'source' => $source,
-			'type'   => $type,
-			'counts' => 'po' !== $type && 'pot' !== $type,
-			'rows'   => $rows,
-			'header' => $header,
-		);
+		return $header;
+	}
+
+	/** Reuse the real PO reader's string arrays when merging source metadata. */
+	private static function row_text( array $values ): array {
+		foreach ( $values as $key => $value ) {
+			if ( ! is_string( $value ) ) {
+				$values[ $key ] = (string) $value;
+			}
+		}
+		return $values;
 	}
 
 	/**

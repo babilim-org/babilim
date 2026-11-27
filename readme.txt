@@ -4,7 +4,7 @@ Tags: translation, language pack, automatic translation, localization, i18n
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,17 +12,49 @@ Auto-translate every plugin and theme on your site, then fine-tune any line in a
 
 == Description ==
 
-* See every plugin and theme on your site with its translation status in each language you manage.
-* Install a translation with one click or automatically, or request one that does not exist yet.
-* Edit any translation on your site. Your changes survive plugin, theme and translation updates.
-* Bring your translations over from Loco Translate. The import runs on your site.
-* Use any WordPress language. None is ranked, preferred or left out.
-* Nothing is sent until you agree, not even when you activate the plugin.
-* No API key needed.
+Your site is in your language, but some plugins and themes still show up in English? Babilim finds every plugin and theme that is missing a translation in the languages you use, and fills the gap.
 
-Translations come from the Babilim translation service, which has a free plan and a one-time paid plan (see the FAQ). The editor and the Loco Translate import work without it.
+= See what's missing at a glance =
 
-Translation files are written only inside `wp-content/languages/babilim/`. Babilim does not touch your plugins, your themes or WordPress's own files.
+One screen lists every plugin and theme on your site, with its translation status in each language you manage. No more guessing which screens will stay untranslated.
+
+= Install with one click, or let it run on its own =
+
+Install a translation with one click, or turn on automatic installs. If a translation doesn't exist yet, request it and Babilim makes one.
+
+= Built for software, not just sent to an AI model =
+
+Many translation plugins ask for your own AI API key, send each string to a general-purpose model and save whatever comes back. Babilim's translation service is built for plugin and theme strings:
+
+* It follows WordPress's own approved terminology in each language.
+* It keeps every term consistent across the whole plugin or theme.
+* It checks that placeholders, HTML tags and plural forms come through intact.
+* Each line is checked against the meaning of the original, not just its format.
+* A line that still fails is retried or left out, never shipped broken.
+
+No API key, no per-word bills.
+
+= Change any line yourself =
+
+Search a plugin's or theme's strings and rewrite them in the built-in editor. The original and its placeholders stay intact, and **your edits survive plugin, theme and translation updates.**
+
+= Bring your Loco Translate work with you =
+
+Already translated with Loco Translate? Import those translations in a few clicks. The import runs on your site.
+
+= Nothing leaves your site until you agree =
+
+Activating the plugin sends nothing. Before you press Enable, you see exactly what will be shared. **No API key, no account to set up.**
+
+= Your plugins and themes stay untouched =
+
+Translation files go only into `wp-content/languages/babilim/`. Babilim never changes your plugins, your themes or WordPress's own files.
+
+= Every WordPress language, treated equally =
+
+Use any language WordPress supports. None is ranked, preferred or left out.
+
+Translations come from the Babilim translation service, which has a **free plan** and a **one-time paid plan** (see the FAQ). The editor and the Loco Translate import work without it.
 
 == Installation ==
 
@@ -35,7 +67,7 @@ Translation files are written only inside `wp-content/languages/babilim/`. Babil
 
 = What is sent, and when? =
 
-Nothing until you press "Enable Babilim", not even on activation. After that, Babilim sends your site's URL, versions, languages and list of plugins and themes. Anything more is sent only when you act, or when you turn on error reports or edit sharing. "External services" below lists it all, and "Disable Babilim" in Settings stops every request.
+Nothing until you press "Enable Babilim", not even on activation. After that, Babilim sends your site's URL, versions, languages and list of plugins and themes. Anything more is sent only when you act, or when you turn on error reports or edit sharing. "External services" below has the details, and "Disable Babilim" in Settings stops every request.
 
 = Where do the translations come from? =
 
@@ -64,32 +96,24 @@ Use **Report translation** in the admin toolbar or **Report a problem** on the T
 
 == External services ==
 
-This plugin connects to the Babilim translation service, `https://api.babilim.org`, to find, request and download translation files. The editor and the Loco Translate import work without it.
+Babilim connects to its translation service, `https://api.babilim.org`, to find and download translations. Nothing is sent until you press "Enable Babilim". After that, the plugin shares your site's URL, its WordPress, PHP and Babilim versions, its languages, and the list of installed plugins and themes. Problem and error reports, shared edits, and code of a plugin or theme not on WordPress.org are sent only when you choose to, and are processed with AI models. No visitor data is collected. Payments are handled by Paddle on babilim.org.
 
-* When: **Nothing is sent before you consent.** No request is made when the plugin is activated, and none until you press "Enable Babilim". After that: when you use the plugin, on WordPress's twice-daily check, and when plugins, themes or your plan change, until you press "Disable Babilim".
-* Sent automatically: your site's URL, access token and public key; the WordPress, PHP and Babilim versions; your site's languages; each plugin and theme with its version, text domain, WordPress.org listing, included languages (and which Babilim made) and installed Babilim translation; short diagnostic codes, never text. The service also sees your server's IP address.
-* Only when you act: a translation request (plugin or theme, version, language); a text list request (plugin or theme, version); a problem report (what you fill in or select); a restore code; and, after you confirm, a zip of the code files of a plugin or theme not on WordPress.org. Check them first.
-* Optional (off by default): error reports you share once or turn on (what failed, where and when, a random id, versions, site language; the error, where it happened and the versions become a public GitHub issue) and "Share my edits with Babilim" (each change to a Babilim translation: original, Babilim's translation, yours, plugin or theme, language, build).
-* Uploads, reports and shared edits are stored and processed with AI models.
-* Received: translation files, text lists and status.
-* Checkout: "Upgrade this site" opens babilim.org in a new tab, where Paddle, the merchant of record, takes payment. This plugin never sees payment data.
-
-The Enable screen lists what is sent automatically before you agree.
-
-* Terms of Service: https://babilim.org/terms/
-* Privacy Policy: https://babilim.org/privacy/
-* Refund Policy: https://babilim.org/refund/
-* Paddle Checkout Buyer Terms: https://www.paddle.com/legal/buyer-terms
-* Paddle Privacy Policy: https://www.paddle.com/legal/privacy
+Terms of Service: https://babilim.org/terms/
+Privacy Policy: https://babilim.org/privacy/
+Paddle Privacy Policy: https://www.paddle.com/legal/privacy
 
 == Screenshots ==
 
-1. The Translations screen before you enable Babilim: what will be sent, and the Enable button.
-2. The Translations screen after enabling: each installed plugin and theme with its translation status per language.
-3. Settings: the languages to manage and the uninstall choices.
-4. The translation editor: search a plugin's or theme's strings and save your own wording, with the original and its placeholders kept intact.
+1. Before and after: the same admin screens, first in English, then translated by Babilim.
+2. Every plugin and theme on your site, with its translation status in each language.
+3. Change any line in the built-in editor. The original and its placeholders stay intact.
+4. Bring your Loco Translate translations over in a few clicks.
+5. Nothing is sent until you press Enable. You see exactly what will be shared first.
 
 == Changelog ==
+
+= 2.2.2 =
+* The translation editor now opens large plugins such as WooCommerce on sites with a 256 MB memory limit.
 
 = 2.2.1 =
 * Saving drafts on large plugins no longer holds up other Babilim tasks.
@@ -108,14 +132,12 @@ The Enable screen lists what is sent automatically before you agree.
 * After an update your changes move to the new version; changed originals wait under "Needs review".
 * New name: Babilim – Auto Translation & Language Packs.
 
-= 2.0.0 =
-* New: edit any plugin or theme translation under Babilim > Edit translations.
-* Your changes are checked before saving and stay in place through updates.
-* The editor works without enabling the Babilim service.
-
 Older versions are listed in changelog.txt.
 
 == Upgrade Notice ==
+
+= 2.2.2 =
+Improves memory use when editing translations for large plugins and themes. No action needed.
 
 = 2.2.1 =
 Performance and reliability fixes. No action needed.

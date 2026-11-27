@@ -119,7 +119,9 @@ final class Babilim_String_List {
 			if ( is_array( $row['comments'] ?? null ) ) {
 				$entry['comments'] = array_values( array_filter( $row['comments'], 'is_string' ) );
 			}
-			$entries[] = $entry;
+			// Cached rows written by fetch() are already normalized. Share
+			// them with the decoded array so validation needs one row at a time.
+			$entries[] = $entry === $row ? $row : $entry;
 			if ( count( $entries ) >= 20000 ) {
 				break;
 			}

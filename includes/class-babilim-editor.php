@@ -199,63 +199,75 @@ final class Babilim_Editor {
 		$drafts = 0;
 		$listed = array();
 		$extra  = array();
+		$problems = array();
 		foreach ( array_keys( $entries + $L['saved'] ) as $r ) {
 			$r = (string) $r;
 			if ( isset( $L['folded'][ $r ] ) ) {
 				continue; // An old string that waits under the new one it was matched to.
 			}
 			$entry = $entries[ $r ] ?? null;
-			$item  = $this->item( $r, $entry, $L['saved'][ $r ] ?? array(), $L['drafts'][ $r ] ?? null );
-			if ( null !== $entry && null !== $item['override'] && in_array( $item['override']['status'], array( Babilim_Overrides::STATUS_REVIEW, Babilim_Overrides::STATUS_ORPHAN ), true ) ) {
-				// Marked on this version, then listed again (a build reinstalled): it is in use and in the files, so live.
-				$item['override']['status'] = Babilim_Overrides::STATUS_ACTIVE;
-			}
-			if ( isset( $L['review'][ $r ] ) ) {
-				$item['review'] = $L['review'][ $r ];
-			} elseif ( isset( $L['orphan'][ $r ] ) && null !== $item['override'] ) {
-				$item['override']['status'] = Babilim_Overrides::STATUS_ORPHAN;
-			}
-			if ( isset( $L['orphan'][ $r ] ) ) {
-				$item['draft']    = null; // Read-only: its draft is kept but not shown or counted.
-				$item['draft_at'] = '';
-			}
-			if ( null !== $item['draft'] ) {
+			$saved = $L['saved'][ $r ] ?? array();
+			$draft = $L['drafts'][ $r ] ?? null;
+			$from  = $entry ?? $saved[0];
+			$state = self::list_status( $L, $r );
+			$origin = $entry['source'] ?? 'none';
+			$review = isset( $L['review'][ $r ] );
+			$live   = Babilim_Overrides::STATUS_ACTIVE === $state;
+			$orphan = Babilim_Overrides::STATUS_ORPHAN === $state;
+			$issues = array();
+			if ( null !== $draft && ! isset( $L['orphan'][ $r ] ) ) {
 				++$drafts;
-				$item['problems'] = $this->check_draft( $item['msgid'], $item['msgid_plural'], $item['draft'], self::active( $L['saved'][ $r ] ?? array() ) !== array() || isset( $item['review'] ), (array) ( $entry['msgstr'] ?? array() ), $L['nplurals'] );
+				$issues = $this->check_draft( (string) $from['msgid'], self::item_plural( $entry, $saved, $draft ), self::forms( $draft ), self::active( $saved ) !== array() || $review, (array) ( $entry['msgstr'] ?? array() ), $L['nplurals'] );
 			}
+			$untranslated = 'none' === $origin && ! $live && ! $orphan;
+			$filters = array( 'untranslated' => $untranslated, 'edited' => $live, 'problems' => array() !== $issues, 'review' => $review, 'orphan' => $orphan );
 			++$counts['all'];
-			foreach ( array( 'untranslated', 'edited', 'problems', 'review', 'orphan' ) as $k ) {
-				if ( self::in_filter( $k, $item ) ) {
+			foreach ( $filters as $k => $matches ) {
+				if ( $matches ) {
 					++$counts[ $k ];
 				}
 			}
 			if ( '' !== $ref ) {
-				if ( $r === $ref ) {
-					$listed[ $r ] = $item;
+				if ( $r !== $ref ) {
+					continue;
 				}
+			} elseif ( ! ( $filters[ $filter ] ?? ( 'all' === $filter || $filter === $origin ) ) || ( '' !== $source && $source !== $origin ) || ( '' !== $needle && ! self::matches( $needle, $entry, $saved, $draft, isset( $L['orphan'][ $r ] ) ) ) ) {
 				continue;
 			}
-			if ( ! self::in_filter( $filter, $item ) || ( '' !== $source && $source !== $item['source'] ) || ( '' !== $needle && ! self::matches( $needle, $item ) ) ) {
-				continue;
+			if ( array() !== $issues ) {
+				$problems[ $r ] = $issues;
 			}
-			if ( null === $entry ) {
-				$extra[ $r ] = $item;
+			$key = null;
+			if ( 'untranslated' === $sort ) {
+				$key = ! $untranslated;
+			} elseif ( 'recent' === $sort ) {
+				$at  = isset( $L['orphan'][ $r ] ) ? '' : (string) ( $draft[0]['modified_gmt'] ?? '' );
+				$key = '' !== $at ? $at : ( Babilim_Overrides::STATUS_OFF !== $state ? (string) ( $saved[0]['modified_gmt'] ?? '' ) : '' );
+			} elseif ( 'az' === $sort ) {
+				$key = self::lower( (string) $from['msgid'] );
+			}
+			if ( null === $entry && '' === $ref ) {
+				$extra[ $r ] = $key;
 			} else {
-				$listed[ $r ] = $item;
+				$listed[ $r ] = $key;
 			}
 		}
 		// Strings only in the saved rows come last, by source text.
-		uasort(
+		uksort(
 			$extra,
-			static function ( array $a, array $b ): int {
-				return strcmp( $a['msgid'], $b['msgid'] ) ?: strcmp( $a['msgctxt'], $b['msgctxt'] );
+			static function ( $a, $b ) use ( $L ): int {
+				return self::compare_text( $L['saved'][ $a ][0], $L['saved'][ $b ][0] );
 			}
 		);
-		$items = self::sorted( array_values( $listed + $extra ), $sort );
+		$refs = self::sorted( $listed + $extra, $sort, $L );
 
-		$total = count( $items );
+		$total = count( $refs );
 		$pages = max( 1, (int) ceil( $total / self::PER_PAGE ) );
 		$page  = min( $pages, max( 1, (int) ( $query['page'] ?? 1 ) ) );
+		$items = array();
+		foreach ( array_slice( $refs, ( $page - 1 ) * self::PER_PAGE, self::PER_PAGE ) as $r ) {
+			$items[] = $this->item( (string) $r, $L, $problems[ $r ] ?? array() );
+		}
 		$plural_forms = (string) ( $L['cat']['plural_forms'] ?? Babilim_Plural_Forms::header( (string) $scope['locale'] ) );
 		return array(
 			'total'           => $total,
@@ -273,7 +285,7 @@ final class Babilim_Editor {
 			),
 			'pending'         => self::pending( $drafts, $counts['problems'] ),
 			'plural_examples' => Babilim_Plural_Forms::examples( $plural_forms ),
-			'items'           => array_slice( $items, ( $page - 1 ) * self::PER_PAGE, self::PER_PAGE ),
+			'items'           => $items,
 		);
 	}
 
@@ -962,34 +974,36 @@ final class Babilim_Editor {
 	}
 
 	/**
-	 * Items in the order a sort asks for; $items arrive in the default order.
+	 * Sort only references. The keys arrive in default order, which breaks recent ties.
 	 *
-	 * @param array[] $items Items.
+	 * @param array   $keys Sort keys by reference.
 	 * @param string  $sort  One of SORTS.
-	 * @return array[]
+	 * @param array   $L Catalog and saved rows.
+	 * @return array<int,int|string>
 	 */
-	private static function sorted( array $items, string $sort ): array {
+	private static function sorted( array $keys, string $sort, array $L ): array {
 		if ( 'untranslated' === $sort ) {
 			$first = array();
 			$rest  = array();
-			foreach ( $items as $item ) {
-				if ( self::in_filter( 'untranslated', $item ) ) {
-					$first[] = $item;
+			foreach ( $keys as $ref => $translated ) {
+				if ( $translated ) {
+					$rest[] = $ref;
 				} else {
-					$rest[] = $item;
+					$first[] = $ref;
 				}
 			}
 			return array_merge( $first, $rest );
 		}
+		$refs = array_keys( $keys );
 		if ( 'recent' === $sort ) {
 			$stamped = array();
 			$rest    = array();
-			foreach ( $items as $i => $item ) {
-				$at = '' !== $item['draft_at'] ? $item['draft_at'] : ( null !== $item['override'] && Babilim_Overrides::STATUS_OFF !== $item['override']['status'] ? $item['override']['at'] : '' );
+			foreach ( $refs as $i => $ref ) {
+				$at = $keys[ $ref ];
 				if ( '' === $at ) {
-					$rest[] = $item;
+					$rest[] = $ref;
 				} else {
-					$stamped[] = array( $at, $i, $item );
+					$stamped[] = array( $at, $i, $ref );
 				}
 			}
 			// usort() is not stable before PHP 8: the original position breaks ties.
@@ -1002,19 +1016,18 @@ final class Babilim_Editor {
 			return array_merge( array_column( $stamped, 2 ), $rest );
 		}
 		if ( 'az' === $sort ) {
-			$keyed = array();
-			foreach ( $items as $item ) {
-				$keyed[] = array( self::lower( $item['msgid'] ), $item );
-			}
 			usort(
-				$keyed,
-				static function ( array $a, array $b ): int {
-					return strcmp( $a[0], $b[0] ) ?: strcmp( $a[1]['msgid'], $b[1]['msgid'] ) ?: strcmp( $a[1]['msgctxt'], $b[1]['msgctxt'] );
+				$refs,
+				static function ( $a, $b ) use ( $keys, $L ): int {
+					return strcmp( $keys[ $a ], $keys[ $b ] ) ?: self::compare_text( $L['entries'][ $a ] ?? $L['saved'][ $a ][0], $L['entries'][ $b ] ?? $L['saved'][ $b ][0] );
 				}
 			);
-			return array_column( $keyed, 1 );
 		}
-		return $items;
+		return $refs;
+	}
+
+	private static function compare_text( array $a, array $b ): int {
+		return strcmp( (string) $a['msgid'], (string) $b['msgid'] ) ?: strcmp( (string) $a['msgctxt'], (string) $b['msgctxt'] );
 	}
 
 	/**
@@ -1129,32 +1142,42 @@ final class Babilim_Editor {
 	/**
 	 * One list item.
 	 *
-	 * @param string     $ref   String reference.
-	 * @param array|null $entry Catalog entry.
-	 * @param array[]    $saved Saved rows of the string.
-	 * @param array[]|null $draft Draft rows of the string.
+	 * @param string $ref String reference.
+	 * @param array  $L Catalog and override rows.
+	 * @param array  $problems Draft checks from the counting pass.
 	 */
-	private function item( string $ref, ?array $entry, array $saved, ?array $draft ): array {
+	private function item( string $ref, array $L, array $problems ): array {
+		$entry = $L['entries'][ $ref ] ?? null;
+		$saved = $L['saved'][ $ref ] ?? array();
+		$draft = $L['drafts'][ $ref ] ?? null;
+		$plural = self::item_plural( $entry, $saved, $draft );
+		if ( isset( $L['orphan'][ $ref ] ) ) {
+			$draft = null; // The stored draft is hidden while the string is read-only.
+		}
 		$from = $entry ?? $saved[0];
-		return array(
+		$item = array(
 			'ref'          => $ref,
 			'msgctxt'      => (string) $from['msgctxt'],
 			'msgid'        => (string) $from['msgid'],
-			'msgid_plural' => '' !== (string) ( $entry['msgid_plural'] ?? '' ) ? (string) $entry['msgid_plural'] : (string) ( $saved[0]['msgid_plural'] ?? $draft[0]['msgid_plural'] ?? '' ),
+			'msgid_plural' => $plural,
 			'comments'     => array_values( (array) ( $entry['comments'] ?? array() ) ),
 			'references'   => array_values( (array) ( $entry['references'] ?? array() ) ),
 			'source'       => (string) ( $entry['source'] ?? 'none' ),
 			'current'      => array_values( (array) ( $entry['msgstr'] ?? array() ) ),
 			'override'     => array() === $saved ? null : array(
 				'msgstr' => self::forms( $saved ),
-				'status' => (string) $saved[0]['status'],
+				'status' => self::list_status( $L, $ref ),
 				'at'     => (string) $saved[0]['modified_gmt'],
 			),
 			'draft'        => null === $draft ? null : self::forms( $draft ),
 			'draft_at'     => null === $draft ? '' : (string) $draft[0]['modified_gmt'],
-			'problems'     => array(),
+			'problems'     => $problems,
 			'history'      => array() === $saved ? 0 : count( $saved[0]['history'] ),
 		);
+		if ( isset( $L['review'][ $ref ] ) ) {
+			$item['review'] = $L['review'][ $ref ];
+		}
+		return $item;
 	}
 
 	/**
@@ -1167,41 +1190,35 @@ final class Babilim_Editor {
 		return ( ! isset( $L['entries'][ $ref ] ) && ! isset( $L['saved'][ $ref ] ) ) || isset( $L['folded'][ $ref ] ) || isset( $L['orphan'][ $ref ] );
 	}
 
-	private static function in_filter( string $filter, array $item ): bool {
-		// A no-longer-used text is in no state that counts: nothing shows it.
-		$state = null === $item['override'] ? '' : $item['override']['status'];
-		$live  = Babilim_Overrides::STATUS_ACTIVE === $state;
-		switch ( $filter ) {
-			case 'untranslated':
-				return 'none' === $item['source'] && ! $live && Babilim_Overrides::STATUS_ORPHAN !== $state;
-			case 'edited':
-				return $live;
-			case 'problems':
-				return null !== $item['draft'] && array() !== $item['problems'];
-			case 'babilim':
-			case 'wporg':
-			case 'bundled':
-				return $filter === $item['source'];
-			case 'review':
-				return isset( $item['review'] );
-			case 'orphan':
-				return Babilim_Overrides::STATUS_ORPHAN === $state;
+	private static function list_status( array $L, string $ref ): string {
+		$status = (string) ( $L['saved'][ $ref ][0]['status'] ?? '' );
+		if ( isset( $L['entries'][ $ref ] ) && in_array( $status, array( Babilim_Overrides::STATUS_REVIEW, Babilim_Overrides::STATUS_ORPHAN ), true ) ) {
+			// A marked string listed again by a reinstalled build is live.
+			return Babilim_Overrides::STATUS_ACTIVE;
 		}
-		return true;
+		return isset( $L['orphan'][ $ref ] ) ? Babilim_Overrides::STATUS_ORPHAN : $status;
 	}
 
-	private static function matches( string $needle, array $item ): bool {
-		$hay = array_merge(
-			array( $item['msgid'], $item['msgid_plural'], $item['msgctxt'] ),
-			$item['comments'],
-			$item['references'],
-			$item['current'],
-			null === $item['override'] ? array() : $item['override']['msgstr'],
-			(array) $item['draft']
+	private static function item_plural( ?array $entry, array $saved, ?array $draft ): string {
+		$plural = (string) ( $entry['msgid_plural'] ?? '' );
+		return '' !== $plural ? $plural : (string) ( $saved[0]['msgid_plural'] ?? $draft[0]['msgid_plural'] ?? '' );
+	}
+
+	private static function matches( string $needle, ?array $entry, array $saved, ?array $draft, bool $orphan ): bool {
+		$from = $entry ?? $saved[0];
+		$fields = array(
+			array( $from['msgid'], self::item_plural( $entry, $saved, $draft ), $from['msgctxt'] ),
+			$entry['comments'] ?? array(),
+			$entry['references'] ?? array(),
+			$entry['msgstr'] ?? array(),
+			self::forms( $saved ),
+			$orphan || null === $draft ? array() : self::forms( $draft )
 		);
-		foreach ( $hay as $text ) {
-			if ( false !== strpos( self::lower( (string) $text ), $needle ) ) {
-				return true;
+		foreach ( $fields as $field ) {
+			foreach ( $field as $text ) {
+				if ( false !== strpos( self::lower( (string) $text ), $needle ) ) {
+					return true;
+				}
 			}
 		}
 		return false;
